@@ -12,5 +12,5 @@ public class Functions {
     public static final String REMOVE_DEBUFFS = "remove debuffs";
     public static final String IGNORE_ATTACK = "ignore attack";
     public static final String IGNORE_LESSER_ATTACK = "ignore lesser attacks";
-    public static final String REMOVE_BENEFICIALS = "remove beneficial effects";
+    public static final String REMOVE_BENEFICIALS = "remove beneficial effect";
 }
