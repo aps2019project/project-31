@@ -10,6 +10,7 @@ public class Card {
 
     public void show(){
 
+
     }
 
     public boolean hasFunction(Function function){
