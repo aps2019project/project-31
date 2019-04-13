@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Player {
     private Account account;
@@ -17,8 +18,9 @@ public class Player {
     public Player(Account account) {
         this.account = account;
         this.currentDeck = account.getTheMainDeck();
-        this.hand = generateDeckArrangement();
+        this.hand = generateHandArrangement();
     }
+
 
     public Account getAccount() {
         return account;
@@ -66,5 +68,52 @@ public class Player {
 
     public Card getCardInReplace() {
         return cardInReplace;
+    }
+
+    public ArrayList<Card> generateHandArrangement() {
+        currentDeck.shuffle();
+        ArrayList<Card> hand = new ArrayList<>();
+        Random random = new Random();
+        for (int i = 0; i < 5; i++) {
+            int index = random.nextInt(currentDeck.getCards().size());
+            hand.add(currentDeck.getCards().get(index));
+            currentDeck.getCards().remove(index);
+        }
+        return hand;
+
+    }
+
+    public Card generateReplaceCard() {
+
+    }
+
+    public boolean selectACard() {
+
+    }
+
+    public void useHeroSpecialPower() {
+
+    }
+
+    public void showHand() {
+        for (Card i : hand) {
+            System.out.println(i.toString());
+        }
+    }
+
+    public void playCard(Card card) {
+
+    }
+
+    public void placeNextCardToHand() {
+        if (hand.size() < 6) {
+            hand.add(nextCard);
+            generateNextCard();
+        }
+    }
+
+    private void generateNextCard() {
+        Random random = new Random();
+
     }
 }
