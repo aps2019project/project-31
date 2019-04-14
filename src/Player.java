@@ -11,8 +11,8 @@ public class Player {
     private int numberOfTurnsHavingFlag;
     private ArrayList<Card> hand;
     private Card nextCard;
-    private ArrayList<CardInGame> cardsOnBattleField;
-    private ArrayList<CardInGame> graveYard;
+    private ArrayList<Card> cardsOnBattleField;
+    private ArrayList<Card> graveYard;
     private Card selectedCard;
     private Card cardInReplace;
     private BattleManager battle;
@@ -56,11 +56,11 @@ public class Player {
         return nextCard;
     }
 
-    public ArrayList<CardInGame> getCardsOnBattleField() {
+    public ArrayList<Card> getCardsOnBattleField() {
         return cardsOnBattleField;
     }
 
-    public ArrayList<CardInGame> getGraveYard() {
+    public ArrayList<Card> getGraveYard() {
         return graveYard;
     }
 
@@ -94,7 +94,13 @@ public class Player {
                 return true;
             }
         }
-      //  return false;
+        for (Card card: cardsOnBattleField) {
+            if(cardId==card.getCardInfo().getId()){
+                selectedCard=card;
+                return true;
+            }
+        }
+        return false;
     }
 
     public void generateReplaceCard() {
@@ -111,17 +117,15 @@ public class Player {
     public void showNextCard(){
         cardInReplace.show();
     }
-    public boolean selectACard() {
 
-    }
-
-    public void playTheTurn(){
+    public void runTheTurn(){
         remainingTime=60;
         while(true){
             String input=Scanners.getScanner().nextLine();
             handleCommands(input);
+            if(input.equals("end turn")||remainingTime<=0)
+                break;
         }
-        endTurn();
         placeNextCardToHand();
     }
     public void endTurn(){
@@ -139,6 +143,14 @@ public class Player {
     private void handleCommands(String input){
         Pattern pattern=Pattern.compile("\\s*show my minions\\s*");
         Matcher matcher = pattern.matcher(input);
+        if(matcher.matches()){
+            for (Card card : cardsOnBattleField) {
+                card.show();
+            }
+            return;
+        }
+        pattern=Pattern.compile("\\s*show opponent minions\\s*");
+        matcher = pattern.matcher(input);
         if(matcher.matches()){
 
         }
