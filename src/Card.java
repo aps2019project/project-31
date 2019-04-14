@@ -27,7 +27,7 @@ abstract public class Card {
     }
 
     abstract public void show();
-
+    abstract public void showCardInfo(); // farq mikone :|||
     public boolean hasFunction(Function function) {
         for (Function function1 : functions) {
             if (function.equals(function1)) {
