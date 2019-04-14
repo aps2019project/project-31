@@ -11,13 +11,14 @@ public class SinglePlayer extends BattleManager {
     public Player getPlayerOne() {
         return playerOne;
     }
-    public Player getOtherPlayer(String thisPlayerUserName){
-       if(thisPlayerUserName.equals(playerOne.getAccount().getUsername())){
-           return aiPlayer;
-       }
-       else
-           return playerOne;
+
+    public Player getOtherPlayer(String thisPlayerUserName) {
+        if (thisPlayerUserName.equals(playerOne.getAccount().getUsername())) {
+            return aiPlayer;
+        } else
+            return playerOne;
     }
+
     public Player getAiPlayer() {
         return aiPlayer;
     }

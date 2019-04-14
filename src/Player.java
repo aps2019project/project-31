@@ -16,11 +16,12 @@ public class Player {
     private Card selectedCard;
     private Card cardInReplace;
     private BattleManager battle;
+
     public Player(Account account) {
         this.account = account;
         this.hand = generateHandArrangement();
-        this.currentDeck=new Deck(account.getTheMainDeck().getDeckName(),
-                account.getTheMainDeck().getCards(),account.getTheMainDeck().getHero());
+        this.currentDeck = new Deck(account.getTheMainDeck().getDeckName(),
+                account.getTheMainDeck().getCards(), account.getTheMainDeck().getHero());
     }
 
 
@@ -84,19 +85,21 @@ public class Player {
         return hand;
 
     }
-    public void generateDeckArrangement(){
+
+    public void generateDeckArrangement() {
         currentDeck.shuffle();
     }
-    public boolean selectACard(int cardId){
-        for (Card card: hand) {
-            if(cardId==card.getCardInfo().getId()){
-                selectedCard=card;
+
+    public boolean selectACard(int cardId) {
+        for (Card card : hand) {
+            if (cardId == card.getCardInfo().getId()) {
+                selectedCard = card;
                 return true;
             }
         }
-        for (Card card: cardsOnBattleField) {
-            if(cardId==card.getCardInfo().getId()){
-                selectedCard=card;
+        for (Card card : cardsOnBattleField) {
+            if (cardId == card.getCardInfo().getId()) {
+                selectedCard = card;
                 return true;
             }
         }
@@ -104,33 +107,37 @@ public class Player {
     }
 
     public void generateReplaceCard() {
-        Random random=new Random();
-        int index=random.nextInt(currentDeck.getCards().size());
-        cardInReplace= currentDeck.getCards().get(index);
+        Random random = new Random();
+        int index = random.nextInt(currentDeck.getCards().size());
+        cardInReplace = currentDeck.getCards().get(index);
     }
-    public void placeNextCardToHand(){
-        if(hand.size()<6){
+
+    public void placeNextCardToHand() {
+        if (hand.size() < 6) {
             hand.add(cardInReplace);
             generateReplaceCard();
         }
     }
-    public void showNextCard(){
+
+    public void showNextCard() {
         cardInReplace.show();
     }
 
-    public void runTheTurn(){
-        remainingTime=60;
-        while(true){
-            String input=Scanners.getScanner().nextLine();
+    public void runTheTurn() {
+        remainingTime = 60;
+        while (true) {
+            String input = Scanners.getScanner().nextLine();
             handleCommands(input);
-            if(input.equals("end turn")||remainingTime<=0)
+            if (input.equals("end turn") || remainingTime <= 0)
                 break;
         }
         placeNextCardToHand();
     }
-    public void endTurn(){
+
+    public void endTurn() {
 
     }
+
     public void showHand() {
         for (Card i : hand) {
             System.out.println(i.toString());
@@ -140,18 +147,19 @@ public class Player {
     public void playCard(Card card) {
 
     }
-    private void handleCommands(String input){
-        Pattern pattern=Pattern.compile("\\s*show my minions\\s*");
+
+    private void handleCommands(String input) {
+        Pattern pattern = Pattern.compile("\\s*show my minions\\s*");
         Matcher matcher = pattern.matcher(input);
-        if(matcher.matches()){
+        if (matcher.matches()) {
             for (Card card : cardsOnBattleField) {
                 card.show();
             }
             return;
         }
-        pattern=Pattern.compile("\\s*show opponent minions\\s*");
+        pattern = Pattern.compile("\\s*show opponent minions\\s*");
         matcher = pattern.matcher(input);
-        if(matcher.matches()){
+        if (matcher.matches()) {
 
         }
     }

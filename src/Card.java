@@ -22,15 +22,15 @@ abstract public class Card {
         this.account = account;
     }
 
-    public String getName(){
+    public String getName() {
         return cardInfo.getName();
     }
 
     abstract public void show();
 
-    public boolean hasFunction(Function function){
-        for (Function function1: functions){
-            if (function.equals(function1)){
+    public boolean hasFunction(Function function) {
+        for (Function function1 : functions) {
+            if (function.equals(function1)) {
                 return true;
             }
         }

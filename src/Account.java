@@ -58,9 +58,9 @@ public class Account {
         return winLoseDraw;
     }
 
-    public static void changeMainAccount(String username, String password){
-        if(checkLogin(username,password)){
-            mainAccount=findTheAccount(username);
+    public static void changeMainAccount(String username, String password) {
+        if (checkLogin(username, password)) {
+            mainAccount = findTheAccount(username);
             mainAccount.run();
         }
     }
@@ -75,22 +75,23 @@ public class Account {
 
     public static void showLeaderBoard() {
         sortAllAccounts();
-        for (int i = 0; i <allAccounts.size() ; i++) {
-            System.out.println((i+1) +" - UserName: "+ allAccounts.get(i).username +" -Wins: " +
+        for (int i = 0; i < allAccounts.size(); i++) {
+            System.out.println((i + 1) + " - UserName: " + allAccounts.get(i).username + " -Wins: " +
                     allAccounts.get(i).winLoseDraw[0]);
         }
 
     }
-    private static void sortAllAccounts(){
-        for (int i = 0; i <allAccounts.size() ; i++) {
-            int theBest=i;
-            for (int j = i+1; j <allAccounts.size() ; j++) {
-                if(allAccounts.get(i).winLoseDraw[0]<allAccounts.get(j).winLoseDraw[0]){
-                    theBest=j;
+
+    private static void sortAllAccounts() {
+        for (int i = 0; i < allAccounts.size(); i++) {
+            int theBest = i;
+            for (int j = i + 1; j < allAccounts.size(); j++) {
+                if (allAccounts.get(i).winLoseDraw[0] < allAccounts.get(j).winLoseDraw[0]) {
+                    theBest = j;
                 }
             }
-            if(theBest!=i){
-                Collections.swap(allAccounts,theBest,i);
+            if (theBest != i) {
+                Collections.swap(allAccounts, theBest, i);
             }
         }
     }
