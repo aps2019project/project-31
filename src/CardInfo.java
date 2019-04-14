@@ -10,6 +10,10 @@ public class CardInfo {
         this.type = type;
     }
 
+    public boolean isDeployed() {
+        return isDeployed;
+    }
+
     public boolean equals(Object o) {
         return equals((CardInfo) o);
     }
