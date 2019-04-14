@@ -33,7 +33,7 @@ public class Account {
         return matchHistories;
     }
 
-    public boolean checkLogin(String username, String password) {
+    public static boolean checkLogin(String username, String password) {
         Account account = findTheAccount(username);
         if (account != null && account.password.equals(password)) {
             return true;
@@ -41,7 +41,7 @@ public class Account {
         return false;
     }
 
-    private Account findTheAccount(String username) {
+    private static Account findTheAccount(String username) {
         for (Account account : allAccounts) {
             if (account.username.equals(username)) {
                 return account;
@@ -50,7 +50,12 @@ public class Account {
         return null;
     }
 
-    public static void changeMainAccount(String username)
+    public static void changeMainAccount(String username,String password){
+        if(checkLogin(username,password)){
+            mainAccount=findTheAccount(username);
+            mainAccount.run();
+        }
+    }
 
     public static void addAccount(Account account) {
         allAccounts.add(account);
