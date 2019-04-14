@@ -190,13 +190,8 @@ public class Player {
         }
         pattern = Pattern.compile("\\s*attack (\\d+)\\s*");
         matcher = pattern.matcher(input);
-        if(matcher.matches()){
+        if (matcher.matches()) {
 
         }
     }
-
-    private int manhattanDistance(int x1, int y1, int x2, int y2) {
-        return Math.abs(x1 - x2) + Math.abs(y1 - y2);
-    }
-
 }
