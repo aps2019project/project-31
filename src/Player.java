@@ -160,8 +160,43 @@ public class Player {
         pattern = Pattern.compile("\\s*show opponent minions\\s*");
         matcher = pattern.matcher(input);
         if (matcher.matches()) {
+            Player opponent = battle.getOtherPlayer(account.getUsername());
+            for (Card card : opponent.cardsOnBattleField) {
+                card.show();
+            }
+            opponent.currentDeck.getHero().show();
+            return;
+        }
+        pattern = Pattern.compile("\\s*show card info\\s+(\\d+)");
+        matcher = pattern.matcher(input);
+        if (matcher.matches()) {
+            for (Card card : cardsOnBattleField) {
+                if (card.getCardInfo().getId() == Integer.valueOf(matcher.group(1))) {
+                    card.showCardInfo();
+                }
+            }
+        }
+        pattern = Pattern.compile("\\s*select (\\d+)\\s*");
+        matcher = pattern.matcher(input);
+        if (matcher.matches()) {
+            selectACard(Integer.valueOf(matcher.group(1)));
+        }
+        pattern = Pattern.compile("\\s*move to\\((\\d),(\\d)\\)\\s*");
+        matcher = pattern.matcher(input);
+        if (matcher.matches()) {
+            if (selectedCard.getCardInfo().isDeployed()) {
+
+            }
+        }
+        pattern = Pattern.compile("\\s*attack (\\d+)\\s*");
+        matcher = pattern.matcher(input);
+        if(matcher.matches()){
 
         }
+    }
+
+    private int manhattanDistance(int x1, int y1, int x2, int y2) {
+        return Math.abs(x1 - x2) + Math.abs(y1 - y2);
     }
 
 }
