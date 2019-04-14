@@ -1,17 +1,14 @@
 import java.util.ArrayList;
 
-public class Card {
-    private CardInfo cardInfo;
-    private int price;
-    private int manaCost;
-    private String cardText;
-    private ArrayList<Function> functions;
-    private Account account;
+abstract public class Card {
+    protected CardInfo cardInfo;
+    protected int price;
+    protected int manaCost;
+    protected String cardText;
+    protected ArrayList<Function> functions;
+    protected Account account;
 
-    public void show(){
-
-
-    }
+    abstract public void show();
 
     public boolean hasFunction(Function function){
         for (Function function1: functions){
