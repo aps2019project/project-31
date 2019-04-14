@@ -23,6 +23,12 @@ public class Deck {
         cards.add(card);
     }
 
+    public Deck(String deckName, ArrayList<Card> cards, Hero hero) {
+        this.deckName = deckName;
+        this.cards = new ArrayList<Card>(cards);
+        this.hero = hero;
+    }
+
     public void shuffle() {
         Random random = new Random();
         for (int i = 0; i < 100; i++) {

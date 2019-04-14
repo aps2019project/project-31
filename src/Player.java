@@ -17,8 +17,9 @@ public class Player {
 
     public Player(Account account) {
         this.account = account;
-        this.currentDeck = account.getTheMainDeck();
         this.hand = generateHandArrangement();
+        this.currentDeck=new Deck(account.getTheMainDeck().getDeckName(),
+                account.getTheMainDeck().getCards(),account.getTheMainDeck().getHero());
     }
 
 
@@ -82,7 +83,12 @@ public class Player {
         return hand;
 
     }
-
+    public void generateDeckArrangement(){
+        currentDeck.shuffle();
+    }
+    public boolean selectACard(int CardId){
+        selectedCard=
+    }
     public Card generateReplaceCard() {
 
     }
