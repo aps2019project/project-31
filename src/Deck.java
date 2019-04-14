@@ -23,6 +23,12 @@ public class Deck {
         cards.add(card);
     }
 
+    public Deck(String deckName, Hero hero) {
+        this.deckName = deckName;
+        this.hero = hero;
+        this.cards = new ArrayList<Card>();
+    }
+
     public Deck(String deckName, ArrayList<Card> cards, Hero hero) {
         this.deckName = deckName;
         this.cards = new ArrayList<Card>(cards);

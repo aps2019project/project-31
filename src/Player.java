@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.regex.*;
 
 public class Player {
     private Account account;
@@ -14,7 +15,7 @@ public class Player {
     private ArrayList<CardInGame> graveYard;
     private Card selectedCard;
     private Card cardInReplace;
-
+    private BattleManager battle;
     public Player(Account account) {
         this.account = account;
         this.hand = generateHandArrangement();
@@ -86,21 +87,46 @@ public class Player {
     public void generateDeckArrangement(){
         currentDeck.shuffle();
     }
-    public boolean selectACard(int CardId){
-        selectedCard=
+    public boolean selectACard(int cardId){
+        for (Card card: hand) {
+            if(cardId==card.getCardInfo().getId()){
+                selectedCard=card;
+                return true;
+            }
+        }
+      //  return false;
     }
-    public Card generateReplaceCard() {
 
+    public void generateReplaceCard() {
+        Random random=new Random();
+        int index=random.nextInt(currentDeck.getCards().size());
+        cardInReplace= currentDeck.getCards().get(index);
     }
-
+    public void placeNextCardToHand(){
+        if(hand.size()<6){
+            hand.add(cardInReplace);
+            generateReplaceCard();
+        }
+    }
+    public void showNextCard(){
+        cardInReplace.show();
+    }
     public boolean selectACard() {
 
     }
 
-    public void useHeroSpecialPower() {
+    public void playTheTurn(){
+        remainingTime=60;
+        while(true){
+            String input=Scanners.getScanner().nextLine();
+            handleCommands(input);
+        }
+        endTurn();
+        placeNextCardToHand();
+    }
+    public void endTurn(){
 
     }
-
     public void showHand() {
         for (Card i : hand) {
             System.out.println(i.toString());
@@ -110,16 +136,12 @@ public class Player {
     public void playCard(Card card) {
 
     }
+    private void handleCommands(String input){
+        Pattern pattern=Pattern.compile("\\s*show my minions\\s*");
+        Matcher matcher = pattern.matcher(input);
+        if(matcher.matches()){
 
-    public void placeNextCardToHand() {
-        if (hand.size() < 6) {
-            hand.add(nextCard);
-            generateNextCard();
         }
     }
 
-    private void generateNextCard() {
-        Random random = new Random();
-
-    }
 }
