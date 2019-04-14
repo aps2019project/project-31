@@ -8,6 +8,24 @@ abstract public class Card {
     protected ArrayList<Function> functions;
     protected Account account;
 
+    public Card(CardInfo cardInfo,
+                int price,
+                int manaCost,
+                String cardText,
+                ArrayList<Function> functions,
+                Account account) {
+        this.cardInfo = cardInfo;
+        this.price = price;
+        this.manaCost = manaCost;
+        this.cardText = cardText;
+        this.functions = functions;
+        this.account = account;
+    }
+
+    public String getName(){
+        return cardInfo.getName();
+    }
+
     abstract public void show();
 
     public boolean hasFunction(Function function){
