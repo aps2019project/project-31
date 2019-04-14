@@ -50,7 +50,15 @@ public class Account {
         return null;
     }
 
-    public static void changeMainAccount(String username,String password){
+    public String getUsername() {
+        return username;
+    }
+
+    public int[] getWinLoseDraw() {
+        return winLoseDraw;
+    }
+
+    public static void changeMainAccount(String username, String password){
         if(checkLogin(username,password)){
             mainAccount=findTheAccount(username);
             mainAccount.run();
