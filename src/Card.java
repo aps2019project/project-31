@@ -1,33 +1,37 @@
 import java.util.ArrayList;
 
 abstract public class Card {
-    protected CardInfo cardInfo;
     protected int price;
     protected int manaCost;
     protected String cardText;
     protected ArrayList<Function> functions;
     protected Account account;
+    protected String name;
+    protected int id;
+    protected String type;
+    protected boolean isDeployed = false;
 
-    public Card(CardInfo cardInfo,
-                int price,
-                int manaCost,
-                String cardText,
-                ArrayList<Function> functions,
-                Account account) {
-        this.cardInfo = cardInfo;
+    public Card(int price, int manaCost, String cardText, ArrayList<Function> functions,
+                Account account, String name, int id, String type, boolean isDeployed) {
         this.price = price;
         this.manaCost = manaCost;
         this.cardText = cardText;
         this.functions = functions;
         this.account = account;
+        this.name = name;
+        this.id = id;
+        this.type = type;
+        this.isDeployed = isDeployed;
     }
 
     public String getName() {
-        return cardInfo.getName();
+        return this.name;
     }
 
     abstract public void show();
+
     abstract public void showCardInfo(); // farq mikone :|||
+
     public boolean hasFunction(Function function) {
         for (Function function1 : functions) {
             if (function.equals(function1)) {
@@ -35,10 +39,6 @@ abstract public class Card {
             }
         }
         return false;
-    }
-
-    public CardInfo getCardInfo() {
-        return cardInfo;
     }
 
     public int getPrice() {
@@ -59,5 +59,29 @@ abstract public class Card {
 
     public Account getAccount() {
         return account;
+    }
+
+    public boolean isDeployed() {
+        return isDeployed;
+    }
+
+    public boolean equals(Object o) {
+        return equals((CardInfo) o);
+    }
+
+    private boolean equals(Card card) {
+        if (card.name.equals(this.name) ||
+                card.id == this.id) {
+            return true;
+        }
+        return false;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getType() {
+        return type;
     }
 }
