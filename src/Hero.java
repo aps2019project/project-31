@@ -34,7 +34,12 @@ public class Hero extends Card {
                 + " class : "
                 + attackType
                 + " Special power : "
-                + heroSpell.cardText);
+                + heroSpell.cardText + " Sell Cost : " + price);
+    }
+
+    @Override
+    public void showCardInfo() {
+
     }
 
     public void setAttackType(AttackType attackType) {
