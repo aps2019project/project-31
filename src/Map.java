@@ -2,9 +2,9 @@ public class Map {
     private static final int maxMoveRange = 2;
     private static Cell[][] map = new Cell[5][8];
 
-    public Cell getCell(int x, int y) {
+    public static Cell getCell(int x, int y) {
         if (x <= 8 && y <= 5) {
-            return map[y - 1][x - 1];
+            return map[x][y];
         }
         return null;
     }
@@ -27,7 +27,7 @@ public class Map {
         Cell cellDestination = getCell(x, y);
         if(cellDestination.getCardInCell()==null && getDistance());
     }
-    public Cell findCellByCardId(int cardId){
+    public static Cell findCellByCardId(int cardId){
         for (Cell[] cells:map) {
             for (Cell cell:cells) {
                 if(cell.getCardInCell().getId()==cardId){

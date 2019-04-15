@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.concurrent.locks.Condition;
 
-public class DeployedMinion extends Minion {
+public class DeployedMinion extends Minion implements MoveableDeployed{
     private ArrayList<Condition> conditions;
     private Cell cell;
     private int currentHealth;
@@ -43,7 +43,16 @@ public class DeployedMinion extends Minion {
     public void show() {
 
     }
-    public void move(){
+
+    @Override
+    public void move(Cell cell) {
+        if(Map.getDistance(this.cell,cell)<=Map.getMaxMoveRange()){
+
+        }
+    }
+
+    @Override
+    public void attack(Cell cell) {
 
     }
 }

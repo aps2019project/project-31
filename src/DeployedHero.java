@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.concurrent.locks.Condition;
 
-public class DeployedHero extends Hero {
+public class DeployedHero extends Hero implements MoveableDeployed{
     private ArrayList<Condition> conditions;
     private Cell cell;
     private int currentHealth;
@@ -44,7 +44,14 @@ public class DeployedHero extends Hero {
     public void show() {
 
     }
-    public void move(){
+
+    @Override
+    public void move(Cell cell) {
+
+    }
+
+    @Override
+    public void attack(Cell cell) {
 
     }
 }

@@ -5,6 +5,22 @@ public class Cell {
     private boolean isOnFire;
     private boolean isPoisoned;
 
+    public Cell(int xCoordinate, int yCoordinate, Card cardInCell) {
+        this.xCoordinate = xCoordinate;
+        this.yCoordinate = yCoordinate;
+        this.cardInCell = cardInCell;
+        this.isOnFire = false;
+        this.isPoisoned = false;
+    }
+
+    public Cell(int xCoordinate, int yCoordinate) {
+        this.xCoordinate = xCoordinate;
+        this.yCoordinate = yCoordinate;
+        this.cardInCell = Map.getCell(xCoordinate, yCoordinate).cardInCell;
+        this.isOnFire = Map.getCell(xCoordinate, yCoordinate).isOnFire;
+        this.isPoisoned = Map.getCell(xCoordinate, yCoordinate).isPoisoned;
+    }
+
     public void setxCoordinate(int xCoordinate) {
         this.xCoordinate = xCoordinate;
     }
