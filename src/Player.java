@@ -185,8 +185,20 @@ public class Player {
         matcher = pattern.matcher(input);
         if (matcher.matches()) {
             if (selectedCard.getCardInfo().isDeployed()) {
-
+                if(selectedCard.getCardInfo().getType().equals("hero")){
+                    if(Map.getDistance(((DeployedHero) selectedCard).getCell(),Integer.valueOf(matcher.group(1)),
+                            Integer.valueOf(matcher.group(2)))<=Map.getMaxMoveRange()){
+                        ((DeployedHero) selectedCard).move();
+                    }
+                }
+                if(selectedCard.getCardInfo().getType().equals("minion")){
+                    if(Map.getDistance(((DeployedMinion) selectedCard).getCell(),Integer.valueOf(matcher.group(1)),
+                            Integer.valueOf(matcher.group(2)))<=Map.getMaxMoveRange()){
+                        ((DeployedHero) selectedCard).move();
+                    }
+                }
             }
+
         }
         pattern = Pattern.compile("\\s*attack (\\d+)\\s*");
         matcher = pattern.matcher(input);

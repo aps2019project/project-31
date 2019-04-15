@@ -19,4 +19,30 @@ public class DeployedMinion extends Minion {
         this.curretAttack = curretAttack;
         this.buffs = buffs;
     }
+
+    public ArrayList<Condition> getConditions() {
+        return conditions;
+    }
+
+    public Cell getCell() {
+        return cell;
+    }
+
+    public int getCurrentHealth() {
+        return currentHealth;
+    }
+
+    public int getCurretAttack() {
+        return curretAttack;
+    }
+
+    public ArrayList<Buuf> getBuffs() {
+        return buffs;
+    }
+    public void show() {
+
+    }
+    public void move(){
+
+    }
 }
