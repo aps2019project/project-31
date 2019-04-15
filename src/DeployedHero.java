@@ -43,4 +43,7 @@ public class DeployedHero extends Hero {
     public void show() {
 
     }
+    public void move(){
+
+    }
 }
