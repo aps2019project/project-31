@@ -47,11 +47,15 @@ public class DeployedHero extends Hero implements MoveableDeployed{
 
     @Override
     public void move(Cell cell) {
+        if(Map.getDistance(this.cell,cell)<=Map.getMaxMoveRange()){
 
+        }
     }
 
     @Override
     public void attack(Cell cell) {
+        if(Map.getDistance(cell,this.cell)<=Map.getMaxMoveRange()){
 
+        }
     }
 }

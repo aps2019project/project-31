@@ -53,6 +53,8 @@ public class DeployedMinion extends Minion implements MoveableDeployed{
 
     @Override
     public void attack(Cell cell) {
+        if(Map.getDistance(cell,this.cell)<=Map.getMaxMoveRange()){
 
+        }
     }
 }

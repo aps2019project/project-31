@@ -187,20 +187,17 @@ public class Player {
             if (selectedCard.isDeployed()) {
                 if (selectedCard.getType().equals("hero") || selectedCard.getType().equals("minion")) {
                     int x = Integer.valueOf(matcher.group(1)), y = Integer.valueOf(matcher.group(2));
-                    if (Map.getDistance(((MoveableDeployed) selectedCard).getCell(),x ,y) <= Map.getMaxMoveRange()) {
-                        Cell tempCell = new Cell(x,y);
-                        ((MoveableDeployed) selectedCard).move(tempCell);
-                    }
+                    Cell tempCell = new Cell(x,y);
+                    ((MoveableDeployed) selectedCard).move(tempCell);
                 }
+
             }
         }
         pattern = Pattern.compile("\\s*attack (\\d+)\\s*");
         matcher = pattern.matcher(input);
         if (matcher.matches()) {
             Cell destinationCell = Map.findCellByCardId(Integer.valueOf(matcher.group(1)));
-            if (Map.getDistance(((MoveableDeployed) selectedCard).getCell(),destinationCell)<=Map.getMaxMoveRange()){
-                Cell tempCell = new Cell(destinationCell.getxCoordinate(),destinationCell.getyCoordinate());
-                ((MoveableDeployed) selectedCard).attack(tempCell);
+            ((MoveableDeployed) selectedCard).attack(destinationCell);
             }
         }
     }

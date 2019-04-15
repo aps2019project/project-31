@@ -25,7 +25,7 @@ public class Map {
 
     public void move(int x, int y, Card card) {
         Cell cellDestination = getCell(x, y);
-        if(cellDestination.getCardInCell()==null && getDistance());
+
     }
     public static Cell findCellByCardId(int cardId){
         for (Cell[] cells:map) {
