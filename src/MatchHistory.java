@@ -1,4 +1,5 @@
 import java.util.Date;
+
 public class MatchHistory {
     private String opponent;
     private String outcome;
@@ -10,10 +11,11 @@ public class MatchHistory {
         this.time = new Date();
     }
 
-    public void showMatchHistory(){
-        System.out.println("Opponent: "+opponent+" , win/lose: "+ outcome+" , time: "+ figureTime());
+    public void showMatchHistory() {
+        System.out.println("Opponent: " + opponent + " , win/lose: " + outcome + " , time: " + figureTime());
     }
-    private String figureTime(){
+
+    private String figureTime() {
 
     }
 }

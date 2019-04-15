@@ -1,3 +1,6 @@
+import com.google.gson.Gson;
+
+import java.io.BufferedReader;
 import java.util.ArrayList;
 
 abstract public class Card {
@@ -10,6 +13,7 @@ abstract public class Card {
     protected int id;
     protected String type;
     protected boolean isDeployed = false;
+
 
     public Card(int price, int manaCost, String cardText, ArrayList<Function> functions,
                 Account account, String name, int id, String type, boolean isDeployed) {

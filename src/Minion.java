@@ -40,7 +40,18 @@ public class Minion extends Card {
 
     @Override
     public void show() {
-
+        System.out.println("Type : Minion - Name : "
+        + this.name
+        + " - Class : "
+        + this.attackType
+        + " - AP : "
+        + this.attack
+        + " - HP : "
+        + this.health
+        + " - MP : "
+        + this.manaCost
+        + " - Special power :"
+        + this.cardText);
     }
 
     @Override

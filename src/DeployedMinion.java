@@ -5,20 +5,27 @@ public class DeployedMinion extends Minion implements MoveableDeployed{
     private ArrayList<Condition> conditions;
     private Cell cell;
     private int currentHealth;
-    private int curretAttack;
-    private ArrayList<Buuf> buffs;
+    private int currentAttack;
+    private ArrayList<Buff> buffs;
 
-    public DeployedMinion(int price, int manaCost, String cardText, ArrayList<Function> functions, Account account,
-                          String name, int id, String type, boolean isDeployed, String functionTime, int attackRange
-            , String attackType, int attack, int health, ArrayList<Condition> conditions, Cell cell,
-                          int currentHealth, int curretAttack, ArrayList<Buuf> buffs) {
-        super(price, manaCost, cardText, functions, account, name, id, type, isDeployed, functionTime,
-                attackRange, attackType, attack, health);
-        this.conditions = conditions;
+    public DeployedMinion(int price, int manaCost, String cardText,
+                          ArrayList<Function> functions,
+                          Account account, String name, int id,
+                          String type, boolean isDeployed,
+                          String functionTime, int attackRange,
+                          String attackType, int attack, int health,
+                          Cell cell, int currentHealth,
+                          int currentAttack) {
+        super(price, manaCost, cardText, functions,
+                account, name, id, type,
+                isDeployed, functionTime,
+                attackRange, attackType, attack,
+                health);
+        this.conditions = null;
         this.cell = cell;
         this.currentHealth = currentHealth;
-        this.curretAttack = curretAttack;
-        this.buffs = buffs;
+        this.currentAttack = currentAttack;
+        this.buffs = null;
     }
 
     public ArrayList<Condition> getConditions() {
@@ -33,11 +40,11 @@ public class DeployedMinion extends Minion implements MoveableDeployed{
         return currentHealth;
     }
 
-    public int getCurretAttack() {
-        return curretAttack;
+    public int getCurrentAttack() {
+        return currentAttack;
     }
 
-    public ArrayList<Buuf> getBuffs() {
+    public ArrayList<Buff> getBuffs() {
         return buffs;
     }
     public void show() {
