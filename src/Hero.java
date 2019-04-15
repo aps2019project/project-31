@@ -6,18 +6,10 @@ public class Hero extends Card {
     protected int health;
     protected HeroSpell heroSpell;
 
-    public Hero(CardInfo cardInfo,
-                int price,
-                int manaCost,
-                String cardText,
-                ArrayList<Function> functions,
-                Account account,
-                AttackType attackType,
-                int attack, int health,
-                HeroSpell heroSpell) {
-        super(cardInfo, price,
-                manaCost, cardText,
-                functions, account);
+    public Hero(int price, int manaCost, String cardText, ArrayList<Function> functions, Account account, String name,
+                int id, String type, boolean isDeployed, AttackType attackType, int attack,
+                int health, HeroSpell heroSpell) {
+        super(price, manaCost, cardText, functions, account, name, id, type, isDeployed);
         this.attackType = attackType;
         this.attack = attack;
         this.health = health;

@@ -8,11 +8,12 @@ public class DeployedHero extends Hero {
     private int currentAttack;
     private ArrayList<Buff> buffs;
 
-    public DeployedHero(
-            CardInfo cardInfo, int price, int manaCost, String cardText, ArrayList<Function> functions, Account account,
-            AttackType attackType, int attack, int health, HeroSpell heroSpell, ArrayList<Condition> conditions
-            , Cell cell, int currentHealth, int currentAttack, ArrayList<Buff> buffs) {
-        super(cardInfo, price, manaCost, cardText, functions, account, attackType, attack, health, heroSpell);
+    public DeployedHero(int price, int manaCost, String cardText, ArrayList<Function> functions, Account account,
+                        String name, int id, String type, boolean isDeployed, AttackType attackType, int attack,
+                        int health, HeroSpell heroSpell, ArrayList<Condition> conditions, Cell cell, int currentHealth,
+                        int currentAttack, ArrayList<Buff> buffs) {
+        super(price, manaCost, cardText, functions, account, name, id, type, isDeployed, attackType, attack,
+                health, heroSpell);
         this.conditions = conditions;
         this.cell = cell;
         this.currentHealth = currentHealth;

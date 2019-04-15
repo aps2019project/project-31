@@ -27,4 +27,14 @@ public class Map {
         Cell cellDestination = getCell(x, y);
         if(cellDestination.getCardInCell()==null && getDistance());
     }
+    public Cell findCellByCardId(int cardId){
+        for (Cell[] cells:map) {
+            for (Cell cell:cells) {
+                if(cell.getCardInCell().getId()==cardId){
+                    return cell;
+                }
+            }
+        }
+        return null;
+    }
 }

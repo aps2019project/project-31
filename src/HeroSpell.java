@@ -4,17 +4,12 @@ public class HeroSpell extends Spell{
     private int cooldown;
     private int coolDownRemaining;
 
-    public HeroSpell(CardInfo cardInfo,
-                     int price,
-                     int manaCost,
-                     String cardText,
-                     ArrayList<Function> functions,
-                     Account account,
-                     String target,
-                     int cooldown) {
-        super(cardInfo, price, manaCost, cardText, functions, account, target);
+    public HeroSpell(int price, int manaCost, String cardText, ArrayList<Function> functions, Account account,
+                     String name, int id, String type, boolean isDeployed, String target, int cooldown,
+                     int coolDownRemaining) {
+        super(price, manaCost, cardText, functions, account, name, id, type, isDeployed, target);
         this.cooldown = cooldown;
-        this.coolDownRemaining = 0;
+        this.coolDownRemaining = coolDownRemaining;
     }
 
     public void goOnCooldown(){

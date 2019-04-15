@@ -7,9 +7,10 @@ public class Minion extends Card {
     private int attack;
     private int health;
 
-    public Minion(CardInfo cardInfo, int price, int manaCost, String cardText, ArrayList<Function> functions,
-                  Account account, String functionTime, int attackRange, String attackType, int attack, int health) {
-        super(cardInfo, price, manaCost, cardText, functions, account);
+    public Minion(int price, int manaCost, String cardText, ArrayList<Function> functions, Account account, String name,
+                  int id, String type, boolean isDeployed, String functionTime, int attackRange, String attackType,
+                  int attack, int health) {
+        super(price, manaCost, cardText, functions, account, name, id, type, isDeployed);
         this.functionTime = functionTime;
         this.attackRange = attackRange;
         this.attackType = attackType;

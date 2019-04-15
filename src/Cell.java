@@ -1,7 +1,7 @@
 public class Cell {
     private int xCoordinate;
     private int yCoordinate;
-    private Cell cardInCell;
+    private Card cardInCell;
     private boolean isOnFire;
     private boolean isPoisoned;
 
@@ -13,7 +13,7 @@ public class Cell {
         this.yCoordinate = yCoordinate;
     }
 
-    public void setCardInCell(Cell cardInCell) {
+    public void setCardInCell(Card cardInCell) {
         this.cardInCell = cardInCell;
     }
 
@@ -33,7 +33,7 @@ public class Cell {
         return yCoordinate;
     }
 
-    public Cell getCardInCell() {
+    public Card getCardInCell() {
         return cardInCell;
     }
 

@@ -66,7 +66,7 @@ abstract public class Card {
     }
 
     public boolean equals(Object o) {
-        return equals((CardInfo) o);
+        return equals((Card) o);
     }
 
     private boolean equals(Card card) {

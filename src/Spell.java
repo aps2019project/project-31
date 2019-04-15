@@ -3,16 +3,9 @@ import java.util.ArrayList;
 public class Spell extends Card {
     protected String target;
 
-    public Spell(CardInfo cardInfo,
-                 int price,
-                 int manaCost,
-                 String cardText,
-                 ArrayList<Function> functions,
-                 Account account,
-                 String target) {
-        super(cardInfo, price,
-                manaCost, cardText,
-                functions, account);
+    public Spell(int price, int manaCost, String cardText, ArrayList<Function> functions, Account account, String name,
+                 int id, String type, boolean isDeployed, String target) {
+        super(price, manaCost, cardText, functions, account, name, id, type, isDeployed);
         this.target = target;
     }
 
@@ -23,6 +16,11 @@ public class Spell extends Card {
                 + this.manaCost
                 + " - Desc: "
                 + this.cardText);
+
+    }
+
+    @Override
+    public void showCardInfo() {
 
     }
 }

@@ -92,13 +92,13 @@ public class Player {
 
     public boolean selectACard(int cardId) {
         for (Card card : hand) {
-            if (cardId == card.getCardInfo().getId()) {
+            if (cardId == card.getId()) {
                 selectedCard = card;
                 return true;
             }
         }
         for (Card card : cardsOnBattleField) {
-            if (cardId == card.getCardInfo().getId()) {
+            if (cardId == card.getId()) {
                 selectedCard = card;
                 return true;
             }
@@ -171,7 +171,7 @@ public class Player {
         matcher = pattern.matcher(input);
         if (matcher.matches()) {
             for (Card card : cardsOnBattleField) {
-                if (card.getCardInfo().getId() == Integer.valueOf(matcher.group(1))) {
+                if (card.getId() == Integer.valueOf(matcher.group(1))) {
                     card.showCardInfo();
                 }
             }
@@ -184,21 +184,20 @@ public class Player {
         pattern = Pattern.compile("\\s*move to\\((\\d),(\\d)\\)\\s*");
         matcher = pattern.matcher(input);
         if (matcher.matches()) {
-            if (selectedCard.getCardInfo().isDeployed()) {
-                if(selectedCard.getCardInfo().getType().equals("hero")){
+            if (selectedCard.isDeployed()) {
+                if(selectedCard.getType().equals("hero")){
                     if(Map.getDistance(((DeployedHero) selectedCard).getCell(),Integer.valueOf(matcher.group(1)),
                             Integer.valueOf(matcher.group(2)))<=Map.getMaxMoveRange()){
                         ((DeployedHero) selectedCard).move();
                     }
                 }
-                if(selectedCard.getCardInfo().getType().equals("minion")){
+                if(selectedCard.getType().equals("minion")){
                     if(Map.getDistance(((DeployedMinion) selectedCard).getCell(),Integer.valueOf(matcher.group(1)),
                             Integer.valueOf(matcher.group(2)))<=Map.getMaxMoveRange()){
                         ((DeployedHero) selectedCard).move();
                     }
                 }
             }
-
         }
         pattern = Pattern.compile("\\s*attack (\\d+)\\s*");
         matcher = pattern.matcher(input);
