@@ -8,6 +8,8 @@ public class DeployedHero extends Hero implements MoveableDeployed{
     private Cell cell;
     private int currentHealth;
     private int currentAttack;
+    private boolean isMoved;
+    private boolean isAttacked;
     private ArrayList<Buff> buffs;
 
     public DeployedHero(int price, int manaCost, String cardText, ArrayList<Function> functions, Account account,
@@ -56,7 +58,7 @@ public class DeployedHero extends Hero implements MoveableDeployed{
 
     @Override
     public void attack(Cell cell) {
-        if(Map.getDistance(cell,this.cell)<=Map.getMaxMoveRange()){
+        if(Map.getDistance(cell,this.cell)<=Map.getMaxMoveRange() &&!isAttacked){
 
         }
     }

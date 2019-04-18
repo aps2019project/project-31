@@ -8,6 +8,8 @@ public class DeployedMinion extends Minion implements MoveableDeployed{
     private Cell cell;
     private int currentHealth;
     private int currentAttack;
+    private boolean isMoved;
+    private boolean isAttacked;
     private ArrayList<Buff> buffs;
 
     public DeployedMinion(int price, int manaCost, String cardText,
