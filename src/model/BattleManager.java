@@ -45,8 +45,8 @@ public abstract class BattleManager {
     }
 
     public void compileTargetString(ArrayList<Card> targetCards, ArrayList<Cell> targetCells, String target,
-                                    int x, int y){
-        compileTargetString(targetCards,targetCells,target,x,y,null);
+                                    int x, int y) {
+        compileTargetString(targetCards, targetCells, target, x, y, null);
     }
 
     public void compileTargetString(ArrayList<Card> targetCards, ArrayList<Cell> targetCells, String target,
@@ -71,6 +71,29 @@ public abstract class BattleManager {
 
             if (target.matches("(.*)" + TargetStrings.ALL_ALLIES + "(.*)")) {
                 targetCards.addAll(currentPlayer.getCardsOnBattleField());
+            } else if (target.matches("(.*)" + TargetStrings.ALLY + "(.*)")) {
+                Card card = Map.getCardInCell(x, y);
+                if (card != null &&
+                        card.getAccount().equals(currentPlayer.getAccount())) {
+                    targetCards.add(card);
+                }
+                else
+                {
+                    //error message for view
+                }
+            }
+
+            if (target.matches("(.*)" + TargetStrings.ANY_UNIT + "(.*)")){
+                Card card = Map.getCardInCell(x,y);
+                if (card != null)
+                {
+                    targetCards.add(card);
+                }else
+                {
+                    //error message for view
+
+
+                }
             }
 
             if (target.matches("(.*)" + TargetStrings.ALL_ENEMIES + "(.*)")) {
@@ -97,20 +120,21 @@ public abstract class BattleManager {
                 targetCards.add(getOtherPlayer().getHero());
             }
 
-            if (target.matches("(.*)" + TargetStrings.ENEMY_MINION + "(.*)")){
-                if (Map.getCardInCell(x,y) != null
-                    && Map.getCardInCell(x,y).getType()==CardType.minion
-                    && Map.getCardInCell(x,y).getAccount().equals(currentPlayer.getAccount())){
-                    targetCards.add(Map.getCardInCell(x,y));
-                }else{
+            if (target.matches("(.*)" + TargetStrings.ENEMY_MINION + "(.*)")) {
+                if (Map.getCardInCell(x, y) != null
+                        && Map.getCardInCell(x, y).getType() == CardType.minion
+                        && Map.getCardInCell(x, y).getAccount().equals(currentPlayer.getAccount())) {
+                    targetCards.add(Map.getCardInCell(x, y));
+                } else {
                     //error message for view
 
 
                 }
             }
 
-
-
+            if (target.matches("(.*)" + TargetStrings.ATTACK_TARGET + "(.*)")) {
+                targetCards.add(attackTarget);
+            }
 
 
             // pattern = Pattern.compile(TargetStrings.)
