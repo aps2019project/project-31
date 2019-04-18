@@ -1,7 +1,4 @@
-package Model;
-
-import Model.Map;
-import Model.Player;
+package model;
 
 public abstract class BattleManager {
     private Map map;

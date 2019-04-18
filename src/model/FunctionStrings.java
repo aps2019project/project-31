@@ -1,4 +1,4 @@
-package Model;
+package model;
  public class FunctionStrings {
     protected static final String STUN = "stun target for";
     protected static final String ACCUMULATING_ATTACK = "accumulate previous attacks on target";

@@ -1,13 +1,13 @@
-package Model;
+package model;
 
-public class SinglePlayer extends BattleManager {
+public class MultiPlayer extends BattleManager {
     private Player playerOne;
-    private Player aiPlayer;
+    private Player playerTwo;
 
-    public SinglePlayer(Map map, String gameMode, Player currentPlayer, Player playerOne, Player aiPlayer) {
+    public MultiPlayer(Map map, String gameMode, Player currentPlayer, Player playerOne, Player playerTwo) {
         super(map, gameMode, currentPlayer);
         this.playerOne = playerOne;
-        this.aiPlayer = aiPlayer;
+        this.playerTwo = playerTwo;
     }
 
     public Player getPlayerOne() {
@@ -16,12 +16,12 @@ public class SinglePlayer extends BattleManager {
 
     public Player getOtherPlayer(String thisPlayerUserName) {
         if (thisPlayerUserName.equals(playerOne.getAccount().getUsername())) {
-            return aiPlayer;
+            return playerTwo;
         } else
             return playerOne;
     }
 
-    public Player getAiPlayer() {
-        return aiPlayer;
+    public Player getPlayerTwo() {
+        return playerTwo;
     }
 }

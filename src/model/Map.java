@@ -1,4 +1,4 @@
-package Model;
+package model;
 
 public class Map {
     private static final int maxMoveRange = 2;

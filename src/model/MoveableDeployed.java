@@ -1,4 +1,4 @@
-package Model;
+package model;
 
 public interface MoveableDeployed {
     void move(Cell cell);
