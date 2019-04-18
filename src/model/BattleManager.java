@@ -45,7 +45,12 @@ public abstract class BattleManager {
     }
 
     public void compileTargetString(ArrayList<Card> targetCards, ArrayList<Cell> targetCells, String target,
-                                    int x, int y) {
+                                    int x, int y){
+        compileTargetString(targetCards,targetCells,target,x,y,null);
+    }
+
+    public void compileTargetString(ArrayList<Card> targetCards, ArrayList<Cell> targetCells, String target,
+                                    int x, int y, Deployable attackTarget) {
         try {
             Pattern pattern = Pattern.compile(TargetStrings.MINIONS_WITH_DISTANCE + "(\\d+)");
             Matcher matcher = pattern.matcher(target);
@@ -72,13 +77,13 @@ public abstract class BattleManager {
                 targetCards.addAll(getOtherPlayer().getCardsOnBattleField());
             } else if (target.matches("(.*)" + TargetStrings.ALL_ENEMIES_IN_COLUMN + "(.*)")) {
                 for (int i = 1; i <= Map.MAP_Y_LENGTH; i++) {
-                    if (!Map.getCardInCell(x, i).getAccount().equals(currentPlayer)) {
+                    if (!Map.getCardInCell(x, i).getAccount().equals(currentPlayer.getAccount())) {
                         targetCards.add(Map.getCardInCell(x, i));
                     }
                 }
             } else if (target.matches("(.*)" + TargetStrings.ALL_ENEMIES_IN_ROW + "(.*)")) {
                 for (int i = 1; i <= Map.MAP_X_LENGTH; i++) {
-                    if (!Map.getCardInCell(i, y).getAccount().equals(currentPlayer)) {
+                    if (!Map.getCardInCell(i, y).getAccount().equals(currentPlayer.getAccount())) {
                         targetCards.add(Map.getCardInCell(i, y));
                     }
                 }
@@ -91,6 +96,20 @@ public abstract class BattleManager {
             } else if (target.matches("(.*)" + TargetStrings.ENEMY_HERO + "(.*)")) {
                 targetCards.add(getOtherPlayer().getHero());
             }
+
+            if (target.matches("(.*)" + TargetStrings.ENEMY_MINION + "(.*)")){
+                if (Map.getCardInCell(x,y) != null
+                    && Map.getCardInCell(x,y).getType()==CardType.minion
+                    && Map.getCardInCell(x,y).getAccount().equals(currentPlayer.getAccount())){
+                    targetCards.add(Map.getCardInCell(x,y));
+                }else{
+                    //error message for view
+
+
+                }
+            }
+
+
 
 
 
@@ -173,7 +192,7 @@ public abstract class BattleManager {
 
     }
 
-    public void move(Deployed card, int x, int y) {
+    public void move(Deployable card, int x, int y) {
         if (Map.getDistance(Map.getCell(x, y), card.cell) <= Map.getMaxMoveRange()) {
             if (Map.getCell(x, y).getCardInCell() == null && !card.isMoved && !card.isStunned()) {
                 card.cell = Map.getCell(x, y);
@@ -182,14 +201,14 @@ public abstract class BattleManager {
         }
     }
 
-    public void attack(Deployed card, Deployed enemy) {
+    public void attack(Deployable card, Deployable enemy) {
         if (Map.getDistance(card.cell, enemy.cell) < card.attackRange && !card.isAttacked && !card.isStunned()) {
             enemy.currentHealth -= enemy.theActualDamageReceived(card.theActualDamage());
             counterAttack(card, enemy);
         }
     }
 
-    private void counterAttack(Deployed attacker, Deployed counterAttacker) {
+    private void counterAttack(Deployable attacker, Deployable counterAttacker) {
         if (!counterAttacker.isDisarmed()) {  //does being Stunned matters or not
             attacker.currentHealth -= attacker.theActualDamageReceived(counterAttacker.theActualDamage());
         }

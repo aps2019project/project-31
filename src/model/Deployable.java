@@ -3,7 +3,7 @@ package model;
 import java.util.ArrayList;
 import java.util.concurrent.locks.Condition;
 
-public class Deployed extends Card {
+public class Deployable extends Card {
     protected boolean isMoved;
     protected boolean isAttacked;
     protected Cell cell;
@@ -12,10 +12,10 @@ public class Deployed extends Card {
     protected int attackRange;
     protected ArrayList<Buff> buffs;
 
-    public Deployed(int price, int manaCost, String cardText, ArrayList<Function> functions, Account account,
-                    String name, int id, CardType type, boolean isDeployed, boolean isMoved, boolean isAttacked,
-                    Cell cell, int currentHealth, int currentAttack,
-                    ArrayList<Buff> buffs) {
+    public Deployable(int price, int manaCost, String cardText, ArrayList<Function> functions, Account account,
+                      String name, int id, CardType type, boolean isDeployed, boolean isMoved, boolean isAttacked,
+                      Cell cell, int currentHealth, int currentAttack,
+                      ArrayList<Buff> buffs) {
         super(price, manaCost, cardText, functions, account, name, id, type, isDeployed);
         this.isMoved = isMoved;
         this.isAttacked = isAttacked;

@@ -1,9 +1,8 @@
 package model;
 
 import java.util.ArrayList;
-import java.util.concurrent.locks.Condition;
 
-public class Minion extends Deployed {
+public class Minion extends Deployable {
     protected String functionTime;
     protected String attackType;
     private int attack;
