@@ -228,8 +228,7 @@ public class Player {
             if (selectedCard.isDeployed()) {
                 if (selectedCard.getType().equals("hero") || selectedCard.getType().equals("minion")) {
                     int x = Integer.valueOf(matcher.group(1)), y = Integer.valueOf(matcher.group(2));
-                    Cell tempCell = new Cell(x, y);
-                    ((MoveableDeployed) selectedCard).move(tempCell);
+
                 }
 
             }
@@ -239,8 +238,7 @@ public class Player {
         if (matcher.matches()) {
             if (selectedCard.isDeployed() && (selectedCard.getType().equals("hero") ||
                     selectedCard.getType().equals("minion"))) {
-                Cell destinationCell = Map.findCellByCardId(Integer.valueOf(matcher.group(1)));
-                ((MoveableDeployed) selectedCard).attack(destinationCell);
+
             }
         }
         pattern = Pattern.compile("\\s*attack combo (\\d+)\\s+((\\d+\\s*)+)\\s*");

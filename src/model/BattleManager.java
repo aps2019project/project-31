@@ -34,17 +34,18 @@ public abstract class BattleManager {
                 compileOnSpawnFunction(function, minion, x, y);
             }
         }
-        DeployedMinion deployedMinion = new DeployedMinion(minion.getPrice(), minion.getManaCost(), minion.getCardText(), minion.getFunctions(),
-                minion.getAccount(), minion.getName(), minion.getId(), minion.getType(), true, minion.getFunctionTime(),
-                minion.getAttackRange(), minion.getAttackType(), minion.getAttack(), minion.getHealth(),
-                Map.getCell(x,y), minion.getHealth(),minion.getAttack());
+        Minion deployedMinion = new Minion(minion.getPrice(), minion.getManaCost(), minion.getCardText(),
+                minion.getFunctions(), minion.getAccount(), minion.getName(), minion.getId(), minion.getType(),
+                true, true, true, Map.getCell(x, y), minion.getHealth(), minion.getAttack(),
+                minion.buffs, minion.getFunctionTime(), minion.getAttackRange(), minion.getAttackType(),
+                minion.getAttack(), minion.getHealth());
         Map.putCardInCell(deployedMinion, x, y);
         currentPlayer.addCardToBattlefield(deployedMinion);
         currentPlayer.removeFromHand(minion);
 
     }
 
-    public void compileOnSpawnFunction(Function function, Minion minion, int x, int y){
+    public void compileOnSpawnFunction(Function function, Minion minion, int x, int y) {
 
     }
 
@@ -85,6 +86,27 @@ public abstract class BattleManager {
 
     }
 
+    public void move(Deployed card, int x, int y) {
+        if (Map.getDistance(Map.getCell(x, y), card.cell) <= Map.getMaxMoveRange()) {
+            if (Map.getCell(x, y).getCardInCell() == null && !card.isMoved && !card.isStunned()) {
+                card.cell = Map.getCell(x, y);
+                Map.getCell(x, y).setCardInCell(card);
+            }
+        }
+    }
+
+    public void attack(Deployed card, Deployed enemy) {
+        if (Map.getDistance(card.cell, enemy.cell) < card.attackRange && !card.isAttacked && !card.isStunned()) {
+            enemy.currentHealth -= enemy.theActualDamageReceived(card.theActualDamage());
+            counterAttack(card, enemy);
+        }
+    }
+
+    private void counterAttack(Deployed attacker, Deployed counterAttacker) {
+        if (!counterAttacker.isDisarmed()) {  //does being Stunned matters or not
+            attacker.currentHealth -= attacker.theActualDamageReceived(counterAttacker.theActualDamage());
+        }
+    }
 
     public abstract Player getOtherPlayer(String thisPlayerUserName);
 }

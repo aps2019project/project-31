@@ -6,6 +6,27 @@ public class Buff {
     int powerBuffHealth;
     int powerBuffAttack;
     boolean isBeneficial;
+    private boolean isContinuous;
+    private boolean isActive;
+    private int effectOfWeaknessOrPowerOnHealth = 0;
+    private int effectOfWeaknessOrPowerOnAttack = 0;
+    private boolean isStunnedInPriviousTurn;
+    private boolean isDisarmedInPriviousTurn;
+    public int getEffectOfWeaknessOrPowerOnHealth() {
+        return effectOfWeaknessOrPowerOnHealth;
+    }
+
+    public int getEffectOfWeaknessOrPowerOnAttack() {
+        return effectOfWeaknessOrPowerOnAttack;
+    }
+
+    public boolean isContinuous() {
+        return isContinuous;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
 
     public Buff(BuffType buffType, int turnsLeft, int powerBuffHealth, int powerBuffAttack, boolean isBeneficial) {
         this.buffType = buffType;
