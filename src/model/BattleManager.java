@@ -87,7 +87,8 @@ public abstract class BattleManager {
                     addUnholyBuff(targetCards);
                 }
                 if (matcher.group(1).matches("disarm\\d+")){
-
+                    int turns = Integer.parseInt(matcher.group(1).replace("disarm",""));
+                    Buff buff = new Buff(Buff.BuffType.Disarm, turns, 0,0,false);
                 }
             }
 
