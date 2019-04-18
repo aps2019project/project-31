@@ -1,5 +1,9 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public abstract class BattleManager {
     private Map map;
     private String gameMode;
@@ -45,8 +49,65 @@ public abstract class BattleManager {
 
     }
 
-    public void compileOnSpawnFunction(Function function, Minion minion, int x, int y) {
+    public void compileTargetString(ArrayList<Card> targetCards, ArrayList<Cell> targetCells, String target,
+                                    int x, int y) {
+        try {
+            Pattern pattern = Pattern.compile(TargetStrings.MINIONS_WITH_DISTANCE + "(\\d+)");
+            Matcher matcher = pattern.matcher(target);
+            if (matcher.matches()) {
+                int distance = Integer.parseInt(matcher.group(1));
+                for (int i = 0; i < distance * 2; i++) {
+                    for (int j = 0; j < distance * 2; j++) {
+                        Card cardInCell = Map.getCardInCell( x - distance + i, y - distance + j);
+                        if (cardInCell != null) {
+                            if (!cardInCell.getAccount().equals(currentPlayer.getAccount()) &&
+                                    cardInCell.getType() == CardType.minion) {
+                                targetCards.add(cardInCell);
+                            }
+                        }
+                    }
+                }
+            }
 
+            // pattern = Pattern.compile(TargetStrings.)
+        } catch (IllegalStateException e) {
+            //Input error message for view
+        }
+    }
+
+    public void compileFunction(Function function, int x, int y) {
+        ArrayList<Cell> targetCells = new ArrayList<>();
+        ArrayList<Card> targetCards = new ArrayList<>();
+        compileTargetString(targetCards, targetCells, function.getTarget(), x, y);
+        try {
+            Pattern pattern = Pattern.compile(FunctionStrings.APPLY_BUFF + "(.*)");
+            Matcher matcher = pattern.matcher(function.getFunction());
+            if (matcher.matches()) {
+                if (matcher.group(1).matches("unholy")) {
+                    addUnholyBuff(targetCards);
+                }
+                if (matcher.group(1).matches("disarm\\d+")){
+
+                }
+            }
+
+        } catch (IllegalStateException e) {
+            //error message for view
+
+        }
+    }
+
+    private void addUnholyBuff(ArrayList<Card> targetCards) {
+        Buff buff = new Buff(Buff.BuffType.Unholy, PERMENANT, 0, 0, false);
+        for (Card card : targetCards) {
+            switch (card.getType()) {
+                case minion:
+                    ((DeployedMinion) card).addBuff(buff);
+                    break;
+                case hero:
+                    ((DeployedHero) card).addBuff(buff);
+            }
+        }
     }
 
     private boolean checkCoordinates(int x, int y) {
@@ -85,7 +146,6 @@ public abstract class BattleManager {
     public void useItem(Item item, int x, int y) {
 
     }
-
     public void move(Deployed card, int x, int y) {
         if (Map.getDistance(Map.getCell(x, y), card.cell) <= Map.getMaxMoveRange()) {
             if (Map.getCell(x, y).getCardInCell() == null && !card.isMoved && !card.isStunned()) {
