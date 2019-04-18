@@ -14,8 +14,8 @@ public class Player extends Ai {
     private int numberOfTurnsHavingFlag;
     private ArrayList<Card> hand;
     private Card nextCard;
-    private ArrayList<Card> cardsOnBattleField;
-    private ArrayList<Card> graveYard;
+    private ArrayList<Deployable> cardsOnBattleField;
+    private ArrayList<Deployable> graveYard;
     private Card selectedCard;
     private Card cardInReplace;
     private BattleManager battle;
@@ -32,11 +32,11 @@ public class Player extends Ai {
                 account.getTheMainDeck().getCards(), account.getTheMainDeck().getHero());
     }
 
-    public Hero getHero(){
+    public Hero getHero() {
         return currentDeck.getHero();
     }
 
-    public void addCardToBattlefield(Card card) {
+    public void addCardToBattlefield(Deployable card) {
         cardsOnBattleField.add(card);
     }
 
@@ -44,20 +44,20 @@ public class Player extends Ai {
         hand.remove(card);
     }
 
-    public void removeFromGraveYard(Card card) throws ConcurrentModificationException{
+    public void removeFromGraveYard(Deployable card) throws ConcurrentModificationException {
         graveYard.remove(card);
     }
 
-    public void addToHand(Card card){
+    public void addToHand(Card card) {
         hand.add(card);
 
     }
 
-    public void removeFromBattlefield(Card card) throws ConcurrentModificationException{
+    public void removeFromBattlefield(Deployable card) throws ConcurrentModificationException {
         cardsOnBattleField.remove(card);
     }
 
-    public void addCardToGraveYard(Card card){
+    public void addCardToGraveYard(Deployable card) {
 
         graveYard.add(card);
     }
@@ -95,11 +95,11 @@ public class Player extends Ai {
         return nextCard;
     }
 
-    public ArrayList<Card> getCardsOnBattleField() {
+    public ArrayList<Deployable> getCardsOnBattleField() {
         return cardsOnBattleField;
     }
 
-    public ArrayList<Card> getGraveYard() {
+    public ArrayList<Deployable> getGraveYard() {
         return graveYard;
     }
 
@@ -161,24 +161,34 @@ public class Player extends Ai {
         cardInReplace.show();
     }
 
-    public void runTheTurn() {
-        remainingTime = 60;
-        while (true) {
-            String input = Scanners.getScanner().nextLine();
-            handleCommands(input);
-            if (input.equals("end turn") || remainingTime <= 0)
-                break;
+    public void endOfTurn() {
+        doOnTurnSpells();
+        applyPoisonBuffs();
+        buffsChangesAtTheEndOfTurn();
+    }
+
+    private void applyPoisonBuffs() {
+        for (Deployable card : cardsOnBattleField) {
+            for (int i = 0; i < card.buffs.size(); i++) {
+                if (card.buffs.get(i).buffType == Buff.BuffType.Poison) {
+                    card.currentHealth--;
+                }
+            }
         }
-        placeNextCardToHand();
     }
 
-    public void endTurn() {
-
-    }
-
-    public void showHand() {
-        for (Card i : hand) {
-            System.out.println(i.toString());
+    public void buffsChangesAtTheEndOfTurn() {
+        for (Deployable card : cardsOnBattleField) {
+            for (int i = 0; i < card.buffs.size(); i++) {
+                card.buffs.get(i).decreaseTurnsLeft();
+                if (!card.buffs.get(i).isContinuous() && card.buffs.get(i).turnsLeft <= 0) {
+                    card.buffs.remove(i);
+                }
+                if (card.buffs.get(i).isContinuous()) {
+                    card.buffs.get(i).setActive(true);
+                    card.buffs.get(i).setTurnsLeft(1);
+                }
+            }
         }
     }
 

@@ -11,6 +11,14 @@ public class Buff {
     private int effectOfWeaknessOrPowerOnHealth = 0;
     private int effectOfWeaknessOrPowerOnAttack = 0;
 
+    public void setActive(boolean active) {
+        isActive = active;
+    }
+
+    public void decreaseTurnsLeft() {
+        turnsLeft--;
+    }
+
     public int getEffectOfWeaknessOrPowerOnHealth() {
         return effectOfWeaknessOrPowerOnHealth;
     }

@@ -6,15 +6,13 @@ import model.Player;
 public class BattleMenu {
 
 
-
-
     private void setBattleManagerMode(){
         BattleManager battleManager=new ();
 
 
-        beginTheGame(battleManager);
+        runTheGame(battleManager);
     }
-    private void beginTheGame(BattleManager battleManager){
+    private void runTheGame(BattleManager battleManager){
         boolean isPlayer1Turn=false;
         battleManager.setCurrentPlayer(battleManager.getPlayer2());
         while(true){
@@ -26,8 +24,10 @@ public class BattleMenu {
                 battleManager.setCurrentPlayer(battleManager.getOtherPlayer());
                 processTheInput(inputFromUser());
 
-
             }
+            battleManager.getCurrentPlayer().placeNextCardToHand();
+            battleManager.getCurrentPlayer().endOfTurn();
+            battleManager.getOtherPlayer().endOfTurn();
         }
     }
     public void run(){

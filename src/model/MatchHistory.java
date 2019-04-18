@@ -7,7 +7,7 @@ public class MatchHistory {
     private String outcome;
     private Date time;
 
-    public MatchHistory(String opponent, String outcome, String time) {
+    public MatchHistory(String opponent, String outcome) {
         this.opponent = opponent;
         this.outcome = outcome;
         this.time = new Date();

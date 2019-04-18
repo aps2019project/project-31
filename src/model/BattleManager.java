@@ -94,20 +94,16 @@ public abstract class BattleManager {
                 if (card != null &&
                         card.getAccount().equals(currentPlayer.getAccount())) {
                     targetCards.add(card);
-                }
-                else
-                {
+                } else {
                     //error message for view
                 }
             }
 
-            if (target.matches("(.*)" + TargetStrings.ANY_UNIT + "(.*)")){
-                Card card = Map.getCardInCell(x,y);
-                if (card != null)
-                {
+            if (target.matches("(.*)" + TargetStrings.ANY_UNIT + "(.*)")) {
+                Card card = Map.getCardInCell(x, y);
+                if (card != null) {
                     targetCards.add(card);
-                }else
-                {
+                } else {
                     //error message for view
 
 
@@ -254,6 +250,27 @@ public abstract class BattleManager {
         if (!counterAttacker.isDisarmed()) {  //does being Stunned matters or not
             attacker.currentHealth -= attacker.theActualDamageReceived(counterAttacker.theActualDamage());
         }
+    }
+
+    public void player1Won() {
+        MatchHistory matchHistory = new MatchHistory(player2.getAccount().getUsername(), "win");
+        player1.getAccount().addMatchHistories(matchHistory);
+        matchHistory = new MatchHistory(player1.getAccount().getUsername(), "lose");
+        player2.getAccount().addMatchHistories(matchHistory);
+    }
+
+    public void player2Won() {
+        MatchHistory matchHistory = new MatchHistory(player2.getAccount().getUsername(), "lose");
+        player1.getAccount().addMatchHistories(matchHistory);
+        matchHistory = new MatchHistory(player1.getAccount().getUsername(), "win");
+        player2.getAccount().addMatchHistories(matchHistory);
+    }
+
+    public void draw() {
+        MatchHistory matchHistory = new MatchHistory(player2.getAccount().getUsername(), "draw");
+        player1.getAccount().addMatchHistories(matchHistory);
+        matchHistory = new MatchHistory(player1.getAccount().getUsername(), "draw");
+        player2.getAccount().addMatchHistories(matchHistory);
     }
 
     public abstract Player getOtherPlayer();
