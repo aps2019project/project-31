@@ -187,6 +187,7 @@ public class Player {
         if (matcher.matches()) {
             selectACard(Integer.valueOf(matcher.group(1)));
         }
+
         pattern = Pattern.compile("\\s*move to\\((\\d),(\\d)\\)\\s*");
         matcher = pattern.matcher(input);
         if (matcher.matches()) {
@@ -202,8 +203,16 @@ public class Player {
         pattern = Pattern.compile("\\s*attack (\\d+)\\s*");
         matcher = pattern.matcher(input);
         if (matcher.matches()) {
-            Cell destinationCell = Map.findCellByCardId(Integer.valueOf(matcher.group(1)));
-            ((MoveableDeployed) selectedCard).attack(destinationCell);
+            if (selectedCard.isDeployed() && (selectedCard.getType().equals("hero") ||
+                    selectedCard.getType().equals("minion"))) {
+                Cell destinationCell = Map.findCellByCardId(Integer.valueOf(matcher.group(1)));
+                ((MoveableDeployed) selectedCard).attack(destinationCell);
+            }
+        }
+        pattern = Pattern.compile("\\s*attack combo (\\d+)\\s+((\\d+\\s*)+)\\s*");
+        matcher = pattern.matcher(input);
+        if (matcher.matches()) {
+
         }
     }
 }
