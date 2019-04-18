@@ -5,7 +5,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public abstract class BattleManager {
-    public static final int PERMENANT = 1000;
     private Map map;
     private String gameMode;
     private Player currentPlayer;
@@ -36,13 +35,14 @@ public abstract class BattleManager {
 
         for (Function function : minion.getFunctions()) {
             if (function.getFunctionType() == FunctionType.OnSpawn) {
-                compileFunction(function, x, y);
+                compileOnSpawnFunction(function, minion, x, y);
             }
         }
-        DeployedMinion deployedMinion = new DeployedMinion(minion.getPrice(), minion.getManaCost(), minion.getCardText(), minion.getFunctions(),
-                minion.getAccount(), minion.getName(), minion.getId(), minion.getType(), true, minion.getFunctionTime(),
-                minion.getAttackRange(), minion.getAttackType(), minion.getAttack(), minion.getHealth(),
-                Map.getCell(x, y), minion.getHealth(), minion.getAttack());
+        Minion deployedMinion = new Minion(minion.getPrice(), minion.getManaCost(), minion.getCardText(),
+                minion.getFunctions(), minion.getAccount(), minion.getName(), minion.getId(), minion.getType(),
+                true, true, true, Map.getCell(x, y), minion.getHealth(), minion.getAttack(),
+                minion.buffs, minion.getFunctionTime(), minion.getAttackRange(), minion.getAttackType(),
+                minion.getAttack(), minion.getHealth());
         Map.putCardInCell(deployedMinion, x, y);
         currentPlayer.addCardToBattlefield(deployedMinion);
         currentPlayer.removeFromHand(minion);
@@ -121,7 +121,7 @@ public abstract class BattleManager {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 if (i != 1 || j != 1) {
-                    if (Map.getCardInCell(x - 1 + i, y - 1 + j).getAccount().equals(currentPlayer.getAccount())) {
+                    if (Map.getCardInCell(x, y).getAccount().equals(currentPlayer.getAccount())) {
                         return true;
                     }
                 }
@@ -147,7 +147,27 @@ public abstract class BattleManager {
     public void useItem(Item item, int x, int y) {
 
     }
+    public void move(Deployed card, int x, int y) {
+        if (Map.getDistance(Map.getCell(x, y), card.cell) <= Map.getMaxMoveRange()) {
+            if (Map.getCell(x, y).getCardInCell() == null && !card.isMoved && !card.isStunned()) {
+                card.cell = Map.getCell(x, y);
+                Map.getCell(x, y).setCardInCell(card);
+            }
+        }
+    }
 
+    public void attack(Deployed card, Deployed enemy) {
+        if (Map.getDistance(card.cell, enemy.cell) < card.attackRange && !card.isAttacked && !card.isStunned()) {
+            enemy.currentHealth -= enemy.theActualDamageReceived(card.theActualDamage());
+            counterAttack(card, enemy);
+        }
+    }
+
+    private void counterAttack(Deployed attacker, Deployed counterAttacker) {
+        if (!counterAttacker.isDisarmed()) {  //does being Stunned matters or not
+            attacker.currentHealth -= attacker.theActualDamageReceived(counterAttacker.theActualDamage());
+        }
+    }
 
     public abstract Player getOtherPlayer(String thisPlayerUserName);
 }

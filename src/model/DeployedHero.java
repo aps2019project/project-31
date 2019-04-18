@@ -25,10 +25,6 @@ public class DeployedHero extends Hero implements MoveableDeployed{
         this.buffs = buffs;
     }
 
-    public void addBuff(Buff buff){
-        buffs.add(buff);
-    }
-
     public ArrayList<Condition> getConditions() {
         return conditions;
     }

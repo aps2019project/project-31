@@ -2,7 +2,7 @@ package model;
 
 import java.util.ArrayList;
 
-public class Hero extends Card {
+public class Hero extends Deployed {
     protected AttackType attackType;
     protected int attack;
     protected int health;
@@ -16,6 +16,7 @@ public class Hero extends Card {
         this.attack = attack;
         this.health = health;
         this.heroSpell = heroSpell;
+        this.attackRange = 2;
     }
 
     public void show() {
