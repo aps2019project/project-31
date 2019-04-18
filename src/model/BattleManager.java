@@ -35,16 +35,11 @@ public abstract class BattleManager {
 
         for (Function function : minion.getFunctions()) {
             if (function.getFunctionType() == FunctionType.OnSpawn) {
-                compileOnSpawnFunction(function, minion, x, y);
+                compileFunction(function, x, y);
             }
         }
-        Minion deployedMinion = new Minion(minion.getPrice(), minion.getManaCost(), minion.getCardText(),
-                minion.getFunctions(), minion.getAccount(), minion.getName(), minion.getId(), minion.getType(),
-                true, true, true, Map.getCell(x, y), minion.getHealth(), minion.getAttack(),
-                minion.buffs, minion.getFunctionTime(), minion.getAttackRange(), minion.getAttackType(),
-                minion.getAttack(), minion.getHealth());
-        Map.putCardInCell(deployedMinion, x, y);
-        currentPlayer.addCardToBattlefield(deployedMinion);
+        Map.putCardInCell(minion, x, y);
+        currentPlayer.addCardToBattlefield(minion);
         currentPlayer.removeFromHand(minion);
 
     }
@@ -58,7 +53,7 @@ public abstract class BattleManager {
                 int distance = Integer.parseInt(matcher.group(1));
                 for (int i = 0; i < distance * 2; i++) {
                     for (int j = 0; j < distance * 2; j++) {
-                        Card cardInCell = Map.getCardInCell( x - distance + i, y - distance + j);
+                        Card cardInCell = Map.getCardInCell(x - distance + i, y - distance + j);
                         if (cardInCell != null) {
                             if (!cardInCell.getAccount().equals(currentPlayer.getAccount()) &&
                                     cardInCell.getType() == CardType.minion) {
@@ -68,6 +63,36 @@ public abstract class BattleManager {
                     }
                 }
             }
+
+            if (target.matches("(.*)" + TargetStrings.ALL_ALLIES + "(.*)")) {
+                targetCards.addAll(currentPlayer.getCardsOnBattleField());
+            }
+
+            if (target.matches("(.*)" + TargetStrings.ALL_ENEMIES + "(.*)")) {
+                targetCards.addAll(getOtherPlayer().getCardsOnBattleField());
+            } else if (target.matches("(.*)" + TargetStrings.ALL_ENEMIES_IN_COLUMN + "(.*)")) {
+                for (int i = 1; i <= Map.MAP_Y_LENGTH; i++) {
+                    if (!Map.getCardInCell(x, i).getAccount().equals(currentPlayer)) {
+                        targetCards.add(Map.getCardInCell(x, i));
+                    }
+                }
+            } else if (target.matches("(.*)" + TargetStrings.ALL_ENEMIES_IN_ROW + "(.*)")) {
+                for (int i = 1; i <= Map.MAP_X_LENGTH; i++) {
+                    if (!Map.getCardInCell(i, y).getAccount().equals(currentPlayer)) {
+                        targetCards.add(Map.getCardInCell(i, y));
+                    }
+                }
+            } else if (target.matches("(.*)" + TargetStrings.ALL_ENEMY_MINIONS + "(.*)")) {
+                for (Card card : getOtherPlayer().getCardsOnBattleField()) {
+                    if (card.getType() == CardType.minion) {
+                        targetCards.add(card);
+                    }
+                }
+            } else if (target.matches("(.*)" + TargetStrings.ENEMY_HERO + "(.*)")) {
+                targetCards.add(getOtherPlayer().getHero());
+            }
+
+
 
             // pattern = Pattern.compile(TargetStrings.)
         } catch (IllegalStateException e) {
@@ -86,9 +111,9 @@ public abstract class BattleManager {
                 if (matcher.group(1).matches("unholy")) {
                     addUnholyBuff(targetCards);
                 }
-                if (matcher.group(1).matches("disarm\\d+")){
-                    int turns = Integer.parseInt(matcher.group(1).replace("disarm",""));
-                    Buff buff = new Buff(Buff.BuffType.Disarm, turns, 0,0,false);
+                if (matcher.group(1).matches("disarm\\d+")) {
+                    int turns = Integer.parseInt(matcher.group(1).replace("disarm", ""));
+                    Buff buff = new Buff(Buff.BuffType.Disarm, turns, 0, 0, false);
                 }
             }
 
@@ -147,6 +172,7 @@ public abstract class BattleManager {
     public void useItem(Item item, int x, int y) {
 
     }
+
     public void move(Deployed card, int x, int y) {
         if (Map.getDistance(Map.getCell(x, y), card.cell) <= Map.getMaxMoveRange()) {
             if (Map.getCell(x, y).getCardInCell() == null && !card.isMoved && !card.isStunned()) {
@@ -169,5 +195,5 @@ public abstract class BattleManager {
         }
     }
 
-    public abstract Player getOtherPlayer(String thisPlayerUserName);
+    public abstract Player getOtherPlayer();
 }

@@ -27,6 +27,10 @@ public class Player {
                 account.getTheMainDeck().getCards(), account.getTheMainDeck().getHero());
     }
 
+    public Hero getHero(){
+        return currentDeck.getHero();
+    }
+
     public void addCardToBattlefield(Card card) {
         cardsOnBattleField.add(card);
     }
@@ -200,7 +204,7 @@ public class Player {
         pattern = Pattern.compile("\\s*show opponent minions\\s*");
         matcher = pattern.matcher(input);
         if (matcher.matches()) {
-            Player opponent = battle.getOtherPlayer(account.getUsername());
+            Player opponent = battle.getOtherPlayer();
             for (Card card : opponent.cardsOnBattleField) {
                 card.show();
             }
