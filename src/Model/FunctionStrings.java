@@ -1,5 +1,5 @@
 package Model;
- public class Functions {
+ public class FunctionStrings {
     protected static final String STUN = "stun target for";
     protected static final String ACCUMULATING_ATTACK = "accumulate previous attacks on target";
     protected static final String DISARM = "disarm target for";

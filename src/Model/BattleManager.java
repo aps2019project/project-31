@@ -14,5 +14,7 @@ public abstract class BattleManager {
         this.currentPlayer = currentPlayer;
     }
 
+
+
     public abstract Player getOtherPlayer(String thisPlayerUserName);
 }
