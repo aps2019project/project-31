@@ -1,3 +1,5 @@
+package Model;
+
 public class Map {
     private static final int maxMoveRange = 2;
     private static Cell[][] map = new Cell[5][8];

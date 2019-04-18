@@ -1,3 +1,5 @@
+package Model;
+
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.regex.*;
@@ -187,7 +189,7 @@ public class Player {
             if (selectedCard.isDeployed()) {
                 if (selectedCard.getType().equals("hero") || selectedCard.getType().equals("minion")) {
                     int x = Integer.valueOf(matcher.group(1)), y = Integer.valueOf(matcher.group(2));
-                    Cell tempCell = new Cell(x,y);
+                    Cell tempCell = new Cell(x, y);
                     ((MoveableDeployed) selectedCard).move(tempCell);
                 }
 
@@ -198,7 +200,7 @@ public class Player {
         if (matcher.matches()) {
             Cell destinationCell = Map.findCellByCardId(Integer.valueOf(matcher.group(1)));
             ((MoveableDeployed) selectedCard).attack(destinationCell);
-            }
         }
     }
 }
+

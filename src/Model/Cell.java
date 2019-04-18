@@ -1,3 +1,5 @@
+package Model;
+
 public class Cell {
     private int xCoordinate;
     private int yCoordinate;

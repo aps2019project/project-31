@@ -1,3 +1,5 @@
+package Model;
+
 public class SinglePlayer extends BattleManager {
     private Player playerOne;
     private Player aiPlayer;

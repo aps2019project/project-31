@@ -1,3 +1,8 @@
+package Model;
+
+import Model.Map;
+import Model.Player;
+
 public abstract class BattleManager {
     private Map map;
     private String gameMode;

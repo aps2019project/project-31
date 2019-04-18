@@ -1,6 +1,5 @@
-import com.google.gson.Gson;
+package Model;
 
-import java.io.BufferedReader;
 import java.util.ArrayList;
 
 abstract public class Card {

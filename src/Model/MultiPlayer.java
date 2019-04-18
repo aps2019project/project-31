@@ -1,3 +1,5 @@
+package Model;
+
 public class MultiPlayer extends BattleManager {
     private Player playerOne;
     private Player playerTwo;

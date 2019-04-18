@@ -1,3 +1,5 @@
+package Model;
+
 import java.util.ArrayList;
 
 public class Minion extends Card {
