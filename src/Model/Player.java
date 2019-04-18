@@ -147,7 +147,10 @@ public class Player {
     }
 
     public void playCard(Card card) {
+        switch (card.getType()){
+            case minion:
 
+        }
 
     }
 

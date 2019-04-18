@@ -14,6 +14,14 @@ public abstract class BattleManager {
         this.currentPlayer = currentPlayer;
     }
 
+    public void playMinion(Minion minion, int x, int y){
+
+    }
+
+    public void playSpell(Spell spell){
+
+    }
+
 
 
     public abstract Player getOtherPlayer(String thisPlayerUserName);

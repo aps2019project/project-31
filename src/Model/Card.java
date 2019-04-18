@@ -10,12 +10,12 @@ abstract public class Card {
     protected Account account;
     protected String name;
     protected int id;
-    protected String type;
+    protected CardType type;
     protected boolean isDeployed = false;
 
 
     public Card(int price, int manaCost, String cardText, ArrayList<Function> functions,
-                Account account, String name, int id, String type, boolean isDeployed) {
+                Account account, String name, int id, CardType type, boolean isDeployed) {
         this.price = price;
         this.manaCost = manaCost;
         this.cardText = cardText;
@@ -84,7 +84,15 @@ abstract public class Card {
         return id;
     }
 
-    public String getType() {
+    public CardType getType() {
         return type;
     }
+}
+
+enum CardType{
+    minion,
+    hero,
+    spell,
+    item,
+    herospell
 }
