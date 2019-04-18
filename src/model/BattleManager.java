@@ -34,9 +34,14 @@ public abstract class BattleManager {
                 compileOnSpawnFunction(function, minion, x, y);
             }
         }
+        DeployedMinion deployedMinion = new DeployedMinion(minion.getPrice(), minion.getManaCost(), minion.getCardText(), minion.getFunctions(),
+                minion.getAccount(), minion.getName(), minion.getId(), minion.getType(), true, minion.getFunctionTime(),
+                minion.getAttackRange(), minion.getAttackType(), minion.getAttack(), minion.getHealth(),
+                Map.getCell(x,y), minion.getHealth(),minion.getAttack());
+        Map.putCardInCell(deployedMinion, x, y);
+        currentPlayer.addCardToBattlefield(deployedMinion);
+        currentPlayer.removeFromHand(minion);
 
-        Map.putCardInCell(minion, x, y);
-        currentPlayer.addCardToBattlefield(minion);
     }
 
     public void compileOnSpawnFunction(Function function, Minion minion, int x, int y){

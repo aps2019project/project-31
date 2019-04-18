@@ -27,17 +27,31 @@ public class Player {
                 account.getTheMainDeck().getCards(), account.getTheMainDeck().getHero());
     }
 
-    public void addCardToBattlefield(Card card) throws ConcurrentModificationException {
+    public void addCardToBattlefield(Card card) {
         cardsOnBattleField.add(card);
+    }
+
+    public void removeFromHand(Card card) throws ConcurrentModificationException {
         hand.remove(card);
     }
 
-    public void addCardToGraveYard(Card card) throws ConcurrentModificationException{
+    public void removeFromGraveYard(Card card) throws ConcurrentModificationException{
+        graveYard.remove(card);
+    }
+
+    public void addToHand(Card card){
+        hand.add(card);
+
+    }
+
+    public void removeFromBattlefield(Card card) throws ConcurrentModificationException{
         cardsOnBattleField.remove(card);
-        hand.remove(card);
+    }
+
+    public void addCardToGraveYard(Card card){
+
         graveYard.add(card);
     }
-
 
 
     public Account getAccount() {
@@ -160,7 +174,7 @@ public class Player {
     }
 
     public void playCard(Card card, int x, int y) {
-        switch (card.getType()){
+        switch (card.getType()) {
             case minion:
                 battle.playMinion((Minion) card, x, y);
                 break;
