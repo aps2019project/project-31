@@ -135,7 +135,7 @@ public class Player extends Ai {
                 return true;
             }
         }
-        for (Card card : cardsOnBattleField) {
+        for (Deployable card : cardsOnBattleField) {
             if (cardId == card.getId()) {
                 selectedCard = card;
                 return true;

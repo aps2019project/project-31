@@ -3,7 +3,7 @@ package controller;
 import model.BattleManager;
 import model.Player;
 
-public class BattleMenu {
+public class BattleMenu extends Menu {
 
 
     private void setBattleManagerMode(){
@@ -30,6 +30,8 @@ public class BattleMenu {
             battleManager.getOtherPlayer().endOfTurn();
         }
     }
+
+    @Override
     public void run(){
         while(true) {
             View.showModes();
@@ -38,6 +40,17 @@ public class BattleMenu {
                 break;
         }
     }
+
+    @Override
+    public void show() {
+
+    }
+
+    @Override
+    public void help() {
+
+    }
+
     private void handleInputCommand(){
 
 
