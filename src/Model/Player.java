@@ -1,6 +1,7 @@
 package Model;
 
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.Random;
 import java.util.regex.*;
 
@@ -25,6 +26,18 @@ public class Player {
         this.currentDeck = new Deck(account.getTheMainDeck().getDeckName(),
                 account.getTheMainDeck().getCards(), account.getTheMainDeck().getHero());
     }
+
+    public void addCardToBattlefield(Card card) throws ConcurrentModificationException {
+        cardsOnBattleField.add(card);
+        hand.remove(card);
+    }
+
+    public void addCardToGraveYard(Card card) throws ConcurrentModificationException{
+        cardsOnBattleField.remove(card);
+        hand.remove(card);
+        graveYard.add(card);
+    }
+
 
 
     public Account getAccount() {

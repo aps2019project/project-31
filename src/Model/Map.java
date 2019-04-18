@@ -2,11 +2,13 @@ package Model;
 
 public class Map {
     private static final int maxMoveRange = 2;
-    private static Cell[][] map = new Cell[5][8];
+    public static final int MAP_X_LENGTH = 9;
+    public static final int MAP_Y_LENGTH = 5;
+    private static Cell[][] map = new Cell[MAP_Y_LENGTH][MAP_X_LENGTH];
 
     public static Cell getCell(int x, int y) {
-        if (x <= 8 && y <= 5) {
-            return map[x][y];
+        if (x <= MAP_X_LENGTH && y <= MAP_Y_LENGTH && x > 0 && y > 0) {
+            return map[x - 1][y - 1];
         }
         return null;
     }
@@ -25,7 +27,7 @@ public class Map {
                 Math.abs(cell1.getyCoordinate() - y);
     }
 
-    public void move(int x, int y, Card card) {
+    public static void move(int x, int y, Card card) {
         Cell cellDestination = getCell(x, y);
 
     }
@@ -38,5 +40,13 @@ public class Map {
             }
         }
         return null;
+    }
+
+    public static Card getCardInCell(int x, int y){
+        return getCell(x,y).getCardInCell();
+    }
+
+    public static void putCardInCell(Card card, int x, int y){
+        getCell(x, y).setCardInCell(card);
     }
 }
