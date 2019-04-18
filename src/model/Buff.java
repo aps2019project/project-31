@@ -61,6 +61,7 @@ public class Buff {
         Disarm,
         Weakness,
         Stun,
-        Power
+        Power,
+        Unholy
     }
 }

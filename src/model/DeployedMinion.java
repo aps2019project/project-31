@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.concurrent.locks.Condition;
 
 public class DeployedMinion extends Minion implements MoveableDeployed{
-    private ArrayList<Condition> conditions;
+    private ArrayList<String> conditions;
     private Cell cell;
     private int currentHealth;
     private int currentAttack;
@@ -32,7 +32,7 @@ public class DeployedMinion extends Minion implements MoveableDeployed{
         this.buffs = null;
     }
 
-    public ArrayList<Condition> getConditions() {
+    public ArrayList<String> getConditions() {
         return conditions;
     }
 
@@ -53,6 +53,10 @@ public class DeployedMinion extends Minion implements MoveableDeployed{
     }
     public void show() {
 
+    }
+
+    public void addBuff(Buff buff){
+        buffs.add(buff);
     }
 
     @Override
