@@ -10,8 +10,7 @@ public class Buff {
     private boolean isActive;
     private int effectOfWeaknessOrPowerOnHealth = 0;
     private int effectOfWeaknessOrPowerOnAttack = 0;
-    private boolean isStunnedInPriviousTurn;
-    private boolean isDisarmedInPriviousTurn;
+
     public int getEffectOfWeaknessOrPowerOnHealth() {
         return effectOfWeaknessOrPowerOnHealth;
     }
