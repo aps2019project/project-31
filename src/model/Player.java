@@ -5,7 +5,7 @@ import java.util.ConcurrentModificationException;
 import java.util.Random;
 import java.util.regex.*;
 
-public class Player {
+public class Player extends Ai {
     private Account account;
     private Deck currentDeck;
     private int mana;
@@ -19,6 +19,11 @@ public class Player {
     private Card selectedCard;
     private Card cardInReplace;
     private BattleManager battle;
+    private boolean isAi;
+
+    public boolean isAi() {
+        return isAi;
+    }
 
     public Player(Account account) {
         this.account = account;

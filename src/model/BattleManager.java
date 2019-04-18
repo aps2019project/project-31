@@ -8,6 +8,24 @@ public abstract class BattleManager {
     private Map map;
     private String gameMode;
     private Player currentPlayer;
+    private Player player1;
+    private Player player2;
+
+    public void setCurrentPlayer(Player currentPlayer) {
+        this.currentPlayer = currentPlayer;
+    }
+
+    public Player getCurrentPlayer() {
+        return currentPlayer;
+    }
+
+    public Player getPlayer1() {
+        return player1;
+    }
+
+    public Player getPlayer2() {
+        return player2;
+    }
 
     public BattleManager(Map map, String gameMode, Player currentPlayer) {
         this.map = map;
