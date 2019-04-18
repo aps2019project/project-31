@@ -54,4 +54,13 @@ public class Buff {
     public boolean isBeneficial() {
         return isBeneficial;
     }
+
+    public enum BuffType {
+        Poison,
+        Holy,
+        Disarm,
+        Weakness,
+        Stun,
+        Power
+    }
 }

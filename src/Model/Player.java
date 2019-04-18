@@ -146,9 +146,16 @@ public class Player {
         }
     }
 
-    public void playCard(Card card) {
+    public void playCard(Card card, int x, int y) {
         switch (card.getType()){
             case minion:
+                battle.playMinion((Minion) card, x, y);
+                break;
+            case spell:
+                battle.playSpell((Spell) card, x, y);
+                break;
+            case item:
+                battle.useItem((Item) card, x, y);
 
         }
 

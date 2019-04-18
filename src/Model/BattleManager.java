@@ -16,12 +16,16 @@ public abstract class BattleManager {
 
     public void playMinion(Minion minion, int x, int y){
 
-    }
-
-    public void playSpell(Spell spell){
 
     }
 
+    public void playSpell(Spell spell, int x, int y){
+
+    }
+
+    public void useItem(Item item, int x, int y){
+
+    }
 
 
     public abstract Player getOtherPlayer(String thisPlayerUserName);

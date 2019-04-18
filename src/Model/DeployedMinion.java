@@ -13,7 +13,7 @@ public class DeployedMinion extends Minion implements MoveableDeployed{
     public DeployedMinion(int price, int manaCost, String cardText,
                           ArrayList<Function> functions,
                           Account account, String name, int id,
-                          String type, boolean isDeployed,
+                          CardType type, boolean isDeployed,
                           String functionTime, int attackRange,
                           String attackType, int attack, int health,
                           Cell cell, int currentHealth,
