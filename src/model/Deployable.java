@@ -25,6 +25,10 @@ public class Deployable extends Card {
         this.buffs = buffs;
     }
 
+    public void addBuff(Buff buff){
+        buffs.add(buff);
+    }
+
     public boolean isStunned() {
         for (Buff buff : buffs) {
             if (buff.buffType == Buff.BuffType.Stun && buff.isActive() && buff.getTurnsLeft() > 0)

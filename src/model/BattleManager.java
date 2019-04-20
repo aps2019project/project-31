@@ -5,6 +5,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public abstract class BattleManager {
+    public static final int PERMENANT = 100;
     private Map map;
     private String gameMode;
     private Player currentPlayer;
@@ -76,20 +77,16 @@ public abstract class BattleManager {
                 if (card != null &&
                         card.getAccount().equals(currentPlayer.getAccount())) {
                     targetCards.add(card);
-                }
-                else
-                {
+                } else {
                     //error message for view
                 }
             }
 
-            if (target.matches("(.*)" + TargetStrings.ANY_UNIT + "(.*)")){
-                Card card = Map.getCardInCell(x,y);
-                if (card != null)
-                {
+            if (target.matches("(.*)" + TargetStrings.ANY_UNIT + "(.*)")) {
+                Card card = Map.getCardInCell(x, y);
+                if (card != null) {
                     targetCards.add(card);
-                }else
-                {
+                } else {
                     //error message for view
 
 
@@ -136,6 +133,17 @@ public abstract class BattleManager {
                 targetCards.add(attackTarget);
             }
 
+            pattern = Pattern.compile(TargetStrings.SQUARE + "(\\d+)");
+            matcher = pattern.matcher(target);
+            if (matcher.matches()) {
+                for (int i = x; i < Integer.parseInt(matcher.group(1)); i++) {
+                    for (int j = y; j < Integer.parseInt(matcher.group(1)); j++) {
+                        targetCells.add(Map.getCell(i, j));
+                        targetCards.add(Map.getCardInCell(i, j));
+                    }
+                }
+            }
+
 
             // pattern = Pattern.compile(TargetStrings.)
         } catch (IllegalStateException e) {
@@ -151,10 +159,10 @@ public abstract class BattleManager {
             Pattern pattern = Pattern.compile(FunctionStrings.APPLY_BUFF + "(.*)");
             Matcher matcher = pattern.matcher(function.getFunction());
             if (matcher.matches()) {
-                if (matcher.group(1).matches("unholy")) {
+                if (matcher.group(1).trim().matches("unholy")) {
                     addUnholyBuff(targetCards);
                 }
-                if (matcher.group(1).matches("disarm\\d+")) {
+                if (matcher.group(1).trim().matches("disarm\\d+")) {
                     int turns = Integer.parseInt(matcher.group(1).replace("disarm", ""));
                     Buff buff = new Buff(Buff.BuffType.Disarm, turns, 0, 0, false);
                 }
@@ -169,13 +177,7 @@ public abstract class BattleManager {
     private void addUnholyBuff(ArrayList<Card> targetCards) {
         Buff buff = new Buff(Buff.BuffType.Unholy, PERMENANT, 0, 0, false);
         for (Card card : targetCards) {
-            switch (card.getType()) {
-                case minion:
-                    ((DeployedMinion) card).addBuff(buff);
-                    break;
-                case hero:
-                    ((DeployedHero) card).addBuff(buff);
-            }
+            ((Deployable) card).addBuff(buff);
         }
     }
 
