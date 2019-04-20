@@ -23,6 +23,10 @@ public class Account {
         return daric;
     }
 
+    public void addMatchHistories(MatchHistory matchHistory) {
+        matchHistories.add(matchHistory);
+    }
+
     public ArrayList<Deck> getDecks() {
         return decks;
     }
@@ -37,10 +41,7 @@ public class Account {
 
     public static boolean checkLogin(String username, String password) {
         Account account = findTheAccount(username);
-        if (account != null && account.password.equals(password)) {
-            return true;
-        }
-        return false;
+        return account != null && account.password.equals(password);
     }
 
     private static Account findTheAccount(String username) {

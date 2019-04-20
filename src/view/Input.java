@@ -1,11 +1,12 @@
-package model;
+package view;
 
 import java.util.Scanner;
 
-public class Scanners {
+public class Input {
     private static Scanner scanner = new Scanner(System.in);
 
     public static Scanner getScanner() {
         return scanner;
     }
+
 }
