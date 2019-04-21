@@ -192,16 +192,16 @@ public class Player extends Ai {
         }
     }
 
-    public void playCard(Card card, int x, int y) {
+    public void playCard(Card card, int x1, int x2) {
         switch (card.getType()) {
             case minion:
-                battle.playMinion((Minion) card, x, y);
+                battle.playMinion((Minion) card, x1, x2);
                 break;
             case spell:
-                battle.playSpell((Spell) card, x, y);
+                battle.playSpell((Spell) card, x1, x2);
                 break;
             case item:
-                battle.useItem((Item) card, x, y);
+                battle.useItem((Item) card, x1, x2);
 
         }
 
@@ -246,7 +246,7 @@ public class Player extends Ai {
         if (matcher.matches()) {
             if (selectedCard.isDeployed()) {
                 if (selectedCard.getType().equals("hero") || selectedCard.getType().equals("minion")) {
-                    int x = Integer.valueOf(matcher.group(1)), y = Integer.valueOf(matcher.group(2));
+                    int x1 = Integer.valueOf(matcher.group(1)), x2 = Integer.valueOf(matcher.group(2));
 
                 }
 

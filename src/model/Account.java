@@ -61,13 +61,6 @@ public class Account {
         return winLoseDraw;
     }
 
-    public static void changeMainAccount(String username, String password) {
-        if (checkLogin(username, password)) {
-            mainAccount = findTheAccount(username);
-            mainAccount.run();
-        }
-    }
-
     public static void addAccount(Account account) {
         allAccounts.add(account);
     }
@@ -76,16 +69,8 @@ public class Account {
         //WTF is there to show ???
     }
 
-    public static void showLeaderBoard() {
-        sortAllAccounts();
-        for (int i = 0; i < allAccounts.size(); i++) {
-            System.out.println((i + 1) + " - UserName: " + allAccounts.get(i).username + " -Wins: " +
-                    allAccounts.get(i).winLoseDraw[0]);
-        }
 
-    }
-
-    private static void sortAllAccounts() {
+    public static void sortAllAccounts() {
         for (int i = 0; i < allAccounts.size(); i++) {
             int theBest = i;
             for (int j = i + 1; j < allAccounts.size(); j++) {

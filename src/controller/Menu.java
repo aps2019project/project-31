@@ -3,9 +3,9 @@ package controller;
 import model.Account;
 
 public abstract class Menu {
-    private Account account;
-    private Menu lowerMenu;
-    private Menu goingTo;
+    protected Account account;
+    protected Menu lowerMenu;
+    protected Menu goingTo;
 
     public abstract void run();
 

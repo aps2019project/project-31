@@ -11,6 +11,7 @@ public class Deployable extends Card {
     protected int currentAttack;
     protected int attackRange;
     protected ArrayList<Buff> buffs;
+    protected String attackType;
 
     public Deployable(int price, int manaCost, String cardText, ArrayList<Function> functions, Account account,
                       String name, int id, CardType type, boolean isDeployed, boolean isMoved, boolean isAttacked,
