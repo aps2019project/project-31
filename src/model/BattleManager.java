@@ -177,13 +177,60 @@ public abstract class BattleManager {
             Pattern pattern = Pattern.compile(FunctionStrings.APPLY_BUFF + "(.*)");
             Matcher matcher = pattern.matcher(function.getFunction());
             if (matcher.matches()) {
-                if (matcher.group(1).trim().matches("unholy")) {
+                if (matcher.group(1).trim().matches("unholy"+ "|continuous")) {
                     addUnholyBuff(targetCards);
                 }
                 if (matcher.group(1).trim().matches("disarm\\d+")) {
                     int turns = Integer.parseInt(matcher.group(1).replace("disarm", ""));
                     Buff buff = new Buff(Buff.BuffType.Disarm, turns, 0, 0, false);
+                    addBuffs(targetCards, buff);
                 }
+                if (matcher.group(1).trim().matches("holy\\d+")) {
+                    int turns = Integer.parseInt(matcher.group(1).replace("holy", ""));
+                    Buff buff = new Buff(Buff.BuffType.Holy, turns, 0, 0, true);
+                    addBuffs(targetCards, buff);
+                }
+                if (matcher.group(1).trim().matches("stun\\d+")) {
+                    int turns = Integer.parseInt(matcher.group(1).replace("stun", ""));
+                    Buff buff = new Buff(Buff.BuffType.Stun, turns, 0, 0, false);
+                    addBuffs(targetCards, buff);
+                }
+
+                if (matcher.group(1).matches("pwhealth\\d+for\\d+")) {
+                    int turns = Integer.parseInt(matcher.group(1).replaceFirst("pwhealth\\d+for", ""));
+                    int amount = Integer.parseInt(matcher.group(1).replaceFirst("pwhealth", "")
+                            .replaceFirst("for\\d+", ""));
+                    Buff buff = new Buff(Buff.BuffType.Power,turns,amount,0,true);
+                    addBuffs(targetCards,buff);
+                }
+
+                if (matcher.group(1).matches("pwattack\\d+for\\d+")) {
+                    int turns = Integer.parseInt(matcher.group(1).replaceFirst("pwattack\\d+for", ""));
+                    int amount = Integer.parseInt(matcher.group(1).replaceFirst("pwattack", "")
+                            .replaceFirst("for\\d+", ""));
+                    Buff buff = new Buff(Buff.BuffType.Power,turns,0,amount,true);
+                    addBuffs(targetCards,buff);
+                }
+
+                if (matcher.group(1).matches("wkhealth\\d+for\\d+")) {
+                    int turns = Integer.parseInt(matcher.group(1).replaceFirst("wkhealth\\d+for", ""));
+                    int amount = Integer.parseInt(matcher.group(1).replaceFirst("wkhealth", "")
+                            .replaceFirst("for\\d+", ""));
+                    Buff buff = new Buff(Buff.BuffType.Weakness,turns,amount,0,false);
+                    addBuffs(targetCards,buff);
+                }
+
+                if (matcher.group(1).matches("wkattack\\d+for\\d+")) {
+                    int turns = Integer.parseInt(matcher.group(1).replaceFirst("wkattack\\d+for", ""));
+                    int amount = Integer.parseInt(matcher.group(1).replaceFirst("wkattack", "")
+                            .replaceFirst("for\\d+", ""));
+                    Buff buff = new Buff(Buff.BuffType.Weakness,turns,0,amount,false);
+                    addBuffs(targetCards,buff);
+                }
+
+
+
+
             }
 
         } catch (IllegalStateException e) {
@@ -192,11 +239,15 @@ public abstract class BattleManager {
         }
     }
 
-    private void addUnholyBuff(ArrayList<Card> targetCards) {
-        Buff buff = new Buff(Buff.BuffType.Unholy, PERMENANT, 0, 0, false);
+    private void addBuffs(ArrayList<Card> targetCards, Buff buff) {
         for (Card card : targetCards) {
             ((Deployable) card).addBuff(buff);
         }
+    }
+
+    private void addUnholyBuff(ArrayList<Card> targetCards) {
+        Buff buff = new Buff(Buff.BuffType.Unholy, PERMENANT, 0, 0, false);
+        addBuffs(targetCards, buff);
     }
 
     private boolean checkCoordinates(int x, int y) {

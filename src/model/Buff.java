@@ -41,6 +41,11 @@ public class Buff {
         this.powerBuffHealth = powerBuffHealth;
         this.powerBuffAttack = powerBuffAttack;
         this.isBeneficial = isBeneficial;
+        this.isContinuous = false;
+    }
+
+    public void makeContinuous(){
+        isContinuous = true;
     }
 
     public void setBuffType(BuffType buffType) {
