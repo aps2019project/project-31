@@ -25,7 +25,7 @@ public class Deployable extends Card {
         this.buffs = buffs;
     }
 
-    public void addBuff(Buff buff){
+    public void addBuff(Buff buff) {
         buffs.add(buff);
     }
 
@@ -74,6 +74,10 @@ public class Deployable extends Card {
                 howManyHolyBuffs++;
         }
         return theDamage - howManyHolyBuffs;
+    }
+
+    public void takeDamage(int damage) {
+        currentHealth -= damage;
     }
 
     @Override

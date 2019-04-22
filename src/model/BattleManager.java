@@ -177,10 +177,24 @@ public abstract class BattleManager {
         try {
             handleBuffs(function, targetCards);
 
+            handleDamage(function, targetCards);
+
+
 
         } catch (IllegalStateException e) {
             //error message for view
 
+        }
+    }
+
+    private void handleDamage(Function function, ArrayList<Card> targetCards) {
+        Pattern pattern = Pattern.compile(FunctionStrings.DEAL_DAMAGE + "(\\d+)");
+        Matcher matcher = pattern.matcher(function.getFunction());
+        if (matcher.matches()){
+            int amount = Integer.parseInt(matcher.group(1));
+            for (Card card: targetCards){
+                ((Deployable)card).takeDamage(amount);
+            }
         }
     }
 
