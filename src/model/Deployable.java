@@ -26,6 +26,70 @@ public class Deployable extends Card {
         this.buffs = buffs;
     }
 
+    public void setMoved(boolean moved) {
+        isMoved = moved;
+    }
+
+    public void setAttacked(boolean attacked) {
+        isAttacked = attacked;
+    }
+
+    public void setCell(Cell cell) {
+        this.cell = cell;
+    }
+
+    public void setCurrentHealth(int currentHealth) {
+        this.currentHealth = currentHealth;
+    }
+
+    public void setCurrentAttack(int currentAttack) {
+        this.currentAttack = currentAttack;
+    }
+
+    public void setAttackRange(int attackRange) {
+        this.attackRange = attackRange;
+    }
+
+    public void setBuffs(ArrayList<Buff> buffs) {
+        this.buffs = buffs;
+    }
+
+    public void setAttackType(String attackType) {
+        this.attackType = attackType;
+    }
+
+    public boolean isMoved() {
+        return isMoved;
+    }
+
+    public boolean isAttacked() {
+        return isAttacked;
+    }
+
+    public Cell getCell() {
+        return cell;
+    }
+
+    public int getCurrentHealth() {
+        return currentHealth;
+    }
+
+    public int getCurrentAttack() {
+        return currentAttack;
+    }
+
+    public int getAttackRange() {
+        return attackRange;
+    }
+
+    public ArrayList<Buff> getBuffs() {
+        return buffs;
+    }
+
+    public String getAttackType() {
+        return attackType;
+    }
+
     public void addBuff(Buff buff) {
         buffs.add(buff);
     }
@@ -51,7 +115,7 @@ public class Deployable extends Card {
 
     public boolean isDisarmed() {
         for (Buff buff : buffs) {
-            if (buff.buffType == Buff.BuffType.Disarm && buff.isActive() && buff.turnsLeft > 0)
+            if (buff.buffType == Buff.BuffType.Disarm && buff.isActive() && buff.getTurnsLeft() > 0)
                 return true;
         }
         return false;

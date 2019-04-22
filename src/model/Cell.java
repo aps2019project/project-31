@@ -1,34 +1,34 @@
 package model;
 
 public class Cell {
-    private int xCoordinate;
-    private int yCoordinate;
+    private int x1Coordinate;
+    private int x2Coordinate;
     private Card cardInCell;
     private boolean isOnFire;
     private boolean isPoisoned;
 
-    public Cell(int xCoordinate, int yCoordinate, Card cardInCell) {
-        this.xCoordinate = xCoordinate;
-        this.yCoordinate = yCoordinate;
+    public Cell(int x1Coordinate, int x2Coordinate, Card cardInCell) {
+        this.x1Coordinate = x1Coordinate;
+        this.x2Coordinate = x2Coordinate;
         this.cardInCell = cardInCell;
         this.isOnFire = false;
         this.isPoisoned = false;
     }
 
-    public Cell(int xCoordinate, int yCoordinate) {
-        this.xCoordinate = xCoordinate;
-        this.yCoordinate = yCoordinate;
-        this.cardInCell = Map.getCell(xCoordinate, yCoordinate).cardInCell;
-        this.isOnFire = Map.getCell(xCoordinate, yCoordinate).isOnFire;
-        this.isPoisoned = Map.getCell(xCoordinate, yCoordinate).isPoisoned;
+    public Cell(int x1Coordinate, int x2Coordinate) {
+        this.x1Coordinate = x1Coordinate;
+        this.x2Coordinate = x2Coordinate;
+        this.cardInCell = Map.getCell(x1Coordinate, x2Coordinate).cardInCell;
+        this.isOnFire = Map.getCell(x1Coordinate, x2Coordinate).isOnFire;
+        this.isPoisoned = Map.getCell(x1Coordinate, x2Coordinate).isPoisoned;
     }
 
-    public void setxCoordinate(int xCoordinate) {
-        this.xCoordinate = xCoordinate;
+    public void setX1Coordinate(int x1Coordinate) {
+        this.x1Coordinate = x1Coordinate;
     }
 
-    public void setyCoordinate(int yCoordinate) {
-        this.yCoordinate = yCoordinate;
+    public void setX2Coordinate(int x2Coordinate) {
+        this.x2Coordinate = x2Coordinate;
     }
 
     public void setCardInCell(Card cardInCell) {
@@ -43,12 +43,12 @@ public class Cell {
         isPoisoned = poisoned;
     }
 
-    public int getxCoordinate() {
-        return xCoordinate;
+    public int getX1Coordinate() {
+        return x1Coordinate;
     }
 
-    public int getyCoordinate() {
-        return yCoordinate;
+    public int getX2Coordinate() {
+        return x2Coordinate;
     }
 
     public Card getCardInCell() {
