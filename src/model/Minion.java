@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Minion extends Deployable {
     protected String functionTime;
-    protected String attackType;
+
     private int attack;
     private int health;
 

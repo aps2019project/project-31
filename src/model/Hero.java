@@ -3,7 +3,6 @@ package model;
 import java.util.ArrayList;
 
 public class Hero extends Deployable {
-    protected AttackType attackType;
     protected int attack;
     protected int health;
     protected HeroSpell heroSpell;

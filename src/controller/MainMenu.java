@@ -2,21 +2,6 @@ package controller;
 
 public class MainMenu extends Menu {
 
-    public class accountMenu {
-        public void run() {
-
-        }
-
-        private void login() {
-
-        }
-
-        private void singUp() {
-
-        }
-
-    }
-
     @Override
     public void run() {
 
@@ -33,7 +18,8 @@ public class MainMenu extends Menu {
     }
 
     private void logout() {
-
+        account = null;
+        AccountMenu.login();
     }
 
     private void showLeaderBoard() {
@@ -44,5 +30,20 @@ public class MainMenu extends Menu {
 
     }
 
+
+}
+class AccountMenu {
+    public static void run() {
+
+    }
+
+    static void login() {
+
+
+    }
+
+    public static void singUp() {
+
+    }
 
 }
