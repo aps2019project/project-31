@@ -14,4 +14,5 @@ package model;
     protected static final String IGNORE_ATTACK = "ignore attack";
     protected static final String IGNORE_LESSER_ATTACK = "ignore lesser attacks";
     protected static final String REMOVE_BENEFICIALS = "remove beneficial effects";
+    protected static final String DISPEL = "dispels target";
 }

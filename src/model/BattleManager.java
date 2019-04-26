@@ -206,11 +206,45 @@ public abstract class BattleManager {
 
             handleDamage(function, targetCards);
 
+            handleDispel(function, targetCards);
 
 
         } catch (IllegalStateException e) {
             //error message for view
 
+        }
+    }
+
+    private void handleDispel(Function function, ArrayList<Card> targetCards) {
+        if (function.getFunction().matches("(.*)" + FunctionStrings.DISPEL + "(.*)")){
+            for (Card card: targetCards){
+                ArrayList<Buff> toRemove = new ArrayList<>();
+                if (card.getAccount().equals(currentPlayer.getAccount())){
+                    for (Buff buff: ((Deployable) card).getBuffs()){
+                        if (!buff.isBeneficial()){
+                            if (buff.isContinuous()){
+                                buff.setActive(false);
+                            }
+                            else {
+                                toRemove.add(buff);
+                            }
+                        }
+                    }
+                }
+                else {
+                    for (Buff buff: ((Deployable) card).getBuffs()){
+                        if (buff.isBeneficial()){
+                            if (buff.isContinuous()){
+                                buff.setActive(false);
+                            }
+                            else {
+                                toRemove.add(buff);
+                            }
+                        }
+                    }
+                }
+                ((Deployable) card).getBuffs().removeAll(toRemove);
+            }
         }
     }
 
