@@ -1,5 +1,6 @@
 package model;
 
+import java.text.CollationElementIterator;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -206,12 +207,27 @@ public abstract class BattleManager {
 
             handleAttackIncrease(function, targetCards);
 
+            handleFireAndPoisonCells(function, targetCells);
+
 
 
 
         } catch (IllegalStateException e) {
             //error message for view
 
+        }
+    }
+
+    private void handleFireAndPoisonCells(Function function, ArrayList<Cell> targetCells) {
+        if (function.getFunction().matches("(.*)" + FunctionStrings.POISON_CELL + "(.*)")){
+            for (Cell cell: targetCells){
+                cell.setPoisoned(true);
+            }
+        }
+        if (function.getFunction().matches("(.*)" + FunctionStrings.SET_ON_FIRE + "(.*)")){
+            for (Cell cell: targetCells){
+                cell.setOnFire(true);
+            }
         }
     }
 
