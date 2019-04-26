@@ -64,10 +64,6 @@ public abstract class BattleManager {
 
     }
 
-    /*public void compileTargetString(ArrayList<Card> targetCards, ArrayList<Cell> targetCells, String target,
-                                    int x, int y) {
-        compileTargetString(targetCards, targetCells, target, x, y, null);
-    }*/
 
     public void compileTargetString(ArrayList<Card> targetCards, ArrayList<Cell> targetCells, String target,
                                     int x1, int x2, Deployable attackTarget) {
