@@ -1,5 +1,6 @@
 package model;
 
+import java.nio.charset.IllegalCharsetNameException;
 import java.text.CollationElementIterator;
 import java.util.ArrayList;
 import java.util.Random;
@@ -227,11 +228,7 @@ public abstract class BattleManager {
 
             handleFireAndPoisonCells(function, targetCells);
 
-            if (function.getFunction().matches("(.*)" + FunctionStrings.KILL_TARGETS + "(.*)")){
-                for (Card card: targetCards){
-                    ((Deployable) card).
-                }
-            }
+            handleMurder(function, targetCards);
 
 
         } catch (IllegalStateException e) {
@@ -240,15 +237,29 @@ public abstract class BattleManager {
         }
     }
 
-    private void handleFireAndPoisonCells(Function function, ArrayList<Cell> targetCells) {
-        if (function.getFunction().matches("(.*)" + FunctionStrings.POISON_CELL + "(.*)")){
-            for (Cell cell: targetCells){
-                cell.setPoisoned(true);
+    private void handleMurder(Function function, ArrayList<Card> targetCards) {
+        if (function.getFunction().matches("(.*)" + FunctionStrings.KILL_TARGETS + "(.*)")){
+            for (Card card: targetCards){
+                killTheThing((Deployable) card);
             }
         }
-        if (function.getFunction().matches("(.*)" + FunctionStrings.SET_ON_FIRE + "(.*)")){
+    }
+
+    private void handleFireAndPoisonCells(Function function, ArrayList<Cell> targetCells) {
+        Pattern pattern = Pattern.compile(FunctionStrings.POISON_CELL + "(\\d+)");
+        Matcher matcher = pattern.matcher(function.getFunction());
+        if (matcher.matches()){
+            int turns = Integer.parseInt(matcher.group(1));
             for (Cell cell: targetCells){
-                cell.setOnFire(true);
+                cell.setOnFireTurns(turns);
+            }
+        }
+        pattern = Pattern.compile(FunctionStrings.SET_ON_FIRE + "(\\d+)");
+        matcher = pattern.matcher(function.getFunction());
+        if (matcher.matches()){
+            int turns = Integer.parseInt(matcher.group(1));
+            for (Cell cell: targetCells){
+                cell.setOnPoisonTurns(turns);
             }
         }
     }

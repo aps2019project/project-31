@@ -4,8 +4,8 @@ public class Cell {
     private int x1Coordinate;
     private int x2Coordinate;
     private Deployable cardInCell;
-    private int onFireTerms;
-    private int onPoisonTerms;
+    private int onFireTurns;
+    private int onPoisonTurns;
 
     public Cell(int x1Coordinate, int x2Coordinate, Deployable cardInCell) {
         this.x1Coordinate = x1Coordinate;
@@ -18,8 +18,24 @@ public class Cell {
         this.x1Coordinate = x1Coordinate;
         this.x2Coordinate = x2Coordinate;
         this.cardInCell = Map.getCell(x1Coordinate, x2Coordinate).cardInCell;
-        this.onFireTerms = Map.getCell(x1Coordinate, x2Coordinate).onFireTerms;
-        this.onPoisonTerms = Map.getCell(x1Coordinate, x2Coordinate).onPoisonTerms;
+        this.onFireTurns = Map.getCell(x1Coordinate, x2Coordinate).onFireTurns;
+        this.onPoisonTurns = Map.getCell(x1Coordinate, x2Coordinate).onPoisonTurns;
+    }
+
+    public void setOnFireTurns(int onFireTurns) {
+        this.onFireTurns = onFireTurns;
+    }
+
+    public void setOnPoisonTurns(int onPoisonTurns) {
+        this.onPoisonTurns = onPoisonTurns;
+    }
+
+    public int getOnFireTurns() {
+        return onFireTurns;
+    }
+
+    public int getOnPoisonTurns() {
+        return onPoisonTurns;
     }
 
     public void setX1Coordinate(int x1Coordinate) {
@@ -35,13 +51,13 @@ public class Cell {
     }
 
     public void decreaseOnFire() {
-        if (onFireTerms > 0)
-            onFireTerms--;
+        if (onFireTurns > 0)
+            onFireTurns--;
     }
 
     public void decreaseOnPoison() {
-        if (onPoisonTerms > 0)
-            onPoisonTerms--;
+        if (onPoisonTurns > 0)
+            onPoisonTurns--;
     }
 
 
@@ -59,11 +75,11 @@ public class Cell {
     }
 
     public boolean isOnFire() {
-        return onFireTerms >= 1;
+        return onFireTurns >= 1;
     }
 
     public boolean isPoisoned() {
-        return onPoisonTerms >= 1;
+        return onPoisonTurns >= 1;
     }
 
 }
