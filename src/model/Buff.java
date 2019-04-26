@@ -2,14 +2,32 @@ package model;
 
 public class Buff {
     BuffType buffType;
-    int turnsLeft;
-    int powerBuffHealth;
-    int powerBuffAttack;
+    private int turnsLeft;
+
     boolean isBeneficial;
     private boolean isContinuous;
     private boolean isActive;
     private int effectOfWeaknessOrPowerOnHealth = 0;
     private int effectOfWeaknessOrPowerOnAttack = 0;
+
+
+    public Buff(BuffType buffType, int turnsLeft, int effectOfWeaknessOrPowerOnHealth,
+                int effectOfWeaknessOrPowerOnAttack, boolean isBeneficial) {
+        this.buffType = buffType;
+        this.turnsLeft = turnsLeft;
+        this.effectOfWeaknessOrPowerOnAttack = effectOfWeaknessOrPowerOnAttack;
+        this.effectOfWeaknessOrPowerOnHealth = effectOfWeaknessOrPowerOnHealth;
+        this.isBeneficial = isBeneficial;
+        this.isContinuous = false;
+    }
+
+    public void setEffectOfWeaknessOrPowerOnHealth(int effectOfWeaknessOrPowerOnHealth) {
+        this.effectOfWeaknessOrPowerOnHealth = effectOfWeaknessOrPowerOnHealth;
+    }
+
+    public void setEffectOfWeaknessOrPowerOnAttack(int effectOfWeaknessOrPowerOnAttack) {
+        this.effectOfWeaknessOrPowerOnAttack = effectOfWeaknessOrPowerOnAttack;
+    }
 
     public void setActive(boolean active) {
         isActive = active;
@@ -34,16 +52,6 @@ public class Buff {
     public boolean isActive() {
         return isActive;
     }
-
-    public Buff(BuffType buffType, int turnsLeft, int powerBuffHealth, int powerBuffAttack, boolean isBeneficial) {
-        this.buffType = buffType;
-        this.turnsLeft = turnsLeft;
-        this.powerBuffHealth = powerBuffHealth;
-        this.powerBuffAttack = powerBuffAttack;
-        this.isBeneficial = isBeneficial;
-        this.isContinuous = false;
-    }
-
     public void makeContinuous(){
         isContinuous = true;
     }
@@ -56,13 +64,6 @@ public class Buff {
         this.turnsLeft = turnsLeft;
     }
 
-    public void setPowerBuffHealth(int powerBuffHealth) {
-        this.powerBuffHealth = powerBuffHealth;
-    }
-
-    public void setPowerBuffAttack(int powerBuffAttack) {
-        this.powerBuffAttack = powerBuffAttack;
-    }
 
     public void setBeneficial(boolean beneficial) {
         isBeneficial = beneficial;
@@ -76,13 +77,7 @@ public class Buff {
         return turnsLeft;
     }
 
-    public int getPowerBuffHealth() {
-        return powerBuffHealth;
-    }
 
-    public int getPowerBuffAttack() {
-        return powerBuffAttack;
-    }
 
     public boolean isBeneficial() {
         return isBeneficial;

@@ -14,8 +14,8 @@ public class Map {
     }
 
     public static int getDistance(Cell cell1, Cell cell2) {
-        return Math.abs(cell1.getxCoordinate() - cell2.getxCoordinate()) +
-                Math.abs(cell1.getyCoordinate() - cell2.getyCoordinate());
+        return Math.abs(cell1.getX1Coordinate() - cell2.getX1Coordinate()) +
+                Math.abs(cell1.getX2Coordinate() - cell2.getX2Coordinate());
     }
 
     public static int getMaxMoveRange() {
@@ -23,8 +23,8 @@ public class Map {
     }
 
     public static int getDistance(Cell cell1, int x, int y) {
-        return Math.abs(cell1.getxCoordinate() - x) +
-                Math.abs(cell1.getyCoordinate() - y);
+        return Math.abs(cell1.getX1Coordinate() - x) +
+                Math.abs(cell1.getX2Coordinate() - y);
     }
 
     public static void move(int x, int y, Card card) {
