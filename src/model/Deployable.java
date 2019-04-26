@@ -27,6 +27,10 @@ public class Deployable extends Card {
         this.buffs = buffs;
     }
 
+    public void increaseAttack(int amount){
+        currentAttack += amount;
+    }
+
     public void setMoved(boolean moved) {
         isMoved = moved;
     }

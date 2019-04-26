@@ -21,6 +21,7 @@ public class Buff {
         this.isContinuous = false;
     }
 
+
     public void setEffectOfWeaknessOrPowerOnHealth(int effectOfWeaknessOrPowerOnHealth) {
         this.effectOfWeaknessOrPowerOnHealth = effectOfWeaknessOrPowerOnHealth;
     }
@@ -28,6 +29,8 @@ public class Buff {
     public void setEffectOfWeaknessOrPowerOnAttack(int effectOfWeaknessOrPowerOnAttack) {
         this.effectOfWeaknessOrPowerOnAttack = effectOfWeaknessOrPowerOnAttack;
     }
+
+
 
     public void setActive(boolean active) {
         isActive = active;

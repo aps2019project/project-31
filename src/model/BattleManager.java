@@ -1,5 +1,6 @@
 package model;
 
+import java.text.CollationElementIterator;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -64,10 +65,6 @@ public abstract class BattleManager {
 
     }
 
-    public void compileTargetString(ArrayList<Card> targetCards, ArrayList<Cell> targetCells, String target,
-                                    int x, int y) {
-        compileTargetString(targetCards, targetCells, target, x, y, null);
-    }
 
     public void compileTargetString(ArrayList<Card> targetCards, ArrayList<Cell> targetCells, String target,
                                     int x1, int x2, Deployable attackTarget) {
@@ -153,6 +150,7 @@ public abstract class BattleManager {
                 targetCards.add(attackTarget);
             }
 
+
             pattern = Pattern.compile(TargetStrings.SQUARE + "(\\d+)");
             matcher = pattern.matcher(target);
             if (matcher.matches()) {
@@ -160,6 +158,26 @@ public abstract class BattleManager {
                     for (int j = x2; j < Integer.parseInt(matcher.group(1)); j++) {
                         targetCells.add(Map.getCell(i, j));
                         targetCards.add(Map.getCardInCell(i, j));
+                    }
+                }
+            }
+
+            if (target.matches("(.*)" + TargetStrings.SURROUNDING_ALLIED_MINIONS + "(.*)")) {
+                for (int i = x1 - 1; i < x1 + 2; i++) {
+                    for (int j = x2 - 1; j < x2 + 2; j++) {
+                        if (Map.getCardInCell(x1, x2).getAccount().equals(currentPlayer.getAccount())) {
+                            targetCards.add(Map.getCardInCell(x1, x2));
+                        }
+                    }
+                }
+            }
+
+            if (target.matches("(.*)" + TargetStrings.SURROUNDING_ENEMY_MINIONS + "(.*)")) {
+                for (int i = x1 - 1; i < x1 + 2; i++) {
+                    for (int j = x2 - 1; j < x2 + 2; j++) {
+                        if (!Map.getCardInCell(x1, x2).getAccount().equals(currentPlayer.getAccount())) {
+                            targetCards.add(Map.getCardInCell(x1, x2));
+                        }
                     }
                 }
             }
@@ -172,16 +190,99 @@ public abstract class BattleManager {
     }
 
     public void compileFunction(Function function, int x1, int x2) {
+        compileFunction(function, x1, x2, null);
+    }
+
+    public void compileFunction(Function function, int x1, int x2, Deployable attackTarget) {
         ArrayList<Cell> targetCells = new ArrayList<>();
         ArrayList<Card> targetCards = new ArrayList<>();
-        compileTargetString(targetCards, targetCells, function.getTarget(), x1, x2);
+        compileTargetString(targetCards, targetCells, function.getTarget(), x1, x2, attackTarget);
+
         try {
             handleBuffs(function, targetCards);
+
+            handleDamage(function, targetCards);
+
+            handleDispel(function, targetCards);
+
+            handleAttackIncrease(function, targetCards);
+
+            handleFireAndPoisonCells(function, targetCells);
+
+
 
 
         } catch (IllegalStateException e) {
             //error message for view
 
+        }
+    }
+
+    private void handleFireAndPoisonCells(Function function, ArrayList<Cell> targetCells) {
+        if (function.getFunction().matches("(.*)" + FunctionStrings.POISON_CELL + "(.*)")){
+            for (Cell cell: targetCells){
+                cell.setPoisoned(true);
+            }
+        }
+        if (function.getFunction().matches("(.*)" + FunctionStrings.SET_ON_FIRE + "(.*)")){
+            for (Cell cell: targetCells){
+                cell.setOnFire(true);
+            }
+        }
+    }
+
+    private void handleAttackIncrease(Function function, ArrayList<Card> targetCards) {
+        Pattern pattern = Pattern.compile(FunctionStrings.INCREASE_ATTACK + "(\\d+)");
+        Matcher matcher = pattern.matcher(function.getFunction());
+        if (matcher.matches()){
+            int amount = Integer.parseInt(matcher.group(1));
+            for (Card card: targetCards){
+                ((Deployable) card).increaseAttack(amount);
+            }
+        }
+    }
+
+    private void handleDispel(Function function, ArrayList<Card> targetCards) {
+        if (function.getFunction().matches("(.*)" + FunctionStrings.DISPEL + "(.*)")){
+            for (Card card: targetCards){
+                ArrayList<Buff> toRemove = new ArrayList<>();
+                if (card.getAccount().equals(currentPlayer.getAccount())){
+                    for (Buff buff: ((Deployable) card).getBuffs()){
+                        if (!buff.isBeneficial()){
+                            if (buff.isContinuous()){
+                                buff.setActive(false);
+                            }
+                            else {
+                                toRemove.add(buff);
+                            }
+                        }
+                    }
+                }
+                else {
+                    for (Buff buff: ((Deployable) card).getBuffs()){
+                        if (buff.isBeneficial()){
+                            if (buff.isContinuous()){
+                                buff.setActive(false);
+                            }
+                            else {
+                                toRemove.add(buff);
+                            }
+                        }
+                    }
+                }
+                ((Deployable) card).getBuffs().removeAll(toRemove);
+            }
+        }
+    }
+
+    private void handleDamage(Function function, ArrayList<Card> targetCards) {
+        Pattern pattern = Pattern.compile(FunctionStrings.DEAL_DAMAGE + "(\\d+)");
+        Matcher matcher = pattern.matcher(function.getFunction());
+        if (matcher.matches()) {
+            int amount = Integer.parseInt(matcher.group(1));
+            for (Card card : targetCards) {
+                ((Deployable) card).takeDamage(amount);
+            }
         }
     }
 
