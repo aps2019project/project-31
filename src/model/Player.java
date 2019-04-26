@@ -157,6 +157,14 @@ public class Player extends Ai {
         }
     }
 
+    public boolean doesPlayerHaveDeployable(Deployable card) {
+        for (Deployable deployable : cardsOnBattleField) {
+            if (deployable.equals(card))
+                return true;
+        }
+        return false;
+    }
+
     public void showNextCard() {
         cardInReplace.show();
     }

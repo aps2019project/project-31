@@ -3,11 +3,11 @@ package model;
 public class Map {
     private static final int maxMoveRange = 2;
     public static final int MAP_X1_LENGTH = 9;
-    public static final int MAP_x2_LENGTH = 5;
-    private static Cell[][] map = new Cell[MAP_x2_LENGTH][MAP_X1_LENGTH];
+    public static final int MAP_X2_LENGTH = 5;
+    private static Cell[][] map = new Cell[MAP_X2_LENGTH][MAP_X1_LENGTH];
 
     public static Cell getCell(int x1, int x2) {
-        if (x1 <= MAP_X1_LENGTH && x2 <= MAP_x2_LENGTH && x1 > 0 && x2 > 0) {
+        if (x1 <= MAP_X1_LENGTH && x2 <= MAP_X2_LENGTH && x1 > 0 && x2 > 0) {
             return map[x1][x2];
         }
         return null;
@@ -32,10 +32,10 @@ public class Map {
 
     }
 
-    public static Cell findCellByCardId(int cardId) {
+    public static Cell findCellByCardId(int cardUniqueId) { //
         for (Cell[] cells : map) {
             for (Cell cell : cells) {
-                if (cell.getCardInCell().getId() == cardId) {
+                if (((Deployable) (cell.getCardInCell())).uniqueId == cardUniqueId) {
                     return cell;
                 }
             }

@@ -115,13 +115,13 @@ public abstract class BattleManager {
             if (target.matches("(.*)" + TargetStrings.ALL_ENEMIES + "(.*)")) {
                 targetCards.addAll(getOtherPlayer().getCardsOnBattleField());
             } else if (target.matches("(.*)" + TargetStrings.ALL_ENEMIES_IN_COLUMN + "(.*)")) {
-                for (int i = 1; i <= Map.MAP_x2_LENGTH; i++) {
+                for (int i = 1; i <= Map.MAP_X2_LENGTH; i++) {
                     if (!Map.getCardInCell(i, x2).getAccount().equals(currentPlayer.getAccount())) {
                         targetCards.add(Map.getCardInCell(i, x2));
                     }
                 }
             } else if (target.matches("(.*)" + TargetStrings.ALL_ENEMIES_IN_ROW + "(.*)")) {
-                for (int i = 1; i <= Map.MAP_X_LENGTH; i++) {
+                for (int i = 1; i <= Map.MAP_X1_LENGTH; i++) {
                     if (!Map.getCardInCell(x1, i).getAccount().equals(currentPlayer.getAccount())) {
                         targetCards.add(Map.getCardInCell(x1, i));
                     }
@@ -193,7 +193,7 @@ public abstract class BattleManager {
                 addUnholyBuff(targetCards);
             }
             if (matcher.group(1).trim().matches("disarm(\\d+|continuous)")) {
-                if (matcher.group(1).replace("disarm", "").matches(CONTINUOUS)){
+                if (matcher.group(1).replace("disarm", "").matches(CONTINUOUS)) {
                     Buff buff = new Buff(Buff.BuffType.Disarm, PERMENANT, 0, 0, false);
                     buff.makeContinuous();
                     addBuffs(targetCards, buff);
@@ -204,7 +204,7 @@ public abstract class BattleManager {
                 addBuffs(targetCards, buff);
             }
             if (matcher.group(1).trim().matches("holy(\\d+|continuous)")) {
-                if (matcher.group(1).replace("holy", "").matches(CONTINUOUS)){
+                if (matcher.group(1).replace("holy", "").matches(CONTINUOUS)) {
                     Buff buff = new Buff(Buff.BuffType.Holy, PERMENANT, 0, 0, true);
                     buff.makeContinuous();
                     addBuffs(targetCards, buff);
@@ -215,7 +215,7 @@ public abstract class BattleManager {
                 addBuffs(targetCards, buff);
             }
             if (matcher.group(1).trim().matches("stun(\\d+|continuous)")) {
-                if (matcher.group(1).replace("stun", "").matches(CONTINUOUS)){
+                if (matcher.group(1).replace("stun", "").matches(CONTINUOUS)) {
                     Buff buff = new Buff(Buff.BuffType.Stun, PERMENANT, 0, 0, false);
                     buff.makeContinuous();
                     addBuffs(targetCards, buff);
@@ -229,60 +229,58 @@ public abstract class BattleManager {
             if (matcher.group(1).matches("pwhealth\\d+for(\\d+|continuous)")) {
                 int amount = Integer.parseInt(matcher.group(1).replaceFirst("pwhealth", "")
                         .replaceFirst("for\\d+", ""));
-                if (matcher.group(1).replaceFirst("pwhealth\\d+for", "").matches(CONTINUOUS)){
-                    Buff buff = new Buff(Buff.BuffType.Power,PERMENANT,amount,0,true);
+                if (matcher.group(1).replaceFirst("pwhealth\\d+for", "").matches(CONTINUOUS)) {
+                    Buff buff = new Buff(Buff.BuffType.Power, PERMENANT, amount, 0, true);
                     buff.makeContinuous();
-                    addBuffs(targetCards,buff);
+                    addBuffs(targetCards, buff);
                     return;
                 }
                 int turns = Integer.parseInt(matcher.group(1).replaceFirst("pwhealth\\d+for", ""));
-                Buff buff = new Buff(Buff.BuffType.Power,turns,amount,0,true);
-                addBuffs(targetCards,buff);
+                Buff buff = new Buff(Buff.BuffType.Power, turns, amount, 0, true);
+                addBuffs(targetCards, buff);
             }
 
             if (matcher.group(1).matches("pwattack\\d+for(\\d+|continuous)")) {
                 int amount = Integer.parseInt(matcher.group(1).replaceFirst("pwattack", "")
                         .replaceFirst("for\\d+", ""));
-                if (matcher.group(1).replaceFirst("pwattack\\d+for", "").matches(CONTINUOUS)){
-                    Buff buff = new Buff(Buff.BuffType.Power,PERMENANT,0,amount,true);
+                if (matcher.group(1).replaceFirst("pwattack\\d+for", "").matches(CONTINUOUS)) {
+                    Buff buff = new Buff(Buff.BuffType.Power, PERMENANT, 0, amount, true);
                     buff.makeContinuous();
-                    addBuffs(targetCards,buff);
+                    addBuffs(targetCards, buff);
                     return;
                 }
                 int turns = Integer.parseInt(matcher.group(1).replaceFirst("pwattack\\d+for", ""));
-                Buff buff = new Buff(Buff.BuffType.Power,turns,0,amount,true);
-                addBuffs(targetCards,buff);
+                Buff buff = new Buff(Buff.BuffType.Power, turns, 0, amount, true);
+                addBuffs(targetCards, buff);
             }
 
             if (matcher.group(1).matches("wkhealth\\d+for(\\d+|continuous)")) {
                 int amount = Integer.parseInt(matcher.group(1).replaceFirst("wkhealth", "")
                         .replaceFirst("for\\d+", ""));
-                if (matcher.group(1).replaceFirst("wkhealth\\d+for", "").matches(CONTINUOUS)){
-                    Buff buff = new Buff(Buff.BuffType.Weakness,PERMENANT,amount,0,false);
+                if (matcher.group(1).replaceFirst("wkhealth\\d+for", "").matches(CONTINUOUS)) {
+                    Buff buff = new Buff(Buff.BuffType.Weakness, PERMENANT, amount, 0, false);
                     buff.makeContinuous();
-                    addBuffs(targetCards,buff);
+                    addBuffs(targetCards, buff);
                     return;
                 }
                 int turns = Integer.parseInt(matcher.group(1).replaceFirst("wkhealth\\d+for", ""));
-                Buff buff = new Buff(Buff.BuffType.Weakness,turns,amount,0,false);
-                addBuffs(targetCards,buff);
+                Buff buff = new Buff(Buff.BuffType.Weakness, turns, amount, 0, false);
+                addBuffs(targetCards, buff);
             }
 
             if (matcher.group(1).matches("wkattack\\d+for(\\d+|continuous)+")) {
                 int amount = Integer.parseInt(matcher.group(1).replaceFirst("wkattack", "")
                         .replaceFirst("for\\d+", ""));
-                if (matcher.group(1).replaceFirst("wkattack\\d+for", "").matches(CONTINUOUS)){
-                    Buff buff = new Buff(Buff.BuffType.Weakness,PERMENANT,0,amount,false);
+                if (matcher.group(1).replaceFirst("wkattack\\d+for", "").matches(CONTINUOUS)) {
+                    Buff buff = new Buff(Buff.BuffType.Weakness, PERMENANT, 0, amount, false);
                     buff.makeContinuous();
-                    addBuffs(targetCards,buff);
+                    addBuffs(targetCards, buff);
                     return;
                 }
                 int turns = Integer.parseInt(matcher.group(1).replaceFirst("wkattack\\d+for", ""));
-                Buff buff = new Buff(Buff.BuffType.Weakness,turns,0,amount,false);
-                addBuffs(targetCards,buff);
+                Buff buff = new Buff(Buff.BuffType.Weakness, turns, 0, amount, false);
+                addBuffs(targetCards, buff);
             }
-
-
 
 
         }
@@ -345,11 +343,41 @@ public abstract class BattleManager {
         }
     }
 
+    private void killTheThing(Deployable enemy) {
+        Cell cell = Map.findCellByCardId(enemy.uniqueId);
+        cell.setCardInCell(null);
+        if (player1.doesPlayerHaveDeployable(enemy))
+            player1.getCardsOnBattleField().remove(enemy);
+        else
+            player2.getCardsOnBattleField().remove(enemy);
+
+    }
+
     public void attack(Deployable card, Deployable enemy) {
         if (isNear(card.cell, enemy.cell) && !card.isAttacked && !card.isStunned() &&
                 isAttackTypeValidForAttack(card, enemy)) {
             enemy.currentHealth -= enemy.theActualDamageReceived(card.theActualDamage());
-            counterAttack(card, enemy);
+            if (enemy.currentHealth <= 0) {
+                for (Function function : enemy.functions) {
+                    if (function.getFunctionType() == FunctionType.OnDeath) {
+                        compileFunction(function, enemy.cell.getxCoordinate(), enemy.cell.getyCoordinate());
+                    }
+                }
+                killTheThing(enemy);
+            } else {
+                for (Function function : card.functions) {
+                    if (function.getFunctionType() == FunctionType.OnAttack) {
+                        compileFunction(function, card.cell.getxCoordinate(), card.cell.getyCoordinate());
+                    }
+                }
+                for (Function function : enemy.functions) {
+                    if (function.getFunctionType() == FunctionType.OnDefend) {
+                        compileFunction(function, enemy.cell.getxCoordinate(), enemy.cell.getyCoordinate());
+                    }
+                }
+                counterAttack(card, enemy);
+            }
+
         }
     }
 
@@ -358,6 +386,7 @@ public abstract class BattleManager {
             attacker.currentHealth -= attacker.theActualDamageReceived(counterAttacker.theActualDamage());
         }
     }
+
     private boolean isAttackTypeValidForAttack(Deployable attacker, Deployable counterAttacker) {
         return attacker.attackType.equals("melee") && isNear(attacker.cell, counterAttacker.cell) ||
                 (attacker.attackType.equals("ranged") &&
@@ -378,6 +407,7 @@ public abstract class BattleManager {
         return Math.abs(cell1.getxCoordinate() - cell2.getxCoordinate()) < 2 &&
                 Math.abs(cell1.getyCoordinate() - cell2.getyCoordinate()) < 2;
     }
+
     public void player1Won() {
         MatchHistory matchHistory = new MatchHistory(player2.getAccount().getUsername(), "win");
         player1.getAccount().addMatchHistories(matchHistory);
