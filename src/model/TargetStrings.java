@@ -16,5 +16,6 @@ public class TargetStrings {
     public static final String SURROUNDING_ALLIED_MINIONS = "surrounding allied minions";
     public static final String SELF = "self";
     public static final String ENEMY_HERO = "enemy hero";
+    public static final String RANDOM_SURROUNDING_ENEMY = "random enemy nearby";
 
 }

@@ -2,6 +2,7 @@ package model;
 
 import java.text.CollationElementIterator;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -182,6 +183,23 @@ public abstract class BattleManager {
                 }
             }
 
+            if (target.matches("(.*)" + TargetStrings.RANDOM_SURROUNDING_ENEMY + "(.*)")){
+                ArrayList<Card> cardsToPickFrom = new ArrayList<>();
+                for (int i = x1 - 1; i < x1 + 2; i++) {
+                    for (int j = x2 - 1; j < x2 + 2; j++) {
+                        if (!Map.getCardInCell(x1, x2).getAccount().equals(currentPlayer.getAccount())) {
+                            cardsToPickFrom.add(Map.getCardInCell(x1, x2));
+                        }
+                    }
+                }
+
+                Random random = new Random();
+                targetCards.add(cardsToPickFrom.get(random.nextInt(cardsToPickFrom.size())));
+
+            }
+
+
+
 
             // pattern = Pattern.compile(TargetStrings.)
         } catch (IllegalStateException e) {
@@ -209,7 +227,11 @@ public abstract class BattleManager {
 
             handleFireAndPoisonCells(function, targetCells);
 
-
+            if (function.getFunction().matches("(.*)" + FunctionStrings.KILL_TARGETS + "(.*)")){
+                for (Card card: targetCards){
+                    ((Deployable) card).
+                }
+            }
 
 
         } catch (IllegalStateException e) {
