@@ -204,10 +204,25 @@ public abstract class BattleManager {
 
             handleDispel(function, targetCards);
 
+            handleAttackIncrease(function, targetCards);
+
+
+
 
         } catch (IllegalStateException e) {
             //error message for view
 
+        }
+    }
+
+    private void handleAttackIncrease(Function function, ArrayList<Card> targetCards) {
+        Pattern pattern = Pattern.compile(FunctionStrings.INCREASE_ATTACK + "(\\d+)");
+        Matcher matcher = pattern.matcher(function.getFunction());
+        if (matcher.matches()){
+            int amount = Integer.parseInt(matcher.group(1));
+            for (Card card: targetCards){
+                ((Deployable) card).increaseAttack(amount);
+            }
         }
     }
 
