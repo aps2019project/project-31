@@ -343,13 +343,18 @@ public abstract class BattleManager {
         }
     }
 
-    private void killTheThing(Deployable enemy) {
+    public void killTheThing(Deployable enemy) {
         Cell cell = Map.findCellByCardId(enemy.uniqueId);
         cell.setCardInCell(null);
         if (player1.doesPlayerHaveDeployable(enemy))
             player1.getCardsOnBattleField().remove(enemy);
         else
             player2.getCardsOnBattleField().remove(enemy);
+        for (Function function : enemy.functions) {
+            if (function.getFunctionType() == FunctionType.OnDeath) {
+                compileFunction(function, enemy.cell.getX1Coordinate(), enemy.cell.getX2Coordinate());
+            }
+        }
 
     }
 
@@ -358,21 +363,16 @@ public abstract class BattleManager {
                 isAttackTypeValidForAttack(card, enemy)) {
             enemy.currentHealth -= enemy.theActualDamageReceived(card.theActualDamage());
             if (enemy.currentHealth <= 0) {
-                for (Function function : enemy.functions) {
-                    if (function.getFunctionType() == FunctionType.OnDeath) {
-                        compileFunction(function, enemy.cell.getxCoordinate(), enemy.cell.getyCoordinate());
-                    }
-                }
                 killTheThing(enemy);
             } else {
                 for (Function function : card.functions) {
                     if (function.getFunctionType() == FunctionType.OnAttack) {
-                        compileFunction(function, card.cell.getxCoordinate(), card.cell.getyCoordinate());
+                        compileFunction(function,card.cell.getX1Coordinate(),card.cell.getX2Coordinate());
                     }
                 }
                 for (Function function : enemy.functions) {
                     if (function.getFunctionType() == FunctionType.OnDefend) {
-                        compileFunction(function, enemy.cell.getxCoordinate(), enemy.cell.getyCoordinate());
+                        compileFunction(function, enemy.cell.getX1Coordinate(), enemy.cell.getX2Coordinate());
                     }
                 }
                 counterAttack(card, enemy);
@@ -404,8 +404,8 @@ public abstract class BattleManager {
 
 
     private boolean isNear(Cell cell1, Cell cell2) {
-        return Math.abs(cell1.getxCoordinate() - cell2.getxCoordinate()) < 2 &&
-                Math.abs(cell1.getyCoordinate() - cell2.getyCoordinate()) < 2;
+        return Math.abs(cell1.getX1Coordinate() - cell2.getX1Coordinate()) < 2 &&
+                Math.abs(cell1.getX2Coordinate() - cell2.getX2Coordinate()) < 2;
     }
 
     public void player1Won() {

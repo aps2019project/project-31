@@ -170,9 +170,10 @@ public class Player extends Ai {
     }
 
     public void endOfTurn() {
-        doOnTurnSpells();
+        doOnTurnFunctions();
         applyPoisonBuffs();
         buffsChangesAtTheEndOfTurn();
+
     }
 
     private void applyPoisonBuffs() {
@@ -189,7 +190,7 @@ public class Player extends Ai {
         for (Deployable card : cardsOnBattleField) {
             for (int i = 0; i < card.buffs.size(); i++) {
                 card.buffs.get(i).decreaseTurnsLeft();
-                if (!card.buffs.get(i).isContinuous() && card.buffs.get(i).turnsLeft <= 0) {
+                if (!card.buffs.get(i).isContinuous() && card.buffs.get(i).getTurnsLeft() <= 0) {
                     card.buffs.remove(i);
                 }
                 if (card.buffs.get(i).isContinuous()) {

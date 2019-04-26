@@ -35,7 +35,7 @@ public class Map {
     public static Cell findCellByCardId(int cardUniqueId) { //
         for (Cell[] cells : map) {
             for (Cell cell : cells) {
-                if (((Deployable) (cell.getCardInCell())).uniqueId == cardUniqueId) {
+                if (cell.getCardInCell().uniqueId == cardUniqueId) {
                     return cell;
                 }
             }
@@ -47,7 +47,20 @@ public class Map {
         return getCell(x1, x2).getCardInCell();
     }
 
-    public static void putCardInCell(Card card, int x1, int x2) {
+    public static void putCardInCell(Deployable card, int x1, int x2) {
         getCell(x1, x2).setCardInCell(card);
+    }
+
+    public static void atTheEndOfTurn() {
+        for (Cell[] cells : map) {
+            for (Cell cell : cells) {
+                if (cell.isOnFire() && cell.getCardInCell() != null)
+                    cell.getCardInCell().applyFire();
+                if (cell.isPoisoned() && cell.getCardInCell() != null)
+                    cell.getCardInCell().applyPoison();
+                cell.decreaseOnFire();
+                cell.decreaseOnPoison();
+            }
+        }
     }
 }
