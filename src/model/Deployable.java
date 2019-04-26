@@ -159,4 +159,11 @@ public class Deployable extends Card {
     public void showCardInfo() {
 
     }
+    public void applyFire() {
+        currentHealth--; // how much it decreases
+    }
+
+    public void applyPoison() {
+        currentHealth--; //whats the difference between this and fire
+    }
 }

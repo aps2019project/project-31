@@ -466,19 +466,41 @@ public abstract class BattleManager {
         }
     }
 
+    public void killTheThing(Deployable enemy) {
+        Cell cell = Map.findCellByCardId(enemy.uniqueId);
+        cell.setCardInCell(null);
+        if (player1.doesPlayerHaveDeployable(enemy))
+            player1.getCardsOnBattleField().remove(enemy);
+        else
+            player2.getCardsOnBattleField().remove(enemy);
+        for (Function function : enemy.functions) {
+            if (function.getFunctionType() == FunctionType.OnDeath) {
+                compileFunction(function, enemy.cell.getX1Coordinate(), enemy.cell.getX2Coordinate());
+            }
+        }
+
+    }
+
     public void attack(Deployable card, Deployable enemy) {
         if (isNear(card.cell, enemy.cell) && !card.isAttacked && !card.isStunned() &&
                 isAttackTypeValidForAttack(card, enemy)) {
-            for (Function function : card.getFunctions()) {
-                if (function.getFunctionType() == FunctionType.OnAttack) {
-                    int x1 = card.cell.getX1Coordinate();
-                    int x2 = card.cell.getX2Coordinate();
-                    compileFunction(function, x1, x2, enemy);
-                }
-            }
             enemy.currentHealth -= enemy.theActualDamageReceived(card.theActualDamage());
+            if (enemy.currentHealth <= 0) {
+                killTheThing(enemy);
+            } else {
+                for (Function function : card.functions) {
+                    if (function.getFunctionType() == FunctionType.OnAttack) {
+                        compileFunction(function,card.cell.getX1Coordinate(),card.cell.getX2Coordinate());
+                    }
+                }
+                for (Function function : enemy.functions) {
+                    if (function.getFunctionType() == FunctionType.OnDefend) {
+                        compileFunction(function, enemy.cell.getX1Coordinate(), enemy.cell.getX2Coordinate());
+                    }
+                }
+                counterAttack(card, enemy);
+            }
 
-            counterAttack(card, enemy);
         }
     }
 

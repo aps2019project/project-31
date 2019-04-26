@@ -170,9 +170,10 @@ public class Player extends Ai {
     }
 
     public void endOfTurn() {
-        doOnTurnSpells();
+        doOnTurnFunctions();
         applyPoisonBuffs();
         buffsChangesAtTheEndOfTurn();
+
     }
 
     private void applyPoisonBuffs() {

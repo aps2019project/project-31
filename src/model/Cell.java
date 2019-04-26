@@ -3,24 +3,23 @@ package model;
 public class Cell {
     private int x1Coordinate;
     private int x2Coordinate;
-    private Card cardInCell;
-    private boolean isOnFire;
-    private boolean isPoisoned;
+    private Deployable cardInCell;
+    private int onFireTerms;
+    private int onPoisonTerms;
 
-    public Cell(int x1Coordinate, int x2Coordinate, Card cardInCell) {
+    public Cell(int x1Coordinate, int x2Coordinate, Deployable cardInCell) {
         this.x1Coordinate = x1Coordinate;
         this.x2Coordinate = x2Coordinate;
         this.cardInCell = cardInCell;
-        this.isOnFire = false;
-        this.isPoisoned = false;
+
     }
 
     public Cell(int x1Coordinate, int x2Coordinate) {
         this.x1Coordinate = x1Coordinate;
         this.x2Coordinate = x2Coordinate;
         this.cardInCell = Map.getCell(x1Coordinate, x2Coordinate).cardInCell;
-        this.isOnFire = Map.getCell(x1Coordinate, x2Coordinate).isOnFire;
-        this.isPoisoned = Map.getCell(x1Coordinate, x2Coordinate).isPoisoned;
+        this.onFireTerms = Map.getCell(x1Coordinate, x2Coordinate).onFireTerms;
+        this.onPoisonTerms = Map.getCell(x1Coordinate, x2Coordinate).onPoisonTerms;
     }
 
     public void setX1Coordinate(int x1Coordinate) {
@@ -31,17 +30,21 @@ public class Cell {
         this.x2Coordinate = x2Coordinate;
     }
 
-    public void setCardInCell(Card cardInCell) {
+    public void setCardInCell(Deployable cardInCell) {
         this.cardInCell = cardInCell;
     }
 
-    public void setOnFire(boolean onFire) {
-        isOnFire = onFire;
+    public void decreaseOnFire() {
+        if (onFireTerms > 0)
+            onFireTerms--;
     }
 
-    public void setPoisoned(boolean poisoned) {
-        isPoisoned = poisoned;
+    public void decreaseOnPoison() {
+        if (onPoisonTerms > 0)
+            onPoisonTerms--;
     }
+
+
 
     public int getX1Coordinate() {
         return x1Coordinate;
@@ -51,15 +54,16 @@ public class Cell {
         return x2Coordinate;
     }
 
-    public Card getCardInCell() {
+    public Deployable getCardInCell() {
         return cardInCell;
     }
 
     public boolean isOnFire() {
-        return isOnFire;
+        return onFireTerms >= 1;
     }
 
     public boolean isPoisoned() {
-        return isPoisoned;
+        return onPoisonTerms >= 1;
     }
+
 }
