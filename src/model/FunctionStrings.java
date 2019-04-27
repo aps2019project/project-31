@@ -19,5 +19,5 @@ package model;
     protected static final String POISON_CELL = "poison target cells";
     protected static final String SET_ON_FIRE = "set target cell on fire";
     protected static final String KILL_TARGETS = "straight up murder fools";
-
+    protected static final String INDISARMABLE = "indisarmable";
 }

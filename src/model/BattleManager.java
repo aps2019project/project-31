@@ -1,7 +1,5 @@
 package model;
 
-import java.nio.charset.IllegalCharsetNameException;
-import java.text.CollationElementIterator;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.regex.Matcher;
@@ -184,7 +182,7 @@ public abstract class BattleManager {
                 }
             }
 
-            if (target.matches("(.*)" + TargetStrings.RANDOM_SURROUNDING_ENEMY + "(.*)")){
+            if (target.matches("(.*)" + TargetStrings.RANDOM_SURROUNDING_ENEMY_MINION + "(.*)")){
                 ArrayList<Card> cardsToPickFrom = new ArrayList<>();
                 for (int i = x1 - 1; i < x1 + 2; i++) {
                     for (int j = x2 - 1; j < x2 + 2; j++) {
@@ -194,6 +192,18 @@ public abstract class BattleManager {
                     }
                 }
 
+                Random random = new Random();
+                targetCards.add(cardsToPickFrom.get(random.nextInt(cardsToPickFrom.size())));
+
+            }
+
+            if (target.matches("(.*)" + TargetStrings.RANDOM_ENEMY_MINION + "(.*)")){
+                ArrayList<Card> cardsToPickFrom = new ArrayList<>();
+                for (Card card: getOtherPlayer().getCardsOnBattleField()){
+                    if (card.getType() == CardType.minion){
+                        cardsToPickFrom.add(card);
+                    }
+                }
                 Random random = new Random();
                 targetCards.add(cardsToPickFrom.get(random.nextInt(cardsToPickFrom.size())));
 
@@ -230,10 +240,26 @@ public abstract class BattleManager {
 
             handleMurder(function, targetCards);
 
+            Indisarmable(function, x1, x2);
+
+
+
 
         } catch (IllegalStateException e) {
             //error message for view
 
+        }
+    }
+
+    private void Indisarmable(Function function, int x1, int x2) {
+        if (function.getFunction().matches("(.*)" + FunctionStrings.INDISARMABLE + "(.*)")){
+            ArrayList<Buff> toRemove = new ArrayList<>();
+            for (Buff buff: ((Deployable) Map.getCardInCell(x1,x2)).getBuffs()){
+                if (buff.getBuffType() == Buff.BuffType.Disarm){
+                    toRemove.add(buff);
+                }
+            }
+            ((Deployable)Map.getCardInCell(x1,x2)).getBuffs().removeAll(toRemove);
         }
     }
 
