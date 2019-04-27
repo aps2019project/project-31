@@ -1,7 +1,7 @@
 package model;
  public class FunctionStrings {
     protected static final String STUN = "stun target for";
-    protected static final String ACCUMULATING_ATTACK = "accumulate previous attacks on target";
+    protected static final String ACCUMULATING_ATTACKS = "accumulate previous attacks on target";
     protected static final String DISARM = "disarm target for";
     protected static final String APPLY_POISON = "poison target for";
     protected static final String DEAL_DAMAGE = "deal damage";
@@ -22,4 +22,5 @@ package model;
     protected static final String INDISARMABLE = "indisarmable";
     protected static final String UNPOISONABLE = "unpoisonable";
     protected static final String BLEED = "bleed";
+
 }

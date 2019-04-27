@@ -25,6 +25,14 @@ public class Pair<E, F> {
         return second;
     }
 
+    public void setFirst(E first) {
+        this.first = first;
+    }
+
+    public void setSecond(F second) {
+        this.second = second;
+    }
+
     @Override
     public boolean equals(Object obj) {
         return ((Pair<E, F>) obj).first.equals(this.first) && ((Pair<E, F>) obj).second.equals(this.second);

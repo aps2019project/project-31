@@ -2,6 +2,7 @@ package model;
 
 import org.graalvm.compiler.replacements.Log;
 
+import java.awt.*;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -250,11 +251,20 @@ public abstract class BattleManager {
 
             handleUnpoisonable(function, x1, x2);
 
-
+            handleAccumilatingAttack(function, x1, x2, attackTarget);
 
         } catch (IllegalStateException e) {
             //error message for view
 
+        }
+    }
+
+    private void handleAccumilatingAttack(Function function, int x1, int x2, Deployable attackTarget) {
+        Pattern pattern = Pattern.compile(FunctionStrings.ACCUMULATING_ATTACKS + "(\\d+)");
+        Matcher matcher = pattern.matcher(function.getFunction());
+        if (matcher.matches()){
+            int amount = Integer.parseInt(matcher.group(1));
+            attackTarget.takeDamage(attackTarget.accumilatingAttack((Deployable) Map.getCardInCell(x1,x2)) * amount);
         }
     }
 
