@@ -182,7 +182,7 @@ public abstract class BattleManager {
                 }
             }
 
-            if (target.matches("(.*)" + TargetStrings.RANDOM_SURROUNDING_ENEMY_MINION + "(.*)")){
+            if (target.matches("(.*)" + TargetStrings.RANDOM_SURROUNDING_ENEMY_MINION + "(.*)")) {
                 ArrayList<Card> cardsToPickFrom = new ArrayList<>();
                 for (int i = x1 - 1; i < x1 + 2; i++) {
                     for (int j = x2 - 1; j < x2 + 2; j++) {
@@ -197,10 +197,10 @@ public abstract class BattleManager {
 
             }
 
-            if (target.matches("(.*)" + TargetStrings.RANDOM_ENEMY_MINION + "(.*)")){
+            if (target.matches("(.*)" + TargetStrings.RANDOM_ENEMY_MINION + "(.*)")) {
                 ArrayList<Card> cardsToPickFrom = new ArrayList<>();
-                for (Card card: getOtherPlayer().getCardsOnBattleField()){
-                    if (card.getType() == CardType.minion){
+                for (Card card : getOtherPlayer().getCardsOnBattleField()) {
+                    if (card.getType() == CardType.minion) {
                         cardsToPickFrom.add(card);
                     }
                 }
@@ -208,8 +208,6 @@ public abstract class BattleManager {
                 targetCards.add(cardsToPickFrom.get(random.nextInt(cardsToPickFrom.size())));
 
             }
-
-
 
 
             // pattern = Pattern.compile(TargetStrings.)
@@ -240,8 +238,9 @@ public abstract class BattleManager {
 
             handleMurder(function, targetCards);
 
-            Indisarmable(function, x1, x2);
+            handleIndisarmable(function, x1, x2);
 
+            handleUnpoisonable(function, x1, x2);
 
 
 
@@ -251,21 +250,33 @@ public abstract class BattleManager {
         }
     }
 
-    private void Indisarmable(Function function, int x1, int x2) {
-        if (function.getFunction().matches("(.*)" + FunctionStrings.INDISARMABLE + "(.*)")){
+    private void handleUnpoisonable(Function function, int x1, int x2) {
+        if (function.getFunction().matches("(.*)" + FunctionStrings.UNPOISONABLE + "(.*)")) {
             ArrayList<Buff> toRemove = new ArrayList<>();
-            for (Buff buff: ((Deployable) Map.getCardInCell(x1,x2)).getBuffs()){
-                if (buff.getBuffType() == Buff.BuffType.Disarm){
+            for (Buff buff : ((Deployable) Map.getCardInCell(x1, x2)).getBuffs()) {
+                if (buff.getBuffType() == Buff.BuffType.Poison) {
                     toRemove.add(buff);
                 }
             }
-            ((Deployable)Map.getCardInCell(x1,x2)).getBuffs().removeAll(toRemove);
+            ((Deployable) Map.getCardInCell(x1, x2)).getBuffs().removeAll(toRemove);
+        }
+    }
+
+    private void handleIndisarmable(Function function, int x1, int x2) {
+        if (function.getFunction().matches("(.*)" + FunctionStrings.INDISARMABLE + "(.*)")) {
+            ArrayList<Buff> toRemove = new ArrayList<>();
+            for (Buff buff : ((Deployable) Map.getCardInCell(x1, x2)).getBuffs()) {
+                if (buff.getBuffType() == Buff.BuffType.Disarm) {
+                    toRemove.add(buff);
+                }
+            }
+            ((Deployable) Map.getCardInCell(x1, x2)).getBuffs().removeAll(toRemove);
         }
     }
 
     private void handleMurder(Function function, ArrayList<Card> targetCards) {
-        if (function.getFunction().matches("(.*)" + FunctionStrings.KILL_TARGETS + "(.*)")){
-            for (Card card: targetCards){
+        if (function.getFunction().matches("(.*)" + FunctionStrings.KILL_TARGETS + "(.*)")) {
+            for (Card card : targetCards) {
                 killTheThing((Deployable) card);
             }
         }
@@ -274,17 +285,17 @@ public abstract class BattleManager {
     private void handleFireAndPoisonCells(Function function, ArrayList<Cell> targetCells) {
         Pattern pattern = Pattern.compile(FunctionStrings.POISON_CELL + "(\\d+)");
         Matcher matcher = pattern.matcher(function.getFunction());
-        if (matcher.matches()){
+        if (matcher.matches()) {
             int turns = Integer.parseInt(matcher.group(1));
-            for (Cell cell: targetCells){
+            for (Cell cell : targetCells) {
                 cell.setOnFireTurns(turns);
             }
         }
         pattern = Pattern.compile(FunctionStrings.SET_ON_FIRE + "(\\d+)");
         matcher = pattern.matcher(function.getFunction());
-        if (matcher.matches()){
+        if (matcher.matches()) {
             int turns = Integer.parseInt(matcher.group(1));
-            for (Cell cell: targetCells){
+            for (Cell cell : targetCells) {
                 cell.setOnPoisonTurns(turns);
             }
         }
@@ -293,37 +304,34 @@ public abstract class BattleManager {
     private void handleAttackIncrease(Function function, ArrayList<Card> targetCards) {
         Pattern pattern = Pattern.compile(FunctionStrings.INCREASE_ATTACK + "(\\d+)");
         Matcher matcher = pattern.matcher(function.getFunction());
-        if (matcher.matches()){
+        if (matcher.matches()) {
             int amount = Integer.parseInt(matcher.group(1));
-            for (Card card: targetCards){
+            for (Card card : targetCards) {
                 ((Deployable) card).increaseAttack(amount);
             }
         }
     }
 
     private void handleDispel(Function function, ArrayList<Card> targetCards) {
-        if (function.getFunction().matches("(.*)" + FunctionStrings.DISPEL + "(.*)")){
-            for (Card card: targetCards){
+        if (function.getFunction().matches("(.*)" + FunctionStrings.DISPEL + "(.*)")) {
+            for (Card card : targetCards) {
                 ArrayList<Buff> toRemove = new ArrayList<>();
-                if (card.getAccount().equals(currentPlayer.getAccount())){
-                    for (Buff buff: ((Deployable) card).getBuffs()){
-                        if (!buff.isBeneficial()){
-                            if (buff.isContinuous()){
+                if (card.getAccount().equals(currentPlayer.getAccount())) {
+                    for (Buff buff : ((Deployable) card).getBuffs()) {
+                        if (!buff.isBeneficial()) {
+                            if (buff.isContinuous()) {
                                 buff.setActive(false);
-                            }
-                            else {
+                            } else {
                                 toRemove.add(buff);
                             }
                         }
                     }
-                }
-                else {
-                    for (Buff buff: ((Deployable) card).getBuffs()){
-                        if (buff.isBeneficial()){
-                            if (buff.isContinuous()){
+                } else {
+                    for (Buff buff : ((Deployable) card).getBuffs()) {
+                        if (buff.isBeneficial()) {
+                            if (buff.isContinuous()) {
                                 buff.setActive(false);
-                            }
-                            else {
+                            } else {
                                 toRemove.add(buff);
                             }
                         }
@@ -349,6 +357,16 @@ public abstract class BattleManager {
         Pattern pattern = Pattern.compile(FunctionStrings.APPLY_BUFF + "(.*)");
         Matcher matcher = pattern.matcher(function.getFunction());
         if (matcher.matches()) {
+            Pattern pattern1 = Pattern.compile(FunctionStrings.BLEED + "(\\d+)(\\d+)");
+            Matcher matcher1 = pattern.matcher(matcher.group(1));
+            if (matcher1.matches()){
+                int one = Integer.parseInt(matcher1.group(1));
+                int two = Integer.parseInt(matcher1.group(2));
+                Buff buff = new Buff(Buff.BuffType.Bleed, 2,0,
+                        0, false);
+                buff.setBleed(one, two);
+                addBuffs(targetCards, buff);
+            }
             if (matcher.group(1).trim().matches("unholy")) {
                 addUnholyBuff(targetCards);
             }
@@ -527,7 +545,7 @@ public abstract class BattleManager {
             } else {
                 for (Function function : card.functions) {
                     if (function.getFunctionType() == FunctionType.OnAttack) {
-                        compileFunction(function,card.cell.getX1Coordinate(),card.cell.getX2Coordinate());
+                        compileFunction(function, card.cell.getX1Coordinate(), card.cell.getX2Coordinate());
                     }
                 }
                 for (Function function : enemy.functions) {
