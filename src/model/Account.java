@@ -40,11 +40,11 @@ public class Account {
     }
 
     public static boolean checkLogin(String username, String password) {
-        Account account = findTheAccount(username);
+        Account account = findAccount(username);
         return account != null && account.password.equals(password);
     }
 
-    private static Account findTheAccount(String username) {
+    private static Account findAccount(String username) {
         for (Account account : allAccounts) {
             if (account.username.equals(username)) {
                 return account;

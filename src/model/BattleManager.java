@@ -1,7 +1,8 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.Random;
+import org.graalvm.compiler.replacements.Log;
+
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -39,19 +40,22 @@ public abstract class BattleManager {
     public void playMinion(Minion minion, int x, int y) {
         if (!isInHand(minion)) {
             //insert not in hand error message for view
+            Log.println("Minion not in hand");
+            return;
 
         }
 
         if (!checkCoordinates(x, y)) {
             //insert invalid coordinates error for view
-
+            Log.println("Invalid Coordinates");
+            return;
 
         }
 
         if (minion.manaCost > currentPlayer.getMana()) {
             //insert not enough mana message for view
-
-
+            Log.println("Not enough mana");
+            return;
         }
 
         for (Function function : minion.getFunctions()) {
@@ -66,7 +70,7 @@ public abstract class BattleManager {
     }
 
 
-    public void compileTargetString(ArrayList<Card> targetCards, ArrayList<Cell> targetCells, String target,
+    public boolean compileTargetString (ArrayList<Card> targetCards, ArrayList<Cell> targetCells, String target,
                                     int x1, int x2, Deployable attackTarget) {
         try {
             Pattern pattern = Pattern.compile(TargetStrings.MINIONS_WITH_DISTANCE + "(\\d+)");
@@ -95,6 +99,7 @@ public abstract class BattleManager {
                     targetCards.add(card);
                 } else {
                     //error message for view
+                    return false;
                 }
             }
 
@@ -104,7 +109,7 @@ public abstract class BattleManager {
                     targetCards.add(card);
                 } else {
                     //error message for view
-
+                    return false;
 
                 }
             }
@@ -141,7 +146,7 @@ public abstract class BattleManager {
                     targetCards.add(Map.getCardInCell(x1, x2));
                 } else {
                     //error message for view
-
+                    return false;
 
                 }
             }
@@ -173,25 +178,12 @@ public abstract class BattleManager {
             }
 
             if (target.matches("(.*)" + TargetStrings.SURROUNDING_ENEMY_MINIONS + "(.*)")) {
-                for (int i = x1 - 1; i < x1 + 2; i++) {
-                    for (int j = x2 - 1; j < x2 + 2; j++) {
-                        if (!Map.getCardInCell(x1, x2).getAccount().equals(currentPlayer.getAccount())) {
-                            targetCards.add(Map.getCardInCell(x1, x2));
-                        }
-                    }
-                }
+                addSurroundingCards(targetCards, x1, x2);
             }
 
             if (target.matches("(.*)" + TargetStrings.RANDOM_SURROUNDING_ENEMY_MINION + "(.*)")) {
                 ArrayList<Card> cardsToPickFrom = new ArrayList<>();
-                for (int i = x1 - 1; i < x1 + 2; i++) {
-                    for (int j = x2 - 1; j < x2 + 2; j++) {
-                        if (!Map.getCardInCell(x1, x2).getAccount().equals(currentPlayer.getAccount())) {
-                            cardsToPickFrom.add(Map.getCardInCell(x1, x2));
-                        }
-                    }
-                }
-
+                addSurroundingCards(cardsToPickFrom, x1, x2);
                 Random random = new Random();
                 targetCards.add(cardsToPickFrom.get(random.nextInt(cardsToPickFrom.size())));
 
@@ -207,12 +199,25 @@ public abstract class BattleManager {
                 Random random = new Random();
                 targetCards.add(cardsToPickFrom.get(random.nextInt(cardsToPickFrom.size())));
 
+
             }
 
 
-            // pattern = Pattern.compile(TargetStrings.)
         } catch (IllegalStateException e) {
             //Input error message for view
+            Log.println(e.toString());
+            return false;
+        }
+        return true;
+    }
+
+    private void addSurroundingCards(ArrayList<Card> list, int x1, int x2) {
+        for (int i = x1 - 1; i < x1 + 2; i++) {
+            for (int j = x2 - 1; j < x2 + 2; j++) {
+                if (!Map.getCardInCell(x1, x2).getAccount().equals(currentPlayer.getAccount())) {
+                    list.add(Map.getCardInCell(x1, x2));
+                }
+            }
         }
     }
 
@@ -223,7 +228,10 @@ public abstract class BattleManager {
     public void compileFunction(Function function, int x1, int x2, Deployable attackTarget) {
         ArrayList<Cell> targetCells = new ArrayList<>();
         ArrayList<Card> targetCards = new ArrayList<>();
-        compileTargetString(targetCards, targetCells, function.getTarget(), x1, x2, attackTarget);
+        if (!compileTargetString(targetCards, targetCells, function.getTarget(), x1, x2, attackTarget)){
+            Log.println("Invalid target");
+            return;
+        }
 
         try {
             handleBuffs(function, targetCards);
