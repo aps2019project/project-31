@@ -22,6 +22,7 @@ public class Deployable extends Card {
     public boolean isCombo() {
         return isCombo;
     }
+    protected ArrayList<Pair<Deployable, Integer>> accumilatingAttacks;
 
     public Deployable(int price, int manaCost, String cardText, ArrayList<Function> functions, Account account,
                       String name, int id, CardType type, boolean isDeployed, boolean isMoved, boolean isAttacked,
@@ -34,6 +35,16 @@ public class Deployable extends Card {
         this.currentHealth = currentHealth;
         this.currentAttack = currentAttack;
         this.buffs = buffs;
+    }
+    public int accumilatingAttack(Deployable attacker){
+        for (Pair<Deployable, Integer> pair: accumilatingAttacks){
+            if (pair.getFirst().equals(attacker)){
+                pair.setSecond(pair.getSecond().intValue() + 1);
+                return pair.getSecond() - 1;
+            }
+        }
+        accumilatingAttacks.add(new Pair<>(attacker, 1));
+        return 0;
     }
 
     public void increaseAttack(int amount){

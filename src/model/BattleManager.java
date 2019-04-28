@@ -1,5 +1,9 @@
 package model;
 
+import org.graalvm.compiler.replacements.Log;
+
+import java.awt.*;
+import java.util.*;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -41,19 +45,22 @@ public abstract class BattleManager {
     public void playMinion(Minion minion, int x, int y) {
         if (!isInHand(minion)) {
             //insert not in hand error message for view
+            Log.println("Minion not in hand");
+            return;
 
         }
 
         if (!checkCoordinates(x, y)) {
             //insert invalid coordinates error for view
-
+            Log.println("Invalid Coordinates");
+            return;
 
         }
 
         if (minion.manaCost > currentPlayer.getMana()) {
             //insert not enough mana message for view
-
-
+            Log.println("Not enough mana");
+            return;
         }
 
         for (Function function : minion.getFunctions()) {
@@ -68,7 +75,7 @@ public abstract class BattleManager {
     }
 
 
-    public void compileTargetString(ArrayList<Card> targetCards, ArrayList<Cell> targetCells, String target,
+    public boolean compileTargetString (ArrayList<Card> targetCards, ArrayList<Cell> targetCells, String target,
                                     int x1, int x2, Deployable attackTarget) {
         try {
             Pattern pattern = Pattern.compile(TargetStrings.MINIONS_WITH_DISTANCE + "(\\d+)");
@@ -97,6 +104,7 @@ public abstract class BattleManager {
                     targetCards.add(card);
                 } else {
                     //error message for view
+                    return false;
                 }
             }
 
@@ -106,7 +114,7 @@ public abstract class BattleManager {
                     targetCards.add(card);
                 } else {
                     //error message for view
-
+                    return false;
 
                 }
             }
@@ -143,7 +151,7 @@ public abstract class BattleManager {
                     targetCards.add(Map.getCardInCell(x1, x2));
                 } else {
                     //error message for view
-
+                    return false;
 
                 }
             }
@@ -175,25 +183,12 @@ public abstract class BattleManager {
             }
 
             if (target.matches("(.*)" + TargetStrings.SURROUNDING_ENEMY_MINIONS + "(.*)")) {
-                for (int i = x1 - 1; i < x1 + 2; i++) {
-                    for (int j = x2 - 1; j < x2 + 2; j++) {
-                        if (!Map.getCardInCell(x1, x2).getAccount().equals(currentPlayer.getAccount())) {
-                            targetCards.add(Map.getCardInCell(x1, x2));
-                        }
-                    }
-                }
+                addSurroundingCards(targetCards, x1, x2);
             }
 
             if (target.matches("(.*)" + TargetStrings.RANDOM_SURROUNDING_ENEMY_MINION + "(.*)")) {
                 ArrayList<Card> cardsToPickFrom = new ArrayList<>();
-                for (int i = x1 - 1; i < x1 + 2; i++) {
-                    for (int j = x2 - 1; j < x2 + 2; j++) {
-                        if (!Map.getCardInCell(x1, x2).getAccount().equals(currentPlayer.getAccount())) {
-                            cardsToPickFrom.add(Map.getCardInCell(x1, x2));
-                        }
-                    }
-                }
-
+                addSurroundingCards(cardsToPickFrom, x1, x2);
                 Random random = new Random();
                 targetCards.add(cardsToPickFrom.get(random.nextInt(cardsToPickFrom.size())));
 
@@ -209,12 +204,25 @@ public abstract class BattleManager {
                 Random random = new Random();
                 targetCards.add(cardsToPickFrom.get(random.nextInt(cardsToPickFrom.size())));
 
+
             }
 
 
-            // pattern = Pattern.compile(TargetStrings.)
         } catch (IllegalStateException e) {
             //Input error message for view
+            Log.println(e.toString());
+            return false;
+        }
+        return true;
+    }
+
+    private void addSurroundingCards(ArrayList<Card> list, int x1, int x2) {
+        for (int i = x1 - 1; i < x1 + 2; i++) {
+            for (int j = x2 - 1; j < x2 + 2; j++) {
+                if (!Map.getCardInCell(x1, x2).getAccount().equals(currentPlayer.getAccount())) {
+                    list.add(Map.getCardInCell(x1, x2));
+                }
+            }
         }
     }
 
@@ -225,7 +233,10 @@ public abstract class BattleManager {
     public void compileFunction(Function function, int x1, int x2, Deployable attackTarget) {
         ArrayList<Cell> targetCells = new ArrayList<>();
         ArrayList<Card> targetCards = new ArrayList<>();
-        compileTargetString(targetCards, targetCells, function.getTarget(), x1, x2, attackTarget);
+        if (!compileTargetString(targetCards, targetCells, function.getTarget(), x1, x2, attackTarget)){
+            Log.println("Invalid target");
+            return;
+        }
 
         try {
             handleBuffs(function, targetCards);
@@ -240,8 +251,11 @@ public abstract class BattleManager {
 
             handleMurder(function, targetCards);
 
-            Indisarmable(function, x1, x2);
+            handleIndisarmable(function, x1, x2);
 
+            handleUnpoisonable(function, x1, x2);
+
+            handleAccumilatingAttack(function, x1, x2, attackTarget);
 
         } catch (IllegalStateException e) {
             //error message for view
@@ -249,7 +263,28 @@ public abstract class BattleManager {
         }
     }
 
-    private void Indisarmable(Function function, int x1, int x2) {
+    private void handleAccumilatingAttack(Function function, int x1, int x2, Deployable attackTarget) {
+        Pattern pattern = Pattern.compile(FunctionStrings.ACCUMULATING_ATTACKS + "(\\d+)");
+        Matcher matcher = pattern.matcher(function.getFunction());
+        if (matcher.matches()){
+            int amount = Integer.parseInt(matcher.group(1));
+            attackTarget.takeDamage(attackTarget.accumilatingAttack((Deployable) Map.getCardInCell(x1,x2)) * amount);
+        }
+    }
+
+    private void handleUnpoisonable(Function function, int x1, int x2) {
+        if (function.getFunction().matches("(.*)" + FunctionStrings.UNPOISONABLE + "(.*)")) {
+            ArrayList<Buff> toRemove = new ArrayList<>();
+            for (Buff buff : ((Deployable) Map.getCardInCell(x1, x2)).getBuffs()) {
+                if (buff.getBuffType() == Buff.BuffType.Poison) {
+                    toRemove.add(buff);
+                }
+            }
+            ((Deployable) Map.getCardInCell(x1, x2)).getBuffs().removeAll(toRemove);
+        }
+    }
+
+    private void handleIndisarmable(Function function, int x1, int x2) {
         if (function.getFunction().matches("(.*)" + FunctionStrings.INDISARMABLE + "(.*)")) {
             ArrayList<Buff> toRemove = new ArrayList<>();
             for (Buff buff : ((Deployable) Map.getCardInCell(x1, x2)).getBuffs()) {
@@ -344,6 +379,16 @@ public abstract class BattleManager {
         Pattern pattern = Pattern.compile(FunctionStrings.APPLY_BUFF + "(.*)");
         Matcher matcher = pattern.matcher(function.getFunction());
         if (matcher.matches()) {
+            Pattern pattern1 = Pattern.compile(FunctionStrings.BLEED + "(\\d+)(\\d+)");
+            Matcher matcher1 = pattern.matcher(matcher.group(1));
+            if (matcher1.matches()){
+                int one = Integer.parseInt(matcher1.group(1));
+                int two = Integer.parseInt(matcher1.group(2));
+                Buff buff = new Buff(Buff.BuffType.Bleed, 2,0,
+                        0, false);
+                buff.setBleed(one, two);
+                addBuffs(targetCards, buff);
+            }
             if (matcher.group(1).trim().matches("unholy")) {
                 addUnholyBuff(targetCards);
             }
@@ -547,8 +592,10 @@ public abstract class BattleManager {
             if (function.getFunctionType() == FunctionType.OnDefend) {
                 compileFunction(function, enemy.cell.getX1Coordinate(), enemy.cell.getX2Coordinate());
             }
+
         }
     }
+
     private void counterAttack(Deployable attacker, Deployable counterAttacker) {
         if (!counterAttacker.isDisarmed() && isAttackTypeValidForCounterAttack(attacker, counterAttacker)) {
             attacker.currentHealth -= attacker.theActualDamageReceived(counterAttacker.theActualDamage());

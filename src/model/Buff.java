@@ -9,6 +9,8 @@ public class Buff {
     private boolean isActive;
     private int effectOfWeaknessOrPowerOnHealth = 0;
     private int effectOfWeaknessOrPowerOnAttack = 0;
+    private int bleedOne = 0;
+    private int bleedTwo = 0;
 
 
     public Buff(BuffType buffType, int turnsLeft, int effectOfWeaknessOrPowerOnHealth,
@@ -19,6 +21,11 @@ public class Buff {
         this.effectOfWeaknessOrPowerOnHealth = effectOfWeaknessOrPowerOnHealth;
         this.isBeneficial = isBeneficial;
         this.isContinuous = false;
+    }
+
+    public void setBleed(int one, int two){
+        bleedOne = one;
+        bleedTwo = two;
     }
 
 
@@ -93,6 +100,7 @@ public class Buff {
         Weakness,
         Stun,
         Power,
-        Unholy
+        Unholy,
+        Bleed
     }
 }

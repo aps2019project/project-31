@@ -14,11 +14,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Input {
-    private static Scanner scanner = new Scanner(System.in);
-
-    public static Scanner getScanner() {
-        return scanner;
-    }
+    static Scanner scanner = new Scanner(System.in);
 
     public static void handleSelectCardOrSelectComboCards(Player player) {
         String input = Input.scanner.nextLine();
