@@ -2,12 +2,22 @@ package controller;
 
 import model.BattleManager;
 import model.Player;
+import view.Input;
+import view.Output;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class BattleMenu extends Menu {
+    private static BattleManager battleManager;
 
+    public static BattleManager getBattleManager() {
+        return battleManager;
+    }
 
     private void setBattleManagerMode(){
-        BattleManager battleManager=new ();
+        battleManager=new ();
 
 
         runTheGame(battleManager);
@@ -17,13 +27,17 @@ public class BattleMenu extends Menu {
         battleManager.setCurrentPlayer(battleManager.getPlayer2());
         while(true){
             isPlayer1Turn=!isPlayer1Turn;
+            battleManager.setCurrentPlayer(battleManager.getOtherPlayer());
             if(battleManager.getCurrentPlayer().isAi()){
                 battleManager.getCurrentPlayer().play();
             }
             else {
-                battleManager.setCurrentPlayer(battleManager.getOtherPlayer());
-                processTheInput(inputFromUser());
-
+                if(battleManager.getCurrentPlayer().getSelectedCard()!=null){
+                    Input.handleSelectCardOrSelectComboCards(battleManager.getCurrentPlayer()); // to view vorodi migire to controller selectedCard ro mirize tush ya combo ro check mikone
+                }
+                else {
+                    Input.moveAttackPlayCard(); // to view vorodi migire tabesho to controller seda mizane
+                }
             }
             battleManager.getCurrentPlayer().placeNextCardToHand();
             battleManager.getCurrentPlayer().endOfTurn();
