@@ -2,7 +2,7 @@ package model;
 
 import java.util.ArrayList;
 
-abstract public class Card {
+public abstract class Card {
     protected int price;
     protected int manaCost;
     protected String cardText;
@@ -72,11 +72,8 @@ abstract public class Card {
     }
 
     private boolean equals(Card card) {
-        if (card.name.equals(this.name) ||
-                card.id == this.id) {
-            return true;
-        }
-        return false;
+        return card.name.equals(this.name) ||
+                card.id == this.id;
     }
 
     public int getId() {

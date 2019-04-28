@@ -43,13 +43,6 @@ public abstract class BattleManager {
     }
 
     public void playMinion(Minion minion, int x, int y) {
-        if (!isInHand(minion)) {
-            //insert not in hand error message for view
-            Log.println("Minion not in hand");
-            return;
-
-        }
-
         if (!checkCoordinates(x, y)) {
             //insert invalid coordinates error for view
             Log.println("Invalid Coordinates");
@@ -73,7 +66,6 @@ public abstract class BattleManager {
         currentPlayer.removeFromHand(minion);
 
     }
-
 
     public boolean compileTargetString (ArrayList<Card> targetCards, ArrayList<Cell> targetCells, String target,
                                     int x1, int x2, Deployable attackTarget) {
@@ -516,8 +508,15 @@ public abstract class BattleManager {
         }
         return false;
     }
-
-    private boolean isInHand(Card card) {
+    public Card cardInHandByCardId(int cardId){
+        for (Card card:currentPlayer.getHand()) {
+            if(card.getId()==cardId){
+                return card;
+            }
+        }
+        return null;
+    }
+    public boolean isInHand(Card card) {
         for (Card card1 : currentPlayer.getHand()) {
             if (card1.equals(card)) {
                 return true;
@@ -539,7 +538,14 @@ public abstract class BattleManager {
             if (Map.getCell(x1, x2).getCardInCell() == null && !card.isMoved && !card.isStunned()) {
                 card.cell = Map.getCell(x1, x2);
                 Map.getCell(x1, x2).setCardInCell(card);
+                //cardid move to x1,x2
             }
+            else{
+                //invalid target
+            }
+        }
+        else{
+            //invalid target
         }
     }
 
@@ -567,6 +573,9 @@ public abstract class BattleManager {
         if ( !card.isAttacked && !card.isStunned() && isAttackTypeValidForAttack(card, enemy)) {
             dealAttackDamageAndDoOtherStuff(card,enemy);
             counterAttack(card, enemy);
+        }
+        else{
+            //opponent minion is unavailable for attack OR Card with [card id] can′t attack message
         }
     }
     private void dealAttackDamageAndDoOtherStuff(Deployable card,Deployable enemy){

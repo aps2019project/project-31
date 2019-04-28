@@ -8,6 +8,7 @@ import model.Player;
 import model.TargetStrings;
 
 import java.lang.reflect.Array;
+import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -23,25 +24,28 @@ public class Input {
         if (matcher.matches()) {
             int opponentCardId = Integer.parseInt(matcher.group(1));
             String[] strNumbers = matcher.group(2).split("\\s");
-            ArrayList<Deployable> validCards = new ArrayList<>();
-            for (String number : strNumbers) {
-                int cardId = Integer.parseInt(number);
-                if (Map.findCellByCardId(cardId).getCardInCell() != null &&
-                        Map.findCellByCardId(opponentCardId).getCardInCell() != null &&
-                        BattleManager.isAttackTypeValidForAttack(Map.findCellByCardId(cardId).getCardInCell(),
-                                Map.findCellByCardId(opponentCardId).getCardInCell())) {
-                   if(Map.findCellByCardId(cardId).getCardInCell().isCombo())
-                        validCards.add(Map.findCellByCardId(cardId).getCardInCell());
-                }
-            }
-            BattleMenu.getBattleManager().comboAtack(Map.findCellByCardId(opponentCardId).getCardInCell(), validCards);
+            BattleMenu.prepareComboAttack(strNumbers,opponentCardId);
         }
-        if(input.matches("select \\d+"))
-            player.selectACard(Integer.parseInt(input.replace("select","").trim()));
+        if (input.matches("select \\d+"))
+            player.selectACard(Integer.parseInt(input.replace("select", "").trim()));
     }
 
     public static void moveAttackPlayCard() {
         String input = Input.scanner.nextLine();
+        if (input.matches("attack\\s+\\d+")) {
+            BattleMenu.attack(Integer.parseInt(input.replace("attack", "").trim()));
+        }
+        Pattern pattern = Pattern.compile("move to\\((\\d),(\\d)\\)\\s*");
+        Matcher matcher = pattern.matcher(input);
+        if (matcher.matches()) {
+            BattleMenu.move( Integer.parseInt(matcher.group(1)),Integer.parseInt(matcher.group(2)));
+        }
+        pattern = Pattern.compile("insert (\\d+) in \\((\\d),(\\d)\\)\\s*");
+        matcher = pattern.matcher(input);
+        if(matcher.matches()){
+            BattleMenu.insert(Integer.parseInt(matcher.group(1)),Integer.parseInt(matcher.group(2)),
+                    Integer.parseInt(matcher.group(3)));
+        }
 
     }
 }

@@ -136,7 +136,7 @@ public class Player extends Ai {
             }
         }
         for (Deployable card : cardsOnBattleField) {
-            if (cardId == card.getId()) {
+            if (cardId == card.getUniqueId()) {
                 selectedCard = card;
                 return true;
             }
@@ -184,8 +184,8 @@ public class Player extends Ai {
                 }
             }
             for (int i = 0; i < card.functions.size(); i++) {
-                if(card.functions.get(i).getFunctionType()==FunctionType.Passive){
-                    battle.compileFunction(card.functions.get(i),card.cell.getX1Coordinate(),
+                if (card.functions.get(i).getFunctionType() == FunctionType.Passive) {
+                    battle.compileFunction(card.functions.get(i), card.cell.getX1Coordinate(),
                             card.cell.getX2Coordinate());
                 }
             }
@@ -283,6 +283,14 @@ public class Player extends Ai {
         if (matcher.matches()) {
 
         }
+    }
+
+    public boolean isSelectedCardDeployed() {
+        for (Deployable card : cardsOnBattleField) {
+            if (card.equals(selectedCard))
+                return true;
+        }
+        return false;
     }
 }
 
