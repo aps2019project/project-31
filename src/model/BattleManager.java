@@ -263,9 +263,32 @@ public abstract class BattleManager {
 
             handleHealing(function, targetCards);
 
+            handleGiveFunction(function, targetCards);
+
         } catch (IllegalStateException e) {
             //error message for view
+            Log.println(e.toString());
+        }
+    }
 
+    private void handleGiveFunction(Function function, ArrayList<Card> targetCards) {
+        Pattern pattern = Pattern.compile(FunctionStrings.GIVE_FUNCTION + "type:(.*)" + "function:(.*)" + "target:(.*)");
+        Matcher matcher = pattern.matcher(function.getFunction());
+        if (matcher.matches()){
+            FunctionType functionType = null;
+            switch (matcher.group(1).replaceAll("type:","")){
+                case "OnDeath":
+                    functionType = FunctionType.OnDeath;
+                case "OnAttack":
+                    functionType = FunctionType.OnAttack;
+                case "OnDefend":
+                    functionType = FunctionType.OnDefend;
+            }
+            Function function1 = new Function(functionType, matcher.group(2).replaceAll("function:",""),
+                    matcher.group(3).replaceAll("target:",""));
+            for (Card card: targetCards){
+                ((Deployable) card).addFunction(function1);
+            }
         }
     }
 
@@ -284,7 +307,7 @@ public abstract class BattleManager {
         Matcher matcher = pattern.matcher(function.getFunction());
         if (matcher.matches()) {
             int amount = Integer.parseInt(matcher.group(1));
-            attackTarget.takeDamage(attackTarget.accumilatingAttack((Deployable) Map.getCardInCell(x1, x2)) * amount);
+            attackTarget.takeDamage(attackTarget.accumulatingAttack((Deployable) Map.getCardInCell(x1, x2)) * amount);
         }
     }
 

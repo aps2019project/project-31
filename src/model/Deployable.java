@@ -1,7 +1,6 @@
 package model;
 
 import java.util.ArrayList;
-import java.util.concurrent.locks.Condition;
 
 public class Deployable extends Card {
     protected boolean isMoved;
@@ -22,7 +21,12 @@ public class Deployable extends Card {
     public boolean isCombo() {
         return isCombo;
     }
-    protected ArrayList<Pair<Deployable, Integer>> accumilatingAttacks;
+
+    public void addFunction(Function function){
+        functions.add(function);
+    }
+
+    protected ArrayList<Pair<Deployable, Integer>> accumulatingAttacks;
     protected int maxHealth;
 
     public Deployable(int price, int manaCost, String cardText, ArrayList<Function> functions, Account account,
@@ -38,14 +42,14 @@ public class Deployable extends Card {
         this.buffs = buffs;
     }
 
-    public int accumilatingAttack(Deployable attacker) {
-        for (Pair<Deployable, Integer> pair : accumilatingAttacks) {
+    public int accumulatingAttack(Deployable attacker) {
+        for (Pair<Deployable, Integer> pair : accumulatingAttacks) {
             if (pair.getFirst().equals(attacker)) {
                 pair.setSecond(pair.getSecond().intValue() + 1);
                 return pair.getSecond() - 1;
             }
         }
-        accumilatingAttacks.add(new Pair<>(attacker, 1));
+        accumulatingAttacks.add(new Pair<>(attacker, 1));
         return 0;
     }
 

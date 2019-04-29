@@ -25,4 +25,5 @@ package model;
     protected static final String HEAL = "heal";
     protected static final String INVULNERABLE = "invulnerable";
     protected static final String HOLY_CELL = "holy cell";
+    protected static final String GIVE_FUNCTION = "give function";
 }
