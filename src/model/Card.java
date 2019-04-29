@@ -83,12 +83,12 @@ public abstract class Card {
     public CardType getType() {
         return type;
     }
-}
+    public enum CardType {
+        minion,
+        hero,
+        spell,
+        item,
+        herospell
+    }
 
-enum CardType {
-    minion,
-    hero,
-    spell,
-    item,
-    herospell
 }

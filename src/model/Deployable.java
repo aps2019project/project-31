@@ -6,9 +6,9 @@ public class Deployable extends Card {
     protected boolean isMoved;
     protected boolean isAttacked;
     protected Cell cell;
+    protected int attackRange;
     protected int currentHealth;
     protected int currentAttack;
-    protected int attackRange;
     protected ArrayList<Buff> buffs;
     protected int uniqueId;
     protected String attackType;
@@ -32,10 +32,11 @@ public class Deployable extends Card {
     public Deployable(int price, int manaCost, String cardText, ArrayList<Function> functions, Account account,
                       String name, int id, CardType type, boolean isDeployed, boolean isMoved, boolean isAttacked,
                       Cell cell, int currentHealth, int currentAttack,
-                      ArrayList<Buff> buffs) {
+                      ArrayList<Buff> buffs, int attackRange) {
         super(price, manaCost, cardText, functions, account, name, id, type, isDeployed);
         this.isMoved = isMoved;
         this.isAttacked = isAttacked;
+        this.attackRange = attackRange;
         this.cell = cell;
         this.maxHealth = this.currentHealth = currentHealth;
         this.currentAttack = currentAttack;

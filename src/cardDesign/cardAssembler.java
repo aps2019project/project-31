@@ -3,6 +3,7 @@ package cardDesign;
 
 import model.FunctionStrings;
 
+import java.util.Collections;
 import java.util.Scanner;
 
 public class cardAssembler {

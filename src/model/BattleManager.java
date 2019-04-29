@@ -1,5 +1,6 @@
 package model;
 
+
 import org.graalvm.compiler.replacements.Log;
 
 import java.util.ArrayList;
@@ -8,7 +9,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public abstract class BattleManager {
-    public static final int PERMENANT = 100;
+    public static final int PERMANENT = 100;
     public static final String CONTINUOUS = "continuous";
     private Map map;
     private String gameMode;
@@ -38,7 +39,7 @@ public abstract class BattleManager {
         this.currentPlayer = currentPlayer;
     }
 
-    public void playMinion(Minion minion, int x, int y) {
+    public void playMinion(Minion minion, int x1, int x2) {
         if (!isInHand(minion)) {
             //insert not in hand error message for view
             Log.println("Minion not in hand");
@@ -46,7 +47,7 @@ public abstract class BattleManager {
 
         }
 
-        if (!checkCoordinates(x, y)) {
+        if (!checkCoordinates(x1, x2)) {
             //insert invalid coordinates error for view
             Log.println("Invalid Coordinates");
             return;
@@ -61,10 +62,14 @@ public abstract class BattleManager {
 
         for (Function function : minion.getFunctions()) {
             if (function.getFunctionType() == FunctionType.OnSpawn) {
-                compileFunction(function, x, y);
+                compileFunction(function, x1, x2);
             }
         }
-        Map.putCardInCell(minion, x, y);
+        Minion minion1 = new Minion(minion.price, minion.manaCost, minion.cardText, minion.functions, minion.account,
+                minion.name, minion.id, minion.type, minion.isDeployed, false, false, Map.getCell(x1,x2)
+                ,minion.maxHealth, minion.maxHealth, new ArrayList<Buff>(),
+                minion.attackType, minion.currentAttack, minion.maxHealth, minion.attackRange);
+        Map.putCardInCell(minion, x1, x2);
         currentPlayer.addCardToBattlefield(minion);
         currentPlayer.removeFromHand(minion);
 
@@ -83,7 +88,7 @@ public abstract class BattleManager {
                         Card cardInCell = Map.getCardInCell(x1 - distance + i, x2 - distance + j);
                         if (cardInCell != null) {
                             if (!cardInCell.getAccount().equals(currentPlayer.getAccount()) &&
-                                    cardInCell.getType() == CardType.minion) {
+                                    cardInCell.getType() == Card.CardType.minion) {
                                 targetCards.add(cardInCell);
                             }
                         }
@@ -131,7 +136,7 @@ public abstract class BattleManager {
                 addEnemiesInRow(targetCards, x1);
             } else if (target.matches("(.*)" + TargetStrings.ALL_ENEMY_MINIONS + "(.*)")) {
                 for (Card card : getOtherPlayer().getCardsOnBattleField()) {
-                    if (card.getType() == CardType.minion) {
+                    if (card.getType() == Card.CardType.minion) {
                         targetCards.add(card);
                     }
                 }
@@ -141,7 +146,7 @@ public abstract class BattleManager {
 
             if (target.matches("(.*)" + TargetStrings.ENEMY_MINION + "(.*)")) {
                 if (Map.getCardInCell(x1, x2) != null
-                        && Map.getCardInCell(x1, x2).getType() == CardType.minion
+                        && Map.getCardInCell(x1, x2).getType() == Card.CardType.minion
                         && Map.getCardInCell(x1, x2).getAccount().equals(currentPlayer.getAccount())) {
                     // isn't it better if we make haveCardInBattle instead of .equals ?
                     targetCards.add(Map.getCardInCell(x1, x2));
@@ -193,7 +198,7 @@ public abstract class BattleManager {
             if (target.matches("(.*)" + TargetStrings.RANDOM_ENEMY_MINION + "(.*)")) {
                 ArrayList<Card> cardsToPickFrom = new ArrayList<>();
                 for (Card card : getOtherPlayer().getCardsOnBattleField()) {
-                    if (card.getType() == CardType.minion) {
+                    if (card.getType() == Card.CardType.minion) {
                         cardsToPickFrom.add(card);
                     }
                 }
@@ -442,7 +447,7 @@ public abstract class BattleManager {
             }
             if (matcher.group(1).trim().matches("disarm(\\d+|continuous)")) {
                 if (matcher.group(1).replace("disarm", "").matches(CONTINUOUS)) {
-                    Buff buff = new Buff(Buff.BuffType.Disarm, PERMENANT, 0, 0, false);
+                    Buff buff = new Buff(Buff.BuffType.Disarm, PERMANENT, 0, 0, false);
                     buff.makeContinuous();
                     addBuffs(targetCards, buff);
                     return;
@@ -453,7 +458,7 @@ public abstract class BattleManager {
             }
             if (matcher.group(1).trim().matches("holy(\\d+|continuous)")) {
                 if (matcher.group(1).replace("holy", "").matches(CONTINUOUS)) {
-                    Buff buff = new Buff(Buff.BuffType.Holy, PERMENANT, 0, 0, true);
+                    Buff buff = new Buff(Buff.BuffType.Holy, PERMANENT, 0, 0, true);
                     buff.makeContinuous();
                     addBuffs(targetCards, buff);
                     return;
@@ -464,7 +469,7 @@ public abstract class BattleManager {
             }
             if (matcher.group(1).trim().matches("stun(\\d+|continuous)")) {
                 if (matcher.group(1).replace("stun", "").matches(CONTINUOUS)) {
-                    Buff buff = new Buff(Buff.BuffType.Stun, PERMENANT, 0, 0, false);
+                    Buff buff = new Buff(Buff.BuffType.Stun, PERMANENT, 0, 0, false);
                     buff.makeContinuous();
                     addBuffs(targetCards, buff);
                     return;
@@ -478,7 +483,7 @@ public abstract class BattleManager {
                 int amount = Integer.parseInt(matcher.group(1).replaceFirst("pwhealth", "")
                         .replaceFirst("for\\d+", ""));
                 if (matcher.group(1).replaceFirst("pwhealth\\d+for", "").matches(CONTINUOUS)) {
-                    Buff buff = new Buff(Buff.BuffType.Power, PERMENANT, amount, 0, true);
+                    Buff buff = new Buff(Buff.BuffType.Power, PERMANENT, amount, 0, true);
                     buff.makeContinuous();
                     addBuffs(targetCards, buff);
                     return;
@@ -492,7 +497,7 @@ public abstract class BattleManager {
                 int amount = Integer.parseInt(matcher.group(1).replaceFirst("pwattack", "")
                         .replaceFirst("for\\d+", ""));
                 if (matcher.group(1).replaceFirst("pwattack\\d+for", "").matches(CONTINUOUS)) {
-                    Buff buff = new Buff(Buff.BuffType.Power, PERMENANT, 0, amount, true);
+                    Buff buff = new Buff(Buff.BuffType.Power, PERMANENT, 0, amount, true);
                     buff.makeContinuous();
                     addBuffs(targetCards, buff);
                     return;
@@ -506,7 +511,7 @@ public abstract class BattleManager {
                 int amount = Integer.parseInt(matcher.group(1).replaceFirst("wkhealth", "")
                         .replaceFirst("for\\d+", ""));
                 if (matcher.group(1).replaceFirst("wkhealth\\d+for", "").matches(CONTINUOUS)) {
-                    Buff buff = new Buff(Buff.BuffType.Weakness, PERMENANT, amount, 0, false);
+                    Buff buff = new Buff(Buff.BuffType.Weakness, PERMANENT, amount, 0, false);
                     buff.makeContinuous();
                     addBuffs(targetCards, buff);
                     return;
@@ -520,7 +525,7 @@ public abstract class BattleManager {
                 int amount = Integer.parseInt(matcher.group(1).replaceFirst("wkattack", "")
                         .replaceFirst("for\\d+", ""));
                 if (matcher.group(1).replaceFirst("wkattack\\d+for", "").matches(CONTINUOUS)) {
-                    Buff buff = new Buff(Buff.BuffType.Weakness, PERMENANT, 0, amount, false);
+                    Buff buff = new Buff(Buff.BuffType.Weakness, PERMANENT, 0, amount, false);
                     buff.makeContinuous();
                     addBuffs(targetCards, buff);
                     return;
@@ -541,7 +546,7 @@ public abstract class BattleManager {
     }
 
     private void addUnholyBuff(ArrayList<Card> targetCards) {
-        Buff buff = new Buff(Buff.BuffType.Unholy, PERMENANT, 0, 0, false);
+        Buff buff = new Buff(Buff.BuffType.Unholy, PERMANENT, 0, 0, false);
         addBuffs(targetCards, buff);
     }
 

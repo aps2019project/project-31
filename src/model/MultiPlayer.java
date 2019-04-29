@@ -24,4 +24,10 @@ public class MultiPlayer extends BattleManager {
     public Player getPlayerTwo() {
         return playerTwo;
     }
+
+    @Override
+    public Player getOtherPlayer() {
+        if (getCurrentPlayer() == playerOne) return playerTwo;
+        return playerOne;
+    }
 }

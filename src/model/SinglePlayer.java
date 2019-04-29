@@ -27,4 +27,9 @@ public class SinglePlayer extends BattleManager {
     public static void playAi(){
 
     }
+
+    @Override
+    public Player getOtherPlayer() {
+        return aiPlayer;
+    }
 }
