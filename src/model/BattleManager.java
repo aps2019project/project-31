@@ -71,8 +71,8 @@ public abstract class BattleManager {
     }
 
 
-    public boolean compileTargetString (ArrayList<Card> targetCards, ArrayList<Cell> targetCells, String target,
-                                    int x1, int x2, Deployable attackTarget) {
+    public boolean compileTargetString(ArrayList<Card> targetCards, ArrayList<Cell> targetCells, String target,
+                                       int x1, int x2, Deployable attackTarget) {
         try {
             Pattern pattern = Pattern.compile(TargetStrings.MINIONS_WITH_DISTANCE + "(\\d+)");
             Matcher matcher = pattern.matcher(target);
@@ -229,7 +229,7 @@ public abstract class BattleManager {
     public void compileFunction(Function function, int x1, int x2, Deployable attackTarget) {
         ArrayList<Cell> targetCells = new ArrayList<>();
         ArrayList<Card> targetCards = new ArrayList<>();
-        if (!compileTargetString(targetCards, targetCells, function.getTarget(), x1, x2, attackTarget)){
+        if (!compileTargetString(targetCards, targetCells, function.getTarget(), x1, x2, attackTarget)) {
             Log.println("Invalid target");
             return;
         }
@@ -253,18 +253,30 @@ public abstract class BattleManager {
 
             handleAccumilatingAttack(function, x1, x2, attackTarget);
 
+            handleHealing(function, targetCards);
+
         } catch (IllegalStateException e) {
             //error message for view
 
         }
     }
 
+    private void handleHealing(Function function, ArrayList<Card> targetCards) {
+        Pattern pattern = Pattern.compile(FunctionStrings.HEAL + "(\\d+)");
+        Matcher matcher = pattern.matcher(function.getFunction());
+        if (matcher.matches()) {
+            for (Card card : targetCards) {
+                ((Deployable) card).healUp(Integer.parseInt(matcher.group(1)));
+            }
+        }
+    }
+
     private void handleAccumilatingAttack(Function function, int x1, int x2, Deployable attackTarget) {
         Pattern pattern = Pattern.compile(FunctionStrings.ACCUMULATING_ATTACKS + "(\\d+)");
         Matcher matcher = pattern.matcher(function.getFunction());
-        if (matcher.matches()){
+        if (matcher.matches()) {
             int amount = Integer.parseInt(matcher.group(1));
-            attackTarget.takeDamage(attackTarget.accumilatingAttack((Deployable) Map.getCardInCell(x1,x2)) * amount);
+            attackTarget.takeDamage(attackTarget.accumilatingAttack((Deployable) Map.getCardInCell(x1, x2)) * amount);
         }
     }
 
@@ -377,10 +389,10 @@ public abstract class BattleManager {
         if (matcher.matches()) {
             Pattern pattern1 = Pattern.compile(FunctionStrings.BLEED + "(\\d+)(\\d+)");
             Matcher matcher1 = pattern.matcher(matcher.group(1));
-            if (matcher1.matches()){
+            if (matcher1.matches()) {
                 int one = Integer.parseInt(matcher1.group(1));
                 int two = Integer.parseInt(matcher1.group(2));
-                Buff buff = new Buff(Buff.BuffType.Bleed, 2,0,
+                Buff buff = new Buff(Buff.BuffType.Bleed, 2, 0,
                         0, false);
                 buff.setBleed(one, two);
                 addBuffs(targetCards, buff);

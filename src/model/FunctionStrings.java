@@ -22,5 +22,5 @@ package model;
     protected static final String INDISARMABLE = "indisarmable";
     protected static final String UNPOISONABLE = "unpoisonable";
     protected static final String BLEED = "bleed";
-
+    protected static final String HEAL = "heal";
 }

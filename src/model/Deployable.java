@@ -14,6 +14,7 @@ public class Deployable extends Card {
     protected int uniqueId;
     protected String attackType;
     protected ArrayList<Pair<Deployable, Integer>> accumilatingAttacks;
+    protected int maxHealth;
 
     public Deployable(int price, int manaCost, String cardText, ArrayList<Function> functions, Account account,
                       String name, int id, CardType type, boolean isDeployed, boolean isMoved, boolean isAttacked,
@@ -23,13 +24,14 @@ public class Deployable extends Card {
         this.isMoved = isMoved;
         this.isAttacked = isAttacked;
         this.cell = cell;
-        this.currentHealth = currentHealth;
+        this.maxHealth = this.currentHealth = currentHealth;
         this.currentAttack = currentAttack;
         this.buffs = buffs;
     }
-    public int accumilatingAttack(Deployable attacker){
-        for (Pair<Deployable, Integer> pair: accumilatingAttacks){
-            if (pair.getFirst().equals(attacker)){
+
+    public int accumilatingAttack(Deployable attacker) {
+        for (Pair<Deployable, Integer> pair : accumilatingAttacks) {
+            if (pair.getFirst().equals(attacker)) {
                 pair.setSecond(pair.getSecond().intValue() + 1);
                 return pair.getSecond() - 1;
             }
@@ -38,7 +40,14 @@ public class Deployable extends Card {
         return 0;
     }
 
-    public void increaseAttack(int amount){
+    public void healUp(int amount) {
+        currentHealth += amount;
+        if (currentHealth > maxHealth) {
+            currentHealth = maxHealth;
+        }
+    }
+
+    public void increaseAttack(int amount) {
         currentAttack += amount;
     }
 
@@ -170,6 +179,7 @@ public class Deployable extends Card {
     public void showCardInfo() {
 
     }
+
     public void applyFire() {
         currentHealth--; // how much it decreases
     }
