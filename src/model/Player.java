@@ -136,7 +136,7 @@ public class Player extends Ai {
             }
         }
         for (Deployable card : cardsOnBattleField) {
-            if (cardId == card.getId()) {
+            if (cardId == card.getUniqueId()) {
                 selectedCard = card;
                 return true;
             }
@@ -171,16 +171,22 @@ public class Player extends Ai {
 
     public void endOfTurn() {
         doOnTurnFunctions();
-        applyPoisonBuffs();
+        applyAtTheEndOfTurnBuffs();
         buffsChangesAtTheEndOfTurn();
 
     }
 
-    private void applyPoisonBuffs() {
+    private void applyAtTheEndOfTurnBuffs() {
         for (Deployable card : cardsOnBattleField) {
             for (int i = 0; i < card.buffs.size(); i++) {
                 if (card.buffs.get(i).buffType == Buff.BuffType.Poison) {
                     card.currentHealth--;
+                }
+            }
+            for (int i = 0; i < card.functions.size(); i++) {
+                if (card.functions.get(i).getFunctionType() == FunctionType.Passive) {
+                    battle.compileFunction(card.functions.get(i), card.cell.getX1Coordinate(),
+                            card.cell.getX2Coordinate());
                 }
             }
         }
@@ -195,7 +201,7 @@ public class Player extends Ai {
                 }
                 if (card.buffs.get(i).isContinuous()) {
                     card.buffs.get(i).setActive(true);
-                    card.buffs.get(i).setTurnsLeft(1);
+                    card.buffs.get(i).setTurnsLeft(2);
                 }
             }
         }
@@ -204,13 +210,16 @@ public class Player extends Ai {
     public void playCard(Card card, int x1, int x2) {
         switch (card.getType()) {
             case minion:
-                battle.playMinion((Minion) card, x1, x2);
+                Minion minion = new Minion();
+                battle.playMinion(minion, x1, x2);
                 break;
             case spell:
+                Spell spell = new Spell();
                 battle.playSpell((Spell) card, x1, x2);
                 break;
             case item:
-                battle.useItem((Item) card, x1, x2);
+                Item item = new Item();
+                battle.useItem(item, x1, x2);
 
         }
 
@@ -274,6 +283,14 @@ public class Player extends Ai {
         if (matcher.matches()) {
 
         }
+    }
+
+    public boolean isSelectedCardDeployed() {
+        for (Deployable card : cardsOnBattleField) {
+            if (card.equals(selectedCard))
+                return true;
+        }
+        return false;
     }
 }
 

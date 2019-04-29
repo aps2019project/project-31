@@ -4,6 +4,10 @@ import org.graalvm.compiler.replacements.Log;
 
 import java.awt.*;
 import java.util.*;
+import com.google.gson.Gson;
+
+import java.util.ArrayList;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -515,7 +519,7 @@ public abstract class BattleManager {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 if (i != 1 || j != 1) {
-                    if (Map.getCardInCell(x1, x2).getAccount().equals(currentPlayer.getAccount())) { // x , y chera ?
+                    if (Map.getCardInCell(x1-1+i, x2-1+j).getAccount().equals(currentPlayer.getAccount())) {
                         return true;
                     }
                 }
@@ -524,8 +528,15 @@ public abstract class BattleManager {
         }
         return false;
     }
-
-    private boolean isInHand(Card card) {
+    public Card cardInHandByCardId(int cardId){
+        for (Card card:currentPlayer.getHand()) {
+            if(card.getId()==cardId){
+                return card;
+            }
+        }
+        return null;
+    }
+    public boolean isInHand(Card card) {
         for (Card card1 : currentPlayer.getHand()) {
             if (card1.equals(card)) {
                 return true;
@@ -547,43 +558,68 @@ public abstract class BattleManager {
             if (Map.getCell(x1, x2).getCardInCell() == null && !card.isMoved && !card.isStunned()) {
                 card.cell = Map.getCell(x1, x2);
                 Map.getCell(x1, x2).setCardInCell(card);
+                //cardid move to x1,x2
             }
+            else{
+                //invalid target
+            }
+        }
+        else{
+            //invalid target
         }
     }
 
     public void killTheThing(Deployable enemy) {
+        for (Function function : enemy.functions) {
+            if (function.getFunctionType() == FunctionType.OnDeath) {
+                compileFunction(function, enemy.cell.getX1Coordinate(), enemy.cell.getX2Coordinate());
+            }
+        }
         Cell cell = Map.findCellByCardId(enemy.uniqueId);
         cell.setCardInCell(null);
         if (player1.doesPlayerHaveDeployable(enemy))
             player1.getCardsOnBattleField().remove(enemy);
         else
             player2.getCardsOnBattleField().remove(enemy);
-        for (Function function : enemy.functions) {
-            if (function.getFunctionType() == FunctionType.OnDeath) {
-                compileFunction(function, enemy.cell.getX1Coordinate(), enemy.cell.getX2Coordinate());
-            }
+    }
+    public void comboAtack(Deployable enemy,ArrayList<Deployable> comboAttackers){
+        attack(comboAttackers.get(0),enemy);
+        for (int i = 1; i <comboAttackers.size() ; i++) {
+            dealAttackDamageAndDoOtherStuff(comboAttackers.get(i),enemy);
         }
 
     }
-
     public void attack(Deployable card, Deployable enemy) {
-        if (isNear(card.cell, enemy.cell) && !card.isAttacked && !card.isStunned() &&
-                isAttackTypeValidForAttack(card, enemy)) {
+        if ( !card.isAttacked && !card.isStunned() && isAttackTypeValidForAttack(card, enemy)) {
+            dealAttackDamageAndDoOtherStuff(card,enemy);
+            counterAttack(card, enemy);
+        }
+        else{
+            //opponent minion is unavailable for attack OR Card with [card id] can′t attack message
+        }
+    }
+    private void dealAttackDamageAndDoOtherStuff(Deployable card,Deployable enemy){
+        if ( !card.isAttacked && !card.isStunned() && isAttackTypeValidForAttack(card, enemy)) {
             enemy.currentHealth -= enemy.theActualDamageReceived(card.theActualDamage());
             if (enemy.currentHealth <= 0) {
                 killTheThing(enemy);
-            } else {
-                for (Function function : card.functions) {
-                    if (function.getFunctionType() == FunctionType.OnAttack) {
-                        compileFunction(function, card.cell.getX1Coordinate(), card.cell.getX2Coordinate());
-                    }
-                }
-                for (Function function : enemy.functions) {
-                    if (function.getFunctionType() == FunctionType.OnDefend) {
-                        compileFunction(function, enemy.cell.getX1Coordinate(), enemy.cell.getX2Coordinate());
-                    }
-                }
-                counterAttack(card, enemy);
+            }
+            applyOnAttackFunction(card);
+            applyOnDefendFunction(enemy);
+        }
+    }
+    private void applyOnAttackFunction(Deployable card){
+        for (Function function : card.functions) {
+            if (function.getFunctionType() == FunctionType.OnAttack) {
+                compileFunction(function, card.cell.getX1Coordinate(), card.cell.getX2Coordinate());
+            }
+        }
+    }
+
+    private  void applyOnDefendFunction(Deployable enemy){
+        for (Function function : enemy.functions) {
+            if (function.getFunctionType() == FunctionType.OnDefend) {
+                compileFunction(function, enemy.cell.getX1Coordinate(), enemy.cell.getX2Coordinate());
             }
 
         }
@@ -595,7 +631,7 @@ public abstract class BattleManager {
         }
     }
 
-    private boolean isAttackTypeValidForAttack(Deployable attacker, Deployable counterAttacker) {
+    public static boolean isAttackTypeValidForAttack(Deployable attacker, Deployable counterAttacker) {
         return attacker.attackType.equals("melee") && isNear(attacker.cell, counterAttacker.cell) ||
                 (attacker.attackType.equals("ranged") &&
                         Map.getDistance(attacker.cell, counterAttacker.cell) <= attacker.attackRange) ||
@@ -611,7 +647,7 @@ public abstract class BattleManager {
     }
 
 
-    private boolean isNear(Cell cell1, Cell cell2) {
+    public static boolean isNear(Cell cell1, Cell cell2) {
         return Math.abs(cell1.getX1Coordinate() - cell2.getX1Coordinate()) < 2 &&
                 Math.abs(cell1.getX2Coordinate() - cell2.getX2Coordinate()) < 2;
     }

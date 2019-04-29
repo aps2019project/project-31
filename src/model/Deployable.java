@@ -13,6 +13,15 @@ public class Deployable extends Card {
     protected ArrayList<Buff> buffs;
     protected int uniqueId;
     protected String attackType;
+    protected boolean isCombo;
+
+    public int getUniqueId() {
+        return uniqueId;
+    }
+
+    public boolean isCombo() {
+        return isCombo;
+    }
     protected ArrayList<Pair<Deployable, Integer>> accumilatingAttacks;
     protected int maxHealth;
 
