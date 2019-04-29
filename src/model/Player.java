@@ -192,6 +192,7 @@ public class Player extends Ai {
         }
     }
 
+
     public void buffsChangesAtTheEndOfTurn() {
         for (Deployable card : cardsOnBattleField) {
             for (int i = 0; i < card.buffs.size(); i++) {

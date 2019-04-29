@@ -23,4 +23,6 @@ package model;
     protected static final String UNPOISONABLE = "unpoisonable";
     protected static final String BLEED = "bleed";
     protected static final String HEAL = "heal";
+    protected static final String INVULNERABLE = "invulnerable";
+    protected static final String HOLY_CELL = "holy cell";
 }

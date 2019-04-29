@@ -2,10 +2,6 @@ package model;
 
 import org.graalvm.compiler.replacements.Log;
 
-import java.awt.*;
-import java.util.*;
-import com.google.gson.Gson;
-
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.regex.Matcher;
@@ -95,6 +91,10 @@ public abstract class BattleManager {
                 }
             }
 
+            if (target.matches("(.*)" + TargetStrings.ENEMY_GENERAL_ROW + "(.*)")){
+                addEnemiesInRow(targetCards, getOtherPlayer().getHero().getCell().getX1Coordinate());
+            }
+
             if (target.matches("(.*)" + TargetStrings.ALL_ALLIES + "(.*)")) {
                 targetCards.addAll(currentPlayer.getCardsOnBattleField());
             } else if (target.matches("(.*)" + TargetStrings.ALLY + "(.*)")) {
@@ -128,11 +128,7 @@ public abstract class BattleManager {
                     }
                 }
             } else if (target.matches("(.*)" + TargetStrings.ALL_ENEMIES_IN_ROW + "(.*)")) {
-                for (int i = 1; i <= Map.MAP_X1_LENGTH; i++) {
-                    if (!Map.getCardInCell(x1, i).getAccount().equals(currentPlayer.getAccount())) {
-                        targetCards.add(Map.getCardInCell(x1, i));
-                    }
-                }
+                addEnemiesInRow(targetCards, x1);
             } else if (target.matches("(.*)" + TargetStrings.ALL_ENEMY_MINIONS + "(.*)")) {
                 for (Card card : getOtherPlayer().getCardsOnBattleField()) {
                     if (card.getType() == CardType.minion) {
@@ -216,6 +212,14 @@ public abstract class BattleManager {
         return true;
     }
 
+    private void addEnemiesInRow(ArrayList<Card> targetCards, int rowNum) {
+        for (int i = 1; i <= Map.MAP_X1_LENGTH; i++) {
+            if (!Map.getCardInCell(rowNum, i).getAccount().equals(currentPlayer.getAccount())) {
+                targetCards.add(Map.getCardInCell(rowNum, i));
+            }
+        }
+    }
+
     private void addSurroundingCards(ArrayList<Card> list, int x1, int x2) {
         for (int i = x1 - 1; i < x1 + 2; i++) {
             for (int j = x2 - 1; j < x2 + 2; j++) {
@@ -247,7 +251,7 @@ public abstract class BattleManager {
 
             handleAttackIncrease(function, targetCards);
 
-            handleFireAndPoisonCells(function, targetCells);
+            handleCells(function, targetCells);
 
             handleMurder(function, targetCards);
 
@@ -316,9 +320,18 @@ public abstract class BattleManager {
         }
     }
 
-    private void handleFireAndPoisonCells(Function function, ArrayList<Cell> targetCells) {
-        Pattern pattern = Pattern.compile(FunctionStrings.POISON_CELL + "(\\d+)");
+    private void handleCells(Function function, ArrayList<Cell> targetCells) {
+
+        Pattern pattern = Pattern.compile(FunctionStrings.HOLY_CELL + "(\\d+)");
         Matcher matcher = pattern.matcher(function.getFunction());
+        if (matcher.matches()) {
+            int turns = Integer.parseInt(matcher.group(1));
+            for (Cell cell : targetCells) {
+                cell.setIsHolyTurns(turns);
+            }
+        }
+        pattern = Pattern.compile(FunctionStrings.POISON_CELL + "(\\d+)");
+        matcher = pattern.matcher(function.getFunction());
         if (matcher.matches()) {
             int turns = Integer.parseInt(matcher.group(1));
             for (Cell cell : targetCells) {

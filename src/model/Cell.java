@@ -6,6 +6,7 @@ public class Cell {
     private Deployable cardInCell;
     private int onFireTurns;
     private int onPoisonTurns;
+    private int isHolyTurns;
 
     public Cell(int x1Coordinate, int x2Coordinate, Deployable cardInCell) {
         this.x1Coordinate = x1Coordinate;
@@ -20,6 +21,10 @@ public class Cell {
         this.cardInCell = Map.getCell(x1Coordinate, x2Coordinate).cardInCell;
         this.onFireTurns = Map.getCell(x1Coordinate, x2Coordinate).onFireTurns;
         this.onPoisonTurns = Map.getCell(x1Coordinate, x2Coordinate).onPoisonTurns;
+    }
+
+    public void setIsHolyTurns(int isHolyTurns) {
+        this.isHolyTurns = isHolyTurns;
     }
 
     public void setOnFireTurns(int onFireTurns) {

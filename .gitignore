@@ -39,7 +39,7 @@ hs_err_pid*
 .idea/modules.xml
 .idea/vcs.xml
 .idea/project-31.iml
-.idea/compiler.xml
+
 
 # Sensitive or high-churn files
 .idea/**/dataSources/

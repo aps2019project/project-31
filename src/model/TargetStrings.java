@@ -18,5 +18,6 @@ public class TargetStrings {
     public static final String ENEMY_HERO = "enemy hero";
     public static final String RANDOM_SURROUNDING_ENEMY_MINION = "random enemy nearby";
     public static final String RANDOM_ENEMY_MINION = "random enemy minion";
+    public static final String ENEMY_GENERAL_ROW = "enemy general row";
 
 }
