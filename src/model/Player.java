@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.ConcurrentModificationException;
 import java.util.Random;
 import java.util.regex.*;
@@ -144,16 +145,12 @@ public class Player {
         return false;
     }
 
-    public void generateReplaceCard() {
-        Random random = new Random();
-        int index = random.nextInt(currentDeck.getCards().size());
-        cardInReplace = currentDeck.getCards().get(index);
-    }
-
     public void placeNextCardToHand() {
         if (hand.size() < 6) {
             hand.add(cardInReplace);
-            generateReplaceCard();
+            Collections.shuffle(currentDeck.getCards());
+            cardInReplace = currentDeck.getCards().get(0);
+            currentDeck.getCards().remove(0);
         }
     }
 
@@ -210,18 +207,19 @@ public class Player {
     }
 
     public boolean playCard(Card card, int x1, int x2) {
+        boolean sit = false;
         switch (card.getType()) {
             case minion:
-                battle.playMinion((Minion) card, x1, x2);
+                sit = battle.playMinion((Minion) card, x1, x2);
                 break;
             case spell:
-                battle.playSpell((Spell) card, x1, x2);
+                sit = battle.playSpell((Spell) card, x1, x2);
                 break;
             case item:
-                battle.useItem((Item) card, x1, x2);
-
+                sit = battle.useItem((Item) card, x1, x2);
+                break;
         }
-
+        return sit;
     }
 
     private void handleCommands(String input) {
@@ -291,7 +289,8 @@ public class Player {
         }
         return false;
     }
-    public boolean isHeroDead(){
+
+    public boolean isHeroDead() {
         return getHero().theActualHealth() <= 0;
     }
 }

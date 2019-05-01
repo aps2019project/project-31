@@ -24,6 +24,7 @@ public class BattleMenu extends Menu {
     private void runTheGame(BattleManager battleManager) {
         boolean isPlayer1Turn = false;
         battleManager.setCurrentPlayer(battleManager.getPlayer2());
+        BattleManager.initialTheGame();
         while (true) {
             isPlayer1Turn = !isPlayer1Turn;
             battleManager.setCurrentPlayer(battleManager.getOtherPlayer());

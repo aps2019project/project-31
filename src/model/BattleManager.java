@@ -4,6 +4,7 @@ import org.graalvm.compiler.replacements.Log;
 
 import java.awt.*;
 import java.util.*;
+
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -15,11 +16,10 @@ public abstract class BattleManager {
     public static final int PERMANENT = 100;
     public static final String CONTINUOUS = "continuous";
     protected Map map;
-    protected String gameMode;
+    protected int gameMode;
     protected Player currentPlayer;
-    protected Player player1;
-    protected Player player2;
-    protected BattleType gameMode;
+    protected static Player player1;
+    protected static Player player2;
     protected final int maxNumberOfFlags;
     protected final int maxTurnsOfHavingFlag;
 
@@ -45,14 +45,13 @@ public abstract class BattleManager {
 
     public BattleManager(Map map, String gameMode, Player currentPlayer, int maxNumberOfFlags) {
         this.map = map;
-        this.gameMode = gameMode;
         this.currentPlayer = currentPlayer;
         this.maxNumberOfFlags = maxNumberOfFlags;
         maxTurnsOfHavingFlag = 0;
     }
 
-    public boolean playMinion(Minion minion, int x, int y) {
-        if (!checkCoordinates(x, y)) {
+    public boolean playMinion(Minion minion, int x1, int x2) {
+        if (!checkCoordinates(x1, x2)) {
             //insert invalid coordinates error for view
             Log.println("Invalid Coordinates");
             return false;
@@ -71,8 +70,8 @@ public abstract class BattleManager {
             }
         }
         Minion minion1 = new Minion(minion.price, minion.manaCost, minion.cardText, minion.functions, minion.account,
-                minion.name, minion.id, minion.type, minion.isDeployed, false, false, Map.getCell(x1,x2)
-                ,minion.maxHealth, minion.maxHealth, new ArrayList<Buff>(),
+                minion.name, minion.id, minion.type, minion.isDeployed, false, false, Map.getCell(x1, x2)
+                , minion.maxHealth, minion.maxHealth, new ArrayList<Buff>(),
                 minion.attackType, minion.currentAttack, minion.maxHealth, minion.attackRange);
         Map.putCardInCell(minion, x1, x2);
         currentPlayer.addCardToBattlefield(minion);
@@ -81,8 +80,8 @@ public abstract class BattleManager {
 
     }
 
-    public boolean compileTargetString (ArrayList<Card> targetCards, ArrayList<Cell> targetCells, String target,
-                                    int x1, int x2, Deployable attackTarget) {
+    public boolean compileTargetString(ArrayList<Card> targetCards, ArrayList<Cell> targetCells, String target,
+                                       int x1, int x2, Deployable attackTarget) {
         try {
             Pattern pattern = Pattern.compile(TargetStrings.MINIONS_WITH_DISTANCE + "(\\d+)");
             Matcher matcher = pattern.matcher(target);
@@ -101,7 +100,7 @@ public abstract class BattleManager {
                 }
             }
 
-            if (target.matches("(.*)" + TargetStrings.ENEMY_GENERAL_ROW + "(.*)")){
+            if (target.matches("(.*)" + TargetStrings.ENEMY_GENERAL_ROW + "(.*)")) {
                 addEnemiesInRow(targetCards, getOtherPlayer().getHero().getCell().getX1Coordinate());
             }
 
@@ -284,9 +283,9 @@ public abstract class BattleManager {
     private void handleGiveFunction(Function function, ArrayList<Card> targetCards) {
         Pattern pattern = Pattern.compile(FunctionStrings.GIVE_FUNCTION + "type:(.*)" + "function:(.*)" + "target:(.*)");
         Matcher matcher = pattern.matcher(function.getFunction());
-        if (matcher.matches()){
+        if (matcher.matches()) {
             FunctionType functionType = null;
-            switch (matcher.group(1).replaceAll("type:","")){
+            switch (matcher.group(1).replaceAll("type:", "")) {
                 case "OnDeath":
                     functionType = FunctionType.OnDeath;
                 case "OnAttack":
@@ -294,9 +293,9 @@ public abstract class BattleManager {
                 case "OnDefend":
                     functionType = FunctionType.OnDefend;
             }
-            Function function1 = new Function(functionType, matcher.group(2).replaceAll("function:",""),
-                    matcher.group(3).replaceAll("target:",""));
-            for (Card card: targetCards){
+            Function function1 = new Function(functionType, matcher.group(2).replaceAll("function:", ""),
+                    matcher.group(3).replaceAll("target:", ""));
+            for (Card card : targetCards) {
                 ((Deployable) card).addFunction(function1);
             }
         }
@@ -638,12 +637,26 @@ public abstract class BattleManager {
     }
 
     public void attack(Deployable card, Deployable enemy) {
-        if (!card.isAttacked && !card.isStunned() && isAttackTypeValidForAttack(card, enemy)) {
+        if (canAttack(card,enemy)) {
             dealAttackDamageAndDoOtherStuff(card, enemy);
             counterAttack(card, enemy);
         } else {
             //opponent minion is unavailable for attack OR Card with [card id] can′t attack message
         }
+    }
+
+    private boolean canAttack(Deployable card, Deployable enemy) {
+        boolean sit = !card.isAttacked && !card.isStunned() && isAttackTypeValidForAttack(card, enemy);
+        for (Function function : enemy.functions) {
+            if (function.getFunction().equals(FunctionStrings.INVULNERABLE))
+                return false;
+            if (function.getFunction().equals(FunctionStrings.IGNORE_LESSER_ATTACK)) {
+                if (enemy.theActualDamage() > card.theActualDamage()) {
+                    return false;
+                }
+            }
+        }
+        return sit;
     }
 
     private void dealAttackDamageAndDoOtherStuff(Deployable card, Deployable enemy) {
@@ -726,17 +739,17 @@ public abstract class BattleManager {
 
     public void checkTheEndSituation() {
         switch (gameMode) {
-            case :
-            isFinishedDueToHeroDying();
-            break;
-            case:
-            isFinishedDueToHeroDying();
-            isFinishedDueToHavingTheFlag();
-            break;
-            case :
-            isFinishedDueToHeroDying();
-            isFinishedDueToHavingMostOfFlags();
-            break;
+            case (1):
+                isFinishedDueToHeroDying();
+                break;
+            case (2):
+                isFinishedDueToHeroDying();
+                isFinishedDueToHavingTheFlag();
+                break;
+            case (3):
+                isFinishedDueToHeroDying();
+                isFinishedDueToHavingMostOfFlags();
+                break;
         }
     }
 
@@ -763,5 +776,20 @@ public abstract class BattleManager {
             player2Won();
     }
 
+    public static void initialTheGame() {
+        Collections.shuffle(player1.currentDeck.getCards());
+        Collections.shuffle(player2.currentDeck.getCards());
+        initialTheHands();
+    }
 
+    private static void initialTheHands() {
+        for (int i = 0; i < 6; i++) {
+            player1.hand.add(player1.currentDeck.getCards().get(i));
+            player2.hand.add(player2.currentDeck.getCards().get(i));
+        }
+        for (int i = 0; i < 6; i++) {
+            player1.getCurrentDeck().getCards().remove(i);
+            player2.getCurrentDeck().getCards().remove(i);
+        }
+    }
 }
