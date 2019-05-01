@@ -2,10 +2,6 @@ package model;
 
 import org.graalvm.compiler.replacements.Log;
 
-import java.awt.*;
-import java.util.*;
-import com.google.gson.Gson;
-
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.regex.Matcher;
@@ -14,11 +10,18 @@ import java.util.regex.Pattern;
 public abstract class BattleManager {
     public static final int PERMENANT = 100;
     public static final String CONTINUOUS = "continuous";
-    private Map map;
-    private String gameMode;
-    private Player currentPlayer;
-    private Player player1;
-    private Player player2;
+    protected Map map;
+    protected String gameMode;
+    protected Player currentPlayer;
+    protected Player player1;
+    protected Player player2;
+    protected BattleType gameMode;
+    protected final int maxNumberOfFlags;
+    protected final int maxTurnsOfHavingFlag;
+
+    public int getMaxNumberOfFlags() {
+        return maxNumberOfFlags;
+    }
 
     public void setCurrentPlayer(Player currentPlayer) {
         this.currentPlayer = currentPlayer;
@@ -36,24 +39,26 @@ public abstract class BattleManager {
         return player2;
     }
 
-    public BattleManager(Map map, String gameMode, Player currentPlayer) {
+    public BattleManager(Map map, String gameMode, Player currentPlayer, int maxNumberOfFlags) {
         this.map = map;
         this.gameMode = gameMode;
         this.currentPlayer = currentPlayer;
+        this.maxNumberOfFlags = maxNumberOfFlags;
+        maxTurnsOfHavingFlag = 0;
     }
 
-    public void playMinion(Minion minion, int x, int y) {
+    public boolean playMinion(Minion minion, int x, int y) {
         if (!checkCoordinates(x, y)) {
             //insert invalid coordinates error for view
             Log.println("Invalid Coordinates");
-            return;
+            return false;
 
         }
 
         if (minion.manaCost > currentPlayer.getMana()) {
             //insert not enough mana message for view
             Log.println("Not enough mana");
-            return;
+            return false;
         }
 
         for (Function function : minion.getFunctions()) {
@@ -64,11 +69,12 @@ public abstract class BattleManager {
         Map.putCardInCell(minion, x, y);
         currentPlayer.addCardToBattlefield(minion);
         currentPlayer.removeFromHand(minion);
+        return true;
 
     }
 
-    public boolean compileTargetString (ArrayList<Card> targetCards, ArrayList<Cell> targetCells, String target,
-                                    int x1, int x2, Deployable attackTarget) {
+    public boolean compileTargetString(ArrayList<Card> targetCards, ArrayList<Cell> targetCells, String target,
+                                       int x1, int x2, Deployable attackTarget) {
         try {
             Pattern pattern = Pattern.compile(TargetStrings.MINIONS_WITH_DISTANCE + "(\\d+)");
             Matcher matcher = pattern.matcher(target);
@@ -225,7 +231,7 @@ public abstract class BattleManager {
     public void compileFunction(Function function, int x1, int x2, Deployable attackTarget) {
         ArrayList<Cell> targetCells = new ArrayList<>();
         ArrayList<Card> targetCards = new ArrayList<>();
-        if (!compileTargetString(targetCards, targetCells, function.getTarget(), x1, x2, attackTarget)){
+        if (!compileTargetString(targetCards, targetCells, function.getTarget(), x1, x2, attackTarget)) {
             Log.println("Invalid target");
             return;
         }
@@ -258,9 +264,9 @@ public abstract class BattleManager {
     private void handleAccumilatingAttack(Function function, int x1, int x2, Deployable attackTarget) {
         Pattern pattern = Pattern.compile(FunctionStrings.ACCUMULATING_ATTACKS + "(\\d+)");
         Matcher matcher = pattern.matcher(function.getFunction());
-        if (matcher.matches()){
+        if (matcher.matches()) {
             int amount = Integer.parseInt(matcher.group(1));
-            attackTarget.takeDamage(attackTarget.accumilatingAttack((Deployable) Map.getCardInCell(x1,x2)) * amount);
+            attackTarget.takeDamage(attackTarget.accumilatingAttack((Deployable) Map.getCardInCell(x1, x2)) * amount);
         }
     }
 
@@ -373,10 +379,10 @@ public abstract class BattleManager {
         if (matcher.matches()) {
             Pattern pattern1 = Pattern.compile(FunctionStrings.BLEED + "(\\d+)(\\d+)");
             Matcher matcher1 = pattern.matcher(matcher.group(1));
-            if (matcher1.matches()){
+            if (matcher1.matches()) {
                 int one = Integer.parseInt(matcher1.group(1));
                 int two = Integer.parseInt(matcher1.group(2));
-                Buff buff = new Buff(Buff.BuffType.Bleed, 2,0,
+                Buff buff = new Buff(Buff.BuffType.Bleed, 2, 0,
                         0, false);
                 buff.setBleed(one, two);
                 addBuffs(targetCards, buff);
@@ -499,7 +505,7 @@ public abstract class BattleManager {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 if (i != 1 || j != 1) {
-                    if (Map.getCardInCell(x1-1+i, x2-1+j).getAccount().equals(currentPlayer.getAccount())) {
+                    if (Map.getCardInCell(x1 - 1 + i, x2 - 1 + j).getAccount().equals(currentPlayer.getAccount())) {
                         return true;
                     }
                 }
@@ -508,14 +514,16 @@ public abstract class BattleManager {
         }
         return false;
     }
-    public Card cardInHandByCardId(int cardId){
-        for (Card card:currentPlayer.getHand()) {
-            if(card.getId()==cardId){
+
+    public Card cardInHandByCardId(int cardId) {
+        for (Card card : currentPlayer.getHand()) {
+            if (card.getId() == cardId) {
                 return card;
             }
         }
         return null;
     }
+
     public boolean isInHand(Card card) {
         for (Card card1 : currentPlayer.getHand()) {
             if (card1.equals(card)) {
@@ -525,12 +533,12 @@ public abstract class BattleManager {
         return false;
     }
 
-    public void playSpell(Spell spell, int x1, int x2) {
-
+    public boolean playSpell(Spell spell, int x1, int x2) {
+        return true;
     }
 
-    public void useItem(Item item, int x1, int x2) {
-
+    public boolean useItem(Item item, int x1, int x2) {
+        return true;
     }
 
     public void move(Deployable card, int x1, int x2) {
@@ -539,12 +547,10 @@ public abstract class BattleManager {
                 card.cell = Map.getCell(x1, x2);
                 Map.getCell(x1, x2).setCardInCell(card);
                 //cardid move to x1,x2
-            }
-            else{
+            } else {
                 //invalid target
             }
-        }
-        else{
+        } else {
             //invalid target
         }
     }
@@ -562,24 +568,26 @@ public abstract class BattleManager {
         else
             player2.getCardsOnBattleField().remove(enemy);
     }
-    public void comboAtack(Deployable enemy,ArrayList<Deployable> comboAttackers){
-        attack(comboAttackers.get(0),enemy);
-        for (int i = 1; i <comboAttackers.size() ; i++) {
-            dealAttackDamageAndDoOtherStuff(comboAttackers.get(i),enemy);
+
+    public void comboAtack(Deployable enemy, ArrayList<Deployable> comboAttackers) {
+        attack(comboAttackers.get(0), enemy);
+        for (int i = 1; i < comboAttackers.size(); i++) {
+            dealAttackDamageAndDoOtherStuff(comboAttackers.get(i), enemy);
         }
 
     }
+
     public void attack(Deployable card, Deployable enemy) {
-        if ( !card.isAttacked && !card.isStunned() && isAttackTypeValidForAttack(card, enemy)) {
-            dealAttackDamageAndDoOtherStuff(card,enemy);
+        if (!card.isAttacked && !card.isStunned() && isAttackTypeValidForAttack(card, enemy)) {
+            dealAttackDamageAndDoOtherStuff(card, enemy);
             counterAttack(card, enemy);
-        }
-        else{
+        } else {
             //opponent minion is unavailable for attack OR Card with [card id] can′t attack message
         }
     }
-    private void dealAttackDamageAndDoOtherStuff(Deployable card,Deployable enemy){
-        if ( !card.isAttacked && !card.isStunned() && isAttackTypeValidForAttack(card, enemy)) {
+
+    private void dealAttackDamageAndDoOtherStuff(Deployable card, Deployable enemy) {
+        if (!card.isAttacked && !card.isStunned() && isAttackTypeValidForAttack(card, enemy)) {
             enemy.currentHealth -= enemy.theActualDamageReceived(card.theActualDamage());
             if (enemy.currentHealth <= 0) {
                 killTheThing(enemy);
@@ -588,7 +596,8 @@ public abstract class BattleManager {
             applyOnDefendFunction(enemy);
         }
     }
-    private void applyOnAttackFunction(Deployable card){
+
+    private void applyOnAttackFunction(Deployable card) {
         for (Function function : card.functions) {
             if (function.getFunctionType() == FunctionType.OnAttack) {
                 compileFunction(function, card.cell.getX1Coordinate(), card.cell.getX2Coordinate());
@@ -596,7 +605,7 @@ public abstract class BattleManager {
         }
     }
 
-    private  void applyOnDefendFunction(Deployable enemy){
+    private void applyOnDefendFunction(Deployable enemy) {
         for (Function function : enemy.functions) {
             if (function.getFunctionType() == FunctionType.OnDefend) {
                 compileFunction(function, enemy.cell.getX1Coordinate(), enemy.cell.getX2Coordinate());
@@ -654,4 +663,45 @@ public abstract class BattleManager {
     }
 
     public abstract Player getOtherPlayer();
+
+    public void checkTheEndSituation() {
+        switch (gameMode) {
+            case :
+            isFinishedDueToHeroDying();
+            break;
+            case:
+            isFinishedDueToHeroDying();
+            isFinishedDueToHavingTheFlag();
+            break;
+            case :
+            isFinishedDueToHeroDying();
+            isFinishedDueToHavingMostOfFlags();
+            break;
+        }
+    }
+
+    public void isFinishedDueToHavingTheFlag() {
+        if (player1.getNumberOfTurnsHavingFlag() >= maxTurnsOfHavingFlag)
+            player1Won();
+        if (player2.getNumberOfTurnsHavingFlag() >= maxTurnsOfHavingFlag)
+            player2Won();
+    }
+
+    public void isFinishedDueToHeroDying() {
+        if (player1.isHeroDead() && !player2.isHeroDead())
+            player2Won();
+        if (player2.isHeroDead() && !player1.isHeroDead())
+            player1Won();
+        if (player1.isHeroDead() && player2.isHeroDead())
+            draw();
+    }
+
+    public void isFinishedDueToHavingMostOfFlags() {
+        if (2 * player1.getNumbereOfFlags() > maxNumberOfFlags)
+            player1Won();
+        if (2 * player1.getNumbereOfFlags() > maxNumberOfFlags)
+            player2Won();
+    }
+
+
 }

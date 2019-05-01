@@ -5,7 +5,7 @@ public class MultiPlayer extends BattleManager {
     private Player playerTwo;
 
     public MultiPlayer(Map map, String gameMode, Player currentPlayer, Player playerOne, Player playerTwo) {
-        super(map, gameMode, currentPlayer);
+        super(map, gameMode, currentPlayer, maxNumberOfFlags);
         this.playerOne = playerOne;
         this.playerTwo = playerTwo;
     }

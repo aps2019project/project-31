@@ -5,20 +5,20 @@ import java.util.ConcurrentModificationException;
 import java.util.Random;
 import java.util.regex.*;
 
-public class Player extends Ai {
-    private Account account;
-    private Deck currentDeck;
-    private int mana;
-    private int remainingTime;
-    private int numbereOfFlags;
-    private int numberOfTurnsHavingFlag;
-    private ArrayList<Card> hand;
-    private Card nextCard;
-    private ArrayList<Deployable> cardsOnBattleField;
-    private ArrayList<Deployable> graveYard;
-    private Card selectedCard;
-    private Card cardInReplace;
-    private BattleManager battle;
+public class Player {
+    protected Account account;
+    protected Deck currentDeck;
+    protected int mana;
+    protected int remainingTime;
+    protected int numbereOfFlags;
+    protected int numberOfTurnsHavingFlag;
+    protected ArrayList<Card> hand;
+    protected Card nextCard;
+    protected ArrayList<Deployable> cardsOnBattleField;
+    protected ArrayList<Deployable> graveYard;
+    protected Card selectedCard;
+    protected Card cardInReplace;
+    protected BattleManager battle;
     private boolean isAi;
 
     public boolean isAi() {
@@ -170,6 +170,7 @@ public class Player extends Ai {
     }
 
     public void endOfTurn() {
+
         doOnTurnFunctions();
         applyAtTheEndOfTurnBuffs();
         buffsChangesAtTheEndOfTurn();
@@ -207,7 +208,7 @@ public class Player extends Ai {
         }
     }
 
-    public void playCard(Card card, int x1, int x2) {
+    public boolean playCard(Card card, int x1, int x2) {
         switch (card.getType()) {
             case minion:
                 Minion minion = new Minion();
@@ -291,6 +292,9 @@ public class Player extends Ai {
                 return true;
         }
         return false;
+    }
+    public boolean isHeroDead(){
+        return getHero().theActualHealth() <= 0;
     }
 }
 

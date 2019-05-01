@@ -85,10 +85,3 @@ public abstract class Card {
     }
 }
 
-enum CardType {
-    minion,
-    hero,
-    spell,
-    item,
-    herospell
-}

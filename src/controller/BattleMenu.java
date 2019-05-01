@@ -9,6 +9,7 @@ import java.util.ArrayList;
 public class BattleMenu extends Menu {
     private static BattleManager battleManager;
 
+
     public static BattleManager getBattleManager() {
         return battleManager;
     }
@@ -27,17 +28,19 @@ public class BattleMenu extends Menu {
             isPlayer1Turn = !isPlayer1Turn;
             battleManager.setCurrentPlayer(battleManager.getOtherPlayer());
             if (battleManager.getCurrentPlayer().isAi()) {
-                battleManager.getCurrentPlayer().play();
+                ((Ai)battleManager.getCurrentPlayer()).play();
             } else {
                 if (battleManager.getCurrentPlayer().getSelectedCard() != null) {
                     Input.handleSelectCardOrSelectComboCards(battleManager.getCurrentPlayer()); // to view vorodi migire to controller selectedCard ro mirize tush ya combo ro check mikone
                 } else {
                     Input.moveAttackPlayCard(); // to view vorodi migire tabesho to controller seda mizane
                 }
+
             }
             battleManager.getCurrentPlayer().placeNextCardToHand();
             battleManager.getCurrentPlayer().endOfTurn();
             battleManager.getOtherPlayer().endOfTurn();
+            battleManager.checkTheEndSituation();
         }
     }
 
@@ -108,7 +111,7 @@ public class BattleMenu extends Menu {
                 Spell spell = new Spell();
                 battleManager.playSpell(spell, x1, x2);
             }
-            if(card.getType()==CardType.ietm){
+            if(card.getType()==CardType.item){
                 Item item = new Item();
                 battleManager.playItem();
             }
