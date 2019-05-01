@@ -51,6 +51,11 @@ public abstract class BattleManager {
     }
 
     public boolean playMinion(Minion minion, int x1, int x2) {
+        if (!isInHand(minion)){
+            //invalid card
+            Log.println("Not in hand");
+            return false;
+        }
         if (!checkCoordinates(x1, x2)) {
             //insert invalid coordinates error for view
             Log.println("Invalid Coordinates");
