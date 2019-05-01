@@ -1,7 +1,11 @@
 package model;
 
-
 import org.graalvm.compiler.replacements.Log;
+
+import java.awt.*;
+import java.util.*;
+
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -11,11 +15,17 @@ import java.util.regex.Pattern;
 public abstract class BattleManager {
     public static final int PERMANENT = 100;
     public static final String CONTINUOUS = "continuous";
-    private Map map;
-    private String gameMode;
-    private Player currentPlayer;
-    private Player player1;
-    private Player player2;
+    protected Map map;
+    protected int gameMode;
+    protected Player currentPlayer;
+    protected static Player player1;
+    protected static Player player2;
+    protected final int maxNumberOfFlags;
+    protected final int maxTurnsOfHavingFlag;
+
+    public int getMaxNumberOfFlags() {
+        return maxNumberOfFlags;
+    }
 
     public void setCurrentPlayer(Player currentPlayer) {
         this.currentPlayer = currentPlayer;
@@ -33,31 +43,25 @@ public abstract class BattleManager {
         return player2;
     }
 
-    public BattleManager(Map map, String gameMode, Player currentPlayer) {
+    public BattleManager(Map map, String gameMode, Player currentPlayer, int maxNumberOfFlags) {
         this.map = map;
-        this.gameMode = gameMode;
         this.currentPlayer = currentPlayer;
+        this.maxNumberOfFlags = maxNumberOfFlags;
+        maxTurnsOfHavingFlag = 0;
     }
 
-    public void playMinion(Minion minion, int x1, int x2) {
-        if (!isInHand(minion)) {
-            //insert not in hand error message for view
-            Log.println("Minion not in hand");
-            return;
-
-        }
-
+    public boolean playMinion(Minion minion, int x1, int x2) {
         if (!checkCoordinates(x1, x2)) {
             //insert invalid coordinates error for view
             Log.println("Invalid Coordinates");
-            return;
+            return false;
 
         }
 
         if (minion.manaCost > currentPlayer.getMana()) {
             //insert not enough mana message for view
             Log.println("Not enough mana");
-            return;
+            return false;
         }
 
         for (Function function : minion.getFunctions()) {
@@ -66,15 +70,15 @@ public abstract class BattleManager {
             }
         }
         Minion minion1 = new Minion(minion.price, minion.manaCost, minion.cardText, minion.functions, minion.account,
-                minion.name, minion.id, minion.type, minion.isDeployed, false, false, Map.getCell(x1,x2)
-                ,minion.maxHealth, minion.maxHealth, new ArrayList<Buff>(),
+                minion.name, minion.id, minion.type, minion.isDeployed, false, false, Map.getCell(x1, x2)
+                , minion.maxHealth, minion.maxHealth, new ArrayList<Buff>(),
                 minion.attackType, minion.currentAttack, minion.maxHealth, minion.attackRange);
         Map.putCardInCell(minion, x1, x2);
         currentPlayer.addCardToBattlefield(minion);
         currentPlayer.removeFromHand(minion);
+        return true;
 
     }
-
 
     public boolean compileTargetString(ArrayList<Card> targetCards, ArrayList<Cell> targetCells, String target,
                                        int x1, int x2, Deployable attackTarget) {
@@ -96,7 +100,7 @@ public abstract class BattleManager {
                 }
             }
 
-            if (target.matches("(.*)" + TargetStrings.ENEMY_GENERAL_ROW + "(.*)")){
+            if (target.matches("(.*)" + TargetStrings.ENEMY_GENERAL_ROW + "(.*)")) {
                 addEnemiesInRow(targetCards, getOtherPlayer().getHero().getCell().getX1Coordinate());
             }
 
@@ -279,9 +283,9 @@ public abstract class BattleManager {
     private void handleGiveFunction(Function function, ArrayList<Card> targetCards) {
         Pattern pattern = Pattern.compile(FunctionStrings.GIVE_FUNCTION + "type:(.*)" + "function:(.*)" + "target:(.*)");
         Matcher matcher = pattern.matcher(function.getFunction());
-        if (matcher.matches()){
+        if (matcher.matches()) {
             FunctionType functionType = null;
-            switch (matcher.group(1).replaceAll("type:","")){
+            switch (matcher.group(1).replaceAll("type:", "")) {
                 case "OnDeath":
                     functionType = FunctionType.OnDeath;
                     break;
@@ -291,9 +295,9 @@ public abstract class BattleManager {
                 case "OnDefend":
                     functionType = FunctionType.OnDefend;
             }
-            Function function1 = new Function(functionType, matcher.group(2).replaceAll("function:",""),
-                    matcher.group(3).replaceAll("target:",""));
-            for (Card card: targetCards){
+            Function function1 = new Function(functionType, matcher.group(2).replaceAll("function:", ""),
+                    matcher.group(3).replaceAll("target:", ""));
+            for (Card card : targetCards) {
                 ((Deployable) card).addFunction(function1);
             }
         }
@@ -562,7 +566,7 @@ public abstract class BattleManager {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 if (i != 1 || j != 1) {
-                    if (Map.getCardInCell(x1-1+i, x2-1+j).getAccount().equals(currentPlayer.getAccount())) {
+                    if (Map.getCardInCell(x1 - 1 + i, x2 - 1 + j).getAccount().equals(currentPlayer.getAccount())) {
                         return true;
                     }
                 }
@@ -571,14 +575,16 @@ public abstract class BattleManager {
         }
         return false;
     }
-    public Card cardInHandByCardId(int cardId){
-        for (Card card:currentPlayer.getHand()) {
-            if(card.getId()==cardId){
+
+    public Card cardInHandByCardId(int cardId) {
+        for (Card card : currentPlayer.getHand()) {
+            if (card.getId() == cardId) {
                 return card;
             }
         }
         return null;
     }
+
     public boolean isInHand(Card card) {
         for (Card card1 : currentPlayer.getHand()) {
             if (card1.equals(card)) {
@@ -588,12 +594,12 @@ public abstract class BattleManager {
         return false;
     }
 
-    public void playSpell(Spell spell, int x1, int x2) {
-
+    public boolean playSpell(Spell spell, int x1, int x2) {
+        return true;
     }
 
-    public void useItem(Item item, int x1, int x2) {
-
+    public boolean useItem(Item item, int x1, int x2) {
+        return true;
     }
 
     public void move(Deployable card, int x1, int x2) {
@@ -602,12 +608,10 @@ public abstract class BattleManager {
                 card.cell = Map.getCell(x1, x2);
                 Map.getCell(x1, x2).setCardInCell(card);
                 //cardid move to x1,x2
-            }
-            else{
+            } else {
                 //invalid target
             }
-        }
-        else{
+        } else {
             //invalid target
         }
     }
@@ -625,24 +629,40 @@ public abstract class BattleManager {
         else
             player2.getCardsOnBattleField().remove(enemy);
     }
-    public void comboAtack(Deployable enemy,ArrayList<Deployable> comboAttackers){
-        attack(comboAttackers.get(0),enemy);
-        for (int i = 1; i <comboAttackers.size() ; i++) {
-            dealAttackDamageAndDoOtherStuff(comboAttackers.get(i),enemy);
+
+    public void comboAtack(Deployable enemy, ArrayList<Deployable> comboAttackers) {
+        attack(comboAttackers.get(0), enemy);
+        for (int i = 1; i < comboAttackers.size(); i++) {
+            dealAttackDamageAndDoOtherStuff(comboAttackers.get(i), enemy);
         }
 
     }
+
     public void attack(Deployable card, Deployable enemy) {
-        if ( !card.isAttacked && !card.isStunned() && isAttackTypeValidForAttack(card, enemy)) {
-            dealAttackDamageAndDoOtherStuff(card,enemy);
+        if (canAttack(card,enemy)) {
+            dealAttackDamageAndDoOtherStuff(card, enemy);
             counterAttack(card, enemy);
-        }
-        else{
+        } else {
             //opponent minion is unavailable for attack OR Card with [card id] can′t attack message
         }
     }
-    private void dealAttackDamageAndDoOtherStuff(Deployable card,Deployable enemy){
-        if ( !card.isAttacked && !card.isStunned() && isAttackTypeValidForAttack(card, enemy)) {
+
+    private boolean canAttack(Deployable card, Deployable enemy) {
+        boolean sit = !card.isAttacked && !card.isStunned() && isAttackTypeValidForAttack(card, enemy);
+        for (Function function : enemy.functions) {
+            if (function.getFunction().equals(FunctionStrings.INVULNERABLE))
+                return false;
+            if (function.getFunction().equals(FunctionStrings.IGNORE_LESSER_ATTACK)) {
+                if (enemy.theActualDamage() > card.theActualDamage()) {
+                    return false;
+                }
+            }
+        }
+        return sit;
+    }
+
+    private void dealAttackDamageAndDoOtherStuff(Deployable card, Deployable enemy) {
+        if (!card.isAttacked && !card.isStunned() && isAttackTypeValidForAttack(card, enemy)) {
             enemy.currentHealth -= enemy.theActualDamageReceived(card.theActualDamage());
             if (enemy.currentHealth <= 0) {
                 killTheThing(enemy);
@@ -651,7 +671,8 @@ public abstract class BattleManager {
             applyOnDefendFunction(enemy);
         }
     }
-    private void applyOnAttackFunction(Deployable card){
+
+    private void applyOnAttackFunction(Deployable card) {
         for (Function function : card.functions) {
             if (function.getFunctionType() == FunctionType.OnAttack) {
                 compileFunction(function, card.cell.getX1Coordinate(), card.cell.getX2Coordinate());
@@ -659,7 +680,7 @@ public abstract class BattleManager {
         }
     }
 
-    private  void applyOnDefendFunction(Deployable enemy){
+    private void applyOnDefendFunction(Deployable enemy) {
         for (Function function : enemy.functions) {
             if (function.getFunctionType() == FunctionType.OnDefend) {
                 compileFunction(function, enemy.cell.getX1Coordinate(), enemy.cell.getX2Coordinate());
@@ -717,4 +738,60 @@ public abstract class BattleManager {
     }
 
     public abstract Player getOtherPlayer();
+
+    public void checkTheEndSituation() {
+        switch (gameMode) {
+            case (1):
+                isFinishedDueToHeroDying();
+                break;
+            case (2):
+                isFinishedDueToHeroDying();
+                isFinishedDueToHavingTheFlag();
+                break;
+            case (3):
+                isFinishedDueToHeroDying();
+                isFinishedDueToHavingMostOfFlags();
+                break;
+        }
+    }
+
+    public void isFinishedDueToHavingTheFlag() {
+        if (player1.getNumberOfTurnsHavingFlag() >= maxTurnsOfHavingFlag)
+            player1Won();
+        if (player2.getNumberOfTurnsHavingFlag() >= maxTurnsOfHavingFlag)
+            player2Won();
+    }
+
+    public void isFinishedDueToHeroDying() {
+        if (player1.isHeroDead() && !player2.isHeroDead())
+            player2Won();
+        if (player2.isHeroDead() && !player1.isHeroDead())
+            player1Won();
+        if (player1.isHeroDead() && player2.isHeroDead())
+            draw();
+    }
+
+    public void isFinishedDueToHavingMostOfFlags() {
+        if (2 * player1.getNumbereOfFlags() > maxNumberOfFlags)
+            player1Won();
+        if (2 * player1.getNumbereOfFlags() > maxNumberOfFlags)
+            player2Won();
+    }
+
+    public static void initialTheGame() {
+        Collections.shuffle(player1.currentDeck.getCards());
+        Collections.shuffle(player2.currentDeck.getCards());
+        initialTheHands();
+    }
+
+    private static void initialTheHands() {
+        for (int i = 0; i < 6; i++) {
+            player1.hand.add(player1.currentDeck.getCards().get(i));
+            player2.hand.add(player2.currentDeck.getCards().get(i));
+        }
+        for (int i = 0; i < 6; i++) {
+            player1.getCurrentDeck().getCards().remove(i);
+            player2.getCurrentDeck().getCards().remove(i);
+        }
+    }
 }

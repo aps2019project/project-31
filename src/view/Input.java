@@ -28,6 +28,7 @@ public class Input {
         }
         if (input.matches("select \\d+"))
             player.selectACard(Integer.parseInt(input.replace("select", "").trim()));
+        BattleMenu.getBattleManager().isFinishedDueToHeroDying();
     }
 
     public static void moveAttackPlayCard() {
@@ -46,6 +47,6 @@ public class Input {
             BattleMenu.insert(Integer.parseInt(matcher.group(1)),Integer.parseInt(matcher.group(2)),
                     Integer.parseInt(matcher.group(3)));
         }
-
+        BattleMenu.getBattleManager().isFinishedDueToHeroDying();
     }
 }
