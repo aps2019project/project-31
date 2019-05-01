@@ -284,8 +284,10 @@ public abstract class BattleManager {
             switch (matcher.group(1).replaceAll("type:","")){
                 case "OnDeath":
                     functionType = FunctionType.OnDeath;
+                    break;
                 case "OnAttack":
                     functionType = FunctionType.OnAttack;
+                    break;
                 case "OnDefend":
                     functionType = FunctionType.OnDefend;
             }
