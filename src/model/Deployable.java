@@ -1,15 +1,14 @@
 package model;
 
 import java.util.ArrayList;
-import java.util.concurrent.locks.Condition;
 
 public class Deployable extends Card {
     protected boolean isMoved;
     protected boolean isAttacked;
     protected Cell cell;
+    protected int attackRange;
     protected int currentHealth;
     protected int currentAttack;
-    protected int attackRange;
     protected ArrayList<Buff> buffs;
     protected int uniqueId;
     protected String attackType;
@@ -22,32 +21,47 @@ public class Deployable extends Card {
     public boolean isCombo() {
         return isCombo;
     }
-    protected ArrayList<Pair<Deployable, Integer>> accumilatingAttacks;
+
+    public void addFunction(Function function){
+        functions.add(function);
+    }
+
+    protected ArrayList<Pair<Deployable, Integer>> accumulatingAttacks;
+    protected int maxHealth;
 
     public Deployable(int price, int manaCost, String cardText, ArrayList<Function> functions, Account account,
                       String name, int id, CardType type, boolean isDeployed, boolean isMoved, boolean isAttacked,
                       Cell cell, int currentHealth, int currentAttack,
-                      ArrayList<Buff> buffs) {
+                      ArrayList<Buff> buffs, int attackRange) {
         super(price, manaCost, cardText, functions, account, name, id, type, isDeployed);
         this.isMoved = isMoved;
         this.isAttacked = isAttacked;
+        this.attackRange = attackRange;
         this.cell = cell;
-        this.currentHealth = currentHealth;
+        this.maxHealth = this.currentHealth = currentHealth;
         this.currentAttack = currentAttack;
         this.buffs = buffs;
     }
-    public int accumilatingAttack(Deployable attacker){
-        for (Pair<Deployable, Integer> pair: accumilatingAttacks){
-            if (pair.getFirst().equals(attacker)){
+
+    public int accumulatingAttack(Deployable attacker) {
+        for (Pair<Deployable, Integer> pair : accumulatingAttacks) {
+            if (pair.getFirst().equals(attacker)) {
                 pair.setSecond(pair.getSecond().intValue() + 1);
                 return pair.getSecond() - 1;
             }
         }
-        accumilatingAttacks.add(new Pair<>(attacker, 1));
+        accumulatingAttacks.add(new Pair<>(attacker, 1));
         return 0;
     }
 
-    public void increaseAttack(int amount){
+    public void healUp(int amount) {
+        currentHealth += amount;
+        if (currentHealth > maxHealth) {
+            currentHealth = maxHealth;
+        }
+    }
+
+    public void increaseAttack(int amount) {
         currentAttack += amount;
     }
 
@@ -179,6 +193,7 @@ public class Deployable extends Card {
     public void showCardInfo() {
 
     }
+
     public void applyFire() {
         currentHealth--; // how much it decreases
     }

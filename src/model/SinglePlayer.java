@@ -30,6 +30,6 @@ public class SinglePlayer extends BattleManager {
 
     @Override
     public Player getOtherPlayer() {
-        return null;
+        return aiPlayer;
     }
 }

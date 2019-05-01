@@ -170,12 +170,12 @@ public class Player {
     }
 
     public void endOfTurn() {
-
-        doOnTurnFunctions();
+        //doOnTurnFunctions();
         applyAtTheEndOfTurnBuffs();
         buffsChangesAtTheEndOfTurn();
 
     }
+
 
     private void applyAtTheEndOfTurnBuffs() {
         for (Deployable card : cardsOnBattleField) {
@@ -192,6 +192,7 @@ public class Player {
             }
         }
     }
+
 
     public void buffsChangesAtTheEndOfTurn() {
         for (Deployable card : cardsOnBattleField) {
@@ -211,16 +212,13 @@ public class Player {
     public boolean playCard(Card card, int x1, int x2) {
         switch (card.getType()) {
             case minion:
-                Minion minion = new Minion();
-                battle.playMinion(minion, x1, x2);
+                battle.playMinion((Minion) card, x1, x2);
                 break;
             case spell:
-                Spell spell = new Spell();
                 battle.playSpell((Spell) card, x1, x2);
                 break;
             case item:
-                Item item = new Item();
-                battle.useItem(item, x1, x2);
+                battle.useItem((Item) card, x1, x2);
 
         }
 

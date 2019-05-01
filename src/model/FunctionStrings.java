@@ -1,5 +1,9 @@
 package model;
- public class FunctionStrings {
+
+import java.util.ArrayList;
+import java.util.Arrays;
+
+public class FunctionStrings {
     protected static final String STUN = "stun target for";
     protected static final String ACCUMULATING_ATTACKS = "accumulate previous attacks on target";
     protected static final String DISARM = "disarm target for";
@@ -22,5 +26,15 @@ package model;
     protected static final String INDISARMABLE = "indisarmable";
     protected static final String UNPOISONABLE = "unpoisonable";
     protected static final String BLEED = "bleed";
+    protected static final String HEAL = "heal";
+    protected static final String INVULNERABLE = "invulnerable";
+    protected static final String HOLY_CELL = "holy cell";
+    protected static final String GIVE_FUNCTION = "give function";
 
+    public static ArrayList<String> allFunctionStrings(){
+       return new ArrayList<>(Arrays.asList(STUN, ACCUMULATING_ATTACKS, DEAL_DAMAGE,
+               IGNORE_HOLYBUFF, APPLY_BUFF, IGNORE_LESSER_ATTACK, DISPEL,
+               INCREASE_ATTACK, POISON_CELL, SET_ON_FIRE, KILL_TARGETS, INDISARMABLE, UNPOISONABLE,
+               BLEED, HEAL, INVULNERABLE, HOLY_CELL, GIVE_FUNCTION));
+    }
 }

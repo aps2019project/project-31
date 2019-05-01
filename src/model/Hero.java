@@ -7,15 +7,16 @@ public class Hero extends Deployable {
     protected int health;
     protected HeroSpell heroSpell;
 
-    public Hero(int price, int manaCost, String cardText, ArrayList<Function> functions, Account account, String name,
-                int id, CardType type, boolean isDeployed, AttackType attackType, int attack,
-                int health, HeroSpell heroSpell) {
-        super(price, manaCost, cardText, functions, account, name, id, type, isDeployed);
-        this.attackType = attackType;
+    public Hero(int price, int manaCost, String cardText,
+                ArrayList<Function> functions, Account account, String name,
+                int id, CardType type, boolean isDeployed, boolean isMoved,
+                boolean isAttacked, Cell cell, int currentHealth, int currentAttack,
+                ArrayList<Buff> buffs, int attack, int health, HeroSpell heroSpell, int attackRange) {
+        super(price, manaCost, cardText, functions, account, name, id, type,
+                isDeployed, isMoved, isAttacked, cell, currentHealth, currentAttack, buffs, attackRange);
         this.attack = attack;
         this.health = health;
         this.heroSpell = heroSpell;
-        this.attackRange = 2;
     }
 
     public void show() {
@@ -36,9 +37,6 @@ public class Hero extends Deployable {
 
     }
 
-    public void setAttackType(AttackType attackType) {
-        this.attackType = attackType;
-    }
 
     public void setAttack(int attack) {
         this.attack = attack;
@@ -52,9 +50,6 @@ public class Hero extends Deployable {
         this.heroSpell = heroSpell;
     }
 
-    public AttackType getAttackType() {
-        return attackType;
-    }
 
     public int getAttack() {
         return attack;

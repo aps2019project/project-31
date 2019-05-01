@@ -15,7 +15,7 @@ public class BattleMenu extends Menu {
     }
 
     private void setBattleManagerMode() {
-        battleManager = new ();
+ //       battleManager = new ();
 
 
         runTheGame(battleManager);
@@ -47,10 +47,10 @@ public class BattleMenu extends Menu {
     @Override
     public void run() {
         while (true) {
-            View.showModes();
+            /*View.showModes();
             handleInputCommand();
             if (out)
-                break;
+                break;*/
         }
     }
 
@@ -102,19 +102,19 @@ public class BattleMenu extends Menu {
 
     public static void insert(int cardId, int x1, int x2) {
         if (battleManager.cardInHandByCardId(cardId) != null) {
-            Card card = battleManager.cardInHandByCardId(cardId);
-            if (card.getType() == CardType.minion) {
+            /*Card card = battleManager.cardInHandByCardId(cardId);
+            if (card.getType() == Card.CardType.minion) {
                 Minion minion = new Minion();
                 battleManager.playMinion(minion, x1, x2);
             }
-            if (card.getType() == CardType.spell) {
+            if (card.getType() == Card.CardType.spell) {
                 Spell spell = new Spell();
                 battleManager.playSpell(spell, x1, x2);
             }
-            if(card.getType()==CardType.item){
+            if(card.getType()== Card.CardType.item){
                 Item item = new Item();
                 battleManager.playItem();
-            }
+            }*/
         } else {
             //insert not in hand error message for view
             Log.println("Minion not in hand");
@@ -122,3 +122,4 @@ public class BattleMenu extends Menu {
         }
     }
 }
+

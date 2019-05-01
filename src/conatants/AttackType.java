@@ -1,4 +1,4 @@
-package model;
+package conatants;
 
 public enum AttackType {
     melee,

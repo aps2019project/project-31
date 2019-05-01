@@ -65,21 +65,22 @@ public class Account {
         allAccounts.add(account);
     }
 
-    public void showAccounts() {
-        //WTF is there to show ???
+    @Override
+    public String toString() {
+        return "UserName : " + username + " - Wins : " + winLoseDraw[0] + "\n";
     }
 
 
     public static void sortAllAccounts() {
         for (int i = 0; i < allAccounts.size(); i++) {
-            int theBest = i;
+            int indexOfBest = i;
             for (int j = i + 1; j < allAccounts.size(); j++) {
                 if (allAccounts.get(i).winLoseDraw[0] < allAccounts.get(j).winLoseDraw[0]) {
-                    theBest = j;
+                    indexOfBest = j;
                 }
             }
-            if (theBest != i) {
-                Collections.swap(allAccounts, theBest, i);
+            if (indexOfBest != i) {
+                Collections.swap(allAccounts, indexOfBest, i);
             }
         }
     }
