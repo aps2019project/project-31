@@ -26,6 +26,15 @@ public class Deck {
         return numberOfItem;
     }
 
+    public int numberOfCardInDeck(Card card) {
+        int numberOfCard = 0;
+        for (Card cardd : cards) {
+            if (cardd.id == card.id)
+                numberOfCard++;
+        }
+        return numberOfCard;
+    }
+
     public Hero getHero() {
         return hero;
     }
@@ -34,10 +43,19 @@ public class Deck {
         cards.add(card);
     }
 
+    public void setHero(Hero hero) {
+        this.hero = hero;
+    }
+
+    public Deck(String deckName) {
+        this.deckName = deckName;
+        this.cards = new ArrayList<>();
+    }
+
     public Deck(String deckName, Hero hero) {
         this.deckName = deckName;
         this.hero = hero;
-        this.cards = new ArrayList<Card>();
+        this.cards = new ArrayList<>();
     }
 
     public Deck(String deckName, ArrayList<Card> cards, Hero hero) {
@@ -53,6 +71,13 @@ public class Deck {
             int second = random.nextInt(cards.size());
             Collections.swap(cards, first, second);
         }
+    }
+    public boolean checkIfValid(){
+        if (hero == null)
+            return false;
+        if (cards.size() != 19)
+            return false;
+        return numberOfItemsInDeck() <= 1;
     }
 
 }
