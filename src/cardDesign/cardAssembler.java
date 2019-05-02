@@ -35,6 +35,7 @@ public class cardAssembler {
 
                 }catch (IOException e){
                     Log.println("Exception!:" + e);
+
                 }
                 break;
             case spell:
@@ -156,6 +157,7 @@ public class cardAssembler {
             case FunctionStrings.ACCUMULATING_ATTACKS:
             case FunctionStrings.DEAL_DAMAGE:
             case FunctionStrings.HEAL:
+            case FunctionStrings.INCREASE_ATTACK:
                 System.out.println("enter amount:");
                 functionToAdd.append(scanner.nextInt());
                 break;
@@ -163,6 +165,8 @@ public class cardAssembler {
             case FunctionStrings.HOLY_CELL:
             case FunctionStrings.SET_ON_FIRE:
                 isCellBased = true;
+                System.out.println("Enter turns:");
+                functionToAdd.append(scanner.nextInt());
                 break;
             case FunctionStrings.GIVE_FUNCTION:
                 Function function = makeFunction(scanner);
@@ -193,6 +197,10 @@ public class cardAssembler {
             target.append(TargetStrings.allTargets().get(scanner.nextInt() - 1));
             if (target.toString().matches(TargetStrings.MINIONS_WITH_DISTANCE)) {
                 System.out.println("Enter distance (Manhattan)");
+                target.append(scanner.nextInt());
+            }
+            if (target.toString().matches(TargetStrings.SQUARE)) {
+                System.out.println("Enter length");
                 target.append(scanner.nextInt());
             }
         }
