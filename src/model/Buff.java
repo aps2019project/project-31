@@ -1,5 +1,8 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class Buff {
     BuffType buffType;
     private int turnsLeft;
@@ -102,5 +105,11 @@ public class Buff {
         Power,
         Unholy,
         Bleed
+    }
+
+    public static ArrayList<BuffType> getAllBuffs(){
+        return new ArrayList<BuffType>(Arrays.asList(BuffType.Poison, BuffType.Holy, BuffType.Bleed,
+                                                    BuffType.Weakness, BuffType.Stun, BuffType.Power,
+                                                    BuffType.Unholy, BuffType.Disarm));
     }
 }

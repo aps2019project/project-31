@@ -56,6 +56,11 @@ public abstract class BattleManager {
     }
 
     public boolean playMinion(Minion minion, int x1, int x2) {
+        if (!isInHand(minion)){
+            //invalid card
+            Log.println("Not in hand");
+            return false;
+        }
         if (!checkCoordinates(x1, x2)) {
             //insert invalid coordinates error for view
             Log.println("Invalid Coordinates");
@@ -70,7 +75,7 @@ public abstract class BattleManager {
         }
 
         for (Function function : minion.getFunctions()) {
-            if (function.getFunctionType() == FunctionType.OnSpawn) {
+            if (function.getFunctionType() == Function.FunctionType.OnSpawn) {
                 compileFunction(function, x1, x2);
             }
         }
@@ -295,14 +300,16 @@ public abstract class BattleManager {
         Pattern pattern = Pattern.compile(FunctionStrings.GIVE_FUNCTION + "type:(.*)" + "function:(.*)" + "target:(.*)");
         Matcher matcher = pattern.matcher(function.getFunction());
         if (matcher.matches()) {
-            FunctionType functionType = null;
+            Function.FunctionType functionType = null;
             switch (matcher.group(1).replaceAll("type:", "")) {
                 case "OnDeath":
-                    functionType = FunctionType.OnDeath;
+                    functionType = Function.FunctionType.OnDeath;
+                    break;
                 case "OnAttack":
-                    functionType = FunctionType.OnAttack;
+                    functionType = Function.FunctionType.OnAttack;
+                    break;
                 case "OnDefend":
-                    functionType = FunctionType.OnDefend;
+                    functionType = Function.FunctionType.OnDefend;
             }
             Function function1 = new Function(functionType, matcher.group(2).replaceAll("function:", ""),
                     matcher.group(3).replaceAll("target:", ""));
@@ -447,7 +454,7 @@ public abstract class BattleManager {
         Pattern pattern = Pattern.compile(FunctionStrings.APPLY_BUFF + "(.*)");
         Matcher matcher = pattern.matcher(function.getFunction());
         if (matcher.matches()) {
-            Pattern pattern1 = Pattern.compile(FunctionStrings.BLEED + "(\\d+)(\\d+)");
+            Pattern pattern1 = Pattern.compile(FunctionStrings.BLEED + "(\\d+),(\\d+)");
             Matcher matcher1 = pattern.matcher(matcher.group(1));
             if (matcher1.matches()) {
                 int one = Integer.parseInt(matcher1.group(1));
@@ -642,7 +649,7 @@ public abstract class BattleManager {
             enemy.cell.setHasFlag(true);
         }
         for (Function function : enemy.functions) {
-            if (function.getFunctionType() == FunctionType.OnDeath) {
+            if (function.getFunctionType() == Function.FunctionType.OnDeath) {
                 compileFunction(function, enemy.cell.getX1Coordinate(), enemy.cell.getX2Coordinate());
             }
         }
@@ -698,7 +705,7 @@ public abstract class BattleManager {
 
     private void applyOnAttackFunction(Deployable card) {
         for (Function function : card.functions) {
-            if (function.getFunctionType() == FunctionType.OnAttack) {
+            if (function.getFunctionType() == Function.FunctionType.OnAttack) {
                 compileFunction(function, card.cell.getX1Coordinate(), card.cell.getX2Coordinate());
             }
         }
@@ -706,7 +713,7 @@ public abstract class BattleManager {
 
     private void applyOnDefendFunction(Deployable enemy) {
         for (Function function : enemy.functions) {
-            if (function.getFunctionType() == FunctionType.OnDefend) {
+            if (function.getFunctionType() == Function.FunctionType.OnDefend) {
                 compileFunction(function, enemy.cell.getX1Coordinate(), enemy.cell.getX2Coordinate());
             }
 
