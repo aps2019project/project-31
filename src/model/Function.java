@@ -34,13 +34,15 @@ public class Function {
     public String getTarget() {
         return target;
     }
+
+
+    public enum FunctionType{
+        OnDeath,
+        OnSpawn,
+        OnAttack,
+        OnDefend,
+        Passive,
+        Combo
+    }
 }
 
-enum FunctionType{
-    OnDeath,
-    OnSpawn,
-    OnAttack,
-    OnDefend,
-    Passive,
-    Combo
-}
