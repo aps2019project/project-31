@@ -129,6 +129,20 @@ public abstract class BattleManager {
                 }
             }
 
+            if (target.matches("(.*)" + TargetStrings.ALLIED_MINION + "(.*)")){
+                Card card = Map.getCardInCell(x1,x2);
+                if (card.getAccount().equals(currentPlayer.getAccount()) &&
+                    card.getType() == Card.CardType.minion){
+                    targetCards.add((Minion) card);
+                }
+                else
+                {
+                    //Invalid target
+                    Log.println("Invalid target");
+                    return false;
+                }
+            }
+
             if (target.matches("(.*)" + TargetStrings.ENEMY_GENERAL_ROW + "(.*)")) {
                 addEnemiesInRow(targetCards, getOtherPlayer().getHero().getCell().getX1Coordinate());
             }
