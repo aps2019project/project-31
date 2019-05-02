@@ -1,6 +1,9 @@
 package view;
 
+import jdk.swing.interop.SwingInterOpUtils;
 import model.Account;
+import model.Card;
+import model.Deployable;
 
 public class Output {
 
@@ -10,6 +13,49 @@ public class Output {
             System.out.println((i + 1) + " - UserName: " + Account.getAllAccounts().get(i).getUsername() + " -Wins: " +
                     Account.getAllAccounts().get(i).getWinLoseDraw()[0]);
         }
-
     }
+    public static void notInHand(){
+        System.out.println("Invalid card name");
+    }
+    public static void invalidInsertionTarget(){
+        System.out.println("Invalid target");
+    }
+    public static void notHaveEnoughMana(){
+        System.out.println("You don't have enough mana");
+    }
+    public static void insertionSuccessful(Card card,int x1,int x2){
+        if(card.getType()== Card.CardType.minion)
+            System.out.println(card.getName()+" with "+((Deployable)card).getUniqueId()+" inserted to ("+x1+", "+x2+")");
+        else
+            System.out.println(card.getName()+" with "+card.getId()+" inserted to ("+x1+", "+x2+")");
+    }
+    public static void movedSuccessfully(Deployable card){
+        System.out.println(card.getUniqueId()+" moved to "+card.getCell().getX1Coordinate()+" "+
+                card.getCell().getX2Coordinate());
+    }
+    public static void tooFarToMove(){
+        System.out.println("too far to move");
+    }
+    public static void invalidTargetForMove(){
+        System.out.println("invalid target");
+    }
+    public static void hasAttackedBefore(Deployable card){
+        System.out.println("card with "+card.getUniqueId()+" can't attack");
+    }
+    public static void isStunned(){
+        System.out.println("card is stunned");
+    }
+    public static void enemyNotThere(){
+        System.out.println("opponent minion is unavailable for attack");
+    }
+    public static void enemyNotExist(){
+        System.out.println("invalid card id");
+    }
+    public static void badSelectedCard(){
+        System.out.println("selected card is not deployable or you don't have selected card");
+    }
+    public static void theTurnEnded(){
+        System.out.println("the turn ended");
+    }
+
 }
