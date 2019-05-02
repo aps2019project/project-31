@@ -1,6 +1,6 @@
 package model;
 
-import conatants.GameMode;
+import constants.GameMode;
 import controller.BattleMenu;
 import org.graalvm.compiler.replacements.Log;
 
