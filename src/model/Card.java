@@ -1,6 +1,8 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+
 
 public abstract class Card {
     protected int price;
@@ -89,7 +91,11 @@ public abstract class Card {
         hero,
         spell,
         item,
-        herospell
+        herospell;
+
+        public static ArrayList<CardType> getAll(){
+            return new ArrayList<>(Arrays.asList(minion, hero, spell, item));
+        }
     }
 
 }

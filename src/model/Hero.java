@@ -1,5 +1,7 @@
 package model;
 
+import constants.AttackType;
+
 import java.util.ArrayList;
 
 public class Hero extends Deployable {
@@ -7,13 +9,17 @@ public class Hero extends Deployable {
     protected int health;
     protected HeroSpell heroSpell;
 
-    public Hero(int price, int manaCost, String cardText,
-                ArrayList<Function> functions, Account account, String name,
-                int id, CardType type, boolean isDeployed, boolean isMoved,
-                boolean isAttacked, Cell cell, int currentHealth, int currentAttack,
-                ArrayList<Buff> buffs, int attack, int health, HeroSpell heroSpell, int attackRange) {
-        super(price, manaCost, cardText, functions, account, name, id, type,
-                isDeployed, isMoved, isAttacked, cell, currentHealth, currentAttack, buffs, attackRange);
+    public Hero(int price, int manaCost,
+                String cardText, ArrayList<Function> functions,
+                Account account, String name, int id, CardType type,
+                boolean isDeployed, boolean isMoved, boolean isAttacked,
+                Cell cell, int attackRange, int currentHealth, int currentAttack,
+                int uniqueId, AttackType attackType, boolean isCombo,
+                int maxHealth, int attack, int health, HeroSpell heroSpell) {
+        super(price, manaCost, cardText, functions,
+                account, name, id, type, isDeployed, isMoved,
+                isAttacked, cell, attackRange, currentHealth,
+                currentAttack, uniqueId, attackType, isCombo, maxHealth);
         this.attack = attack;
         this.health = health;
         this.heroSpell = heroSpell;

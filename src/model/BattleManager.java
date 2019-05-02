@@ -48,7 +48,7 @@ public abstract class BattleManager {
     }
 
     public boolean playMinion(Minion minion, int x1, int x2) {
-        if (!isInHand(minion)){
+        if (!isInHand(minion)) {
             //invalid card
             Log.println("Not in hand");
             return false;
@@ -72,9 +72,10 @@ public abstract class BattleManager {
             }
         }
         Minion minion1 = new Minion(minion.price, minion.manaCost, minion.cardText, minion.functions, minion.account,
-                minion.name, minion.id, minion.type, minion.isDeployed, false, false, Map.getCell(x1, x2)
-                , minion.maxHealth, minion.maxHealth, new ArrayList<Buff>(),
-                minion.attackType, minion.currentAttack, minion.maxHealth, minion.attackRange);
+                minion.name, minion.id, minion.type, minion.isDeployed, true, false,
+                Map.getCell(x1, x2), minion.attackRange, minion.currentHealth, minion.currentAttack,
+                minion.uniqueId, minion.attackType, minion.isCombo, minion.maxHealth, minion.getAttack(),
+                minion.getHealth());
         Map.putCardInCell(minion, x1, x2);
         currentPlayer.addCardToBattlefield(minion);
         currentPlayer.removeFromHand(minion);
@@ -641,7 +642,7 @@ public abstract class BattleManager {
     }
 
     public void attack(Deployable card, Deployable enemy) {
-        if (canAttack(card,enemy)) {
+        if (canAttack(card, enemy)) {
             dealAttackDamageAndDoOtherStuff(card, enemy);
             counterAttack(card, enemy);
         } else {
