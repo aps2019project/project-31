@@ -1,4 +1,4 @@
-package conatants;
+package constants;
 
 public enum BuffType {
     Poison,

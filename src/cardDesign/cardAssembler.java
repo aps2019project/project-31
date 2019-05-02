@@ -1,60 +1,83 @@
 package cardDesign;
 
 
-import conatants.AttackType;
+import com.gilecode.yagson.YaGson;
+import com.gilecode.yagson.YaGsonBuilder;
+import constants.AttackType;
+import constants.CardType;
 import model.*;
+import org.graalvm.compiler.replacements.Log;
 
-import javax.sound.midi.Soundbank;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Scanner;
 
 public class cardAssembler {
 
     public static void main(String[] args) {
+        YaGson yaGson = new YaGsonBuilder().create();
         Scanner scanner = new Scanner(System.in);
         System.out.println("Type in card name:");
         String name = scanner.nextLine();
         System.out.println("Select card type");
-        for (CardType cardType : CardType.getAll()) {
+        for (Card.CardType cardType : Card.CardType.getAll()) {
             System.out.println(CardType.getAll().indexOf(cardType) + 1 + ". " + cardType);
         }
-        CardType cardType = CardType.getAll().get(scanner.nextInt() - 1);
+        Card.CardType cardType = Card.CardType.getAll().get(scanner.nextInt() - 1);
         switch (cardType) {
             case minion:
-                System.out.println("Enter health and then attack and then mana cost and then price");
-                int health = scanner.nextInt();
-                int attack = scanner.nextInt();
-                int manaCost = scanner.nextInt();
-                int price = scanner.nextInt();
-                System.out.println("1.melee\n 2.ranged\n 3.hybrid");
-                AttackType attackType = null;
-                int attackRange = 0;
-                switch (scanner.nextInt()){
-                    case 1:
-                        attackType = AttackType.melee;
-                        break;
-                    case 2:
-                        attackType = AttackType.ranegd;
-                        System.out.println("Enter range:");
-                        attackRange = scanner.nextInt();
-                        break;
-                    case 3:
-                        attackType = AttackType.hybrid;
+                Minion minion = makeMinion(scanner, cardType, name);
+                String path = System.getProperty("user.dir") + "/Sources/Cards/Minions.txt";
+                try(BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(path, true))) {
+                    bufferedWriter.write(yaGson.toJson(minion) + "\n");
+
+                }catch (IOException e){
+                    Log.println("Exception!:" + e);
+
                 }
-                System.out.println("Enter card text");
-                String cardText = scanner.nextLine();
-                ArrayList<Function> functions = new ArrayList<>();
-                do{
-                    System.out.println("Make function:");
-                    functions.add(makeFunction(scanner));
-                    System.out.println("type end to finish making functions");
-                }while (!scanner.nextLine().equals("end"));
+
 
 
         }
-        Function function = makeFunction(scanner);
 
+
+    }
+
+    public static Minion makeMinion(Scanner scanner, Card.CardType cardType, String name){
+        System.out.println("Enter health and then attack and then mana cost and then price");
+        int health = scanner.nextInt();
+        int attack = scanner.nextInt();
+        int manaCost = scanner.nextInt();
+        int price = scanner.nextInt();
+        System.out.println("1.melee\n 2.ranged\n 3.hybrid");
+        AttackType attackType = null;
+        int attackRange = 0;
+        switch (scanner.nextInt()){
+            case 1:
+                attackType = AttackType.melee;
+                break;
+            case 2:
+                attackType = AttackType.ranegd;
+                System.out.println("Enter range:");
+                attackRange = scanner.nextInt();
+                break;
+            case 3:
+                attackType = AttackType.hybrid;
+        }
+        System.out.println("Enter card text");
+        String cardText = scanner.nextLine();
+        ArrayList<Function> functions = new ArrayList<>();
+        do{
+            System.out.println("Make function:");
+            functions.add(makeFunction(scanner));
+            System.out.println("type end to finish making functions:");
+        }while (!scanner.nextLine().equals("end"));
+        return new Minion(price, manaCost, cardText, functions,null,
+                name,0,cardType,false,false,false,
+                null, attackRange, health, attack,0,
+                attackType,false,health,attack,health);
 
     }
 

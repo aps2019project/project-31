@@ -1,6 +1,6 @@
 package model;
 
-import conatants.AttackType;
+import constants.AttackType;
 
 import java.util.ArrayList;
 
