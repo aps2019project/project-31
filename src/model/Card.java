@@ -13,8 +13,9 @@ public abstract class Card {
     protected CardType type;
     protected boolean isDeployed = false;
 
-    public Card(int price, int manaCost, String cardText, ArrayList<Function> functions,
-                Account account, String name, int id, CardType type, boolean isDeployed) {
+    public Card(int price, int manaCost, String cardText,
+                ArrayList<Function> functions, Account account,
+                String name, int id, CardType type, boolean isDeployed) {
         this.price = price;
         this.manaCost = manaCost;
         this.cardText = cardText;

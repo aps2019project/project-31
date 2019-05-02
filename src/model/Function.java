@@ -42,7 +42,8 @@ public class Function {
         OnAttack,
         OnDefend,
         Passive,
-        Combo
+        Combo,
+        Vanilla
     }
 }
 

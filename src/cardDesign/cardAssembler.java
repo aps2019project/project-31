@@ -1,12 +1,11 @@
 package cardDesign;
 
 
-import model.Buff;
-import model.FunctionStrings;
-import model.TargetStrings;
-import model.Function;
+import conatants.AttackType;
+import model.*;
 
 import javax.sound.midi.Soundbank;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Scanner;
 
@@ -14,17 +13,56 @@ public class cardAssembler {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
+        System.out.println("Type in card name:");
+        String name = scanner.nextLine();
         System.out.println("Select card type");
+        for (CardType cardType : CardType.getAll()) {
+            System.out.println(CardType.getAll().indexOf(cardType) + 1 + ". " + cardType);
+        }
+        CardType cardType = CardType.getAll().get(scanner.nextInt() - 1);
+        switch (cardType) {
+            case minion:
+                System.out.println("Enter health and then attack and then mana cost and then price");
+                int health = scanner.nextInt();
+                int attack = scanner.nextInt();
+                int manaCost = scanner.nextInt();
+                int price = scanner.nextInt();
+                System.out.println("1.melee\n 2.ranged\n 3.hybrid");
+                AttackType attackType = null;
+                int attackRange = 0;
+                switch (scanner.nextInt()){
+                    case 1:
+                        attackType = AttackType.melee;
+                        break;
+                    case 2:
+                        attackType = AttackType.ranegd;
+                        System.out.println("Enter range:");
+                        attackRange = scanner.nextInt();
+                        break;
+                    case 3:
+                        attackType = AttackType.hybrid;
+                }
+                System.out.println("Enter card text");
+                String cardText = scanner.nextLine();
+                ArrayList<Function> functions = new ArrayList<>();
+                do{
+                    System.out.println("Make function:");
+                    functions.add(makeFunction(scanner));
+                    System.out.println("type end to finish making functions");
+                }while (!scanner.nextLine().equals("end"));
+
+
+        }
         Function function = makeFunction(scanner);
 
 
     }
 
-    public static Function makeFunction(Scanner scanner){
+    public static Function makeFunction(Scanner scanner) {
         Function.FunctionType functionType = Function.FunctionType.OnDeath;
         System.out.println("Select activation type:\n" +
                 "1.On Spawn 2.On Attack 3.On Death\n " +
-                "4.On Defend 5.Passive 6.Combo");
+                "4.On Defend 5.Passive 6.Combo 7.Vanilla");
         switch (scanner.nextInt()) {
             case 1:
                 functionType = Function.FunctionType.OnSpawn;
@@ -43,6 +81,9 @@ public class cardAssembler {
                 break;
             case 6:
                 functionType = Function.FunctionType.Combo;
+                return new Function(functionType, "", "");
+            case 7:
+                functionType = Function.FunctionType.Vanilla;
                 return new Function(functionType,"","");
         }
         System.out.println("Select desired function with number");
@@ -67,6 +108,16 @@ public class cardAssembler {
             case FunctionStrings.HOLY_CELL:
             case FunctionStrings.SET_ON_FIRE:
                 isCellBased = true;
+                break;
+            case FunctionStrings.GIVE_FUNCTION:
+                Function function = makeFunction(scanner);
+                functionToAdd.append("type:");
+                functionToAdd.append(function.getFunctionType());
+                functionToAdd.append("function:");
+                functionToAdd.append(function.getFunction());
+                functionToAdd.append("target:");
+                functionToAdd.append(function.getTarget());
+                break;
 
         }
         System.out.println(functionToAdd.toString());

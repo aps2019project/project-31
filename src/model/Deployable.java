@@ -1,5 +1,7 @@
 package model;
 
+import conatants.AttackType;
+
 import java.util.ArrayList;
 
 public class Deployable extends Card {
@@ -9,10 +11,31 @@ public class Deployable extends Card {
     protected int attackRange;
     protected int currentHealth;
     protected int currentAttack;
-    protected ArrayList<Buff> buffs;
+    protected ArrayList<Buff> buffs = new ArrayList<>();
     protected int uniqueId;
-    protected String attackType;
+    protected AttackType attackType;
     protected boolean isCombo;
+    protected ArrayList<Pair<Deployable, Integer>> accumulatingAttacks = new ArrayList<>();
+    protected int maxHealth;
+
+    public Deployable(int price, int manaCost,
+                      String cardText, ArrayList<Function> functions,
+                      Account account, String name, int id, CardType type,
+                      boolean isDeployed, boolean isMoved, boolean isAttacked, Cell cell,
+                      int attackRange, int currentHealth, int currentAttack, int uniqueId,
+                      AttackType attackType, boolean isCombo, int maxHealth) {
+        super(price, manaCost, cardText, functions, account, name, id, type, isDeployed);
+        this.isMoved = isMoved;
+        this.isAttacked = isAttacked;
+        this.cell = cell;
+        this.attackRange = attackRange;
+        this.currentHealth = currentHealth;
+        this.currentAttack = currentAttack;
+        this.uniqueId = uniqueId;
+        this.attackType = attackType;
+        this.isCombo = isCombo;
+        this.maxHealth = maxHealth;
+    }
 
     public int getUniqueId() {
         return uniqueId;
@@ -24,23 +47,6 @@ public class Deployable extends Card {
 
     public void addFunction(Function function){
         functions.add(function);
-    }
-
-    protected ArrayList<Pair<Deployable, Integer>> accumulatingAttacks;
-    protected int maxHealth;
-
-    public Deployable(int price, int manaCost, String cardText, ArrayList<Function> functions, Account account,
-                      String name, int id, CardType type, boolean isDeployed, boolean isMoved, boolean isAttacked,
-                      Cell cell, int currentHealth, int currentAttack,
-                      ArrayList<Buff> buffs, int attackRange) {
-        super(price, manaCost, cardText, functions, account, name, id, type, isDeployed);
-        this.isMoved = isMoved;
-        this.isAttacked = isAttacked;
-        this.attackRange = attackRange;
-        this.cell = cell;
-        this.maxHealth = this.currentHealth = currentHealth;
-        this.currentAttack = currentAttack;
-        this.buffs = buffs;
     }
 
     public int accumulatingAttack(Deployable attacker) {
@@ -93,7 +99,7 @@ public class Deployable extends Card {
         this.buffs = buffs;
     }
 
-    public void setAttackType(String attackType) {
+    public void setAttackType(AttackType attackType) {
         this.attackType = attackType;
     }
 
@@ -125,7 +131,7 @@ public class Deployable extends Card {
         return buffs;
     }
 
-    public String getAttackType() {
+    public AttackType getAttackType() {
         return attackType;
     }
 
