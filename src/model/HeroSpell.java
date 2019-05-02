@@ -9,8 +9,8 @@ public class HeroSpell extends Spell{
     public HeroSpell(int price, int manaCost, String cardText,
                      ArrayList<Function> functions, Account account,
                      String name, int id, CardType type, boolean isDeployed,
-                     String target, int cooldown, int coolDownRemaining) {
-        super(price, manaCost, cardText, functions, account, name, id, type, isDeployed, target);
+                      int cooldown, int coolDownRemaining) {
+        super(price, manaCost, cardText, functions, account, name, id, type, isDeployed);
         this.cooldown = cooldown;
         this.coolDownRemaining = coolDownRemaining;
     }

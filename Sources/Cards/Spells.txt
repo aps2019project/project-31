@@ -1,0 +1,1 @@
+{"@type":"model.Spell","@val":{"price":1000,"manaCost":0,"cardText":"Disarm an enemy for the whole game","functions":[{"functionType":"Spell","function":"apply buffdisarm100","target":"enemy"}],"name":"Total Disarm","id":100,"type":"spell","isDeployed":false}}

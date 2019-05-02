@@ -1,10 +1,12 @@
 package model;
 
+import constants.GameMode;
+
 public class SinglePlayer extends BattleManager {
     private Player playerOne;
     private Player aiPlayer;
 
-    public SinglePlayer(Map map, String gameMode, Player currentPlayer, int maxNumberOfFlags, Player playerOne, Player aiPlayer) {
+    public SinglePlayer(Map map, GameMode gameMode, Player currentPlayer, int maxNumberOfFlags, Player playerOne, Player aiPlayer) {
         super(map, gameMode, currentPlayer, maxNumberOfFlags);
         this.playerOne = playerOne;
         this.aiPlayer = aiPlayer;
