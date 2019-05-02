@@ -24,7 +24,11 @@ public class Hero extends Deployable {
         this.health = health;
         this.heroSpell = heroSpell;
     }
-
+    public Hero duplicateHero(){
+        return new Hero(this.price,this.manaCost,this.cardText,this.functions,account,name,id,type,isDeployed,
+                true,true,cell,attackRange,currentHealth,currentAttack,id,attackType,
+                isCombo,maxHealth,attack,health,heroSpell);
+    }
     public void show() {
         System.out.println(" Name: "
                 + getName()

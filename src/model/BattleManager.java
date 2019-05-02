@@ -3,6 +3,7 @@ package model;
 import constants.GameMode;
 import controller.BattleMenu;
 import org.graalvm.compiler.replacements.Log;
+import view.Output;
 
 import java.util.*;
 
@@ -56,20 +57,15 @@ public abstract class BattleManager {
     }
 
     public boolean playMinion(Minion minion, int x1, int x2) {
-        if (!isInHand(minion)) {
-            //invalid card
-            Log.println("Not in hand");
-            return false;
-        }
         if (!checkCoordinates(x1, x2)) {
-            //insert invalid coordinates error for view
+            Output.invalidInsertionTarget();
             Log.println("Invalid Coordinates");
             return false;
 
         }
 
         if (minion.manaCost > currentPlayer.getMana()) {
-            //insert not enough mana message for view
+            Output.notHaveEnoughMana();
             Log.println("Not enough mana");
             return false;
         }
@@ -79,21 +75,37 @@ public abstract class BattleManager {
                 compileFunction(function, x1, x2);
             }
         }
-        Minion minion1 = new Minion(minion.price, minion.manaCost, minion.cardText, minion.functions, minion.account,
+        int uniqueId = getUniqueId(minion.id);
+        Minion theMinion = new Minion(minion.price, minion.manaCost, minion.cardText, minion.functions, minion.account,
                 minion.name, minion.id, minion.type, minion.isDeployed, true, false,
-                Map.getCell(x1, x2), minion.attackRange, minion.currentHealth, minion.currentAttack,0
-                /*make unique id here*/, minion.attackType, minion.isCombo, minion.maxHealth, minion.getAttack(),
+                Map.getCell(x1, x2), minion.attackRange, minion.currentHealth, minion.currentAttack,
+                uniqueId, minion.attackType, minion.isCombo, minion.maxHealth, minion.getAttack(),
                 minion.getHealth());
-        Map.putCardInCell(minion, x1, x2);
+        Map.putCardInCell(theMinion, x1, x2);
         if (Map.getCell(x1, x2).doesHaveFlag()) {
             Map.getCell(x1, x2).setHasFlag(false);
-            minion.setHasFlag(true);
+            theMinion.setHasFlag(true);
             if (gameMode == GameMode.Dominaton)
                 currentPlayer.numbereOfFlags++;
         }
-        currentPlayer.addCardToBattlefield(minion);
+        Output.insertionSuccessful(theMinion, x1, x2);
+        currentPlayer.addCardToBattlefield(theMinion);
         currentPlayer.removeFromHand(minion);
         return true;
+
+    }
+
+    public static int getUniqueId(int cardId) {
+        int numberOfMinionInBattleField = 0;
+        for (Deployable card : player1.cardsOnBattleField) {
+            if (card.id == cardId)
+                numberOfMinionInBattleField++;
+        }
+        for (Deployable card : player2.cardsOnBattleField) {
+            if (card.id == cardId)
+                numberOfMinionInBattleField++;
+        }
+        return (cardId * 10) + numberOfMinionInBattleField;
 
     }
 
@@ -659,13 +671,12 @@ public abstract class BattleManager {
                 }
                 card.cell = Map.getCell(x1, x2);
                 Map.getCell(x1, x2).setCardInCell(card);
-
-                //cardid move to x1,x2
+                Output.movedSuccessfully(card);
             } else {
-                //invalid target
+                Output.invalidTargetForMove();
             }
         } else {
-            //invalid target
+            Output.tooFarToMove();
         }
     }
 
@@ -703,7 +714,12 @@ public abstract class BattleManager {
             dealAttackDamageAndDoOtherStuff(card, enemy);
             counterAttack(card, enemy);
         } else {
-            //opponent minion is unavailable for attack OR Card with [card id] can′t attack message
+            if(card.isAttacked)
+                Output.hasAttackedBefore(card);
+            if(card.isStunned())
+                Output.isStunned();
+            if(isAttackTypeValidForAttack(card,enemy))
+                Output.enemyNotThere();
         }
     }
 
@@ -836,6 +852,8 @@ public abstract class BattleManager {
     }
 
     public static void initialTheGame() {
+        player1.duplicateTheDeck();
+        player2.duplicateTheDeck();
         Collections.shuffle(player1.currentDeck.getCards());
         Collections.shuffle(player2.currentDeck.getCards());
         initialTheHands();

@@ -8,7 +8,7 @@ import java.util.regex.*;
 
 public class Player {
     protected Account account;
-    protected Deck currentDeck;
+    protected Deck currentDeck = new Deck("deck in game", account.getTheMainDeck().getHero().duplicateHero());
     protected int mana;
     protected int remainingTime;
     protected int numbereOfFlags;
@@ -28,9 +28,6 @@ public class Player {
 
     public Player(Account account) {
         this.account = account;
-        this.hand = generateHandArrangement();
-        this.currentDeck = new Deck(account.getTheMainDeck().getDeckName(),
-                account.getTheMainDeck().getCards(), account.getTheMainDeck().getHero());
     }
 
     public Hero getHero() {
@@ -110,19 +107,6 @@ public class Player {
 
     public Card getCardInReplace() {
         return cardInReplace;
-    }
-
-    public ArrayList<Card> generateHandArrangement() {
-        currentDeck.shuffle();
-        ArrayList<Card> hand = new ArrayList<>();
-        Random random = new Random();
-        for (int i = 0; i < 5; i++) {
-            int index = random.nextInt(currentDeck.getCards().size());
-            hand.add(currentDeck.getCards().get(index));
-            currentDeck.getCards().remove(index);
-        }
-        return hand;
-
     }
 
     public void generateDeckArrangement() {
@@ -222,82 +206,6 @@ public class Player {
         }
     }
 
-    public boolean playCard(Card card, int x1, int x2) {
-        boolean sit = false;
-        switch (card.getType()) {
-            case minion:
-                sit = battle.playMinion((Minion) card, x1, x2);
-                break;
-            case spell:
-                sit = battle.playSpell((Spell) card, x1, x2);
-                break;
-            case item:
-                sit = battle.useItem((Item) card, x1, x2);
-                break;
-        }
-        return sit;
-    }
-
-    private void handleCommands(String input) {
-        Pattern pattern = Pattern.compile("\\s*show my minions\\s*");
-        Matcher matcher = pattern.matcher(input);
-        if (matcher.matches()) {
-            for (Card card : cardsOnBattleField) {
-                card.show();
-            }
-            return;
-        }
-        pattern = Pattern.compile("\\s*show opponent minions\\s*");
-        matcher = pattern.matcher(input);
-        if (matcher.matches()) {
-            Player opponent = battle.getOtherPlayer();
-            for (Card card : opponent.cardsOnBattleField) {
-                card.show();
-            }
-            opponent.currentDeck.getHero().show();
-            return;
-        }
-        pattern = Pattern.compile("\\s*show card info\\s+(\\d+)");
-        matcher = pattern.matcher(input);
-        if (matcher.matches()) {
-            for (Card card : cardsOnBattleField) {
-                if (card.getId() == Integer.valueOf(matcher.group(1))) {
-                    card.showCardInfo();
-                }
-            }
-        }
-        pattern = Pattern.compile("\\s*select (\\d+)\\s*");
-        matcher = pattern.matcher(input);
-        if (matcher.matches()) {
-            selectACard(Integer.valueOf(matcher.group(1)));
-        }
-
-        pattern = Pattern.compile("\\s*move to\\((\\d),(\\d)\\)\\s*");
-        matcher = pattern.matcher(input);
-        if (matcher.matches()) {
-            if (selectedCard.isDeployed()) {
-                if (selectedCard.getType().equals("hero") || selectedCard.getType().equals("minion")) {
-                    int x1 = Integer.valueOf(matcher.group(1)), x2 = Integer.valueOf(matcher.group(2));
-
-                }
-
-            }
-        }
-        pattern = Pattern.compile("\\s*attack (\\d+)\\s*");
-        matcher = pattern.matcher(input);
-        if (matcher.matches()) {
-            if (selectedCard.isDeployed() && (selectedCard.getType().equals("hero") ||
-                    selectedCard.getType().equals("minion"))) {
-
-            }
-        }
-        pattern = Pattern.compile("\\s*attack combo (\\d+)\\s+((\\d+\\s*)+)\\s*");
-        matcher = pattern.matcher(input);
-        if (matcher.matches()) {
-
-        }
-    }
-
     public boolean isSelectedCardDeployed() {
         for (Deployable card : cardsOnBattleField) {
             if (card.equals(selectedCard))
@@ -308,6 +216,12 @@ public class Player {
 
     public boolean isHeroDead() {
         return getHero().theActualHealth() <= 0;
+    }
+
+    public void duplicateTheDeck() {
+        for (Card card : account.getTheMainDeck().getCards()) {
+            currentDeck.getCards().add(card);
+        }
     }
 }
 
