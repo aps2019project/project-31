@@ -81,8 +81,8 @@ public abstract class BattleManager {
         }
         Minion minion1 = new Minion(minion.price, minion.manaCost, minion.cardText, minion.functions, minion.account,
                 minion.name, minion.id, minion.type, minion.isDeployed, true, false,
-                Map.getCell(x1, x2), minion.attackRange, minion.currentHealth, minion.currentAttack,
-                minion.uniqueId, minion.attackType, minion.isCombo, minion.maxHealth, minion.getAttack(),
+                Map.getCell(x1, x2), minion.attackRange, minion.currentHealth, minion.currentAttack,0
+                /*make unique id here*/, minion.attackType, minion.isCombo, minion.maxHealth, minion.getAttack(),
                 minion.getHealth());
         Map.putCardInCell(minion, x1, x2);
         if (Map.getCell(x1, x2).doesHaveFlag()) {
@@ -114,6 +114,20 @@ public abstract class BattleManager {
                             }
                         }
                     }
+                }
+            }
+
+            if (target.matches("(.*)" + TargetStrings.ALLIED_MINION + "(.*)")){
+                Card card = Map.getCardInCell(x1,x2);
+                if (card.getAccount().equals(currentPlayer.getAccount()) &&
+                    card.getType() == Card.CardType.minion){
+                    targetCards.add((Minion) card);
+                }
+                else
+                {
+                    //Invalid target
+                    Log.println("Invalid target");
+                    return false;
                 }
             }
 
