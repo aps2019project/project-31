@@ -3,7 +3,7 @@ package controller;
 import model.Account;
 
 public abstract class Menu {
-    protected Account account;
+    protected static Account account;
     protected Menu lowerMenu;
     protected Menu goingTo;
 
