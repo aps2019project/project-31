@@ -162,11 +162,27 @@ public class Player {
         return false;
     }
 
+    public void handleNumberOfTurnHavingFlagAtTheEndOfTurn() {
+        if (doesHaveTheFlag()) {
+            numberOfTurnsHavingFlag++;
+            return;
+        }
+        numberOfTurnsHavingFlag = 0;
+    }
+
+    public boolean doesHaveTheFlag() {
+        for (Deployable card : cardsOnBattleField) {
+            if (card.hasFlag)
+                return true;
+        }
+        return false;
+    }
+
     public void showNextCard() {
         cardInReplace.show();
     }
 
-    public void endOfTurn() {
+    public void endOfTurnBuffsAndFunctions() {
         //doOnTurnFunctions();
         applyAtTheEndOfTurnBuffs();
         buffsChangesAtTheEndOfTurn();

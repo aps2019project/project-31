@@ -17,6 +17,15 @@ public class Deck {
         return cards;
     }
 
+    public int numberOfItemsInDeck() {
+        int numberOfItem = 0;
+        for (Card card : cards) {
+            if (card.getType() == Card.CardType.item)
+                numberOfItem++;
+        }
+        return numberOfItem;
+    }
+
     public Hero getHero() {
         return hero;
     }

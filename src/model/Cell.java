@@ -7,6 +7,15 @@ public class Cell {
     private int onFireTurns;
     private int onPoisonTurns;
     private int isHolyTurns;
+    private boolean hasFlag;
+
+    public boolean doesHaveFlag() {
+        return hasFlag;
+    }
+
+    public void setHasFlag(boolean hasFlag) {
+        this.hasFlag = hasFlag;
+    }
 
     public Cell(int x1Coordinate, int x2Coordinate, Deployable cardInCell) {
         this.x1Coordinate = x1Coordinate;
@@ -64,7 +73,6 @@ public class Cell {
         if (onPoisonTurns > 0)
             onPoisonTurns--;
     }
-
 
 
     public int getX1Coordinate() {

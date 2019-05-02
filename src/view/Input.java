@@ -1,15 +1,8 @@
 package view;
 
 import controller.BattleMenu;
-import model.BattleManager;
-import model.Deployable;
-import model.Map;
 import model.Player;
-import model.TargetStrings;
 
-import java.lang.reflect.Array;
-import java.lang.reflect.Parameter;
-import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -19,6 +12,8 @@ public class Input {
 
     public static void handleSelectCardOrSelectComboCards(Player player) {
         String input = Input.scanner.nextLine();
+        if(input.matches("\\s*end turn\\s*"))
+            BattleMenu.setAreWeInMiddleOfTurn(false);
         Pattern pattern = Pattern.compile("attack combo (\\d+)\\s+((\\d\\s*)+)");
         Matcher matcher = pattern.matcher(input);
         if (matcher.matches()) {
@@ -28,11 +23,13 @@ public class Input {
         }
         if (input.matches("select \\d+"))
             player.selectACard(Integer.parseInt(input.replace("select", "").trim()));
-        BattleMenu.getBattleManager().isFinishedDueToHeroDying();
+        BattleMenu.getBattleManager().checkTheEndSituation();
     }
 
     public static void moveAttackPlayCard() {
         String input = Input.scanner.nextLine();
+        if(input.matches("\\s*end turn\\s*"))
+            BattleMenu.setAreWeInMiddleOfTurn(false);
         if (input.matches("attack\\s+\\d+")) {
             BattleMenu.attack(Integer.parseInt(input.replace("attack", "").trim()));
         }
@@ -47,6 +44,6 @@ public class Input {
             BattleMenu.insert(Integer.parseInt(matcher.group(1)),Integer.parseInt(matcher.group(2)),
                     Integer.parseInt(matcher.group(3)));
         }
-        BattleMenu.getBattleManager().isFinishedDueToHeroDying();
+        BattleMenu.getBattleManager().checkTheEndSituation();
     }
 }

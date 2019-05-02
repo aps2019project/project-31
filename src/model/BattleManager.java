@@ -1,11 +1,10 @@
 package model;
 
+import conatants.GameMode;
+import controller.BattleMenu;
 import org.graalvm.compiler.replacements.Log;
 
-import java.awt.*;
 import java.util.*;
-
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -16,12 +15,13 @@ public abstract class BattleManager {
     public static final int PERMANENT = 100;
     public static final String CONTINUOUS = "continuous";
     protected Map map;
-    protected int gameMode;
+    protected static GameMode gameMode;
     protected Player currentPlayer;
     protected static Player player1;
     protected static Player player2;
     protected final int maxNumberOfFlags;
     protected final int maxTurnsOfHavingFlag;
+
 
     public int getMaxNumberOfFlags() {
         return maxNumberOfFlags;
@@ -43,11 +43,16 @@ public abstract class BattleManager {
         return player2;
     }
 
-    public BattleManager(Map map, String gameMode, Player currentPlayer, int maxNumberOfFlags) {
+    public BattleManager(Map map, GameMode gameMode, Player currentPlayer, int maxNumberOfFlags) {
         this.map = map;
         this.currentPlayer = currentPlayer;
         this.maxNumberOfFlags = maxNumberOfFlags;
         maxTurnsOfHavingFlag = 0;
+        BattleManager.gameMode = gameMode;
+    }
+
+    public static GameMode getGameMode() {
+        return gameMode;
     }
 
     public boolean playMinion(Minion minion, int x1, int x2) {
@@ -74,6 +79,12 @@ public abstract class BattleManager {
                 , minion.maxHealth, minion.maxHealth, new ArrayList<Buff>(),
                 minion.attackType, minion.currentAttack, minion.maxHealth, minion.attackRange);
         Map.putCardInCell(minion, x1, x2);
+        if (Map.getCell(x1, x2).doesHaveFlag()) {
+            Map.getCell(x1, x2).setHasFlag(false);
+            minion.setHasFlag(true);
+            if (gameMode == GameMode.Dominaton)
+                currentPlayer.numbereOfFlags++;
+        }
         currentPlayer.addCardToBattlefield(minion);
         currentPlayer.removeFromHand(minion);
         return true;
@@ -600,11 +611,19 @@ public abstract class BattleManager {
         return true;
     }
 
+
     public void move(Deployable card, int x1, int x2) {
         if (Map.getDistance(Map.getCell(x1, x2), card.cell) <= Map.getMaxMoveRange()) {
             if (Map.getCell(x1, x2).getCardInCell() == null && !card.isMoved && !card.isStunned()) {
+                if (!card.hasFlag && Map.getCell(x1, x2).doesHaveFlag()) {
+                    if (gameMode == GameMode.Dominaton)
+                        currentPlayer.numbereOfFlags++;
+                    card.setHasFlag(true);
+                    Map.getCell(x1, x2).setHasFlag(false);
+                }
                 card.cell = Map.getCell(x1, x2);
                 Map.getCell(x1, x2).setCardInCell(card);
+
                 //cardid move to x1,x2
             } else {
                 //invalid target
@@ -615,17 +634,24 @@ public abstract class BattleManager {
     }
 
     public void killTheThing(Deployable enemy) {
+        if (enemy.hasFlag) {
+            if (gameMode == GameMode.Dominaton)
+                getOtherPlayer().numbereOfFlags--;
+            if (gameMode == GameMode.Flag)
+                getOtherPlayer().numberOfTurnsHavingFlag = 0;
+            enemy.cell.setHasFlag(true);
+        }
         for (Function function : enemy.functions) {
             if (function.getFunctionType() == FunctionType.OnDeath) {
                 compileFunction(function, enemy.cell.getX1Coordinate(), enemy.cell.getX2Coordinate());
             }
         }
-        Cell cell = Map.findCellByCardId(enemy.uniqueId);
-        cell.setCardInCell(null);
+        enemy.cell.setCardInCell(null);
         if (player1.doesPlayerHaveDeployable(enemy))
             player1.getCardsOnBattleField().remove(enemy);
         else
             player2.getCardsOnBattleField().remove(enemy);
+
     }
 
     public void comboAtack(Deployable enemy, ArrayList<Deployable> comboAttackers) {
@@ -637,7 +663,7 @@ public abstract class BattleManager {
     }
 
     public void attack(Deployable card, Deployable enemy) {
-        if (canAttack(card,enemy)) {
+        if (canAttack(card, enemy)) {
             dealAttackDamageAndDoOtherStuff(card, enemy);
             counterAttack(card, enemy);
         } else {
@@ -719,6 +745,7 @@ public abstract class BattleManager {
         player1.getAccount().addMatchHistories(matchHistory);
         matchHistory = new MatchHistory(player1.getAccount().getUsername(), "lose");
         player2.getAccount().addMatchHistories(matchHistory);
+        BattleMenu.setGameFinished(true);
     }
 
     public void player2Won() {
@@ -726,6 +753,7 @@ public abstract class BattleManager {
         player1.getAccount().addMatchHistories(matchHistory);
         matchHistory = new MatchHistory(player1.getAccount().getUsername(), "win");
         player2.getAccount().addMatchHistories(matchHistory);
+        BattleMenu.setGameFinished(true);
     }
 
     public void draw() {
@@ -733,23 +761,18 @@ public abstract class BattleManager {
         player1.getAccount().addMatchHistories(matchHistory);
         matchHistory = new MatchHistory(player1.getAccount().getUsername(), "draw");
         player2.getAccount().addMatchHistories(matchHistory);
+        BattleMenu.setGameFinished(true);
     }
 
     public abstract Player getOtherPlayer();
 
     public void checkTheEndSituation() {
-        switch (gameMode) {
-            case (1):
-                isFinishedDueToHeroDying();
-                break;
-            case (2):
-                isFinishedDueToHeroDying();
-                isFinishedDueToHavingTheFlag();
-                break;
-            case (3):
-                isFinishedDueToHeroDying();
-                isFinishedDueToHavingMostOfFlags();
-                break;
+        isFinishedDueToHeroDying();
+        if (gameMode == GameMode.Flag) {
+            isFinishedDueToHavingTheFlag();
+        }
+        if (gameMode == GameMode.Dominaton) {
+            isFinishedDueToHavingMostOfFlags();
         }
     }
 
@@ -780,6 +803,22 @@ public abstract class BattleManager {
         Collections.shuffle(player1.currentDeck.getCards());
         Collections.shuffle(player2.currentDeck.getCards());
         initialTheHands();
+        generateFlags();
+    }
+
+    private static void generateFlags() {
+        Random random = new Random();
+        if (gameMode == GameMode.Flag) {
+            Map.getCell(3, 5).setHasFlag(true);
+        }
+        if (gameMode == GameMode.Dominaton) {
+            for (int i = 0; i < 7; i++) {
+                int x1 = random.nextInt(5) + 1;
+                int x2 = random.nextInt(5) + 3;
+                Map.getCell(x1, x2).setHasFlag(true);
+            }
+        }
+
     }
 
     private static void initialTheHands() {
@@ -792,4 +831,5 @@ public abstract class BattleManager {
             player2.getCurrentDeck().getCards().remove(i);
         }
     }
+
 }

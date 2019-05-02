@@ -1,5 +1,6 @@
 package controller;
 
+import conatants.GameMode;
 import model.*;
 import org.graalvm.compiler.replacements.Log;
 import view.Input;
@@ -8,14 +9,31 @@ import java.util.ArrayList;
 
 public class BattleMenu extends Menu {
     private static BattleManager battleManager;
+    private static boolean areWeInMiddleOfTurn = true;
+    protected static boolean isGameFinished = false;
 
+    public static boolean isGameFinished() {
+        return isGameFinished;
+    }
+
+    public static void setGameFinished(boolean gameFinished) {
+        isGameFinished = gameFinished;
+    }
+
+    public static boolean isAreWeInMiddleOfTurn() {
+        return areWeInMiddleOfTurn;
+    }
+
+    public static void setAreWeInMiddleOfTurn(boolean areWeInMiddleOfTurn) {
+        BattleMenu.areWeInMiddleOfTurn = areWeInMiddleOfTurn;
+    }
 
     public static BattleManager getBattleManager() {
         return battleManager;
     }
 
     private void setBattleManagerMode() {
- //       battleManager = new ();
+        //       battleManager = new ();
 
 
         runTheGame(battleManager);
@@ -29,24 +47,44 @@ public class BattleMenu extends Menu {
             isPlayer1Turn = !isPlayer1Turn;
             battleManager.setCurrentPlayer(battleManager.getOtherPlayer());
             if (battleManager.getCurrentPlayer().isAi()) {
-                ((Ai)battleManager.getCurrentPlayer()).play();
+                ((Ai) battleManager.getCurrentPlayer()).play();
             } else {
-                if (battleManager.getCurrentPlayer().getSelectedCard() != null) {
-                    Input.handleSelectCardOrSelectComboCards(battleManager.getCurrentPlayer()); // to view vorodi migire to controller selectedCard ro mirize tush ya combo ro check mikone
-                } else {
-                    Input.moveAttackPlayCard(); // to view vorodi migire tabesho to controller seda mizane
+                areWeInMiddleOfTurn = true;
+                boolean sit = true;
+                while (sit == areWeInMiddleOfTurn) {
+                    if (battleManager.getCurrentPlayer().getSelectedCard() != null) {
+                        Input.handleSelectCardOrSelectComboCards(battleManager.getCurrentPlayer());
+                    } else {
+                        Input.moveAttackPlayCard();
+                    }
+                    if (isGameFinished) {
+                        battleManager = null;
+                        run();
+                    }
+
                 }
 
             }
-            battleManager.getCurrentPlayer().placeNextCardToHand();
-            battleManager.getCurrentPlayer().endOfTurn();
-            battleManager.getOtherPlayer().endOfTurn();
-            battleManager.checkTheEndSituation();
+            doAllThingsInEndingOfTheTurns();
+            // say the turn ended
+        }
+    }
+
+    private void doAllThingsInEndingOfTheTurns() {
+        battleManager.getCurrentPlayer().placeNextCardToHand();
+        battleManager.getCurrentPlayer().endOfTurnBuffsAndFunctions();
+        battleManager.getOtherPlayer().endOfTurnBuffsAndFunctions();
+        battleManager.checkTheEndSituation();
+        if (BattleManager.getGameMode() == GameMode.Flag) {
+            battleManager.getPlayer1().handleNumberOfTurnHavingFlagAtTheEndOfTurn();
+            battleManager.getPlayer2().handleNumberOfTurnHavingFlagAtTheEndOfTurn();
         }
     }
 
     @Override
     public void run() {
+        if (!account.checkIfTheDeckIsValid())
+            return;
         while (true) {
             /*View.showModes();
             handleInputCommand();

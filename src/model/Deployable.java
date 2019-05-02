@@ -13,6 +13,15 @@ public class Deployable extends Card {
     protected int uniqueId;
     protected String attackType;
     protected boolean isCombo;
+    protected boolean hasFlag;
+
+    public boolean doesHaveFlag() {
+        return hasFlag;
+    }
+
+    public void setHasFlag(boolean hasFlag) {
+        this.hasFlag = hasFlag;
+    }
 
     public int getUniqueId() {
         return uniqueId;
@@ -41,6 +50,7 @@ public class Deployable extends Card {
         this.maxHealth = this.currentHealth = currentHealth;
         this.currentAttack = currentAttack;
         this.buffs = buffs;
+        hasFlag=false;
     }
 
     public int accumulatingAttack(Deployable attacker) {

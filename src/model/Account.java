@@ -92,4 +92,12 @@ public class Account {
     public static Account getMainAccount() {
         return mainAccount;
     }
+
+    public boolean checkIfTheDeckIsValid() {
+        if (theMainDeck.getHero() == null)
+            return false;
+        if (theMainDeck.getCards().size() != 20)
+            return false;
+        return theMainDeck.numberOfItemsInDeck() <= 1;
+    }
 }

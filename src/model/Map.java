@@ -51,7 +51,7 @@ public class Map {
         getCell(x1, x2).setCardInCell(card);
     }
 
-    public static void atTheEndOfTurn() {
+    public static void applyPoisonFireAtTheEndOfTurn() {
         for (Cell[] cells : map) {
             for (Cell cell : cells) {
                 if (cell.isOnFire() && cell.getCardInCell() != null)
