@@ -35,14 +35,43 @@ public class cardAssembler {
 
                 }catch (IOException e){
                     Log.println("Exception!:" + e);
-
                 }
+                break;
+            case spell:
+                Spell spell = makeSpell(scanner, cardType, name);
+                String path1 = System.getProperty("user.dir") + "/Sources/Cards/Spells.txt";
+                try(BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(path1, true))) {
+                    bufferedWriter.write(yaGson.toJson(spell) + "\n");
 
+                }catch (IOException e){
+                    Log.println("Exception!:" + e);
+                }
+                break;
 
 
         }
 
 
+    }
+    public static Spell makeSpell(Scanner scanner, Card.CardType cardType, String name){
+        System.out.println("Enter mana cost and then price:");
+        int mana = scanner.nextInt();
+        int price = scanner.nextInt();
+        System.out.println("Enter card text");
+        String cardText = scanner.nextLine();
+        ArrayList<Function> functions = makeFunctionsList(scanner);
+        return new Spell(price,mana,cardText,functions,null,name,0,cardType,
+                false);
+    }
+
+    private static ArrayList<Function> makeFunctionsList(Scanner scanner) {
+        ArrayList<Function> functions = new ArrayList<>();
+        do {
+            System.out.println("Make function:");
+            functions.add(makeFunction(scanner));
+            System.out.println("type end to finish making functions:");
+        } while (!scanner.nextLine().equals("end"));
+        return functions;
     }
 
     public static Minion makeMinion(Scanner scanner, Card.CardType cardType, String name){
@@ -68,12 +97,7 @@ public class cardAssembler {
         }
         System.out.println("Enter card text");
         String cardText = scanner.nextLine();
-        ArrayList<Function> functions = new ArrayList<>();
-        do{
-            System.out.println("Make function:");
-            functions.add(makeFunction(scanner));
-            System.out.println("type end to finish making functions:");
-        }while (!scanner.nextLine().equals("end"));
+        ArrayList<Function> functions = makeFunctionsList(scanner);
         return new Minion(price, manaCost, cardText, functions,null,
                 name,0,cardType,false,false,false,
                 null, attackRange, health, attack,0,
