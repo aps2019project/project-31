@@ -133,6 +133,20 @@ public abstract class BattleManager {
                 addEnemiesInRow(targetCards, getOtherPlayer().getHero().getCell().getX1Coordinate());
             }
 
+            if (target.matches("(.*)" + TargetStrings.ALLIED_HERO + "(.*)")){
+                targetCards.add(getOtherPlayer().getHero());
+            }
+
+            if (target.matches("(.*)" + TargetStrings.ENEMY + "(.*)")) {
+                if (Map.getCardInCell(x1, x2).getAccount().equals(currentPlayer.getAccount())) {
+                    //wrong target
+                    Log.println("Invalid target");
+                    return false;
+                } else {
+                    targetCards.add(Map.getCardInCell(x1, x2));
+                }
+            }
+
             if (target.matches("(.*)" + TargetStrings.ALL_ALLIES + "(.*)")) {
                 targetCards.addAll(currentPlayer.getCardsOnBattleField());
             } else if (target.matches("(.*)" + TargetStrings.ALLY + "(.*)")) {

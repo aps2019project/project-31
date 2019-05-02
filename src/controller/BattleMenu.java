@@ -1,6 +1,6 @@
 package controller;
 
-import constants.*;
+import constants.GameMode;
 import model.*;
 import org.graalvm.compiler.replacements.Log;
 import view.Input;

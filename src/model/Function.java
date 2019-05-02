@@ -43,7 +43,8 @@ public class Function {
         OnDefend,
         Passive,
         Combo,
-        Vanilla
+        Vanilla,
+        Spell
     }
 }
 

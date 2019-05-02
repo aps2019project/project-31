@@ -23,7 +23,7 @@ public class cardAssembler {
         String name = scanner.nextLine();
         System.out.println("Select card type");
         for (Card.CardType cardType : Card.CardType.getAll()) {
-            System.out.println(CardType.getAll().indexOf(cardType) + 1 + ". " + cardType);
+            System.out.println((Card.CardType.getAll().indexOf(cardType) + 1) + ". " + cardType);
         }
         Card.CardType cardType = Card.CardType.getAll().get(scanner.nextInt() - 1);
         switch (cardType) {
@@ -37,12 +37,46 @@ public class cardAssembler {
                     Log.println("Exception!:" + e);
 
                 }
+                break;
+            case spell:
+                Spell spell = makeSpell(scanner, cardType, name);
+                String path1 = System.getProperty("user.dir") + "/Sources/Cards/Spells.txt";
+                try(BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(path1, true))) {
+                    bufferedWriter.write(yaGson.toJson(spell) + "\n");
 
+                }catch (IOException e){
+                    Log.println("Exception!:" + e);
+                }
+                break;
 
 
         }
 
 
+    }
+    public static Spell makeSpell(Scanner scanner, Card.CardType cardType, String name){
+        System.out.println("Enter mana cost and then price:");
+        int mana = scanner.nextInt();
+        int price = scanner.nextInt();
+        System.out.println("Enter card text");
+        scanner.nextLine();
+        String cardText = scanner.nextLine();
+        System.out.println("Enter card ID");
+        int cardID = scanner.nextInt();
+        ArrayList<Function> functions = makeFunctionsList(scanner);
+        return new Spell(price,mana,cardText,functions,null,name,cardID,cardType,
+                false);
+    }
+
+    private static ArrayList<Function> makeFunctionsList(Scanner scanner) {
+        ArrayList<Function> functions = new ArrayList<>();
+        do {
+            System.out.println("Make function:");
+            functions.add(makeFunction(scanner));
+            System.out.println("type end to finish making functions, anything else to make a new one");
+            scanner.nextLine();
+        } while (!scanner.nextLine().equals("end"));
+        return functions;
     }
 
     public static Minion makeMinion(Scanner scanner, Card.CardType cardType, String name){
@@ -68,14 +102,11 @@ public class cardAssembler {
         }
         System.out.println("Enter card text");
         String cardText = scanner.nextLine();
-        ArrayList<Function> functions = new ArrayList<>();
-        do{
-            System.out.println("Make function:");
-            functions.add(makeFunction(scanner));
-            System.out.println("type end to finish making functions:");
-        }while (!scanner.nextLine().equals("end"));
+        System.out.println("Enter Card ID");
+        int cardID = scanner.nextInt();
+        ArrayList<Function> functions = makeFunctionsList(scanner);
         return new Minion(price, manaCost, cardText, functions,null,
-                name,0,cardType,false,false,false,
+                name,cardID,cardType,false,false,false,
                 null, attackRange, health, attack,0,
                 attackType,false,health,attack,health);
 
@@ -85,7 +116,7 @@ public class cardAssembler {
         Function.FunctionType functionType = Function.FunctionType.OnDeath;
         System.out.println("Select activation type:\n" +
                 "1.On Spawn 2.On Attack 3.On Death\n " +
-                "4.On Defend 5.Passive 6.Combo 7.Vanilla");
+                "4.On Defend 5.Passive 6.Combo 7.Vanilla 8.Spell");
         switch (scanner.nextInt()) {
             case 1:
                 functionType = Function.FunctionType.OnSpawn;
@@ -108,6 +139,8 @@ public class cardAssembler {
             case 7:
                 functionType = Function.FunctionType.Vanilla;
                 return new Function(functionType,"","");
+            case 8:
+                functionType = Function.FunctionType.Spell;
         }
         System.out.println("Select desired function with number");
         for (String function : FunctionStrings.allFunctionStrings()) {
@@ -124,6 +157,7 @@ public class cardAssembler {
             case FunctionStrings.ACCUMULATING_ATTACKS:
             case FunctionStrings.DEAL_DAMAGE:
             case FunctionStrings.HEAL:
+            case FunctionStrings.INCREASE_ATTACK:
                 System.out.println("enter amount:");
                 functionToAdd.append(scanner.nextInt());
                 break;
@@ -131,6 +165,8 @@ public class cardAssembler {
             case FunctionStrings.HOLY_CELL:
             case FunctionStrings.SET_ON_FIRE:
                 isCellBased = true;
+                System.out.println("Enter turns:");
+                functionToAdd.append(scanner.nextInt());
                 break;
             case FunctionStrings.GIVE_FUNCTION:
                 Function function = makeFunction(scanner);
@@ -161,6 +197,10 @@ public class cardAssembler {
             target.append(TargetStrings.allTargets().get(scanner.nextInt() - 1));
             if (target.toString().matches(TargetStrings.MINIONS_WITH_DISTANCE)) {
                 System.out.println("Enter distance (Manhattan)");
+                target.append(scanner.nextInt());
+            }
+            if (target.toString().matches(TargetStrings.SQUARE)) {
+                System.out.println("Enter length");
                 target.append(scanner.nextInt());
             }
         }

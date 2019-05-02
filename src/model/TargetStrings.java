@@ -22,12 +22,14 @@ public class TargetStrings {
     public static final String RANDOM_SURROUNDING_ENEMY_MINION = "random enemy nearby";
     public static final String RANDOM_ENEMY_MINION = "random enemy minion";
     public static final String ENEMY_GENERAL_ROW = "enemy general row";
+    public static final String ENEMY = "enemy";
+    public static final String ALLIED_HERO = "allied hero";
 
     public static ArrayList<String> allTargets(){
         return new ArrayList<>(Arrays.asList(ALL_ENEMIES, ALL_ENEMY_MINIONS, ALL_ENEMIES_IN_ROW,ALL_ENEMIES_IN_COLUMN,
                 ENEMY_MINION, ALL_ALLIES, ALLY, ANY_UNIT, SQUARE, ATTACK_TARGET, SURROUNDING_ENEMY_MINIONS,
                 MINIONS_WITH_DISTANCE, SURROUNDING_ALLIED_MINIONS, SELF, ENEMY_HERO, RANDOM_SURROUNDING_ENEMY_MINION,
-                RANDOM_ENEMY_MINION, ENEMY_GENERAL_ROW));
+                RANDOM_ENEMY_MINION, ENEMY_GENERAL_ROW, ENEMY, ALLIED_HERO));
     }
 
 }
