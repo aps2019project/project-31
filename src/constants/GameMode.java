@@ -2,6 +2,6 @@ package constants;
 
 public enum GameMode {
     Flag,
-    Dominaton,
+    Domination,
     DeathMatch
 }
