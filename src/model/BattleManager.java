@@ -1,5 +1,6 @@
 package model;
 
+import constants.AttackType;
 import constants.GameMode;
 import controller.BattleMenu;
 import view.Output;
@@ -126,6 +127,56 @@ public abstract class BattleManager {
                         }
                     }
                 }
+            }
+
+            if (target.matches("(.*)" + TargetStrings.RANDOM_MINION + "(.*)")){
+                ArrayList<Deployable> deployables = new ArrayList<>();
+                deployables.addAll(getOtherPlayer().getCardsOnBattleField());
+                deployables.addAll(currentPlayer.getCardsOnBattleField());
+                deployables.remove(currentPlayer.getHero());
+                deployables.remove(getOtherPlayer().getHero());
+                Random random = new Random();
+                targetCards.add(deployables.get(random.nextInt(deployables.size())));
+            }
+
+            if (target.matches("(.*)" + TargetStrings.RANDOM_UNIT + "(.*)")){
+                ArrayList<Deployable> deployables = new ArrayList<>();
+                deployables.addAll(getOtherPlayer().getCardsOnBattleField());
+                deployables.addAll(currentPlayer.getCardsOnBattleField());
+                Random random = new Random();
+                targetCards.add(deployables.get(random.nextInt(deployables.size())));
+            }
+
+            if (target.matches("(.*)" + TargetStrings.RANDOM_RANGED_HYBRID + "(.*)")){
+                ArrayList<Deployable> deployables = new ArrayList<>();
+                for (Deployable deployable: currentPlayer.getCardsOnBattleField()){
+                    if (deployable.getAttackType() == AttackType.ranged ||
+                        deployable.getAttackType() == AttackType.hybrid){
+                        deployables.add(deployable);
+                    }
+                }
+                for (Deployable deployable: getOtherPlayer().getCardsOnBattleField()){
+                    if (deployable.getAttackType() == AttackType.ranged ||
+                            deployable.getAttackType() == AttackType.hybrid){
+                        deployables.add(deployable);
+                    }
+                }
+                Random random = new Random();
+                targetCards.add(deployables.get(random.nextInt(deployables.size())));
+            }
+
+            if (target.matches("(.*)" + TargetStrings.ALLIED_GENERAL_RANGED_HYBRID + "(.*)")){
+                if (currentPlayer.getHero().getAttackType() == AttackType.ranged ||
+                        currentPlayer.getHero().getAttackType() == AttackType.hybrid)
+                    targetCards.add(currentPlayer.getHero());
+
+            }
+
+            if (target.matches("(.*)" + TargetStrings.ENEMY_GENERAL_RANGED_HYBRID + "(.*)")){
+                if (getOtherPlayer().getHero().getAttackType() == AttackType.ranged ||
+                        getOtherPlayer().getHero().getAttackType() == AttackType.hybrid)
+                    targetCards.add(getOtherPlayer().getHero());
+
             }
 
             if (target.matches("(.*)" + TargetStrings.ALLIED_MINION + "(.*)")) {

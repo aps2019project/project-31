@@ -3,16 +3,16 @@ package model;
 import java.util.ArrayList;
 
 public class Item extends Card {
-    protected boolean isCollectable;
+    protected boolean isCollectible;
 
     public Item(int price, int manaCost, String cardText, ArrayList<Function> functions,
-                Account account, String name, int id, CardType type, boolean isDeployed, boolean isCollectable) {
+                Account account, String name, int id, CardType type, boolean isDeployed, boolean isCollectible) {
         super(price, manaCost, cardText, functions, account, name, id, type, isDeployed);
-        this.isCollectable = isCollectable;
+        this.isCollectible = isCollectible;
     }
 
-    public boolean isCollectable() {
-        return isCollectable;
+    public boolean isCollectible() {
+        return isCollectible;
     }
 
 
