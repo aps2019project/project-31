@@ -10,7 +10,7 @@ public enum CardType {
     item,
     herospell;
 
-    public static ArrayList<CardType> getAll(){
+    public static ArrayList<CardType> getAll() {
         return new ArrayList<>(Arrays.asList(minion, hero, spell, item));
     }
 }
