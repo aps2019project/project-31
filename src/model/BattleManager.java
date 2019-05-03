@@ -171,6 +171,10 @@ public abstract class BattleManager {
                     //error message for view
                     return false;
                 }
+            }else if (target.matches("(.*)" + TargetStrings.ALL_ALLIED_MINIONS + "(.*)")){
+                targetCards.addAll(currentPlayer.getCardsOnBattleField());
+                targetCards.remove(getCurrentPlayer().getHero());
+                targetCards.remove(getOtherPlayer().getHero());
             }
 
             if (target.matches("(.*)" + TargetStrings.ANY_UNIT + "(.*)")) {
