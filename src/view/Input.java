@@ -119,7 +119,7 @@ public class Input {
             return;
         }
         if (input.matches("help")) {
-            CollectionMenu.help();
+            //CollectionMenu.help();
             return;
         }
         Pattern pattern = Pattern.compile("search ((\\w+\\s*)+)\\s*");

@@ -10,7 +10,7 @@ import view.Output;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class CollectionMenu {
+public class CollectionMenu extends Menu {
     private static ArrayList<Card> collection = new ArrayList<>();
     private static Deck editingDeck;
     private static Account account;

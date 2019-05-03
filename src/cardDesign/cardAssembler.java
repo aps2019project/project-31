@@ -220,10 +220,12 @@ public class cardAssembler {
 
     private static void getBleed(Scanner scanner, StringBuilder functionToAdd) {
         functionToAdd.append(FunctionStrings.BLEED);
-        System.out.println("Enter first and second damage");
-        functionToAdd.append(scanner.nextInt());
-        functionToAdd.append(",");
-        functionToAdd.append(scanner.nextInt());
+        System.out.println("Enter all the damages and then -1:");
+        int num = scanner.nextInt();
+        while (num!= -1){
+            functionToAdd.append(num);
+            num = scanner.nextInt();
+        }
     }
 
     private static void getBuffs(Scanner scanner, StringBuilder functionToAdd) {
