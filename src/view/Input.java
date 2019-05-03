@@ -201,9 +201,6 @@ public class Input {
 
     }
 
-}
-
-
     private void onItemClicked(int id) {
         //This method can be implemented in the presenter, controller, etc.
         //or you can call appropriate methods on them based on the clicked item
