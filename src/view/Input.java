@@ -1,12 +1,12 @@
 package view;
 
 import controller.*;
-import com.sun.tools.javac.Main;
 import controller.BattleMenu;
 import controller.CollectionMenu;
 import controller.Menu;
 import controller.MenuManager;
 import controller.ParentMenu;
+import model.BattleManager;
 import model.Player;
 
 import java.util.Scanner;
@@ -43,9 +43,8 @@ public class Input {
         return input;
     }
 
-    public static void handleSelectCardOrSelectComboCards(Player player, String input) {
-        if (input.matches("\\s*end turn\\s*"))
-            BattleMenu.setAreWeInMiddleOfTurn(false);
+    public static void handleSelectComboCards(Player player, String input) {
+
         Pattern pattern = Pattern.compile("attack combo (\\d+)\\s+((\\d\\s*)+)");
         Matcher matcher = pattern.matcher(input);
         if (matcher.matches()) {
@@ -53,9 +52,7 @@ public class Input {
             String[] strNumbers = matcher.group(2).split("\\s");
             BattleMenu.prepareComboAttack(strNumbers, opponentCardId);
         }
-        if (input.matches("select \\d+"))
-            player.selectACard(Integer.parseInt(input.replace("select", "").trim()));
-        BattleMenu.getBattleManager().checkTheEndSituation();
+
     }
 
     public static void moveAttackPlayCard(String input) {
@@ -103,8 +100,7 @@ public class Input {
     }
 
     private static void checkGenerals(String input) {
-        if (input.matches("\\d+"))
-        {
+        if (input.matches("\\d+")) {
             System.err.println("you entered a number");
             int index = Integer.parseInt(input) - 1;
             menuManager.performClickOnMenu(index);
@@ -149,18 +145,28 @@ public class Input {
 
     public static void handleCommandsInBattleMenu(Player player, boolean isThereSelectedCard) {
         String input = scanner.nextLine();
+        if (input.matches("select \\d+"))
+            player.selectACard(Integer.parseInt(input.replace("select", "").trim()));
         if (isThereSelectedCard)
             moveAttackPlayCard(input);
         else
-            handleSelectCardOrSelectComboCards(player, input);
+            handleSelectComboCards(player, input);
+        if (input.matches("\\s*end turn\\s*"))
+            BattleMenu.setAreWeInMiddleOfTurn(false);
         if (input.equalsIgnoreCase("game info"))
             BattleMenu.showGameInfo();
-        else if (input.trim().equalsIgnoreCase("show my minions")){
-
+        else if (input.trim().equalsIgnoreCase("show my minions")) {
+            BattleMenu.showPlayerMinions(player);
+        } else if (input.trim().equalsIgnoreCase("show opponent minions"))
+            BattleMenu.showPlayerMinions(BattleMenu.getBattleManager().getOtherPlayer());
+        else if (input.matches("show card info \\d+")) {
+            String cardUniqueId = input.replace("show card info", "").trim();
+            System.out.println(BattleManager.findCardByUniqueid(Integer.parseInt(cardUniqueId)).infoToString());
         }
 
 
 
+        BattleMenu.getBattleManager().checkTheEndSituation();
     }
 
     public static void handleCommandsInCollectionMenu() {
@@ -222,7 +228,7 @@ public class Input {
 
     }
 
-    public static void handleCommandsInMainMenu(){
+    public static void handleCommandsInMainMenu() {
         String input = scanner.nextLine();
         checkGenerals(input);
     }
@@ -264,10 +270,12 @@ public class Input {
 //            Shop.help();
         }
     }
+
     public static void handleCommandsInBattleMenu() {
         String input = scanner.nextLine();
         checkGenerals(input);
     }
+
     public static void handleCommandsInLoginMenu() {
         String input = scanner.nextLine();
         checkGenerals(input);

@@ -63,7 +63,7 @@ public class Minion extends Deployable {
                         maxHealth + "\nAP: " + attack + "\nMP: " + manaCost + "\ntype: " + attackType + "\nRange: " + attackRange +
                         "\nCombo ability: " + isCombo;
         }catch (Exception e){
-            Log.println(e.getMessage());
+            System.err.println(e.getMessage());
         }
         return " ";
     }
