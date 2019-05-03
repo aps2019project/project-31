@@ -7,6 +7,9 @@ import java.util.List;
 public class ParentMenu extends Menu {
     private List<Menu> subMenus = new ArrayList<>();
 
+    public ParentMenu(){
+        super();
+    }
     public ParentMenu(int id, String title)
     {
         super(id, title);
