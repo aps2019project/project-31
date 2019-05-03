@@ -1,8 +1,5 @@
 package model;
 
-
-import controller.BattleMenu;
-
 public class Ai extends Player {
     public Ai(Account account) {
         super(account);

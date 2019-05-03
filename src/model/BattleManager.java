@@ -2,7 +2,6 @@ package model;
 
 import constants.GameMode;
 import controller.BattleMenu;
-import org.graalvm.compiler.replacements.Log;
 import view.Output;
 
 import java.util.*;
@@ -59,14 +58,14 @@ public abstract class BattleManager {
     public boolean playMinion(Minion minion, int x1, int x2) {
         if (!checkCoordinates(x1, x2)) {
             Output.invalidInsertionTarget();
-            Log.println("Invalid Coordinates");
+            System.err.println("Invalid Coordinates");
             return false;
 
         }
 
         if (minion.manaCost > currentPlayer.getMana()) {
             Output.notHaveEnoughMana();
-            Log.println("Not enough mana");
+            System.err.println("Not enough mana");
             return false;
         }
 
@@ -86,7 +85,7 @@ public abstract class BattleManager {
             Map.getCell(x1, x2).setHasFlag(false);
             theMinion.setHasFlag(true);
             if (gameMode == GameMode.Domination)
-                currentPlayer.numbereOfFlags++;
+                currentPlayer.numberOfFlags++;
         }
         Output.insertionSuccessful(theMinion, x1, x2);
         currentPlayer.addCardToBattlefield(theMinion);
@@ -136,7 +135,7 @@ public abstract class BattleManager {
                     targetCards.add(card);
                 } else {
                     //Invalid target
-                    Log.println("Invalid target");
+                    System.err.println("Invalid target");
                     return false;
                 }
             }
@@ -152,7 +151,7 @@ public abstract class BattleManager {
             if (target.matches("(.*)" + TargetStrings.ENEMY + "(.*)")) {
                 if (Map.getCardInCell(x1, x2).getAccount().equals(currentPlayer.getAccount())) {
                     //wrong target
-                    Log.println("Invalid target");
+                    System.err.println("Invalid target");
                     return false;
                 } else {
                     targetCards.add(Map.getCardInCell(x1, x2));
@@ -274,7 +273,7 @@ public abstract class BattleManager {
 
         } catch (IllegalStateException e) {
             //Input error message for view
-            Log.println(e.toString());
+            System.err.println(e.toString());
             return false;
         }
         return true;
@@ -306,7 +305,7 @@ public abstract class BattleManager {
         ArrayList<Cell> targetCells = new ArrayList<>();
         ArrayList<Card> targetCards = new ArrayList<>();
         if (!compileTargetString(targetCards, targetCells, function.getTarget(), x1, x2, attackTarget)) {
-            Log.println("Invalid target");
+             System.err.println("Invalid target");
             return;
         }
 
@@ -335,7 +334,7 @@ public abstract class BattleManager {
 
         } catch (IllegalStateException e) {
             //error message for view
-            Log.println(e.toString());
+            System.err.println(e.toString());
         }
     }
 
@@ -666,7 +665,7 @@ public abstract class BattleManager {
             if (Map.getCell(x1, x2).getCardInCell() == null && !card.isMoved && !card.isStunned()) {
                 if (!card.hasFlag && Map.getCell(x1, x2).doesHaveFlag()) {
                     if (gameMode == GameMode.Domination)
-                        currentPlayer.numbereOfFlags++;
+                        currentPlayer.numberOfFlags++;
                     card.setHasFlag(true);
                     Map.getCell(x1, x2).setHasFlag(false);
                 }
@@ -684,7 +683,7 @@ public abstract class BattleManager {
     public void killTheThing(Deployable enemy) {
         if (enemy.hasFlag) {
             if (gameMode == GameMode.Domination)
-                getOtherPlayer().numbereOfFlags--;
+                getOtherPlayer().numberOfFlags--;
             if (gameMode == GameMode.Flag)
                 getOtherPlayer().numberOfTurnsHavingFlag = 0;
             enemy.cell.setHasFlag(true);
@@ -857,9 +856,9 @@ public abstract class BattleManager {
     }
 
     public void isFinishedDueToHavingMostOfFlags() {
-        if (2 * player1.getNumbereOfFlags() > maxNumberOfFlags)
+        if (2 * player1.getNumberOfFlags() > maxNumberOfFlags)
             player1Won();
-        if (2 * player1.getNumbereOfFlags() > maxNumberOfFlags)
+        if (2 * player1.getNumberOfFlags() > maxNumberOfFlags)
             player2Won();
     }
 

@@ -1,7 +1,6 @@
 package model;
 
 import constants.AttackType;
-import org.graalvm.compiler.replacements.Log;
 
 import java.util.ArrayList;
 

@@ -2,7 +2,6 @@ package controller;
 
 import constants.GameMode;
 import model.*;
-import org.graalvm.compiler.replacements.Log;
 import view.Input;
 import view.Output;
 
@@ -161,7 +160,7 @@ public class BattleMenu extends Menu {
             }
         } else {
             Output.notInHand();
-            Log.println("Minion not in hand");
+            System.err.println("Minion not in hand");
             return false;
         }
         return canInsert;

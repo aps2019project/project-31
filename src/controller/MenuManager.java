@@ -1,6 +1,6 @@
 package controller;
 
-import org.graalvm.compiler.replacements.Log;
+import view.Input;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,7 +82,7 @@ public class MenuManager {
 
     public void performClickOnMenu(int index) {
         if (index >= currentMenu.getSubMenus().size() || index < 0) {
-            Log.println("user clicked out of range");
+            System.err.println("user clicked out of range");
             return;
         }
         if(currentMenu.getSubMenus().get(index).getId() == Menu.Id.EXIT){
@@ -98,12 +98,12 @@ public class MenuManager {
 
     private void exitGame() {
         //do before closing stuff
-        Log.println("closing the program... bye bye");
+        System.err.println("closing the program... bye bye");
         System.exit(0);
     }
 
     public void back() {
-        System.out.println("getting back...");
+        System.err.println("getting back...");
         setCurrentMenu(this.currentMenu.getParent());
     }
 }

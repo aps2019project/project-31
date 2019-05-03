@@ -1,6 +1,5 @@
 package view;
 
-import jdk.swing.interop.SwingInterOpUtils;
 import model.Account;
 import model.Card;
 import model.Deployable;
@@ -78,17 +77,19 @@ public class Output {
     public static void notInDeck() {
         System.out.println("there isn't card with this name");
     }
-    public static void showValidationOfDeck(boolean isValid){
-        if(isValid)
+
+    public static void showValidationOfDeck(boolean isValid) {
+        if (isValid)
             System.out.println("the deck is valid");
         else
             System.out.println("the deck isn't valid");
     }
-    public static void showCardIdAndStuff(Card card){
+
+    public static void showCardIdAndStuff(Card card) {
 
     }
 
-    public static void print(String outpt){
+    public static void print(String outpt) {
         System.out.println(outpt);
     }
 }
