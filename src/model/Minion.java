@@ -1,6 +1,7 @@
 package model;
 
 import constants.AttackType;
+import org.graalvm.compiler.replacements.Log;
 
 import java.util.ArrayList;
 
@@ -35,19 +36,36 @@ public class Minion extends Deployable {
     }
 
     @Override
-    public String  toString() {
+    public String toString() {
         return "Type : Minion - Name : "
-        + this.name
-        + " - Class : "
-        + this.attackType
-        + " - AP : "
-        + this.attack
-        + " - HP : "
-        + this.health
-        + " - MP : "
-        + this.manaCost
-        + " - Special power :"
-        + this.cardText;
+                + this.name
+                + " - Class : "
+                + this.attackType
+                + " - AP : "
+                + this.attack
+                + " - HP : "
+                + this.health
+                + " - MP : "
+                + this.manaCost
+                + " - Special power :"
+                + this.cardText;
+    }
+
+    public String infoToString() {
+        try {
+            if (cell != null)
+                return "Minion: \nName: " + name + "\nDesc: " + cardText + "\nCoordination: " +
+                        cell.getX1Coordinate() + " , " + cell.getX2Coordinate() + "\nunique card id: " + uniqueId + "\nHP: " +
+                        currentHealth + "\nAP: " + currentAttack + "\nMP: " + manaCost + "\ntype: " + attackType + "\nRange: " + attackRange +
+                        "\nCombo ability: " + isCombo;
+            else
+                return "Minion: \nName: " + name + "\nDesc: " + cardText + "\nCoordination: " + "\nHP: " +
+                        maxHealth + "\nAP: " + attack + "\nMP: " + manaCost + "\ntype: " + attackType + "\nRange: " + attackRange +
+                        "\nCombo ability: " + isCombo;
+        }catch (Exception e){
+            Log.println(e.getMessage());
+        }
+        return " ";
     }
 
     @Override
