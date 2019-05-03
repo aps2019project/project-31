@@ -138,7 +138,11 @@ public class CollectionMenu {
     }
 
 
-    public static void showAllCards() {
+    public static ArrayList<Card> getCollection() {
+        return collection;
+    }
+
+    public static void showAllMyCards() {
 
     }
 

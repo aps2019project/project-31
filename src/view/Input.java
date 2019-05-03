@@ -1,5 +1,6 @@
 package view;
 
+import controller.*;
 import com.sun.tools.javac.Main;
 import controller.BattleMenu;
 import controller.CollectionMenu;
@@ -17,7 +18,7 @@ public class Input {
     private MenuManager menuManager;
 
     public static void handleSelectCardOrSelectComboCards(Player player) {
-        String input = Input.scanner.nextLine();
+        String input = scanner.nextLine();
         if (input.matches("\\s*end turn\\s*"))
             BattleMenu.setAreWeInMiddleOfTurn(false);
         Pattern pattern = Pattern.compile("attack combo (\\d+)\\s+((\\d\\s*)+)");
@@ -33,7 +34,7 @@ public class Input {
     }
 
     public static void moveAttackPlayCard() {
-        String input = Input.scanner.nextLine();
+        String input = scanner.nextLine();
         if (input.matches("\\s*end turn\\s*"))
             BattleMenu.setAreWeInMiddleOfTurn(false);
         if (input.matches("attack\\s+\\d+")) {
@@ -104,13 +105,13 @@ public class Input {
 
 
     public static void handleCommandsInCollectionMenu() {
-        String input = Input.scanner.nextLine();
+        String input = scanner.nextLine();
         if (input.matches("exit\\s*")) {
             CollectionMenu.back();
             return;
         }
         if (input.matches("show\\s*")) {
-            CollectionMenu.showAllCards();
+            CollectionMenu.showAllMyCards();
             return;
         }
         if (input.matches("save\\s*")) {
@@ -140,27 +141,67 @@ public class Input {
         matcher = pattern.matcher(input);
         if (matcher.matches()) {
             String[] numbers = matcher.group(1).trim().split("\\s");
-            CollectionMenu.addCardsToDeck(numbers,matcher.group(3).trim());
+            CollectionMenu.addCardsToDeck(numbers, matcher.group(3).trim());
         }
         pattern = Pattern.compile("remove ((\\d+\\s*)+)from deck (\\w+)\\s*");
         matcher = pattern.matcher(input);
         if (matcher.matches()) {
             String[] numbers = matcher.group(1).trim().split("\\s");
-            CollectionMenu.removeCardsFromDeck(numbers,matcher.group(3).trim());
+            CollectionMenu.removeCardsFromDeck(numbers, matcher.group(3).trim());
         }
-        if(input.matches("validate deck \\w+"))
-            CollectionMenu.checkValidationOfDeck(input.replace("validate deck","").trim());
-        if(input.matches("select deck \\w+")){
-            CollectionMenu.selectAsMainDeck(input.replace("select deck","").trim());
+        if (input.matches("validate deck \\w+"))
+            CollectionMenu.checkValidationOfDeck(input.replace("validate deck", "").trim());
+        if (input.matches("select deck \\w+")) {
+            CollectionMenu.selectAsMainDeck(input.replace("select deck", "").trim());
         }
-        if(input.matches("show all decks"))
+        if (input.matches("show all decks"))
             CollectionMenu.showAllDecks();
-        if(input.matches("show deck \\w+"))
-            CollectionMenu.showDeckByName(input.replace("show deck","").trim());
-
+        if (input.matches("show deck \\w+"))
+            CollectionMenu.showDeckByName(input.replace("show deck", "").trim());
 
 
     }
+
+    public static void handleCommandsInShop() {
+        String input = scanner.nextLine();
+        if (input.matches("exit"))
+            Shop.goBack();
+        if (input.matches("show collection"))
+            CollectionMenu.showAllMyCards();
+        Pattern pattern = Pattern.compile("search ((\\w+\\s*)+)\\s*");
+        Matcher matcher = pattern.matcher(input);
+        if (matcher.matches()) {
+            String[] cardNames = matcher.group(1).trim().split("\\s");
+            Shop.searchCardsByNames(cardNames);
+        }
+        pattern = Pattern.compile("search collection ((\\w+\\s*)+)\\s*");
+        matcher = pattern.matcher(input);
+        if (matcher.matches()) {
+            String[] cardNames = matcher.group(1).trim().split("\\s");
+            Shop.searchCardsByNamesInCollection(cardNames);
+        }
+        pattern = Pattern.compile("buy ((\\w+\\s*)+)\\s*");
+        matcher = pattern.matcher(input);
+        if (matcher.matches()) {
+            String[] cardNames = matcher.group(1).trim().split("\\s");
+            Shop.buyCardsByName(cardNames);
+        }
+        pattern = Pattern.compile("sell ((\\w+\\s*)+)\\s*");
+        matcher = pattern.matcher(input);
+        if (matcher.matches()) {
+            String[] cardNames = matcher.group(1).trim().split("\\s");
+            Shop.sellCardsByName(cardNames);
+        }
+        if (input.matches("show"))
+            Shop.showAllCards();
+        if (input.matches("help")) {
+            //Shop.help();
+        }
+
+
+    }
+
+}
 
 
     private void onItemClicked(int id) {

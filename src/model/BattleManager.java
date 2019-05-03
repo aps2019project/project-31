@@ -129,14 +129,12 @@ public abstract class BattleManager {
                 }
             }
 
-            if (target.matches("(.*)" + TargetStrings.ALLIED_MINION + "(.*)")){
-                Card card = Map.getCardInCell(x1,x2);
+            if (target.matches("(.*)" + TargetStrings.ALLIED_MINION + "(.*)")) {
+                Card card = Map.getCardInCell(x1, x2);
                 if (card.getAccount().equals(currentPlayer.getAccount()) &&
-                    card.getType() == Card.CardType.minion){
-                    targetCards.add((Minion) card);
-                }
-                else
-                {
+                        card.getType() == Card.CardType.minion) {
+                    targetCards.add(card);
+                } else {
                     //Invalid target
                     Log.println("Invalid target");
                     return false;
@@ -147,7 +145,7 @@ public abstract class BattleManager {
                 addEnemiesInRow(targetCards, getOtherPlayer().getHero().getCell().getX1Coordinate());
             }
 
-            if (target.matches("(.*)" + TargetStrings.ALLIED_HERO + "(.*)")){
+            if (target.matches("(.*)" + TargetStrings.ALLIED_HERO + "(.*)")) {
                 targetCards.add(getOtherPlayer().getHero());
             }
 
@@ -714,11 +712,11 @@ public abstract class BattleManager {
             dealAttackDamageAndDoOtherStuff(card, enemy);
             counterAttack(card, enemy);
         } else {
-            if(card.isAttacked)
+            if (card.isAttacked)
                 Output.hasAttackedBefore(card);
-            if(card.isStunned())
+            if (card.isStunned())
                 Output.isStunned();
-            if(isAttackTypeValidForAttack(card,enemy))
+            if (isAttackTypeValidForAttack(card, enemy))
                 Output.enemyNotThere();
         }
     }
@@ -743,23 +741,23 @@ public abstract class BattleManager {
             if (enemy.currentHealth <= 0) {
                 killTheThing(enemy);
             }
-            applyOnAttackFunction(card);
-            applyOnDefendFunction(enemy);
+            applyOnAttackFunction(card, enemy);
+            applyOnDefendFunction(enemy, card);
         }
     }
 
-    private void applyOnAttackFunction(Deployable card) {
+    private void applyOnAttackFunction(Deployable card, Deployable enemy) {
         for (Function function : card.functions) {
             if (function.getFunctionType() == Function.FunctionType.OnAttack) {
-                compileFunction(function, card.cell.getX1Coordinate(), card.cell.getX2Coordinate());
+                compileFunction(function, card.cell.getX1Coordinate(), card.cell.getX2Coordinate(), enemy);
             }
         }
     }
 
-    private void applyOnDefendFunction(Deployable enemy) {
+    private void applyOnDefendFunction(Deployable enemy, Deployable card) {
         for (Function function : enemy.functions) {
             if (function.getFunctionType() == Function.FunctionType.OnDefend) {
-                compileFunction(function, enemy.cell.getX1Coordinate(), enemy.cell.getX2Coordinate());
+                compileFunction(function, enemy.cell.getX1Coordinate(), enemy.cell.getX2Coordinate(), card);
             }
 
         }
