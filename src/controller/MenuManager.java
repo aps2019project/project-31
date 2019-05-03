@@ -1,12 +1,22 @@
 package controller;
 
-import org.graalvm.compiler.replacements.Log;
+import view.Input;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MenuManager {
     private ParentMenu currentMenu;
+
+    private static ParentMenu mainMenu;
+    private static ParentMenu loginMenu;
+    private static ParentMenu battleMenu;
+    private static ParentMenu shopMenu;
+    private static ParentMenu collectionMenu;
+    public static ParentMenu getMainMenu() {
+        return mainMenu;
+    }
+
     private List<OnMenuItemClickListener> clickListeners = new ArrayList<>();
     private List<OnMenuChangeListener> menuChangeListeners = new ArrayList<>();
 
@@ -34,14 +44,45 @@ public class MenuManager {
     private void callOnMenuChangeListeners() {
         menuChangeListeners.forEach(listener -> listener.onMenuChanged(currentMenu));
     }
+    public static void initMenus() {
+        mainMenu = new ParentMenu(Menu.Id.MAIN_MENU, "Main Menu");
+
+        loginMenu = new ParentMenu(Menu.Id.LOGIN_MENU, "Login Menu");
+
+        collectionMenu = new ParentMenu(Menu.Id.COLLECTION_MENU, "Collection Menu");
+
+        shopMenu = new ParentMenu(Menu.Id.SHOP_MENU, "Shop Menu");
+
+        battleMenu = new ParentMenu(Menu.Id.BATTLE_MENU, "Battle Menu");
+
+        collectionMenu.addSubMenu(shopMenu);
+        collectionMenu.addSubMenu(Menu.Id.BACK, "Back");
+        collectionMenu.addSubMenu(new Menu(Menu.Id.HELP, "Help"));
+
+        shopMenu.addSubMenu(collectionMenu);
+        shopMenu.addSubMenu(Menu.Id.BACK, "Back");
+        shopMenu.addSubMenu(new Menu(Menu.Id.HELP, "Help"));
+
+        battleMenu.addSubMenu(Menu.Id.BACK, "Back");
+        battleMenu.addSubMenu(new Menu(Menu.Id.HELP, "Help"));
+
+        mainMenu.addSubMenu(loginMenu);
+        mainMenu.addSubMenu(battleMenu);
+        mainMenu.addSubMenu(collectionMenu);
+        mainMenu.addSubMenu(shopMenu);
+        mainMenu.addSubMenu(new Menu(Menu.Id.HELP, "Help"));
+        mainMenu.addSubMenu(new Menu(Menu.Id.EXIT, "Exit"));
+
+        Input.setMenuManager(new MenuManager());
+        System.err.println("fuck");
+        Input.getMenuManager().addOnMenuChangeListener(Input.getInstance()::showMenu);    //Add listeners - (Method reference)
+        Input.getMenuManager().addOnClickListener(Input.getInstance()::onItemClicked);
+        Input.getMenuManager().setCurrentMenu(mainMenu);
+    }
 
     public void performClickOnMenu(int index) {
         if (index >= currentMenu.getSubMenus().size() || index < 0) {
-            Log.println("user clicked out of range");
-            return;
-        }
-        if(currentMenu.getSubMenus().get(index).getId() == Menu.Id.BACK){
-            back();
+            System.err.println("user clicked out of range");
             return;
         }
         if(currentMenu.getSubMenus().get(index).getId() == Menu.Id.EXIT){
@@ -57,11 +98,12 @@ public class MenuManager {
 
     private void exitGame() {
         //do before closing stuff
-        Log.println("closing the program... bye bye");
+        System.err.println("closing the program... bye bye");
         System.exit(0);
     }
 
     public void back() {
+        System.err.println("getting back...");
         setCurrentMenu(this.currentMenu.getParent());
     }
 }

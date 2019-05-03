@@ -11,7 +11,7 @@ public class Player {
     protected Deck currentDeck = new Deck("deck in game", account.getTheMainDeck().getHero().duplicateHero());
     protected int mana;
     protected int remainingTime;
-    protected int numbereOfFlags;
+    protected int numberOfFlags;
     protected int numberOfTurnsHavingFlag;
     protected ArrayList<Card> hand;
     protected Card nextCard;
@@ -77,8 +77,8 @@ public class Player {
         return remainingTime;
     }
 
-    public int getNumbereOfFlags() {
-        return numbereOfFlags;
+    public int getNumberOfFlags() {
+        return numberOfFlags;
     }
 
     public int getNumberOfTurnsHavingFlag() {

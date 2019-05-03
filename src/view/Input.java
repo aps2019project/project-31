@@ -1,12 +1,6 @@
 package view;
 
 import controller.*;
-import com.sun.tools.javac.Main;
-import controller.BattleMenu;
-import controller.CollectionMenu;
-import controller.Menu;
-import controller.MenuManager;
-import controller.ParentMenu;
 import model.Player;
 
 import java.util.Scanner;
@@ -14,11 +8,36 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Input {
-    static Scanner scanner = new Scanner(System.in);
-    private MenuManager menuManager;
+    private static Input instance = null;
 
-    public static void handleSelectCardOrSelectComboCards(Player player) {
+    public static Input getInstance() {
+        if (instance == null)
+            instance = new Input();
+        return instance;
+    }
+
+    private Input() {
+
+    }
+
+    static Scanner scanner = new Scanner(System.in);
+
+    public static MenuManager getMenuManager() {
+        return menuManager;
+    }
+
+    public static void setMenuManager(MenuManager menuManager) {
+        Input.menuManager = menuManager;
+    }
+
+    private static MenuManager menuManager = new MenuManager();
+
+    public static String giveMeInput() {
         String input = scanner.nextLine();
+        return input;
+    }
+
+    public static void handleSelectCardOrSelectComboCards(Player player, String input) {
         if (input.matches("\\s*end turn\\s*"))
             BattleMenu.setAreWeInMiddleOfTurn(false);
         Pattern pattern = Pattern.compile("attack combo (\\d+)\\s+((\\d\\s*)+)");
@@ -33,8 +52,7 @@ public class Input {
         BattleMenu.getBattleManager().checkTheEndSituation();
     }
 
-    public static void moveAttackPlayCard() {
-        String input = scanner.nextLine();
+    public static void moveAttackPlayCard(String input) {
         if (input.matches("\\s*end turn\\s*"))
             BattleMenu.setAreWeInMiddleOfTurn(false);
         if (input.matches("attack\\s+\\d+")) {
@@ -54,18 +72,38 @@ public class Input {
         BattleMenu.getBattleManager().checkTheEndSituation();
     }
 
-    public void start() {
-        initMenus();
-        Scanner scanner = new Scanner(System.in);
+    public static void start() {
+        MenuManager.initMenus();
+        System.err.println("MenuManager initialized");
         while (scanner.hasNextLine()) {
-            String input = scanner.nextLine();
-            if (input.matches("\\d+")) // && still in menu
-            {
-                int index = Integer.parseInt(input) - 1;
-                menuManager.performClickOnMenu(index);
-            } else if (input.equalsIgnoreCase("back"))
-                menuManager.back();
+            switch (menuManager.getCurrentMenu().getId()) {
+                case Menu.Id.MAIN_MENU:
+                    handleCommandsInMainMenu();
+                    break;
+                case Menu.Id.COLLECTION_MENU:
+                    handleCommandsInCollectionMenu();
+                    break;
+                case Menu.Id.BATTLE_MENU:
+                    handleCommandsInBattleMenu();
+                    break;
+                case Menu.Id.LOGIN_MENU:
+                    handleCommandsInLoginMenu();
+                    break;
+                case Menu.Id.SHOP_MENU:
+                    handleCommandsInShop();
+                    break;
+            }
         }
+    }
+
+    private static void checkGenerals(String input) {
+        if (input.matches("\\d+"))
+        {
+            System.err.println("you entered a number");
+            int index = Integer.parseInt(input) - 1;
+            menuManager.performClickOnMenu(index);
+        } else if (input.equalsIgnoreCase("back"))
+            menuManager.back();
     }
 
     private void initMenus() {
@@ -103,9 +141,25 @@ public class Input {
         menuManager.setCurrentMenu(mainMenu);
     }
 
+    public static void handleCommandsInBattleMenu(Player player, boolean isThereSelectedCard) {
+        String input = scanner.nextLine();
+        if (isThereSelectedCard)
+            moveAttackPlayCard(input);
+        else
+            handleSelectCardOrSelectComboCards(player, input);
+        if (input.equalsIgnoreCase("game info"))
+            BattleMenu.showGameInfo();
+        else if (input.trim().equalsIgnoreCase("show my minions")){
+
+        }
+
+
+
+    }
 
     public static void handleCommandsInCollectionMenu() {
         String input = scanner.nextLine();
+        checkGenerals(input);
         if (input.matches("exit\\s*")) {
             CollectionMenu.back();
             return;
@@ -162,8 +216,14 @@ public class Input {
 
     }
 
+    public static void handleCommandsInMainMenu(){
+        String input = scanner.nextLine();
+        checkGenerals(input);
+    }
+
     public static void handleCommandsInShop() {
         String input = scanner.nextLine();
+        checkGenerals(input);
         if (input.matches("exit"))
             Shop.goBack();
         if (input.matches("show collection"))
@@ -195,19 +255,25 @@ public class Input {
         if (input.matches("show"))
             Shop.showAllCards();
         if (input.matches("help")) {
-            //Shop.help();
+//            Shop.help();
         }
-
-
+    }
+    public static void handleCommandsInBattleMenu() {
+        String input = scanner.nextLine();
+        checkGenerals(input);
+    }
+    public static void handleCommandsInLoginMenu() {
+        String input = scanner.nextLine();
+        checkGenerals(input);
     }
 
-    private void onItemClicked(int id) {
+    public void onItemClicked(int id) {
         //This method can be implemented in the presenter, controller, etc.
         //or you can call appropriate methods on them based on the clicked item
         System.out.printf("Item with id: %d was clicked.%n", id);
     }
 
-    private void showMenu(ParentMenu menu) {
+    public void showMenu(ParentMenu menu) {
         System.out.println(menu.getTitle());
         System.out.println("--------");
         for (int i = 0; i < menu.getSubMenus().size(); i++) {

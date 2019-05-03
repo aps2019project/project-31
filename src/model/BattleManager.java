@@ -3,7 +3,6 @@ package model;
 import constants.AttackType;
 import constants.GameMode;
 import controller.BattleMenu;
-import org.graalvm.compiler.replacements.Log;
 import view.Output;
 
 import java.util.*;
@@ -60,14 +59,14 @@ public abstract class BattleManager {
     public boolean playMinion(Minion minion, int x1, int x2) {
         if (!checkCoordinates(x1, x2)) {
             Output.invalidInsertionTarget();
-            Log.println("Invalid Coordinates");
+            System.err.println("Invalid Coordinates");
             return false;
 
         }
 
         if (minion.manaCost > currentPlayer.getMana()) {
             Output.notHaveEnoughMana();
-            Log.println("Not enough mana");
+            System.err.println("Not enough mana");
             return false;
         }
 
@@ -87,7 +86,7 @@ public abstract class BattleManager {
             Map.getCell(x1, x2).setHasFlag(false);
             theMinion.setHasFlag(true);
             if (gameMode == GameMode.Domination)
-                currentPlayer.numbereOfFlags++;
+                currentPlayer.numberOfFlags++;
         }
         Output.insertionSuccessful(theMinion, x1, x2);
         currentPlayer.addCardToBattlefield(theMinion);
@@ -187,7 +186,7 @@ public abstract class BattleManager {
                     targetCards.add(card);
                 } else {
                     //Invalid target
-                    Log.println("Invalid target");
+                    System.err.println("Invalid target");
                     return false;
                 }
             }
@@ -203,7 +202,7 @@ public abstract class BattleManager {
             if (target.matches("(.*)" + TargetStrings.ENEMY + "(.*)")) {
                 if (Map.getCardInCell(x1, x2).getAccount().equals(currentPlayer.getAccount())) {
                     //wrong target
-                    Log.println("Invalid target");
+                    System.err.println("Invalid target");
                     return false;
                 } else {
                     targetCards.add(Map.getCardInCell(x1, x2));
@@ -221,7 +220,7 @@ public abstract class BattleManager {
                     //error message for view
                     return false;
                 }
-            }else if (target.matches("(.*)" + TargetStrings.ALL_ALLIED_MINIONS + "(.*)")){
+            } else if (target.matches("(.*)" + TargetStrings.ALL_ALLIED_MINIONS + "(.*)")) {
                 targetCards.addAll(currentPlayer.getCardsOnBattleField());
                 targetCards.remove(getCurrentPlayer().getHero());
                 targetCards.remove(getOtherPlayer().getHero());
@@ -325,7 +324,7 @@ public abstract class BattleManager {
 
         } catch (IllegalStateException e) {
             //Input error message for view
-            Log.println(e.toString());
+            System.err.println(e.toString());
             return false;
         }
         return true;
@@ -357,7 +356,7 @@ public abstract class BattleManager {
         ArrayList<Cell> targetCells = new ArrayList<>();
         ArrayList<Card> targetCards = new ArrayList<>();
         if (!compileTargetString(targetCards, targetCells, function.getTarget(), x1, x2, attackTarget)) {
-            Log.println("Invalid target");
+             System.err.println("Invalid target");
             return;
         }
 
@@ -386,7 +385,7 @@ public abstract class BattleManager {
 
         } catch (IllegalStateException e) {
             //error message for view
-            Log.println(e.toString());
+            System.err.println(e.toString());
         }
     }
 
@@ -549,9 +548,9 @@ public abstract class BattleManager {
         Matcher matcher = pattern.matcher(function.getFunction());
         if (matcher.matches()) {
             Pattern pattern1 = Pattern.compile(FunctionStrings.BLEED + "((\\d+\\s*)+)\\s*");
-                Matcher matcher1 = pattern.matcher(matcher.group(1));
-                if (matcher1.matches()) {
-                    String[] damages = matcher1.group(1).trim().split(" ");
+            Matcher matcher1 = pattern.matcher(matcher.group(1));
+            if (matcher1.matches()) {
+                String[] damages = matcher1.group(1).trim().split(" ");
                 Buff buff = new Buff(Buff.BuffType.Bleed, damages.length + 1, 0,
                         0, false);
                 buff.setBleed(damages);
@@ -717,7 +716,7 @@ public abstract class BattleManager {
             if (Map.getCell(x1, x2).getCardInCell() == null && !card.isMoved && !card.isStunned()) {
                 if (!card.hasFlag && Map.getCell(x1, x2).doesHaveFlag()) {
                     if (gameMode == GameMode.Domination)
-                        currentPlayer.numbereOfFlags++;
+                        currentPlayer.numberOfFlags++;
                     card.setHasFlag(true);
                     Map.getCell(x1, x2).setHasFlag(false);
                 }
@@ -735,7 +734,7 @@ public abstract class BattleManager {
     public void killTheThing(Deployable enemy) {
         if (enemy.hasFlag) {
             if (gameMode == GameMode.Domination)
-                getOtherPlayer().numbereOfFlags--;
+                getOtherPlayer().numberOfFlags--;
             if (gameMode == GameMode.Flag)
                 getOtherPlayer().numberOfTurnsHavingFlag = 0;
             enemy.cell.setHasFlag(true);
@@ -908,9 +907,9 @@ public abstract class BattleManager {
     }
 
     public void isFinishedDueToHavingMostOfFlags() {
-        if (2 * player1.getNumbereOfFlags() > maxNumberOfFlags)
+        if (2 * player1.getNumberOfFlags() > maxNumberOfFlags)
             player1Won();
-        if (2 * player1.getNumbereOfFlags() > maxNumberOfFlags)
+        if (2 * player1.getNumberOfFlags() > maxNumberOfFlags)
             player2Won();
     }
 
@@ -947,6 +946,16 @@ public abstract class BattleManager {
             player1.getCurrentDeck().getCards().remove(i);
             player2.getCurrentDeck().getCards().remove(i);
         }
+    }
+
+    public static int[] flagPosition() {
+        for (Cell[] cells : Map.getMap()) {
+            for (Cell cell : cells) {
+                if (cell.doesHaveFlag())
+                    return new int[]{cell.getX1Coordinate(), cell.getX2Coordinate()};
+            }
+        }
+        return new int[]{-1, -1};
     }
 
 }

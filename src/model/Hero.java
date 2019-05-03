@@ -54,10 +54,6 @@ public class Hero extends Deployable {
                     "\nHP: " + currentHealth + "\nAP: " + currentAttack;
     }
 
-    @Override
-    public void showCardInfo() {
-
-    }
 
 
     public void setAttack(int attack) {
