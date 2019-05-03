@@ -10,13 +10,13 @@ public class Spell extends Card {
         super(price, manaCost, cardText, functions, account, name, id, type, isDeployed);
     }
 
-    public void show() {
-        System.out.println("Type: Spell - Name: "
+    public String  toString() {
+        return "Type: Spell - Name: "
                 + this.getName()
                 + " - MP : "
                 + this.manaCost
                 + " - Desc: "
-                + this.cardText);
+                + this.cardText;
 
     }
 

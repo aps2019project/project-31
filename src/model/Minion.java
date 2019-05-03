@@ -35,8 +35,8 @@ public class Minion extends Deployable {
     }
 
     @Override
-    public void show() {
-        System.out.println("Type : Minion - Name : "
+    public String  toString() {
+        return "Type : Minion - Name : "
         + this.name
         + " - Class : "
         + this.attackType
@@ -47,7 +47,7 @@ public class Minion extends Deployable {
         + " - MP : "
         + this.manaCost
         + " - Special power :"
-        + this.cardText);
+        + this.cardText;
     }
 
     @Override

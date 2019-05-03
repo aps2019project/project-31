@@ -87,4 +87,8 @@ public class Output {
     public static void showCardIdAndStuff(Card card){
 
     }
+
+    public static void print(String outpt){
+        System.out.println(outpt);
+    }
 }

@@ -200,8 +200,12 @@ public class Deployable extends Card {
     }
 
     @Override
-    public void show() {
-
+    public String toString() {
+        if(this.type==CardType.hero)
+            return this.toString();
+        if(this.type==CardType.minion)
+            return this.toString();
+        return " ";
     }
 
     @Override

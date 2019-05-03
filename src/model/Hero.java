@@ -29,8 +29,8 @@ public class Hero extends Deployable {
                 true,true,cell,attackRange,currentHealth,currentAttack,id,attackType,
                 isCombo,maxHealth,attack,health,heroSpell);
     }
-    public void show() {
-        System.out.println(" Name: "
+    public String  toString() {
+        return" Name: "
                 + getName()
                 + " - AP : "
                 + attack
@@ -39,7 +39,7 @@ public class Hero extends Deployable {
                 + " class : "
                 + attackType
                 + " Special power : "
-                + heroSpell.cardText + " Sell Cost : " + price);
+                + heroSpell.cardText + " Sell Cost : " + price;
     }
 
     @Override

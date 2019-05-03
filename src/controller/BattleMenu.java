@@ -82,7 +82,7 @@ public class BattleMenu extends Menu {
         }
     }
 
-    @Override
+
     public void run() {
         if (!account.getTheMainDeck().checkIfValid())
             return;
@@ -94,12 +94,12 @@ public class BattleMenu extends Menu {
         }
     }
 
-    @Override
+
     public void show() {
 
     }
 
-    @Override
+
     public void help() {
 
     }
