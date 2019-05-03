@@ -32,10 +32,10 @@ public class Map {
 
     }
 
-    public static Cell findCellByCardId(int cardUniqueId) { //
+    public static Cell findCellByCardId(int uniqueCardId) {
         for (Cell[] cells : map) {
             for (Cell cell : cells) {
-                if (cell.getCardInCell().uniqueId == cardUniqueId) {
+                if (cell.getCardInCell().uniqueId == uniqueCardId) {
                     return cell;
                 }
             }

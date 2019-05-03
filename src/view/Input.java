@@ -2,6 +2,7 @@ package view;
 
 import com.sun.tools.javac.Main;
 import controller.BattleMenu;
+import controller.CollectionMenu;
 import controller.Menu;
 import controller.MenuManager;
 import controller.ParentMenu;
@@ -100,6 +101,67 @@ public class Input {
         menuManager.addOnClickListener(this::onItemClicked);
         menuManager.setCurrentMenu(mainMenu);
     }
+
+
+    public static void handleCommandsInCollectionMenu() {
+        String input = Input.scanner.nextLine();
+        if (input.matches("exit\\s*")) {
+            CollectionMenu.back();
+            return;
+        }
+        if (input.matches("show\\s*")) {
+            CollectionMenu.showAllCards();
+            return;
+        }
+        if (input.matches("save\\s*")) {
+            CollectionMenu.saveAndGoBack();
+            return;
+        }
+        if (input.matches("help")) {
+            CollectionMenu.help();
+            return;
+        }
+        Pattern pattern = Pattern.compile("search ((\\w+\\s*)+)\\s*");
+        Matcher matcher = pattern.matcher(input);
+        if (matcher.matches()) {
+            String[] names = matcher.group(1).trim().split("\\s");
+            CollectionMenu.showCardsByNames(names);
+            return;
+        }
+        pattern = Pattern.compile("create deck (\\w+)\\s*");
+        matcher = pattern.matcher(input);
+        if (matcher.matches())
+            CollectionMenu.createDeck(matcher.group(1));
+        pattern = Pattern.compile("delete deck (\\w+)\\s*");
+        matcher = pattern.matcher(input);
+        if (matcher.matches())
+            CollectionMenu.deleteDeck(matcher.group(1));
+        pattern = Pattern.compile("add ((\\d+\\s*)+)to deck (\\w+)\\s*");
+        matcher = pattern.matcher(input);
+        if (matcher.matches()) {
+            String[] numbers = matcher.group(1).trim().split("\\s");
+            CollectionMenu.addCardsToDeck(numbers,matcher.group(3).trim());
+        }
+        pattern = Pattern.compile("remove ((\\d+\\s*)+)from deck (\\w+)\\s*");
+        matcher = pattern.matcher(input);
+        if (matcher.matches()) {
+            String[] numbers = matcher.group(1).trim().split("\\s");
+            CollectionMenu.removeCardsFromDeck(numbers,matcher.group(3).trim());
+        }
+        if(input.matches("validate deck \\w+"))
+            CollectionMenu.checkValidationOfDeck(input.replace("validate deck","").trim());
+        if(input.matches("select deck \\w+")){
+            CollectionMenu.selectAsMainDeck(input.replace("select deck","").trim());
+        }
+        if(input.matches("show all decks"))
+            CollectionMenu.showAllDecks();
+        if(input.matches("show deck \\w+"))
+            CollectionMenu.showDeckByName(input.replace("show deck","").trim());
+
+
+
+    }
+
 
     private void onItemClicked(int id) {
         //This method can be implemented in the presenter, controller, etc.

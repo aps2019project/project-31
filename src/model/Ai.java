@@ -21,9 +21,10 @@ public class Ai extends Player {
         outerLoop: for (Card card:hand) {
             for (int i = 1; i <= Map.MAP_X1_LENGTH ; i++) {
                 for (int j = 1; j <Map.MAP_X2_LENGTH ; j++) {
-                    if(playCard(card,i,j)) {
+                    /*if(playCard(card,i,j)) {
                         continue outerLoop;
-                    }
+                    }*/
+                    //needs to be fixed
                 }
             }
         }

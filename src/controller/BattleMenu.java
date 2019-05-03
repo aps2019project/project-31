@@ -4,6 +4,7 @@ import constants.GameMode;
 import model.*;
 import org.graalvm.compiler.replacements.Log;
 import view.Input;
+import view.Output;
 
 import java.util.ArrayList;
 
@@ -66,7 +67,7 @@ public class BattleMenu extends Menu {
 
             }
             doAllThingsInEndingOfTheTurns();
-            // say the turn ended
+            Output.theTurnEnded();
         }
     }
 
@@ -83,7 +84,7 @@ public class BattleMenu extends Menu {
 
     @Override
     public void run() {
-        if (!account.checkIfTheDeckIsValid())
+        if (!account.getTheMainDeck().checkIfValid())
             return;
         while (true) {
             /*View.showModes();
@@ -124,13 +125,16 @@ public class BattleMenu extends Menu {
         BattleMenu.getBattleManager().comboAtack(Map.findCellByCardId(opponentCardId).getCardInCell(), validCards);
     }
 
-    public static void attack(int cardId) {
+    public static void attack(int uniqueCardId) {
         Card selectedCard = BattleMenu.getBattleManager().getCurrentPlayer().getSelectedCard();
         if (selectedCard != null && battleManager.getCurrentPlayer().isSelectedCardDeployed()) {
-            battleManager.attack((Deployable) (battleManager.getCurrentPlayer().getSelectedCard())
-                    , Map.findCellByCardId(cardId).getCardInCell());
+            if (Map.findCellByCardId(uniqueCardId) != null)
+                battleManager.attack((Deployable) selectedCard
+                        , Map.findCellByCardId(uniqueCardId).getCardInCell());
+            else
+                Output.enemyNotExist();
         } else {
-            //invalid card id message
+            Output.badSelectedCard();
         }
     }
 
@@ -139,26 +143,27 @@ public class BattleMenu extends Menu {
             battleManager.move((Deployable) (battleManager.getCurrentPlayer().getSelectedCard()), x1, x2);
     }
 
-    public static void insert(int cardId, int x1, int x2) {
+    public static boolean insert(int cardId, int x1, int x2) {
+        boolean canInsert = true;
         if (battleManager.cardInHandByCardId(cardId) != null) {
-            /*Card card = battleManager.cardInHandByCardId(cardId);
+            Card card = battleManager.cardInHandByCardId(cardId);
             if (card.getType() == Card.CardType.minion) {
-                Minion minion = new Minion();
-                battleManager.playMinion(minion, x1, x2);
+                canInsert = battleManager.playMinion((Minion)card, x1, x2);
             }
             if (card.getType() == Card.CardType.spell) {
-                Spell spell = new Spell();
-                battleManager.playSpell(spell, x1, x2);
+
+                canInsert = battleManager.playSpell((Spell)card, x1, x2);
             }
-            if(card.getType()== Card.CardType.item){
-                Item item = new Item();
-                battleManager.playItem();
-            }*/
+            if (card.getType() == Card.CardType.item) {
+                canInsert = battleManager.useItem((Item)card,x1,x2);
+            }
         } else {
-            //insert not in hand error message for view
+            Output.notInHand();
             Log.println("Minion not in hand");
-            return;
+            return false;
         }
+        return canInsert;
     }
+
 }
 

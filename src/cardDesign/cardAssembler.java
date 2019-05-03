@@ -80,9 +80,9 @@ public class cardAssembler {
     }
 
     public static Minion makeMinion(Scanner scanner, Card.CardType cardType, String name){
-        System.out.println("Enter health and then attack and then mana cost and then price");
-        int health = scanner.nextInt();
+        System.out.println("Enter attack and then health and then mana cost and then price");
         int attack = scanner.nextInt();
+        int health = scanner.nextInt();
         int manaCost = scanner.nextInt();
         int price = scanner.nextInt();
         System.out.println("1.melee\n 2.ranged\n 3.hybrid");
@@ -99,16 +99,26 @@ public class cardAssembler {
                 break;
             case 3:
                 attackType = AttackType.hybrid;
+                System.out.println("Enter range:");
+                attackRange = scanner.nextInt();
         }
         System.out.println("Enter card text");
+        scanner.nextLine();
         String cardText = scanner.nextLine();
         System.out.println("Enter Card ID");
         int cardID = scanner.nextInt();
         ArrayList<Function> functions = makeFunctionsList(scanner);
+        boolean isCombo = false;
+        for (Function function: functions){
+            if (function.getFunctionType() == Function.FunctionType.Combo){
+                isCombo = true;
+                break;
+            }
+        }
         return new Minion(price, manaCost, cardText, functions,null,
                 name,cardID,cardType,false,false,false,
                 null, attackRange, health, attack,0,
-                attackType,false,health,attack,health);
+                attackType,isCombo,health,attack,health);
 
     }
 
