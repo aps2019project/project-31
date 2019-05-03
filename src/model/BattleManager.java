@@ -897,4 +897,14 @@ public abstract class BattleManager {
         }
     }
 
+    public static int[] flagPosition() {
+        for (Cell[] cells : Map.getMap()) {
+            for (Cell cell : cells) {
+                if (cell.doesHaveFlag())
+                    return new int[]{cell.getX1Coordinate(), cell.getX2Coordinate()};
+            }
+        }
+        return new int[]{-1, -1};
+    }
+
 }

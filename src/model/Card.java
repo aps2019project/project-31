@@ -40,7 +40,6 @@ public abstract class Card {
         Output.print(this.toString());
     }
 
-    abstract public void showCardInfo(); // farq mikone :|||
 
     public boolean hasFunction(Function function) {
         for (Function function1 : functions) {

@@ -32,8 +32,12 @@ public class Input {
 
     private static MenuManager menuManager = new MenuManager();
 
-    public static void handleSelectCardOrSelectComboCards(Player player) {
+    public static String giveMeInput() {
         String input = scanner.nextLine();
+        return input;
+    }
+
+    public static void handleSelectCardOrSelectComboCards(Player player, String input) {
         if (input.matches("\\s*end turn\\s*"))
             BattleMenu.setAreWeInMiddleOfTurn(false);
         Pattern pattern = Pattern.compile("attack combo (\\d+)\\s+((\\d\\s*)+)");
@@ -48,8 +52,7 @@ public class Input {
         BattleMenu.getBattleManager().checkTheEndSituation();
     }
 
-    public static void moveAttackPlayCard() {
-        String input = scanner.nextLine();
+    public static void moveAttackPlayCard(String input) {
         if (input.matches("\\s*end turn\\s*"))
             BattleMenu.setAreWeInMiddleOfTurn(false);
         if (input.matches("attack\\s+\\d+")) {
@@ -102,6 +105,58 @@ public class Input {
         } else if (input.equalsIgnoreCase("back"))
             menuManager.back();
     }
+
+    private void initMenus() {
+        ParentMenu mainMenu = new ParentMenu(Menu.Id.MAIN_MENU, "Main Menu");
+
+        ParentMenu loginMenu = new ParentMenu(Menu.Id.LOGIN_MENU, "Login Menu");
+
+        ParentMenu collectionMenu = new ParentMenu(Menu.Id.COLLECTION_MENU, "Collection Menu");
+
+        ParentMenu shopMenu = new ParentMenu(Menu.Id.SHOP_MENU, "Shop Menu");
+
+        ParentMenu battleMenu = new ParentMenu(Menu.Id.BATTLE_MENU, "Battle Menu");
+
+        collectionMenu.addSubMenu(shopMenu);
+        collectionMenu.addSubMenu(Menu.Id.BACK, "Back");
+        collectionMenu.addSubMenu(new Menu(Menu.Id.HELP, "Help"));
+
+        shopMenu.addSubMenu(collectionMenu);
+        shopMenu.addSubMenu(Menu.Id.BACK, "Back");
+        shopMenu.addSubMenu(new Menu(Menu.Id.HELP, "Help"));
+
+        battleMenu.addSubMenu(Menu.Id.BACK, "Back");
+        battleMenu.addSubMenu(new Menu(Menu.Id.HELP, "Help"));
+
+        mainMenu.addSubMenu(loginMenu);
+        mainMenu.addSubMenu(battleMenu);
+        mainMenu.addSubMenu(collectionMenu);
+        mainMenu.addSubMenu(shopMenu);
+        mainMenu.addSubMenu(new Menu(Menu.Id.HELP, "Help"));
+        mainMenu.addSubMenu(new Menu(Menu.Id.EXIT, "Exit"));
+
+        menuManager = new MenuManager();
+        menuManager.addOnMenuChangeListener(this::showMenu);    //Add listeners - (Method reference)
+        menuManager.addOnClickListener(this::onItemClicked);
+        menuManager.setCurrentMenu(mainMenu);
+    }
+
+    public static void handleCommandsInBattleMenu(Player player, boolean isThereSelectedCard) {
+        String input = scanner.nextLine();
+        if (isThereSelectedCard)
+            moveAttackPlayCard(input);
+        else
+            handleSelectCardOrSelectComboCards(player, input);
+        if (input.equalsIgnoreCase("game info"))
+            BattleMenu.showGameInfo();
+        else if (input.trim().equalsIgnoreCase("show my minions")){
+
+        }
+
+
+
+    }
+
     public static void handleCommandsInCollectionMenu() {
         String input = scanner.nextLine();
         checkGenerals(input);
