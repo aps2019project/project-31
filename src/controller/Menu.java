@@ -3,9 +3,9 @@ package controller;
 import model.Account;
 
 public class Menu {
-    private int id;
-    private String title;
-    private transient ParentMenu parent;
+    protected int id;
+    protected String title;
+    protected transient ParentMenu parent;
     protected Account account;
 
     public Menu(int id, String title) {
@@ -32,6 +32,7 @@ public class Menu {
     void setParent(ParentMenu parent) {
         this.parent = parent;
     }
+
     public static class Id {
         public static final int MAIN_MENU = 0;
         public static final int LOGIN_MENU = 1;
