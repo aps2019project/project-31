@@ -4,11 +4,9 @@ import model.Account;
 import model.Card;
 import model.Deck;
 import model.Hero;
-import view.Input;
 import view.Output;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 
 public class CollectionMenu extends Menu {
     private static ArrayList<Card> collection = new ArrayList<>();
@@ -65,16 +63,16 @@ public class CollectionMenu extends Menu {
     }
 
     public static void showAllDecks() {
-       // account.getTheMainDeck().show();
+        // account.getTheMainDeck().show();
         for (Deck deck : account.getDecks()) {
-           // if (deck != account.getTheMainDeck())
+            // if (deck != account.getTheMainDeck())
             //    deck.show();
         }
     }
 
     public static void showDeckByName(String deckName) {
         selectDeck(deckName);
-      //  editingDeck.show();
+        //  editingDeck.show();
     }
 
 

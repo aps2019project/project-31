@@ -4,9 +4,7 @@ package cardDesign;
 import com.gilecode.yagson.YaGson;
 import com.gilecode.yagson.YaGsonBuilder;
 import constants.AttackType;
-import constants.CardType;
 import model.*;
-import org.graalvm.compiler.replacements.Log;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -34,7 +32,7 @@ public class cardAssembler {
                     bufferedWriter.write(yaGson.toJson(minion) + "\n");
 
                 }catch (IOException e){
-                    Log.println("Exception!:" + e);
+                    System.err.println("Exception!:" + e);
 
                 }
                 break;
@@ -45,7 +43,7 @@ public class cardAssembler {
                     bufferedWriter.write(yaGson.toJson(spell) + "\n");
 
                 }catch (IOException e){
-                    Log.println("Exception!:" + e);
+                    System.err.println("Exception!:" + e);
                 }
                 break;
             case hero:
@@ -55,7 +53,7 @@ public class cardAssembler {
                     bufferedWriter.write(yaGson.toJson(hero) + "\n");
 
                 }catch (IOException e){
-                    Log.println("Exception!:" + e);
+                    System.err.println("Exception!:" + e);
                 }
                 break;
 

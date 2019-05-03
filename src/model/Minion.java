@@ -1,7 +1,6 @@
 package model;
 
 import constants.AttackType;
-import org.graalvm.compiler.replacements.Log;
 
 import java.util.ArrayList;
 
@@ -63,7 +62,7 @@ public class Minion extends Deployable {
                         maxHealth + "\nAP: " + attack + "\nMP: " + manaCost + "\ntype: " + attackType + "\nRange: " + attackRange +
                         "\nCombo ability: " + isCombo;
         }catch (Exception e){
-            Log.println(e.getMessage());
+            System.err.println(e.getMessage());
         }
         return " ";
     }

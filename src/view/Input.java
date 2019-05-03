@@ -1,12 +1,6 @@
 package view;
 
 import controller.*;
-import com.sun.tools.javac.Main;
-import controller.BattleMenu;
-import controller.CollectionMenu;
-import controller.Menu;
-import controller.MenuManager;
-import controller.ParentMenu;
 import model.Player;
 
 import java.util.Scanner;
