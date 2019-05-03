@@ -91,7 +91,7 @@ public class Account {
 
     public static Account getMainAccount() {
         return mainAccount;
-    }☺
+    }
 
     public void setTheMainDeck(Deck theMainDeck) {
         this.theMainDeck = theMainDeck;

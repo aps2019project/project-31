@@ -12,8 +12,7 @@ public class Buff {
     private boolean isActive;
     private int effectOfWeaknessOrPowerOnHealth = 0;
     private int effectOfWeaknessOrPowerOnAttack = 0;
-    private int bleedOne = 0;
-    private int bleedTwo = 0;
+    private ArrayList<Integer> bleedDamage = new ArrayList<>();
 
 
     public Buff(BuffType buffType, int turnsLeft, int effectOfWeaknessOrPowerOnHealth,
@@ -26,9 +25,11 @@ public class Buff {
         this.isContinuous = false;
     }
 
-    public void setBleed(int one, int two){
-        bleedOne = one;
-        bleedTwo = two;
+    public void setBleed(String [] damages){
+       bleedDamage.add(0);
+       for (String num: damages){
+           bleedDamage.add(Integer.parseInt(num));
+       }
     }
 
 

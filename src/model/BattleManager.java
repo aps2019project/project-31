@@ -495,14 +495,13 @@ public abstract class BattleManager {
         Pattern pattern = Pattern.compile(FunctionStrings.APPLY_BUFF + "(.*)");
         Matcher matcher = pattern.matcher(function.getFunction());
         if (matcher.matches()) {
-            Pattern pattern1 = Pattern.compile(FunctionStrings.BLEED + "(\\d+),(\\d+)");
-            Matcher matcher1 = pattern.matcher(matcher.group(1));
-            if (matcher1.matches()) {
-                int one = Integer.parseInt(matcher1.group(1));
-                int two = Integer.parseInt(matcher1.group(2));
-                Buff buff = new Buff(Buff.BuffType.Bleed, 2, 0,
+            Pattern pattern1 = Pattern.compile(FunctionStrings.BLEED + "((\\d+\\s*)+)\\s*");
+                Matcher matcher1 = pattern.matcher(matcher.group(1));
+                if (matcher1.matches()) {
+                    String[] damages = matcher1.group(1).trim().split(" ");
+                Buff buff = new Buff(Buff.BuffType.Bleed, damages.length + 1, 0,
                         0, false);
-                buff.setBleed(one, two);
+                buff.setBleed(damages);
                 addBuffs(targetCards, buff);
             }
             if (matcher.group(1).trim().matches("unholy")) {
