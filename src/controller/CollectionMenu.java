@@ -128,7 +128,6 @@ public class CollectionMenu {
         CollectionMenu.account = account;
     }
 
-    @Override
     public void run() {
         Input.handleCommandsInCollectionMenu();
     }
