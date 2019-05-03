@@ -5,7 +5,6 @@ import controller.BattleMenu;
 import org.graalvm.compiler.replacements.Log;
 import view.Output;
 
-import javax.print.DocFlavor;
 import java.util.*;
 
 import java.util.ArrayList;
@@ -142,8 +141,8 @@ public abstract class BattleManager {
                 }
             }
 
-            if (target.matches("(.*)" + TargetStrings.ENEMY_GENERAL_ROW + "(.*)")) {
-                addEnemiesInRow(targetCards, getOtherPlayer().getHero().getCell().getX1Coordinate());
+            if (target.matches("(.*)" + TargetStrings.ALLIED_GENERAL_ROW + "(.*)")) {
+                addEnemiesInRow(targetCards, currentPlayer.getHero().getCell().getX1Coordinate());
             }
 
             if (target.matches("(.*)" + TargetStrings.ALLIED_HERO + "(.*)")) {

@@ -48,12 +48,39 @@ public class cardAssembler {
                     Log.println("Exception!:" + e);
                 }
                 break;
+            case hero:
+                Hero hero = makeHero(scanner, cardType, name);
+                String path2 = System.getProperty("user.dir") + "/Sources/Cards/Heroes.txt";
+                try(BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(path2, true))) {
+                    bufferedWriter.write(yaGson.toJson(hero) + "\n");
 
+                }catch (IOException e){
+                    Log.println("Exception!:" + e);
+                }
+                break;
 
         }
 
 
     }
+
+    public  static Hero makeHero(Scanner scanner, Card.CardType cardType, String name){
+        Minion minion = makeMinion(scanner, Card.CardType.minion, name);
+        System.out.println("Enter the ability spell name:");
+        String spellname = scanner.nextLine();
+        Spell spell = makeSpell(scanner, Card.CardType.spell, spellname);
+        System.out.println("Enter ability cooldown:");
+        int coolDown = scanner.nextInt();
+
+        return new Hero(minion.getPrice(), minion.getManaCost(), minion.getCardText(),minion.getFunctions(),
+                minion.getAccount(), minion.getName(), minion.getId(), Card.CardType.hero, false, false,
+                    false, null, minion.getAttackRange(), minion.getHealth(), minion.getAttack(),
+                0, minion.getAttackType(), minion.isCombo(), minion.getHealth(), minion.getAttack(),
+                minion.getHealth(), new HeroSpell(0,spell.getManaCost(),spell.getCardText(),
+                spell.getFunctions(), spell.getAccount(), spell.getName(), spell.getId(), spell.getType(),
+                        false,coolDown, 0));
+    }
+
     public static Spell makeSpell(Scanner scanner, Card.CardType cardType, String name){
         System.out.println("Enter mana cost and then price:");
         int mana = scanner.nextInt();
