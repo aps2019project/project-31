@@ -24,13 +24,15 @@ public class Hero extends Deployable {
         this.health = health;
         this.heroSpell = heroSpell;
     }
-    public Hero duplicateHero(){
-        return new Hero(this.price,this.manaCost,this.cardText,this.functions,account,name,id,type,isDeployed,
-                true,true,cell,attackRange,currentHealth,currentAttack,id,attackType,
-                isCombo,maxHealth,attack,health,heroSpell);
+
+    public Hero duplicateHero() {
+        return new Hero(this.price, this.manaCost, this.cardText, this.functions, account, name, id, type, isDeployed,
+                true, true, cell, attackRange, currentHealth, currentAttack, id, attackType,
+                isCombo, maxHealth, attack, health, heroSpell);
     }
-    public String  toString() {
-        return" Name: "
+
+    public String toString() {
+        return " Name: "
                 + getName()
                 + " - AP : "
                 + attack
@@ -40,6 +42,16 @@ public class Hero extends Deployable {
                 + attackType
                 + " Special power : "
                 + heroSpell.cardText + " Sell Cost : " + price;
+    }
+
+    public String infoToString() {
+        if (cell != null)
+            return "Hero: \nName: " + name + "\nCost: " + heroSpell.manaCost + "\nDesc: " + cardText +
+                    "\nCoordination: " + cell.getX1Coordinate() + " , " + cell.getX2Coordinate() +
+                    "\nunique card id: " + uniqueId + "\nHP: " + currentHealth + "\nAP: " + currentAttack;
+        else
+            return "Hero: \nName: " + name + "\nCost: " + heroSpell.manaCost + "\nDesc: " + cardText +
+                    "\nHP: " + currentHealth + "\nAP: " + currentAttack;
     }
 
     @Override

@@ -10,7 +10,7 @@ public class Spell extends Card {
         super(price, manaCost, cardText, functions, account, name, id, type, isDeployed);
     }
 
-    public String  toString() {
+    public String toString() {
         return "Type: Spell - Name: "
                 + this.getName()
                 + " - MP : "
@@ -18,6 +18,10 @@ public class Spell extends Card {
                 + " - Desc: "
                 + this.cardText;
 
+    }
+
+    public String infoToString() {
+        return "Spell:\nName: " + name + "\nMP: " + manaCost + "\nDesc: " + cardText;
     }
 
     @Override
