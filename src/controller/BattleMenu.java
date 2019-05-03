@@ -53,11 +53,8 @@ public class BattleMenu extends Menu {
                 areWeInMiddleOfTurn = true;
                 boolean sit = true;
                 while (sit == areWeInMiddleOfTurn) {
-                    if (battleManager.getCurrentPlayer().getSelectedCard() != null) {
-                        Input.handleSelectCardOrSelectComboCards(battleManager.getCurrentPlayer());
-                    } else {
-                        Input.moveAttackPlayCard();
-                    }
+                    Input.handleCommandsInBattleMenu(battleManager.getCurrentPlayer(),
+                            battleManager.getCurrentPlayer().getSelectedCard() != null);
                     if (isGameFinished) {
                         battleManager = null;
                         run();
@@ -148,14 +145,14 @@ public class BattleMenu extends Menu {
         if (battleManager.cardInHandByCardId(cardId) != null) {
             Card card = battleManager.cardInHandByCardId(cardId);
             if (card.getType() == Card.CardType.minion) {
-                canInsert = battleManager.playMinion((Minion)card, x1, x2);
+                canInsert = battleManager.playMinion((Minion) card, x1, x2);
             }
             if (card.getType() == Card.CardType.spell) {
 
-                canInsert = battleManager.playSpell((Spell)card, x1, x2);
+                canInsert = battleManager.playSpell((Spell) card, x1, x2);
             }
             if (card.getType() == Card.CardType.item) {
-                canInsert = battleManager.useItem((Item)card,x1,x2);
+                canInsert = battleManager.useItem((Item) card, x1, x2);
             }
         } else {
             Output.notInHand();
@@ -163,6 +160,29 @@ public class BattleMenu extends Menu {
             return false;
         }
         return canInsert;
+    }
+
+    public static void showGameInfo() {
+        if (BattleManager.getGameMode() == GameMode.DeathMatch) {
+            Output.print("Game Mode: Death Match\nPlayer1 Hero health: " + battleManager.getPlayer1().getHero().
+                    getCurrentHealth() + "\nPlayer2 Hero health: " + battleManager.getPlayer2().getHero().
+                    getCurrentHealth());
+        } else if (BattleManager.getGameMode() == GameMode.Flag && BattleManager.flagPosition()[0] != -1) {
+            Output.print("Game Mode: Flag\nFlag Position: " + BattleManager.flagPosition()[0] + " , " +
+                    BattleManager.flagPosition()[1]);
+        } else {
+            Output.print("Team 1, cards with flags are:\n");
+            for (Deployable deployable : battleManager.getPlayer1().getCardsOnBattleField()) {
+                if (deployable.doesHaveFlag())
+                    Output.print(deployable.infoToString());
+            }
+            Output.print("Team 2, cards with flags are:\n");
+            for (Deployable deployable : battleManager.getPlayer2().getCardsOnBattleField()) {
+                if (deployable.doesHaveFlag())
+                    Output.print(deployable.infoToString());
+            }
+        }
+
     }
 
 }

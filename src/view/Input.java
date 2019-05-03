@@ -17,8 +17,12 @@ public class Input {
     static Scanner scanner = new Scanner(System.in);
     private MenuManager menuManager;
 
-    public static void handleSelectCardOrSelectComboCards(Player player) {
+    public static String giveMeInput() {
         String input = scanner.nextLine();
+        return input;
+    }
+
+    public static void handleSelectCardOrSelectComboCards(Player player, String input) {
         if (input.matches("\\s*end turn\\s*"))
             BattleMenu.setAreWeInMiddleOfTurn(false);
         Pattern pattern = Pattern.compile("attack combo (\\d+)\\s+((\\d\\s*)+)");
@@ -33,8 +37,7 @@ public class Input {
         BattleMenu.getBattleManager().checkTheEndSituation();
     }
 
-    public static void moveAttackPlayCard() {
-        String input = scanner.nextLine();
+    public static void moveAttackPlayCard(String input) {
         if (input.matches("\\s*end turn\\s*"))
             BattleMenu.setAreWeInMiddleOfTurn(false);
         if (input.matches("attack\\s+\\d+")) {
@@ -103,6 +106,21 @@ public class Input {
         menuManager.setCurrentMenu(mainMenu);
     }
 
+    public static void handleCommandsInBattleMenu(Player player, boolean isThereSelectedCard) {
+        String input = scanner.nextLine();
+        if (isThereSelectedCard)
+            moveAttackPlayCard(input);
+        else
+            handleSelectCardOrSelectComboCards(player, input);
+        if (input.equalsIgnoreCase("game info"))
+            BattleMenu.showGameInfo();
+        else if (input.trim().equalsIgnoreCase("show my minions")){
+
+        }
+
+
+
+    }
 
     public static void handleCommandsInCollectionMenu() {
         String input = scanner.nextLine();
@@ -161,6 +179,7 @@ public class Input {
 
 
     }
+
 
     public static void handleCommandsInShop() {
         String input = scanner.nextLine();

@@ -171,7 +171,7 @@ public abstract class BattleManager {
                     //error message for view
                     return false;
                 }
-            }else if (target.matches("(.*)" + TargetStrings.ALL_ALLIED_MINIONS + "(.*)")){
+            } else if (target.matches("(.*)" + TargetStrings.ALL_ALLIED_MINIONS + "(.*)")) {
                 targetCards.addAll(currentPlayer.getCardsOnBattleField());
                 targetCards.remove(getCurrentPlayer().getHero());
                 targetCards.remove(getOtherPlayer().getHero());
@@ -499,9 +499,9 @@ public abstract class BattleManager {
         Matcher matcher = pattern.matcher(function.getFunction());
         if (matcher.matches()) {
             Pattern pattern1 = Pattern.compile(FunctionStrings.BLEED + "((\\d+\\s*)+)\\s*");
-                Matcher matcher1 = pattern.matcher(matcher.group(1));
-                if (matcher1.matches()) {
-                    String[] damages = matcher1.group(1).trim().split(" ");
+            Matcher matcher1 = pattern.matcher(matcher.group(1));
+            if (matcher1.matches()) {
+                String[] damages = matcher1.group(1).trim().split(" ");
                 Buff buff = new Buff(Buff.BuffType.Bleed, damages.length + 1, 0,
                         0, false);
                 buff.setBleed(damages);
@@ -897,6 +897,16 @@ public abstract class BattleManager {
             player1.getCurrentDeck().getCards().remove(i);
             player2.getCurrentDeck().getCards().remove(i);
         }
+    }
+
+    public static int[] flagPosition() {
+        for (Cell[] cells : Map.getMap()) {
+            for (Cell cell : cells) {
+                if (cell.doesHaveFlag())
+                    return new int[]{cell.getX1Coordinate(), cell.getX2Coordinate()};
+            }
+        }
+        return new int[]{-1, -1};
     }
 
 }

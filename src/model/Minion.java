@@ -68,8 +68,4 @@ public class Minion extends Deployable {
         return " ";
     }
 
-    @Override
-    public void showCardInfo() {
-
-    }
 }

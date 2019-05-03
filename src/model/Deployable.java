@@ -208,10 +208,7 @@ public class Deployable extends Card {
         return " ";
     }
 
-    @Override
-    public void showCardInfo() {
 
-    }
 
     public void applyFire() {
         currentHealth--; // how much it decreases
@@ -219,5 +216,8 @@ public class Deployable extends Card {
 
     public void applyPoison() {
         currentHealth--; //whats the difference between this and fire
+    }
+    public String infoToString(){
+        return " ";
     }
 }
