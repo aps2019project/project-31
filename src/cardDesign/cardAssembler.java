@@ -12,6 +12,7 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Scanner;
 
 public class cardAssembler {
@@ -30,10 +31,10 @@ public class cardAssembler {
             case minion:
                 Minion minion = makeMinion(scanner, cardType, name);
                 String path = System.getProperty("user.dir") + "/Sources/Cards/Minions.txt";
-                try(BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(path, true))) {
+                try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(path, true))) {
                     bufferedWriter.write(yaGson.toJson(minion) + "\n");
 
-                }catch (IOException e){
+                } catch (IOException e) {
                     Log.println("Exception!:" + e);
 
                 }
@@ -41,30 +42,50 @@ public class cardAssembler {
             case spell:
                 Spell spell = makeSpell(scanner, cardType, name);
                 String path1 = System.getProperty("user.dir") + "/Sources/Cards/Spells.txt";
-                try(BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(path1, true))) {
+                try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(path1, true))) {
                     bufferedWriter.write(yaGson.toJson(spell) + "\n");
 
-                }catch (IOException e){
+                } catch (IOException e) {
                     Log.println("Exception!:" + e);
                 }
                 break;
             case hero:
                 Hero hero = makeHero(scanner, cardType, name);
                 String path2 = System.getProperty("user.dir") + "/Sources/Cards/Heroes.txt";
-                try(BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(path2, true))) {
+                try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(path2, true))) {
                     bufferedWriter.write(yaGson.toJson(hero) + "\n");
 
-                }catch (IOException e){
+                } catch (IOException e) {
                     Log.println("Exception!:" + e);
                 }
                 break;
+            case item:
+                Item item = makeItem(scanner, cardType, name);
+                String path3 = System.getProperty("user.dir") + "/Sources/Cards/Collectible_Items.txt";
+                try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(path3, true))) {
+                    bufferedWriter.write(yaGson.toJson(item) + "\n");
 
+                } catch (IOException e) {
+                    Log.println("Exception!:" + e);
+                }
+                break;
         }
 
 
     }
 
-    public  static Hero makeHero(Scanner scanner, Card.CardType cardType, String name){
+    public static Item makeItem(Scanner scanner, Card.CardType cardType, String name){
+        scanner.nextLine();
+        System.out.println("Enter card text:");
+        String cardText = scanner.nextLine();
+        System.out.println("Enter id:");
+        int cardID = scanner.nextInt();
+        ArrayList<Function> functions = makeFunctionsList(scanner);
+        return new Item(0,0, cardText, functions, null, name,cardID, cardType,
+                false, true);
+    }
+
+    public static Hero makeHero(Scanner scanner, Card.CardType cardType, String name) {
         Minion minion = makeMinion(scanner, Card.CardType.minion, name);
         System.out.println("Enter the ability spell name:");
         String spellname = scanner.nextLine();
@@ -72,16 +93,16 @@ public class cardAssembler {
         System.out.println("Enter ability cooldown:");
         int coolDown = scanner.nextInt();
 
-        return new Hero(minion.getPrice(), minion.getManaCost(), minion.getCardText(),minion.getFunctions(),
+        return new Hero(minion.getPrice(), minion.getManaCost(), minion.getCardText(), minion.getFunctions(),
                 minion.getAccount(), minion.getName(), minion.getId(), Card.CardType.hero, false, false,
-                    false, null, minion.getAttackRange(), minion.getHealth(), minion.getAttack(),
+                false, null, minion.getAttackRange(), minion.getHealth(), minion.getAttack(),
                 0, minion.getAttackType(), minion.isCombo(), minion.getHealth(), minion.getAttack(),
-                minion.getHealth(), new HeroSpell(0,spell.getManaCost(),spell.getCardText(),
+                minion.getHealth(), new HeroSpell(0, spell.getManaCost(), spell.getCardText(),
                 spell.getFunctions(), spell.getAccount(), spell.getName(), spell.getId(), spell.getType(),
-                        false,coolDown, 0));
+                false, coolDown, 0));
     }
 
-    public static Spell makeSpell(Scanner scanner, Card.CardType cardType, String name){
+    public static Spell makeSpell(Scanner scanner, Card.CardType cardType, String name) {
         System.out.println("Enter mana cost and then price:");
         int mana = scanner.nextInt();
         int price = scanner.nextInt();
@@ -91,7 +112,7 @@ public class cardAssembler {
         System.out.println("Enter card ID");
         int cardID = scanner.nextInt();
         ArrayList<Function> functions = makeFunctionsList(scanner);
-        return new Spell(price,mana,cardText,functions,null,name,cardID,cardType,
+        return new Spell(price, mana, cardText, functions, null, name, cardID, cardType,
                 false);
     }
 
@@ -106,7 +127,7 @@ public class cardAssembler {
         return functions;
     }
 
-    public static Minion makeMinion(Scanner scanner, Card.CardType cardType, String name){
+    public static Minion makeMinion(Scanner scanner, Card.CardType cardType, String name) {
         System.out.println("Enter attack and then health and then mana cost and then price");
         int attack = scanner.nextInt();
         int health = scanner.nextInt();
@@ -115,7 +136,7 @@ public class cardAssembler {
         System.out.println("1.melee\n 2.ranged\n 3.hybrid");
         AttackType attackType = null;
         int attackRange = 0;
-        switch (scanner.nextInt()){
+        switch (scanner.nextInt()) {
             case 1:
                 attackType = AttackType.melee;
                 break;
@@ -136,16 +157,16 @@ public class cardAssembler {
         int cardID = scanner.nextInt();
         ArrayList<Function> functions = makeFunctionsList(scanner);
         boolean isCombo = false;
-        for (Function function: functions){
-            if (function.getFunctionType() == Function.FunctionType.Combo){
+        for (Function function : functions) {
+            if (function.getFunctionType() == Function.FunctionType.Combo) {
                 isCombo = true;
                 break;
             }
         }
-        return new Minion(price, manaCost, cardText, functions,null,
-                name,cardID,cardType,false,false,false,
-                null, attackRange, health, attack,0,
-                attackType,isCombo,health,attack,health);
+        return new Minion(price, manaCost, cardText, functions, null,
+                name, cardID, cardType, false, false, false,
+                null, attackRange, health, attack, 0,
+                attackType, isCombo, health, attack, health);
 
     }
 
@@ -175,7 +196,7 @@ public class cardAssembler {
                 return new Function(functionType, "", "");
             case 7:
                 functionType = Function.FunctionType.Vanilla;
-                return new Function(functionType,"","");
+                return new Function(functionType, "", "");
             case 8:
                 functionType = Function.FunctionType.Spell;
         }
@@ -249,7 +270,7 @@ public class cardAssembler {
         functionToAdd.append(FunctionStrings.BLEED);
         System.out.println("Enter all the damages and then -1:");
         int num = scanner.nextInt();
-        while (num!= -1){
+        while (num != -1) {
             functionToAdd.append(num);
             num = scanner.nextInt();
         }
