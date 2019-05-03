@@ -128,6 +128,7 @@ public class CollectionMenu extends Menu {
         CollectionMenu.account = account;
     }
 
+
     public void run() {
         Input.handleCommandsInCollectionMenu();
     }

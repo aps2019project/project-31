@@ -1,5 +1,7 @@
 package model;
 
+import view.Output;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.ConcurrentModificationException;
@@ -161,7 +163,7 @@ public class Player {
     }
 
     public void showNextCard() {
-        cardInReplace.show();
+        Output.print(cardInReplace.toString());
     }
 
     public void endOfTurnBuffsAndFunctions() {

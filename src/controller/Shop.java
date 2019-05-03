@@ -81,9 +81,11 @@ public class Shop extends Menu {
         Input.handleCommandsInShop();
     }
 
+
     public void show() {
 
     }
+
 
     public void help() {
 

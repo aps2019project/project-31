@@ -17,8 +17,8 @@ public class Item extends Card {
 
 
     @Override
-    public void show() {
-
+    public String  toString() {
+        return "Type: Item _ Name: "+ name+" _ MP: "+manaCost+" _ Desc: "+cardText;
     }
 
     @Override

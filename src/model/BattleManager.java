@@ -5,6 +5,7 @@ import controller.BattleMenu;
 import org.graalvm.compiler.replacements.Log;
 import view.Output;
 
+import javax.print.DocFlavor;
 import java.util.*;
 
 import java.util.ArrayList;
@@ -740,13 +741,24 @@ public abstract class BattleManager {
 
     private void dealAttackDamageAndDoOtherStuff(Deployable card, Deployable enemy) {
         if (!card.isAttacked && !card.isStunned() && isAttackTypeValidForAttack(card, enemy)) {
-            enemy.currentHealth -= enemy.theActualDamageReceived(card.theActualDamage());
+            if (ignoreHolyBuff(card)) {
+                enemy.currentHealth -= card.theActualDamage();
+            } else
+                enemy.currentHealth -= enemy.theActualDamageReceived(card.theActualDamage());
             if (enemy.currentHealth <= 0) {
                 killTheThing(enemy);
             }
             applyOnAttackFunction(card, enemy);
             applyOnDefendFunction(enemy, card);
         }
+    }
+
+    private boolean ignoreHolyBuff(Card card) {
+        for (Function function : card.functions) {
+            if (function.getFunction() == FunctionStrings.IGNORE_HOLYBUFF)
+                return true;
+        }
+        return false;
     }
 
     private void applyOnAttackFunction(Deployable card, Deployable enemy) {

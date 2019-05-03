@@ -1,5 +1,7 @@
 package model;
 
+import view.Output;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
@@ -62,6 +64,22 @@ public class Deck {
         this.deckName = deckName;
         this.cards = new ArrayList<Card>(cards);
         this.hero = hero;
+    }
+    public void show(){
+        Output.print("Heroes:\n");
+        if(hero!=null)
+            Output.print(hero.toString());
+        Output.print("Items:\n");
+        for (Card card:cards) {
+            if(card.type== Card.CardType.item)
+                Output.print(card.toString());
+        }
+        Output.print("Cards:\n");
+        for (Card card:cards) {
+            if(card.type!= Card.CardType.item && card.type!= Card.CardType.hero)
+                Output.print(card.toString());
+        }
+
     }
 
     public void shuffle() {

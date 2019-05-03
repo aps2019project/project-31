@@ -82,6 +82,7 @@ public class BattleMenu extends Menu {
         }
     }
 
+
     public void run() {
         if (!account.getTheMainDeck().checkIfValid())
             return;
@@ -93,9 +94,11 @@ public class BattleMenu extends Menu {
         }
     }
 
+
     public void show() {
 
     }
+
 
     public void help() {
 

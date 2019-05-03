@@ -1,5 +1,7 @@
 package model;
 
+import view.Output;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -33,7 +35,10 @@ public abstract class Card {
         return this.name;
     }
 
-    abstract public void show();
+    abstract public String toString();
+    public void show(){
+        Output.print(this.toString());
+    }
 
     abstract public void showCardInfo(); // farq mikone :|||
 
