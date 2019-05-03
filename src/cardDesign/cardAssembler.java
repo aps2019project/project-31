@@ -93,7 +93,7 @@ public class cardAssembler {
                 attackType = AttackType.melee;
                 break;
             case 2:
-                attackType = AttackType.ranegd;
+                attackType = AttackType.ranged;
                 System.out.println("Enter range:");
                 attackRange = scanner.nextInt();
                 break;

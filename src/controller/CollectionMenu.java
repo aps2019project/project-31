@@ -1,5 +1,6 @@
 package controller;
 
+import model.Account;
 import model.Card;
 import model.Deck;
 import model.Hero;
@@ -12,6 +13,7 @@ import java.util.Calendar;
 public class CollectionMenu extends Menu {
     private static ArrayList<Card> collection = new ArrayList<>();
     private static Deck editingDeck;
+    private static Account account;
 
     public static void createDeck(String name) {
         Deck deck = new Deck(name);
@@ -63,15 +65,16 @@ public class CollectionMenu extends Menu {
     }
 
     public static void showAllDecks() {
-        //account.getTheMainDeck().show();
+        account.getTheMainDeck().show();
         for (Deck deck : account.getDecks()) {
-            //if(deck!=account.getTheMainDeck())
-           //     deck.show();
+            if (deck != account.getTheMainDeck())
+                deck.show();
         }
     }
-    public static void showDeckByName(String deckName){
+
+    public static void showDeckByName(String deckName) {
         selectDeck(deckName);
-      //  editingDeck.show();
+        editingDeck.show();
     }
 
 
@@ -121,7 +124,10 @@ public class CollectionMenu extends Menu {
         return null;
     }
 
-    @Override
+    public static void setAccount(Account account) {
+        CollectionMenu.account = account;
+    }
+
     public void run() {
         Input.handleCommandsInCollectionMenu();
     }
@@ -130,17 +136,12 @@ public class CollectionMenu extends Menu {
 
     }
 
-    @Override
-    public void show() {
 
+    public static ArrayList<Card> getCollection() {
+        return collection;
     }
 
-    @Override
-    public void  help() {
-
-    }
-
-    public static void showAllCards() {
+    public static void showAllMyCards() {
 
     }
 

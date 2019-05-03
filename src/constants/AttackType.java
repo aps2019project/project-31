@@ -2,6 +2,6 @@ package constants;
 
 public enum AttackType {
     melee,
-    ranegd,
+    ranged,
     hybrid
 }

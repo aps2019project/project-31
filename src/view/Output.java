@@ -84,5 +84,7 @@ public class Output {
         else
             System.out.println("the deck isn't valid");
     }
+    public static void showCardIdAndStuff(Card card){
 
+    }
 }
