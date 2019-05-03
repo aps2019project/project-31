@@ -65,16 +65,16 @@ public class CollectionMenu extends Menu {
     }
 
     public static void showAllDecks() {
-        account.getTheMainDeck().show();
+       // account.getTheMainDeck().show();
         for (Deck deck : account.getDecks()) {
-            if (deck != account.getTheMainDeck())
-                deck.show();
+           // if (deck != account.getTheMainDeck())
+            //    deck.show();
         }
     }
 
     public static void showDeckByName(String deckName) {
         selectDeck(deckName);
-        editingDeck.show();
+      //  editingDeck.show();
     }
 
 

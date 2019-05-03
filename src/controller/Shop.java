@@ -77,17 +77,14 @@ public class Shop extends Menu {
                 card.show();
     }
 
-    @Override
     public void run() {
         Input.handleCommandsInShop();
     }
 
-    @Override
     public void show() {
 
     }
 
-    @Override
     public void help() {
 
     }
