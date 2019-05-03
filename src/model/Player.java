@@ -3,8 +3,6 @@ package model;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.ConcurrentModificationException;
-import java.util.Random;
-import java.util.regex.*;
 
 public class Player {
     protected Account account;
@@ -167,26 +165,27 @@ public class Player {
     }
 
     public void endOfTurnBuffsAndFunctions() {
-        //doOnTurnFunctions();
-        applyAtTheEndOfTurnBuffs();
+
+        applyPassiveAndPoisonBuffs();
         buffsChangesAtTheEndOfTurn();
 
     }
 
 
-    private void applyAtTheEndOfTurnBuffs() {
+    private void applyPassiveAndPoisonBuffs() {
         for (Deployable card : cardsOnBattleField) {
-            for (int i = 0; i < card.buffs.size(); i++) {
-                if (card.buffs.get(i).buffType == Buff.BuffType.Poison) {
-                    card.currentHealth--;
-                }
-            }
             for (int i = 0; i < card.functions.size(); i++) {
                 if (card.functions.get(i).getFunctionType() == Function.FunctionType.Passive) {
                     battle.compileFunction(card.functions.get(i), card.cell.getX1Coordinate(),
                             card.cell.getX2Coordinate());
                 }
             }
+            for (int i = 0; i < card.buffs.size(); i++) {
+                if (card.buffs.get(i).buffType == Buff.BuffType.Poison) {
+                    card.currentHealth--;
+                }
+            }
+
         }
     }
 

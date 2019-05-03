@@ -65,11 +65,12 @@ public class CollectionMenu extends Menu {
     public static void showAllDecks() {
         account.getTheMainDeck().show();
         for (Deck deck : account.getDecks()) {
-            if(deck!=account.getTheMainDeck())
+            if (deck != account.getTheMainDeck())
                 deck.show();
         }
     }
-    public static void showDeckByName(String deckName){
+
+    public static void showDeckByName(String deckName) {
         selectDeck(deckName);
         editingDeck.show();
     }
@@ -140,7 +141,11 @@ public class CollectionMenu extends Menu {
 
     }
 
-    public static void showAllCards() {
+    public static ArrayList<Card> getCollection() {
+        return collection;
+    }
+
+    public static void showAllMyCards() {
 
     }
 
