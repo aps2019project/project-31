@@ -17,15 +17,5 @@ public class Spell extends Card {
                 + this.manaCost
                 + " - Desc: "
                 + this.cardText;
-
-    }
-
-    public String infoToString() {
-        return "Spell:\nName: " + name + "\nMP: " + manaCost + "\nDesc: " + cardText;
-    }
-
-    @Override
-    public void showCardInfo() {
-
     }
 }

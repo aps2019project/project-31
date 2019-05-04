@@ -137,6 +137,5 @@ public class CollectionMenu extends Menu {
 
     public static void saveAndGoBack() {
 
-        back();
     }
 }
