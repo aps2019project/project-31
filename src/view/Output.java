@@ -1,5 +1,6 @@
 package view;
 
+import constants.CardType;
 import model.Account;
 import model.Card;
 import model.Deployable;
@@ -27,7 +28,7 @@ public class Output {
     }
 
     public static void insertionSuccessful(Card card, int x1, int x2) {
-        if (card.getType() == Card.CardType.minion)
+        if (card.getType() == CardType.minion)
             System.out.println(card.getName() + " with " + ((Deployable) card).getUniqueId() + " inserted to (" + x1 + ", " + x2 + ")");
         else
             System.out.println(card.getName() + " with " + card.getId() + " inserted to (" + x1 + ", " + x2 + ")");
@@ -86,7 +87,7 @@ public class Output {
     }
 
     public static void showCardIdAndStuff(Card card) {
-
+        card.show();
     }
 
     public static void print(String outpt) {

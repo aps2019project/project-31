@@ -1,6 +1,7 @@
 package model;
 
 import constants.AttackType;
+import constants.CardType;
 
 import java.util.ArrayList;
 
@@ -53,7 +54,6 @@ public class Hero extends Deployable {
             return "Hero: \nName: " + name + "\nCost: " + heroSpell.manaCost + "\nDesc: " + cardText +
                     "\nHP: " + currentHealth + "\nAP: " + currentAttack;
     }
-
 
 
     public void setAttack(int attack) {

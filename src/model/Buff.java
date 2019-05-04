@@ -25,11 +25,11 @@ public class Buff {
         this.isContinuous = false;
     }
 
-    public void setBleed(String [] damages){
-       bleedDamage.add(0);
-       for (String num: damages){
-           bleedDamage.add(Integer.parseInt(num));
-       }
+    public void setBleed(String[] damages) {
+        bleedDamage.add(0);
+        for (String num : damages) {
+            bleedDamage.add(Integer.parseInt(num));
+        }
     }
 
 
@@ -40,7 +40,6 @@ public class Buff {
     public void setEffectOfWeaknessOrPowerOnAttack(int effectOfWeaknessOrPowerOnAttack) {
         this.effectOfWeaknessOrPowerOnAttack = effectOfWeaknessOrPowerOnAttack;
     }
-
 
 
     public void setActive(boolean active) {
@@ -66,7 +65,8 @@ public class Buff {
     public boolean isActive() {
         return isActive;
     }
-    public void makeContinuous(){
+
+    public void makeContinuous() {
         isContinuous = true;
     }
 
@@ -92,7 +92,6 @@ public class Buff {
     }
 
 
-
     public boolean isBeneficial() {
         return isBeneficial;
     }
@@ -108,9 +107,9 @@ public class Buff {
         Bleed
     }
 
-    public static ArrayList<BuffType> getAllBuffs(){
+    public static ArrayList<BuffType> getAllBuffs() {
         return new ArrayList<BuffType>(Arrays.asList(BuffType.Poison, BuffType.Holy, BuffType.Bleed,
-                                                    BuffType.Weakness, BuffType.Stun, BuffType.Power,
-                                                    BuffType.Unholy, BuffType.Disarm));
+                BuffType.Weakness, BuffType.Stun, BuffType.Power,
+                BuffType.Unholy, BuffType.Disarm));
     }
 }

@@ -1,5 +1,7 @@
 package model;
 
+import constants.CardType;
+
 import java.util.ArrayList;
 
 public class Spell extends Card {

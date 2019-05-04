@@ -1,5 +1,6 @@
 package controller;
 
+import constants.CardType;
 import constants.GameMode;
 import model.*;
 import view.Input;
@@ -19,8 +20,9 @@ public class BattleMenu extends Menu {
     public static void setGameFinished(boolean gameFinished) {
         isGameFinished = gameFinished;
     }
-    public static void showPlayerMinions(Player player){
-        for (Deployable deployable:player.getCardsOnBattleField()) {
+
+    public static void showPlayerMinions(Player player) {
+        for (Deployable deployable : player.getCardsOnBattleField()) {
             Output.print(deployable.infoToString());
         }
     }
@@ -148,14 +150,14 @@ public class BattleMenu extends Menu {
         boolean canInsert = true;
         if (battleManager.cardInHandByCardId(cardId) != null) {
             Card card = battleManager.cardInHandByCardId(cardId);
-            if (card.getType() == Card.CardType.minion) {
+            if (card.getType() == CardType.minion) {
                 canInsert = battleManager.playMinion((Minion) card, x1, x2);
             }
-            if (card.getType() == Card.CardType.spell) {
+            if (card.getType() == CardType.spell) {
 
                 canInsert = battleManager.playSpell((Spell) card, x1, x2);
             }
-            if (card.getType() == Card.CardType.item) {
+            if (card.getType() == CardType.item) {
                 canInsert = battleManager.useItem((Item) card, x1, x2);
             }
         } else {

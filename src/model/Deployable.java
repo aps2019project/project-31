@@ -1,6 +1,7 @@
 package model;
 
 import constants.AttackType;
+import constants.CardType;
 
 import java.util.ArrayList;
 
@@ -36,6 +37,7 @@ public class Deployable extends Card {
         this.isCombo = isCombo;
         this.maxHealth = maxHealth;
     }
+
     protected boolean hasFlag;
 
     public boolean doesHaveFlag() {
@@ -54,7 +56,7 @@ public class Deployable extends Card {
         return isCombo;
     }
 
-    public void addFunction(Function function){
+    public void addFunction(Function function) {
         functions.add(function);
     }
 
@@ -201,13 +203,12 @@ public class Deployable extends Card {
 
     @Override
     public String toString() {
-        if(this.type==CardType.hero)
+        if (this.type == CardType.hero)
             return this.toString();
-        if(this.type==CardType.minion)
+        if (this.type == CardType.minion)
             return this.toString();
         return " ";
     }
-
 
 
     public void applyFire() {
@@ -217,7 +218,8 @@ public class Deployable extends Card {
     public void applyPoison() {
         currentHealth--; //whats the difference between this and fire
     }
-    public String infoToString(){
+
+    public String infoToString() {
         return " ";
     }
 }
