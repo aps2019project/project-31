@@ -19,6 +19,11 @@ public class BattleMenu extends Menu {
     public static void setGameFinished(boolean gameFinished) {
         isGameFinished = gameFinished;
     }
+    public static void showPlayerMinions(Player player){
+        for (Deployable deployable:player.getCardsOnBattleField()) {
+            Output.print(deployable.infoToString());
+        }
+    }
 
     public static boolean isAreWeInMiddleOfTurn() {
         return areWeInMiddleOfTurn;

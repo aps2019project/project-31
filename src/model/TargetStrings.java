@@ -26,12 +26,19 @@ public class TargetStrings {
     public static final String ALLIED_HERO = "allied hero";
     public static final String ALLIED_MINION = "allied minion";
     public static final String ALL_ALLIED_MINIONS = "all allied minions";
+    public static final String RANDOM_RANGED_HYBRID = "random ranged or hybrid unit";
+    public static final String ENEMY_GENERAL_RANGED_HYBRID = "enemy general if it's ranged or hybrid";
+    public static final String ALLIED_GENERAL_RANGED_HYBRID = "allied general if it's ranged or hybrid";
+    public static final String RANDOM_UNIT = "a random unit";
+    public static final String RANDOM_MINION = "a random minion";
 
     public static ArrayList<String> allTargets(){
         return new ArrayList<>(Arrays.asList(ALL_ENEMIES, ALL_ENEMY_MINIONS, ALL_ENEMIES_IN_ROW,ALL_ENEMIES_IN_COLUMN,
                 ENEMY_MINION, ALL_ALLIES, ALLY, ANY_UNIT, SQUARE, ATTACK_TARGET, SURROUNDING_ENEMY_MINIONS,
                 MINIONS_WITH_DISTANCE, SURROUNDING_ALLIED_MINIONS, SELF, ENEMY_HERO, RANDOM_SURROUNDING_ENEMY_MINION,
-                RANDOM_ENEMY_MINION, ALLIED_GENERAL_ROW, ENEMY, ALLIED_HERO, ALLIED_MINION, ALL_ALLIED_MINIONS));
+                RANDOM_ENEMY_MINION, ALLIED_GENERAL_ROW, ENEMY, ALLIED_HERO, ALLIED_MINION, ALL_ALLIED_MINIONS,
+                RANDOM_RANGED_HYBRID, ENEMY_GENERAL_RANGED_HYBRID,
+                ALLIED_GENERAL_RANGED_HYBRID, RANDOM_UNIT,RANDOM_MINION));
     }
 
 }
