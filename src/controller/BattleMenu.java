@@ -49,7 +49,7 @@ public class BattleMenu extends Menu {
     private void runTheGame(BattleManager battleManager) {
         boolean isPlayer1Turn = false;
         battleManager.setCurrentPlayer(battleManager.getPlayer2());
-        battleManager.applyItemFunctions(battleManager.getCurrentPlayer().getHero(),FunctionType.GameStart);
+        battleManager.applyItemFunctions(battleManager.getCurrentPlayer().getHero(), FunctionType.GameStart);
         BattleManager.initialTheGame();
         while (true) {
             isPlayer1Turn = !isPlayer1Turn;
@@ -76,7 +76,7 @@ public class BattleMenu extends Menu {
     }
 
     private void doAllThingsInEndingOfTheTurns() {
-        battleManager.applyItemFunctions(battleManager.getPlayer1().getHero(),FunctionType.Passive);
+        battleManager.applyItemFunctions(battleManager.getPlayer1().getHero(), FunctionType.Passive);
         battleManager.getCurrentPlayer().placeNextCardToHand();
         battleManager.getCurrentPlayer().endOfTurnBuffsAndFunctions();
         battleManager.getOtherPlayer().endOfTurnBuffsAndFunctions();
@@ -85,6 +85,7 @@ public class BattleMenu extends Menu {
             battleManager.getPlayer1().handleNumberOfTurnHavingFlagAtTheEndOfTurn();
             battleManager.getPlayer2().handleNumberOfTurnHavingFlagAtTheEndOfTurn();
         }
+        battleManager.addTurn();
     }
 
 
@@ -219,9 +220,22 @@ public class BattleMenu extends Menu {
         }
 
     }
-    public static void showSelectedCardInfo(){
+
+    public static void showSelectedCardInfo() {
         System.out.println(battleManager.getCurrentPlayer().getSelectedCard().infoToString());
     }
 
+    public static Deployable findDeadMinion(int uniqueId) {
+        for (Deployable deployable : battleManager.getPlayer1().getGraveYard()) {
+            if (deployable.getUniqueId() == uniqueId)
+                return deployable;
+        }
+        for (Deployable deployable : battleManager.getPlayer2().getGraveYard()) {
+            if (deployable.getUniqueId() == uniqueId)
+                return deployable;
+        }
+        return null;
+
+    }
 }
 

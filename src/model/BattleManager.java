@@ -24,7 +24,7 @@ public class BattleManager {
     protected static Player player2;
     protected final int maxNumberOfFlags;
     protected final int maxTurnsOfHavingFlag;
-    protected int turn = 0;
+    protected int turn = 1;
 
     public int getMaxNumberOfFlags() {
         return maxNumberOfFlags;
@@ -1056,11 +1056,18 @@ public class BattleManager {
     }
 
     public void assignManaToPlayers() {
-        if (currentPlayer == player1)
-            player1.mana = (turn - 1) / 2 + 2;
-        else
-            player2.mana = turn / 2 + 2;
-        getOtherPlayer().mana = 0;
-
+        if (turn <= 14) {
+            if (currentPlayer == player1)
+                player1.mana = (turn - 1) / 2 + 2;
+            else
+                player2.mana = turn / 2 + 2;
+            getOtherPlayer().mana = 0;
+        } else {
+            if (currentPlayer == player1)
+                player1.mana = 9;
+            else
+                player2.mana = 9;
+            getOtherPlayer().mana = 0;
+        }
     }
 }

@@ -2,6 +2,7 @@ package view;
 
 import controller.*;
 import model.BattleManager;
+import model.Deployable;
 import model.Player;
 
 import java.util.Scanner;
@@ -143,17 +144,39 @@ public class Input {
         }
         pattern = Pattern.compile("select (\\d+)\\s*");
         matcher = pattern.matcher(input);
-        if(matcher.matches())
+        if (matcher.matches())
             BattleMenu.selectCollectibleItem(Integer.parseInt(matcher.group(1)));
-        if(input.equalsIgnoreCase("show info"))
+        if (input.equalsIgnoreCase("show info"))
             BattleMenu.showSelectedCardInfo();
-        else if(input.equalsIgnoreCase("show next card")){
+        else if (input.equalsIgnoreCase("show next card")) {
             BattleMenu.getBattleManager().getCurrentPlayer().showNextCard();
-        }
-
+        } else if (input.equalsIgnoreCase("enter graveyard"))
+            enterGraveYard();
 
 
         BattleMenu.getBattleManager().checkTheEndSituation();
+    }
+
+    private static void enterGraveYard() {
+        while (true) {
+            String input = scanner.nextLine();
+            if (input.equalsIgnoreCase("show cards"))
+                showAllGraveyardCards();
+            Pattern pattern = Pattern.compile("show info (\\d+)");
+            Matcher matcher = pattern.matcher(input);
+            if (matcher.matches()) {
+                System.out.println(BattleMenu.findDeadMinion(Integer.parseInt(matcher.group(1))).infoToString());
+            }
+            if (input.equalsIgnoreCase("exit"))
+                return;
+        }
+    }
+
+    public static void showAllGraveyardCards() {
+        System.out.println("Player 1 dead minions:\n");
+        for (Deployable card : BattleMenu.getBattleManager().getPlayer1().getGraveYard()) {
+            System.out.println(card.infoToString());
+        }
     }
 
     public static void handleCommandsInCollectionMenu() {
