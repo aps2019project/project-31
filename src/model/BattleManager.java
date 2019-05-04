@@ -57,24 +57,7 @@ public abstract class BattleManager {
     }
 
     public boolean playMinion(Minion minion, int x1, int x2) {
-        if (!checkCoordinates(x1, x2)) {
-            Output.invalidInsertionTarget();
-            System.err.println("Invalid Coordinates");
-            return false;
 
-        }
-
-        if (minion.manaCost > currentPlayer.getMana()) {
-            Output.notHaveEnoughMana();
-            System.err.println("Not enough mana");
-            return false;
-        }
-
-        for (Function function : minion.getFunctions()) {
-            if (function.getFunctionType() == Function.FunctionType.OnSpawn) {
-                compileFunction(function, x1, x2);
-            }
-        }
         int uniqueId = generateUniqueId(minion.id);
         Minion theMinion = new Minion(minion.price, minion.manaCost, minion.cardText, minion.functions, minion.account,
                 minion.name, minion.id, minion.type, minion.isDeployed, true, false,
@@ -90,6 +73,7 @@ public abstract class BattleManager {
         }
         Output.insertionSuccessful(theMinion, x1, x2);
         currentPlayer.addCardToBattlefield(theMinion);
+
         currentPlayer.removeFromHand(minion);
         return true;
 
@@ -664,7 +648,7 @@ public abstract class BattleManager {
         addBuffs(targetCards, buff);
     }
 
-    private boolean checkCoordinates(int x1, int x2) {
+    public boolean checkCoordinates(int x1, int x2) {
         if (Map.getCell(x1, x2) == null ||
                 Map.getCardInCell(x1, x2) != null) {
             return false;

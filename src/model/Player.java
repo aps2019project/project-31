@@ -224,5 +224,11 @@ public class Player {
             currentDeck.getCards().add(card);
         }
     }
+
+    public void showHand() {
+        for (Card card : hand) {
+            
+        }
+    }
 }
 

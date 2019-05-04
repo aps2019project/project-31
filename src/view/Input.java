@@ -1,15 +1,14 @@
 package view;
 
 import controller.*;
-<<<<<<< HEAD
+
 import controller.BattleMenu;
 import controller.CollectionMenu;
 import controller.Menu;
 import controller.MenuManager;
 import controller.ParentMenu;
 import model.BattleManager;
-=======
->>>>>>> origin/MVC
+
 import model.Player;
 
 import java.util.Scanner;
@@ -46,7 +45,7 @@ public class Input {
         return input;
     }
 
-    public static void handleSelectComboCards(Player player, String input) {
+    public static void handleSelectComboCards(String input) {
 
         Pattern pattern = Pattern.compile("attack combo (\\d+)\\s+((\\d\\s*)+)");
         Matcher matcher = pattern.matcher(input);
@@ -59,8 +58,7 @@ public class Input {
     }
 
     public static void moveAttackPlayCard(String input) {
-        if (input.matches("\\s*end turn\\s*"))
-            BattleMenu.setAreWeInMiddleOfTurn(false);
+
         if (input.matches("attack\\s+\\d+")) {
             BattleMenu.attack(Integer.parseInt(input.replace("attack", "").trim()));
         }
@@ -69,17 +67,17 @@ public class Input {
         if (matcher.matches()) {
             BattleMenu.move(Integer.parseInt(matcher.group(1)), Integer.parseInt(matcher.group(2)));
         }
-        pattern = Pattern.compile("insert (\\d+) in \\((\\d),(\\d)\\)\\s*");
+        pattern = Pattern.compile("insert in \\((\\d),(\\d)\\)\\s*");
         matcher = pattern.matcher(input);
         if (matcher.matches()) {
-            BattleMenu.insert(Integer.parseInt(matcher.group(1)), Integer.parseInt(matcher.group(2)),
-                    Integer.parseInt(matcher.group(3)));
+            BattleMenu.insert(BattleMenu.getBattleManager().getCurrentPlayer().getSelectedCard(),
+                    Integer.parseInt(matcher.group(2)), Integer.parseInt(matcher.group(3)));
         }
         BattleMenu.getBattleManager().checkTheEndSituation();
     }
 
     public static void start() {
-        MenuManager.iniسبسtMenus();
+        MenuManager.initMenus();
         System.err.println("MenuManager initialized");
         while (scanner.hasNextLine()) {
             switch (menuManager.getCurrentMenu().getId()) {
@@ -148,12 +146,14 @@ public class Input {
 
     public static void handleCommandsInBattleMenu(Player player, boolean isThereSelectedCard) {
         String input = scanner.nextLine();
+        if (input.matches("\\s*end turn\\s*"))
+            BattleMenu.setAreWeInMiddleOfTurn(false);
         if (input.matches("select \\d+"))
             player.selectACard(Integer.parseInt(input.replace("select", "").trim()));
         if (isThereSelectedCard)
             moveAttackPlayCard(input);
         else
-            handleSelectComboCards(player, input);
+            handleSelectComboCards(input);
         if (input.matches("\\s*end turn\\s*"))
             BattleMenu.setAreWeInMiddleOfTurn(false);
         if (input.equalsIgnoreCase("game info"))
@@ -166,6 +166,17 @@ public class Input {
             String cardUniqueId = input.replace("show card info", "").trim();
             System.out.println(BattleManager.findCardByUniqueid(Integer.parseInt(cardUniqueId)).infoToString());
         }
+        Pattern pattern = Pattern.compile("use special power \\((\\d+),(\\d+)\\)");
+        Matcher matcher = pattern.matcher(input);
+        if (matcher.matches()) {
+            int x1 = Integer.parseInt(matcher.group(1));
+            int x2 = Integer.parseInt(matcher.group(2));
+            BattleMenu.getBattleManager().playSpell(player.getHero().getHeroSpell(), x1, x2);
+        }
+        if(input.equalsIgnoreCase("show hand"))
+            player.showHand();
+        else if(input.equalsIgnoreCase("show collectables"))
+
 
 
 

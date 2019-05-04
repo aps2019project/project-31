@@ -144,26 +144,43 @@ public class BattleMenu extends Menu {
             battleManager.move((Deployable) (battleManager.getCurrentPlayer().getSelectedCard()), x1, x2);
     }
 
-    public static boolean insert(int cardId, int x1, int x2) {
-        boolean canInsert = true;
-        if (battleManager.cardInHandByCardId(cardId) != null) {
-            Card card = battleManager.cardInHandByCardId(cardId);
+    public static boolean insert(Card card, int x1, int x2) {
+        if (battleManager.cardInHandByCardId(card.getId()) != null) {
+            if (!battleManager.checkCoordinates(x1, x2)) {
+                Output.invalidInsertionTarget();
+                System.err.println("Invalid Coordinates");
+                return false;
+
+            }
+
+            if (card.getManaCost() > battleManager.getCurrentPlayer().getMana()) {
+                Output.notHaveEnoughMana();
+                System.err.println("Not enough mana");
+                return false;
+            }
+
             if (card.getType() == Card.CardType.minion) {
-                canInsert = battleManager.playMinion((Minion) card, x1, x2);
+
+                battleManager.playMinion((Minion) card, x1, x2);
             }
             if (card.getType() == Card.CardType.spell) {
 
-                canInsert = battleManager.playSpell((Spell) card, x1, x2);
+                battleManager.playSpell((Spell) card, x1, x2);
             }
             if (card.getType() == Card.CardType.item) {
-                canInsert = battleManager.useItem((Item) card, x1, x2);
+                battleManager.useItem((Item) card, x1, x2);
+            }
+            for (Function function : card.getFunctions()) {
+                if (function.getFunctionType() == Function.FunctionType.OnSpawn) {
+                    battleManager.compileFunction(function, x1, x2);
+                }
             }
         } else {
             Output.notInHand();
             System.err.println("Minion not in hand");
             return false;
         }
-        return canInsert;
+        return true;
     }
 
     public static void showGameInfo() {

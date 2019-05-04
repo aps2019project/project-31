@@ -44,7 +44,7 @@ public class Function {
         Passive,
         Combo,
         Vanilla,
-        Spell
+        Spellp
     }
 }
 
