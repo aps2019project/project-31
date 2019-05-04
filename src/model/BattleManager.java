@@ -14,7 +14,7 @@ import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public abstract class BattleManager {
+public class BattleManager {
     public static final int PERMANENT = 100;
     public static final String CONTINUOUS = "continuous";
     protected Map map;
@@ -75,7 +75,7 @@ public abstract class BattleManager {
                 currentPlayer.numberOfFlags++;
         }
         Output.insertionSuccessful(theMinion, x1, x2);
-        applyItemFunctions(theMinion,FunctionType.OnSpawn);
+        applyItemFunctions(theMinion, FunctionType.OnSpawn);
         currentPlayer.addCardToBattlefield(theMinion);
         currentPlayer.removeFromHand(minion);
         applyOnSpawnFunction(theMinion);
@@ -788,7 +788,7 @@ public abstract class BattleManager {
                 getOtherPlayer().numberOfTurnsHavingFlag = 0;
             enemy.cell.setHasFlag(true);
         }
-        applyItemFunctions(enemy,FunctionType.OnDeath);
+        applyItemFunctions(enemy, FunctionType.OnDeath);
         for (Function function : enemy.functions) {
             if (function.getFunctionType() == FunctionType.OnDeath) {
                 compileFunction(function, enemy.cell.getX1Coordinate(), enemy.cell.getX2Coordinate());
@@ -849,14 +849,14 @@ public abstract class BattleManager {
             }
             applyOnAttackFunction(card, enemy);
             applyOnDefendFunction(enemy, card);
-            applyItemFunctions(card,FunctionType.OnAttack);
-            applyItemFunctions(enemy,FunctionType.OnDefend);
+            applyItemOnAttackDefendFunctions(card, FunctionType.OnAttack, currentPlayer);
+            applyItemOnAttackDefendFunctions(enemy, FunctionType.OnDefend, getOtherPlayer());
         }
     }
 
     private boolean ignoreHolyBuff(Card card) {
         for (Function function : card.functions) {
-            if (function.getFunction() == FunctionStrings.IGNORE_HOLYBUFF)
+            if (function.getFunction().equals(FunctionStrings.IGNORE_HOLYBUFF))
                 return true;
         }
         return false;
@@ -873,16 +873,24 @@ public abstract class BattleManager {
     private void applyOnSpawnFunction(Deployable card) {
         for (Function function : card.functions) {
             if (function.getFunctionType() == FunctionType.OnSpawn) {
-                compileFunction(function, card.cell.getX1Coordinate(), card.cell.getX2Coordinate(), );
+                compileFunction(function, card.cell.getX1Coordinate(), card.cell.getX2Coordinate());
             }
         }
     }
+
     public void applyItemFunctions(Deployable card, FunctionType functionType) {
         for (Function function : player1.currentDeck.getItem().functions) {
             if (function.getFunctionType() == functionType)
                 compileFunction(function, card.cell.getX1Coordinate(), card.cell.getX2Coordinate());
         }
         for (Function function : player2.currentDeck.getItem().functions) {
+            if (function.getFunctionType() == functionType)
+                compileFunction(function, card.cell.getX1Coordinate(), card.cell.getX2Coordinate());
+        }
+    }
+
+    public void applyItemOnAttackDefendFunctions(Deployable card, FunctionType functionType, Player player) {
+        for (Function function : player.currentDeck.getItem().functions) {
             if (function.getFunctionType() == functionType)
                 compileFunction(function, card.cell.getX1Coordinate(), card.cell.getX2Coordinate());
         }
@@ -948,7 +956,12 @@ public abstract class BattleManager {
         BattleMenu.setGameFinished(true);
     }
 
-    public abstract Player getOtherPlayer();
+    public Player getOtherPlayer() {
+        if (currentPlayer == player1)
+            return player2;
+        else
+            return player1;
+    }
 
     public void checkTheEndSituation() {
         isFinishedDueToHeroDying();
@@ -988,6 +1001,8 @@ public abstract class BattleManager {
         player2.duplicateTheDeck();
         Collections.shuffle(player1.currentDeck.getCards());
         Collections.shuffle(player2.currentDeck.getCards());
+        Map.getCell(3, 1).setCardInCell(player1.getHero().deepClone());
+        Map.getCell(3, 9).setCardInCell(player2.getHero().deepClone());
         initialTheHands();
         generateFlags();
     }

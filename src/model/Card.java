@@ -100,4 +100,5 @@ public abstract class Card {
     public String infoToString() {
         return " ";
     }
+
 }

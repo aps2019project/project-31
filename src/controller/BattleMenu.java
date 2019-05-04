@@ -49,6 +49,7 @@ public class BattleMenu extends Menu {
     private void runTheGame(BattleManager battleManager) {
         boolean isPlayer1Turn = false;
         battleManager.setCurrentPlayer(battleManager.getPlayer2());
+        battleManager.applyItemFunctions(battleManager.getCurrentPlayer().getHero(),FunctionType.GameStart);
         BattleManager.initialTheGame();
         while (true) {
             isPlayer1Turn = !isPlayer1Turn;
@@ -88,13 +89,16 @@ public class BattleMenu extends Menu {
 
 
     public void run() {
-        if (!account.getTheMainDeck().checkIfValid())
+        if (!account.getTheMainDeck().checkIfValid()) {
+            System.err.println("selected deck is invalid");
             return;
+        }
         while (true) {
-            /*View.showModes();
+
+            Output.showGameModes();
             handleInputCommand();
-            if (out)
-                break;*/
+            //if (out)
+            //    break;
         }
     }
 

@@ -227,4 +227,6 @@ public class Deployable extends Card {
     public String infoToString() {
         return " ";
     }
+
+
 }
