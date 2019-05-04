@@ -126,9 +126,6 @@ public class CollectionMenu extends Menu {
         CollectionMenu.account = account;
     }
 
-    public static void back() {
-
-    }
 
     public static ArrayList<Card> getCollection() {
         return collection;
@@ -140,6 +137,5 @@ public class CollectionMenu extends Menu {
 
     public static void saveAndGoBack() {
 
-        back();
     }
 }

@@ -56,25 +56,15 @@ public class MenuManager {
         battleMenu = new ParentMenu(Menu.Id.BATTLE_MENU, "Battle Menu");
 
         collectionMenu.addSubMenu(shopMenu);
-        collectionMenu.addSubMenu(Menu.Id.BACK, "Back");
-        collectionMenu.addSubMenu(new Menu(Menu.Id.HELP, "Help"));
 
         shopMenu.addSubMenu(collectionMenu);
-        shopMenu.addSubMenu(Menu.Id.BACK, "Back");
-        shopMenu.addSubMenu(new Menu(Menu.Id.HELP, "Help"));
-
-        battleMenu.addSubMenu(Menu.Id.BACK, "Back");
-        battleMenu.addSubMenu(new Menu(Menu.Id.HELP, "Help"));
 
         mainMenu.addSubMenu(loginMenu);
         mainMenu.addSubMenu(battleMenu);
         mainMenu.addSubMenu(collectionMenu);
         mainMenu.addSubMenu(shopMenu);
-        mainMenu.addSubMenu(new Menu(Menu.Id.HELP, "Help"));
-        mainMenu.addSubMenu(new Menu(Menu.Id.EXIT, "Exit"));
 
         Input.setMenuManager(new MenuManager());
-        System.err.println("fuck");
         Input.getMenuManager().addOnMenuChangeListener(Input.getInstance()::showMenu);    //Add listeners - (Method reference)
         Input.getMenuManager().addOnClickListener(Input.getInstance()::onItemClicked);
         Input.getMenuManager().setCurrentMenu(mainMenu);
@@ -96,9 +86,9 @@ public class MenuManager {
             callOnClickListeners(clickedMenu.getId());
     }
 
-    private void exitGame() {
+    public static void exitGame() {
         //do before closing stuff
-        System.err.println("closing the program... bye bye");
+        System.err.println("closing the program... bye bye (*^ - ^*)");
         System.exit(0);
     }
 
