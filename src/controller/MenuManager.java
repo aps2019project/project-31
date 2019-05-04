@@ -74,7 +74,6 @@ public class MenuManager {
         mainMenu.addSubMenu(new Menu(Menu.Id.EXIT, "Exit"));
 
         Input.setMenuManager(new MenuManager());
-        System.err.println("fuck");
         Input.getMenuManager().addOnMenuChangeListener(Input.getInstance()::showMenu);    //Add listeners - (Method reference)
         Input.getMenuManager().addOnClickListener(Input.getInstance()::onItemClicked);
         Input.getMenuManager().setCurrentMenu(mainMenu);
@@ -98,7 +97,7 @@ public class MenuManager {
 
     private void exitGame() {
         //do before closing stuff
-        System.err.println("closing the program... bye bye");
+        System.err.println("closing the program... bye bye (*^ - ^*)");
         System.exit(0);
     }
 

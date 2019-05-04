@@ -21,6 +21,7 @@ public class Input {
     }
 
     static Scanner scanner = new Scanner(System.in);
+    private static MenuManager menuManager = new MenuManager();
 
     public static MenuManager getMenuManager() {
         return menuManager;
@@ -29,8 +30,6 @@ public class Input {
     public static void setMenuManager(MenuManager menuManager) {
         Input.menuManager = menuManager;
     }
-
-    private static MenuManager menuManager = new MenuManager();
 
     public static String giveMeInput() {
         String input = scanner.nextLine();
@@ -78,18 +77,23 @@ public class Input {
         while (scanner.hasNextLine()) {
             switch (menuManager.getCurrentMenu().getId()) {
                 case Menu.Id.MAIN_MENU:
+                    System.err.println("you are in Main Menu");
                     handleCommandsInMainMenu();
                     break;
                 case Menu.Id.COLLECTION_MENU:
+                    System.err.println("you are in Collection Menu");
                     handleCommandsInCollectionMenu();
                     break;
                 case Menu.Id.BATTLE_MENU:
+                    System.err.println("you are in Battle Menu");
                     handleCommandsInBattleMenu();
                     break;
                 case Menu.Id.LOGIN_MENU:
+                    System.err.println("you are in Login Menu");
                     handleCommandsInLoginMenu();
                     break;
                 case Menu.Id.SHOP_MENU:
+                    System.err.println("you are in Shop Menu");
                     handleCommandsInShop();
                     break;
             }
@@ -97,48 +101,14 @@ public class Input {
     }
 
     private static void checkGenerals(String input) {
-        if (input.matches("\\d+"))
-        {
-            System.err.println("you entered a number");
+        if (input.matches("\\s*\\d+\\s*")) {
+            System.err.println("user entered a number");
             int index = Integer.parseInt(input) - 1;
             menuManager.performClickOnMenu(index);
-        } else if (input.equalsIgnoreCase("back"))
+        } else if (input.equalsIgnoreCase("back")) {
+            System.err.println("going back...");
             menuManager.back();
-    }
-
-    private void initMenus() {
-        ParentMenu mainMenu = new ParentMenu(Menu.Id.MAIN_MENU, "Main Menu");
-
-        ParentMenu loginMenu = new ParentMenu(Menu.Id.LOGIN_MENU, "Login Menu");
-
-        ParentMenu collectionMenu = new ParentMenu(Menu.Id.COLLECTION_MENU, "Collection Menu");
-
-        ParentMenu shopMenu = new ParentMenu(Menu.Id.SHOP_MENU, "Shop Menu");
-
-        ParentMenu battleMenu = new ParentMenu(Menu.Id.BATTLE_MENU, "Battle Menu");
-
-        collectionMenu.addSubMenu(shopMenu);
-        collectionMenu.addSubMenu(Menu.Id.BACK, "Back");
-        collectionMenu.addSubMenu(new Menu(Menu.Id.HELP, "Help"));
-
-        shopMenu.addSubMenu(collectionMenu);
-        shopMenu.addSubMenu(Menu.Id.BACK, "Back");
-        shopMenu.addSubMenu(new Menu(Menu.Id.HELP, "Help"));
-
-        battleMenu.addSubMenu(Menu.Id.BACK, "Back");
-        battleMenu.addSubMenu(new Menu(Menu.Id.HELP, "Help"));
-
-        mainMenu.addSubMenu(loginMenu);
-        mainMenu.addSubMenu(battleMenu);
-        mainMenu.addSubMenu(collectionMenu);
-        mainMenu.addSubMenu(shopMenu);
-        mainMenu.addSubMenu(new Menu(Menu.Id.HELP, "Help"));
-        mainMenu.addSubMenu(new Menu(Menu.Id.EXIT, "Exit"));
-
-        menuManager = new MenuManager();
-        menuManager.addOnMenuChangeListener(this::showMenu);    //Add listeners - (Method reference)
-        menuManager.addOnClickListener(this::onItemClicked);
-        menuManager.setCurrentMenu(mainMenu);
+        }
     }
 
     public static void handleCommandsInBattleMenu(Player player, boolean isThereSelectedCard) {
@@ -149,10 +119,9 @@ public class Input {
             handleSelectCardOrSelectComboCards(player, input);
         if (input.equalsIgnoreCase("game info"))
             BattleMenu.showGameInfo();
-        else if (input.trim().equalsIgnoreCase("show my minions")){
+        else if (input.trim().equalsIgnoreCase("show my minions")) {
 
         }
-
 
 
     }
@@ -160,63 +129,82 @@ public class Input {
     public static void handleCommandsInCollectionMenu() {
         String input = scanner.nextLine();
         checkGenerals(input);
-        if (input.matches("exit\\s*")) {
-            CollectionMenu.back();
-            return;
-        }
-        if (input.matches("show\\s*")) {
+        if (input.equalsIgnoreCase("show")) {
+            System.err.println("showing all card in collection");
             CollectionMenu.showAllMyCards();
             return;
         }
-        if (input.matches("save\\s*")) {
+        if (input.equalsIgnoreCase("save")) {
+            System.err.println("saving ...");
             CollectionMenu.saveAndGoBack();
             return;
         }
-        if (input.matches("help")) {
+        if (input.equalsIgnoreCase("help")) {
             //CollectionMenu.help();
             return;
         }
         Pattern pattern = Pattern.compile("search ((\\w+\\s*)+)\\s*");
         Matcher matcher = pattern.matcher(input);
         if (matcher.matches()) {
+            System.err.println("searching in collection...");
             String[] names = matcher.group(1).trim().split("\\s");
+            System.err.println("showing founded cards :");
             CollectionMenu.showCardsByNames(names);
             return;
         }
         pattern = Pattern.compile("create deck (\\w+)\\s*");
         matcher = pattern.matcher(input);
-        if (matcher.matches())
+        if (matcher.matches()) {
+            System.err.println("creating deck");
             CollectionMenu.createDeck(matcher.group(1));
+            return;
+        }
         pattern = Pattern.compile("delete deck (\\w+)\\s*");
         matcher = pattern.matcher(input);
-        if (matcher.matches())
+        if (matcher.matches()) {
+            System.err.println("deleting deck");
             CollectionMenu.deleteDeck(matcher.group(1));
+            return;
+        }
         pattern = Pattern.compile("add ((\\d+\\s*)+)to deck (\\w+)\\s*");
         matcher = pattern.matcher(input);
         if (matcher.matches()) {
+            System.err.println("adding card to deck");
             String[] numbers = matcher.group(1).trim().split("\\s");
             CollectionMenu.addCardsToDeck(numbers, matcher.group(3).trim());
+            return;
         }
         pattern = Pattern.compile("remove ((\\d+\\s*)+)from deck (\\w+)\\s*");
         matcher = pattern.matcher(input);
         if (matcher.matches()) {
+            System.err.println("removing car from deck");
             String[] numbers = matcher.group(1).trim().split("\\s");
             CollectionMenu.removeCardsFromDeck(numbers, matcher.group(3).trim());
+            return;
         }
-        if (input.matches("validate deck \\w+"))
+        if (input.matches("validate deck \\w+")) {
+            System.err.println("validating deck");
             CollectionMenu.checkValidationOfDeck(input.replace("validate deck", "").trim());
-        if (input.matches("select deck \\w+")) {
-            CollectionMenu.selectAsMainDeck(input.replace("select deck", "").trim());
+            return;
         }
-        if (input.matches("show all decks"))
+        if (input.matches("select deck \\w+")) {
+            System.err.println("selecting deck");
+            CollectionMenu.selectAsMainDeck(input.replace("select deck", "").trim());
+            return;
+        }
+        if (input.matches("show all decks")) {
+            System.err.println("showing all decks");
             CollectionMenu.showAllDecks();
-        if (input.matches("show deck \\w+"))
+            return;
+        }
+        if (input.matches("show deck \\w+")) {
+            System.err.println("showing deck");
             CollectionMenu.showDeckByName(input.replace("show deck", "").trim());
-
-
+            return;
+        }
     }
 
-    public static void handleCommandsInMainMenu(){
+    public static void handleCommandsInMainMenu() {
         String input = scanner.nextLine();
         checkGenerals(input);
     }
@@ -258,10 +246,12 @@ public class Input {
 //            Shop.help();
         }
     }
+
     public static void handleCommandsInBattleMenu() {
         String input = scanner.nextLine();
         checkGenerals(input);
     }
+
     public static void handleCommandsInLoginMenu() {
         String input = scanner.nextLine();
         checkGenerals(input);
@@ -280,5 +270,6 @@ public class Input {
             Menu item = menu.getSubMenus().get(i);
             System.out.printf("%d. %s%n", i + 1, item.getTitle());
         }
+        System.out.println("enter 'help' to see functions you can run");
     }
 }
