@@ -75,7 +75,7 @@ public abstract class BattleManager {
                 compileFunction(function, x1, x2);
             }
         }
-        int uniqueId = getUniqueId(minion.id);
+        int uniqueId = generateUniqueId(minion.id);
         Minion theMinion = new Minion(minion.price, minion.manaCost, minion.cardText, minion.functions, minion.account,
                 minion.name, minion.id, minion.type, minion.isDeployed, true, false,
                 Map.getCell(x1, x2), minion.attackRange, minion.currentHealth, minion.currentAttack,
@@ -95,7 +95,7 @@ public abstract class BattleManager {
 
     }
 
-    public static int getUniqueId(int cardId) {
+    public static int generateUniqueId(int cardId) {
         int numberOfMinionInBattleField = 0;
         for (Deployable card : player1.cardsOnBattleField) {
             if (card.id == cardId)
@@ -956,6 +956,16 @@ public abstract class BattleManager {
             }
         }
         return new int[]{-1, -1};
+    }
+    public static Deployable findCardByUniqueid(int uniqueCardId){
+        for (Deployable deployable:player1.getCardsOnBattleField()) {
+            if(deployable.uniqueId==uniqueCardId)
+                return deployable;
+        }for (Deployable deployable:player2.getCardsOnBattleField()) {
+            if(deployable.uniqueId==uniqueCardId)
+                return deployable;
+        }
+        return null;
     }
 
 }
