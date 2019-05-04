@@ -98,7 +98,7 @@ public class Input {
             int index = Integer.parseInt(input) - 1;
             menuManager.performClickOnMenu(index);
         } else if (input.equalsIgnoreCase("back")) {
-            if(menuManager.getCurrentMenu().getId() == Menu.Id.MAIN_MENU){
+            if (menuManager.getCurrentMenu().getId() == Menu.Id.MAIN_MENU) {
                 MenuManager.exitGame();
             }
             System.err.println("going back...");
@@ -149,7 +149,7 @@ public class Input {
             System.out.println("commands you can enter :\n"
                     + "show\n"
                     + "save\n"
-                    + "search [card names]\n"
+                    + "search [card1 name] [card2 name] ...\n"
                     + "create deck [deck name]\n"
                     + "delete deck [deck name]\n"
                     + "add [card ids] to deck [deck name]\n"
@@ -230,6 +230,22 @@ public class Input {
     public static void handleCommandsInShop() {
         String input = scanner.nextLine();
         checkGenerals(input);
+        if (input.equalsIgnoreCase("help")) {
+            System.err.println("showing user it's options");
+            System.out.println("commands you can enter :\n" +
+                    "show\n" +
+                    "show collection\n" +
+                    "search cards [card1 name] [card2 name] ...\n" +
+                    "search collection [card1 name] [card2 name] ...\n" +
+                    "buy [card1 name] [card2 name] ...\n" +
+                    "sell [card1 name] [card2 name] ..."
+            );
+            Shop.showAllCards();
+        }
+        if (input.equalsIgnoreCase("show")) {
+            System.err.println("showing all cards in shop");
+            Shop.showAllCards();
+        }
         if (input.matches("show collection")) {
             System.err.println("showing all cards in user collection");
             CollectionMenu.showAllMyCards();
@@ -261,10 +277,6 @@ public class Input {
             System.err.println("selling cards");
             String[] cardNames = matcher.group(1).trim().split("\\s");
             Shop.sellCardsByName(cardNames);
-        }
-        if (input.matches("show")) {
-            System.err.println("showing all cards in shop");
-            Shop.showAllCards();
         }
     }
 
