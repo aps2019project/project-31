@@ -8,6 +8,11 @@ public class Cell {
     private int onPoisonTurns;
     private int isHolyTurns;
     private boolean hasFlag;
+    private Item item;
+
+    public Item getItem() {
+        return item;
+    }
 
     public boolean doesHaveFlag() {
         return hasFlag;

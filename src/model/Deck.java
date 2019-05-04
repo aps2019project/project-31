@@ -11,6 +11,11 @@ public class Deck {
     private String deckName;
     private ArrayList<Card> cards;
     private Hero hero;
+    private Item item;
+
+    public Item getItem() {
+        return item;
+    }
 
     public String getDeckName() {
         return deckName;
@@ -96,9 +101,10 @@ public class Deck {
     public boolean checkIfValid() {
         if (hero == null)
             return false;
-        if (cards.size() != 19)
+        if (cards.size() != 18)
             return false;
         return numberOfItemsInDeck() <= 1;
+
     }
 
 }

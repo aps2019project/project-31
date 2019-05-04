@@ -32,7 +32,6 @@ public class Input {
         Input.menuManager = menuManager;
     }
 
-    private static MenuManager menuManager = new MenuManager();
 
     public static String giveMeInput() {
         return scanner.nextLine();
@@ -137,10 +136,20 @@ public class Input {
             int x2 = Integer.parseInt(matcher.group(2));
             BattleMenu.getBattleManager().playSpell(player.getHero().getHeroSpell(), x1, x2);
         }
-        if(input.equalsIgnoreCase("show hand"))
+        if (input.equalsIgnoreCase("show hand"))
             player.showHand();
-        else if(input.equalsIgnoreCase("show collectables"))
-
+        else if (input.equalsIgnoreCase("show collectables")) {
+            BattleMenu.getBattleManager().getCurrentPlayer().showCollectibleItems();
+        }
+        pattern = Pattern.compile("select (\\d+)\\s*");
+        matcher = pattern.matcher(input);
+        if(matcher.matches())
+            BattleMenu.selectCollectibleItem(Integer.parseInt(matcher.group(1)));
+        if(input.equalsIgnoreCase("show info"))
+            BattleMenu.showSelectedCardInfo();
+        else if(input.equalsIgnoreCase("show next card")){
+            BattleMenu.getBattleManager().getCurrentPlayer().showNextCard();
+        }
 
 
 

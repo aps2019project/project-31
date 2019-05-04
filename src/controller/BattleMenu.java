@@ -1,6 +1,6 @@
 package controller;
 
-import constants.CardType;
+import constants.*;
 import constants.GameMode;
 import model.*;
 import view.Input;
@@ -161,19 +161,19 @@ public class BattleMenu extends Menu {
                 return false;
             }
 
-            if (card.getType() == Card.CardType.minion) {
+            if (card.getType() == CardType.minion) {
 
                 battleManager.playMinion((Minion) card, x1, x2);
             }
-            if (card.getType() == Card.CardType.spell) {
+            if (card.getType() == CardType.spell) {
 
                 battleManager.playSpell((Spell) card, x1, x2);
             }
-            if (card.getType() == Card.CardType.item) {
+            if (card.getType() == CardType.item) {
                 battleManager.useItem((Item) card, x1, x2);
             }
             for (Function function : card.getFunctions()) {
-                if (function.getFunctionType() == Function.FunctionType.OnSpawn) {
+                if (function.getFunctionType() == FunctionType.OnSpawn) {
                     battleManager.compileFunction(function, x1, x2);
                 }
             }
@@ -183,6 +183,13 @@ public class BattleMenu extends Menu {
             return false;
         }
         return true;
+    }
+
+    public static void selectCollectibleItem(int cardUniqueId) {
+        for (Deployable deployable : battleManager.getCurrentPlayer().getCardsOnBattleField()) {
+            if (deployable.getItem().getUniqueId() == cardUniqueId)
+                battleManager.getCurrentPlayer().setSelectedCard(deployable.getItem());
+        }
     }
 
     public static void showGameInfo() {
@@ -206,6 +213,9 @@ public class BattleMenu extends Menu {
             }
         }
 
+    }
+    public static void showSelectedCardInfo(){
+        System.out.println(battleManager.getCurrentPlayer().getSelectedCard().infoToString());
     }
 
 }

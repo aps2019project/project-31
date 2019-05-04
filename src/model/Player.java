@@ -114,6 +114,10 @@ public class Player {
         currentDeck.shuffle();
     }
 
+    public void setSelectedCard(Card selectedCard) {
+        this.selectedCard = selectedCard;
+    }
+
     public boolean selectACard(int cardId) {
         for (Card card : hand) {
             if (cardId == card.getId()) {
@@ -228,7 +232,14 @@ public class Player {
 
     public void showHand() {
         for (Card card : hand) {
-            
+            card.show();
+        }
+    }
+
+    public void showCollectibleItems() {
+        for (Deployable card : cardsOnBattleField) {
+            if(card.getItem()!=null)
+                card.getItem().show();
         }
     }
 }
