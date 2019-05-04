@@ -35,6 +35,10 @@ public abstract class Card {
         return this.name;
     }
 
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
     abstract public String toString();
 
     public void show() {
