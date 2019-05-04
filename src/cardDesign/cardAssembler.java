@@ -278,8 +278,26 @@ public class cardAssembler {
         for (Buff.BuffType buffType : Buff.getAllBuffs()) {
             System.out.println((Buff.getAllBuffs().indexOf(buffType) + 1) +
                     ". " + buffType);
+            System.out.println("Or any other number to add several holy buffs");
         }
-        Buff.BuffType buff = Buff.getAllBuffs().get(scanner.nextInt() - 1);
+        int num = scanner.nextInt();
+        Buff.BuffType buff;
+        if (num <= 6){
+            buff = Buff.getAllBuffs().get(num - 1);
+        }else {
+            buff = Buff.BuffType.Holy;
+            System.out.println("Enter amount:");
+            functionToAdd.append(scanner.nextInt());
+            System.out.println("Enter turns or -1 for continuous:");
+            functionToAdd.append(buff.toString().toLowerCase());
+            int turns = scanner.nextInt();
+            if (turns == -1) {
+                functionToAdd.append("continuous");
+            } else {
+                functionToAdd.append(turns);
+            }
+            return;
+        }
         switch (buff) {
             case Weakness:
                 System.out.println("1.health\n" + "2.attack");

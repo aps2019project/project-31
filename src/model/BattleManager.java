@@ -128,7 +128,19 @@ public abstract class BattleManager {
                     }
                 }
             }
+            if (target.matches("(.*)" + TargetStrings.ALL_MELEE_UNITS + "(.*)")){
+                for (Deployable deployable: currentPlayer.getCardsOnBattleField()){
+                    if (deployable.getAttackType() == AttackType.melee){
+                        targetCards.add(deployable);
+                    }
+                }
 
+                for (Deployable deployable: getOtherPlayer().getCardsOnBattleField()){
+                    if (deployable.getAttackType() == AttackType.melee){
+                        targetCards.add(deployable);
+                    }
+                }
+            }
             if (target.matches("(.*)" + TargetStrings.RANDOM_MINION + "(.*)")){
                 ArrayList<Deployable> deployables = new ArrayList<>();
                 deployables.addAll(getOtherPlayer().getCardsOnBattleField());
@@ -569,6 +581,23 @@ public abstract class BattleManager {
                 int turns = Integer.parseInt(matcher.group(1).replace("disarm", ""));
                 Buff buff = new Buff(Buff.BuffType.Disarm, turns, 0, 0, false);
                 addBuffs(targetCards, buff);
+            }
+            if (matcher.group(1).trim().matches("(\\d+)holy(\\d+|continuous)")) {
+                int amount = Integer.parseInt(matcher.group(1).replaceAll("holy(.*)", ""));
+                if (matcher.group(1).replace("holy", "").matches(CONTINUOUS)) {
+                    Buff buff = new Buff(Buff.BuffType.Holy, PERMANENT, 0, 0, true);
+                    buff.makeContinuous();
+                    for (int i = 0; i < amount; i++) {
+                     addBuffs(targetCards, buff);
+                    }
+                    return;
+                }
+                int turns = Integer.parseInt(matcher.group(1).replace("holy", ""));
+                Buff buff = new Buff(Buff.BuffType.Holy, turns, 0, 0, true);
+                for (int i = 0; i < amount; i++) {
+                    addBuffs(targetCards, buff);
+                }
+
             }
             if (matcher.group(1).trim().matches("holy(\\d+|continuous)")) {
                 if (matcher.group(1).replace("holy", "").matches(CONTINUOUS)) {

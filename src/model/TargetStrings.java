@@ -31,6 +31,7 @@ public class TargetStrings {
     public static final String ALLIED_GENERAL_RANGED_HYBRID = "allied general if it's ranged or hybrid";
     public static final String RANDOM_UNIT = "a random unit";
     public static final String RANDOM_MINION = "a random minion";
+    public static final String ALL_MELEE_UNITS = "all melee units";
 
     public static ArrayList<String> allTargets(){
         return new ArrayList<>(Arrays.asList(ALL_ENEMIES, ALL_ENEMY_MINIONS, ALL_ENEMIES_IN_ROW,ALL_ENEMIES_IN_COLUMN,
