@@ -24,7 +24,6 @@ public class Spell extends Card {
         return "Spell:\nName: " + name + "\nMP: " + manaCost + "\nDesc: " + cardText;
     }
 
-    @Override
     public void showCardInfo() {
 
     }

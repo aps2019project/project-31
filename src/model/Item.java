@@ -21,7 +21,6 @@ public class Item extends Card {
         return "Type: Item _ Name: "+ name+" _ MP: "+manaCost+" _ Desc: "+cardText;
     }
 
-    @Override
     public void showCardInfo() {
 
     }
