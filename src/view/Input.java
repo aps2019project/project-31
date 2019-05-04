@@ -33,8 +33,7 @@ public class Input {
     }
 
     public static String giveMeInput() {
-        String input = scanner.nextLine();
-        return input;
+        return scanner.nextLine();
     }
 
     public static void handleSelectComboCards(Player player, String input) {
@@ -221,38 +220,41 @@ public class Input {
     public static void handleCommandsInShop() {
         String input = scanner.nextLine();
         checkGenerals(input);
-        if (input.matches("exit"))
-            Shop.goBack();
-        if (input.matches("show collection"))
+        if (input.matches("show collection")) {
+            System.err.println("showing all cards in user collection");
             CollectionMenu.showAllMyCards();
+        }
         Pattern pattern = Pattern.compile("search ((\\w+\\s*)+)\\s*");
         Matcher matcher = pattern.matcher(input);
         if (matcher.matches()) {
+            System.err.println("searching cards:");
             String[] cardNames = matcher.group(1).trim().split("\\s");
             Shop.searchCardsByNames(cardNames);
         }
         pattern = Pattern.compile("search collection ((\\w+\\s*)+)\\s*");
         matcher = pattern.matcher(input);
         if (matcher.matches()) {
+            System.err.println("searching cards in collection");
             String[] cardNames = matcher.group(1).trim().split("\\s");
             Shop.searchCardsByNamesInCollection(cardNames);
         }
         pattern = Pattern.compile("buy ((\\w+\\s*)+)\\s*");
         matcher = pattern.matcher(input);
         if (matcher.matches()) {
+            System.err.println("buying cards");
             String[] cardNames = matcher.group(1).trim().split("\\s");
             Shop.buyCardsByName(cardNames);
         }
         pattern = Pattern.compile("sell ((\\w+\\s*)+)\\s*");
         matcher = pattern.matcher(input);
         if (matcher.matches()) {
+            System.err.println("selling cards");
             String[] cardNames = matcher.group(1).trim().split("\\s");
             Shop.sellCardsByName(cardNames);
         }
-        if (input.matches("show"))
+        if (input.matches("show")){
+            System.err.println("showing all cards in shop");
             Shop.showAllCards();
-        if (input.matches("help")) {
-//            Shop.help();
         }
     }
 
@@ -279,6 +281,7 @@ public class Input {
             Menu item = menu.getSubMenus().get(i);
             System.out.printf("%d. %s%n", i + 1, item.getTitle());
         }
-        System.out.println("enter 'help' to see functions you can run");
+        System.out.println("--enter 'help' to see functions you can run");
+        System.out.println("--enter 'back' to go back");
     }
 }
