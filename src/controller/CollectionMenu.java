@@ -16,7 +16,7 @@ public class CollectionMenu extends Menu {
 
     public static void createDeck(String name) {
         Deck deck = new Deck(name);
-        account.getDecks().add(deck);
+        account.addDeck(deck);
         editingDeck = deck;
     }
 

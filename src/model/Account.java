@@ -30,6 +30,9 @@ public class Account {
     public ArrayList<Deck> getDecks() {
         return decks;
     }
+    public void addDeck(Deck deck){
+        decks.add(deck);
+    }
 
     public Deck getTheMainDeck() {
         return theMainDeck;
