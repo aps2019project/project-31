@@ -146,18 +146,18 @@ public class Input {
         }
         if (input.equalsIgnoreCase("help")) {
             System.err.println("showing user it's options");
-            System.out.println("commands you can enter :\n"
-                    + "show\n"
-                    + "save\n"
-                    + "search [card1 name] [card2 name] ...\n"
-                    + "create deck [deck name]\n"
-                    + "delete deck [deck name]\n"
-                    + "add [card ids] to deck [deck name]\n"
-                    + "remove [card ids] from deck [deck name]\n"
-                    + "validate deck [deck name]\n"
-                    + "select deck [deck name]\n"
-                    + "show deck [deck name]\n"
-                    + "show all decks\n"
+            System.out.println("commands you can enter :\n" +
+                     "-show\n" +
+                     "-save\n" +
+                     "-search [card1 name] [card2 name] ...\n" +
+                     "-create deck [deck name]\n" +
+                     "-delete deck [deck name]\n" +
+                     "-add [card ids] to deck [deck name]\n" +
+                     "-remove [card ids] from deck [deck name]\n" +
+                     "-validate deck [deck name]\n" +
+                     "-select deck [deck name]\n" +
+                     "-show deck [deck name]\n" +
+                     "-show all decks\n"
             );
             return;
         }
@@ -233,13 +233,14 @@ public class Input {
         if (input.equalsIgnoreCase("help")) {
             System.err.println("showing user it's options");
             System.out.println("commands you can enter :\n" +
-                    "show\n" +
-                    "show collection\n" +
-                    "search cards [card1 name] [card2 name] ...\n" +
-                    "search collection [card1 name] [card2 name] ...\n" +
-                    "buy [card1 name] [card2 name] ...\n" +
-                    "sell [card1 name] [card2 name] ..."
+                    "-show\n" +
+                    "-show collection\n" +
+                    "-search cards [card1 name] [card2 name] ...\n" +
+                    "-search collection [card1 name] [card2 name] ...\n" +
+                    "-buy [card1 name] [card2 name] ...\n" +
+                    "-sell [card1 name] [card2 name] ..."
             );
+            System.err.println("showing all cards :");
             Shop.showAllCards();
         }
         if (input.equalsIgnoreCase("show")) {
