@@ -4,6 +4,8 @@ package cardDesign;
 import com.gilecode.yagson.YaGson;
 import com.gilecode.yagson.YaGsonBuilder;
 import constants.AttackType;
+import constants.CardType;
+import constants.FunctionType;
 import model.*;
 
 import java.io.BufferedWriter;
@@ -20,13 +22,13 @@ public class cardAssembler {
         System.out.println("Type in card name:");
         String name = scanner.nextLine();
         System.out.println("Select card type");
-        for (Card.CardType cardType : Card.CardType.getAll()) {
-            System.out.println((Card.CardType.getAll().indexOf(cardType) + 1) + ". " + cardType);
+        for (CardType cardType : CardType.getAll()) {
+            System.out.println((CardType.getAll().indexOf(cardType) + 1) + ". " + cardType);
         }
         System.out.println("else. Usable Item");
         int num = scanner.nextInt();
         if (num <= 4) {
-            Card.CardType cardType = Card.CardType.getAll().get(scanner.nextInt() - 1);
+            CardType cardType = CardType.getAll().get(scanner.nextInt() - 1);
             switch (cardType) {
                 case minion:
                     Minion minion = makeMinion(scanner, cardType, name);
@@ -72,7 +74,7 @@ public class cardAssembler {
 
             }
         } else {
-            Item item = makeItem(scanner, Card.CardType.item, name);
+            Item item = makeItem(scanner, CardType.item, name);
             System.out.println("Enter price:");
             int price = scanner.nextInt();
             item.setPrice(price);
@@ -89,7 +91,7 @@ public class cardAssembler {
 
     }
 
-    public static Item makeItem(Scanner scanner, Card.CardType cardType, String name) {
+    public static Item makeItem(Scanner scanner, CardType cardType, String name) {
         scanner.nextLine();
         System.out.println("Enter card text:");
         String cardText = scanner.nextLine();
@@ -101,16 +103,16 @@ public class cardAssembler {
     }
 
 
-    public static Hero makeHero(Scanner scanner, Card.CardType cardType, String name) {
-        Minion minion = makeMinion(scanner, Card.CardType.minion, name);
+    public static Hero makeHero(Scanner scanner, CardType cardType, String name) {
+        Minion minion = makeMinion(scanner, CardType.minion, name);
         System.out.println("Enter the ability spell name:");
         String spellname = scanner.nextLine();
-        Spell spell = makeSpell(scanner, Card.CardType.spell, spellname);
+        Spell spell = makeSpell(scanner, CardType.spell, spellname);
         System.out.println("Enter ability cooldown:");
         int coolDown = scanner.nextInt();
 
         return new Hero(minion.getPrice(), minion.getManaCost(), minion.getCardText(), minion.getFunctions(),
-                minion.getAccount(), minion.getName(), minion.getId(), Card.CardType.hero, false, false,
+                minion.getAccount(), minion.getName(), minion.getId(), CardType.hero, false, false,
                 false, null, minion.getAttackRange(), minion.getHealth(), minion.getAttack(),
                 0, minion.getAttackType(), minion.isCombo(), minion.getHealth(), minion.getAttack(),
                 minion.getHealth(), new HeroSpell(0, spell.getManaCost(), spell.getCardText(),
@@ -118,7 +120,7 @@ public class cardAssembler {
                 false, coolDown, 0));
     }
 
-    public static Spell makeSpell(Scanner scanner, Card.CardType cardType, String name) {
+    public static Spell makeSpell(Scanner scanner, CardType cardType, String name) {
         System.out.println("Enter mana cost and then price:");
         int mana = scanner.nextInt();
         int price = scanner.nextInt();
@@ -143,7 +145,7 @@ public class cardAssembler {
         return functions;
     }
 
-    public static Minion makeMinion(Scanner scanner, Card.CardType cardType, String name) {
+    public static Minion makeMinion(Scanner scanner, CardType cardType, String name) {
         System.out.println("Enter attack and then health and then mana cost and then price");
         int attack = scanner.nextInt();
         int health = scanner.nextInt();
@@ -174,7 +176,7 @@ public class cardAssembler {
         ArrayList<Function> functions = makeFunctionsList(scanner);
         boolean isCombo = false;
         for (Function function : functions) {
-            if (function.getFunctionType() == Function.FunctionType.Combo) {
+            if (function.getFunctionType() == FunctionType.Combo) {
                 isCombo = true;
                 break;
             }
@@ -187,37 +189,37 @@ public class cardAssembler {
     }
 
     public static Function makeFunction(Scanner scanner) {
-        Function.FunctionType functionType = Function.FunctionType.OnDeath;
+        FunctionType functionType = FunctionType.OnDeath;
         System.out.println("Select activation type:\n" +
                 "1.On Spawn 2.On Attack 3.On Death\n " +
                 "4.On Defend 5.Passive 6.Combo 7.Vanilla 8.Spell 9.GameStart");
         switch (scanner.nextInt()) {
             case 1:
-                functionType = Function.FunctionType.OnSpawn;
+                functionType = FunctionType.OnSpawn;
                 break;
             case 2:
-                functionType = Function.FunctionType.OnAttack;
+                functionType = FunctionType.OnAttack;
                 break;
             case 3:
-                functionType = Function.FunctionType.OnDeath;
+                functionType = FunctionType.OnDeath;
                 break;
             case 4:
-                functionType = Function.FunctionType.OnDefend;
+                functionType = FunctionType.OnDefend;
                 break;
             case 5:
-                functionType = Function.FunctionType.Passive;
+                functionType = FunctionType.Passive;
                 break;
             case 6:
-                functionType = Function.FunctionType.Combo;
+                functionType = FunctionType.Combo;
                 return new Function(functionType, "", "");
             case 7:
-                functionType = Function.FunctionType.Vanilla;
+                functionType = FunctionType.Vanilla;
                 return new Function(functionType, "", "");
             case 8:
-                functionType = Function.FunctionType.Spell;
+                functionType = FunctionType.Spell;
                 break;
             case 9:
-                functionType = Function.FunctionType.GameStart;
+                functionType = FunctionType.GameStart;
                 break;
         }
         System.out.println("Select desired function with number");

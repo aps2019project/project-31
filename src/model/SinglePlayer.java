@@ -5,7 +5,7 @@ import constants.GameMode;
 public class SinglePlayer extends BattleManager {
 
 
-    public SinglePlayer(Map map, GameMode gameMode, Player currentPlayer, int maxNumberOfFlags, Player playerOne, Player aiPlayer) {
+    public SinglePlayer(Map map, GameMode gameMode, Player currentPlayer, int maxNumberOfFlags) {
         super(map, gameMode, currentPlayer, maxNumberOfFlags);
     }
 

@@ -26,18 +26,23 @@ public class Shop extends Menu {
 
     public static void loadAllCards() {
         YaGson yaGson = new YaGsonBuilder().create();
+        System.err.println("loading minions...");
         String path = System.getProperty("user.dir") + "/Sources/Cards/Minions.txt";
         loadMinions(yaGson, path);
 
+        System.err.println("loading spells...");
         path = System.getProperty("user.dir") + "/Sources/Cards/Spells.txt";
         loadSpells(yaGson, path);
 
+        System.err.println("loading heroes...");
         path = System.getProperty("user.dir") + "/Sources/Cards/Heroes.txt";
         loadHeroes(yaGson, path);
 
+        System.err.println("loading collectibles...");
         path = System.getProperty("user.dir") + "/Sources/Cards/Collectible_Items.txt";
         loadItems(yaGson, path, allCollectibles);
 
+        System.err.println("loading usables...");
         path = System.getProperty("user.dir") + "/Sources/Cards/Usable_Items.txt";
         loadItems(yaGson, path, allUsables);
     }
@@ -165,13 +170,5 @@ public class Shop extends Menu {
                     card.show();
             }
         }
-    }
-
-    public void show() {
-
-    }
-
-    public void help() {
-
     }
 }

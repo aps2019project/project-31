@@ -1,6 +1,6 @@
 package constants;
 
-public enum FunctionType {
+public enum FunctionType{
     OnDeath,
     OnSpawn,
     OnAttack,
@@ -8,5 +8,6 @@ public enum FunctionType {
     Passive,
     Combo,
     Vanilla,
-    Spell
+    Spell,
+    GameStart
 }
