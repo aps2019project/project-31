@@ -86,7 +86,7 @@ public class MenuManager {
             callOnClickListeners(clickedMenu.getId());
     }
 
-    private void exitGame() {
+    public static void exitGame() {
         //do before closing stuff
         System.err.println("closing the program... bye bye (*^ - ^*)");
         System.exit(0);

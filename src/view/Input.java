@@ -74,23 +74,18 @@ public class Input {
         while (scanner.hasNextLine()) {
             switch (menuManager.getCurrentMenu().getId()) {
                 case Menu.Id.MAIN_MENU:
-                    System.err.println("you are in Main Menu");
                     handleCommandsInMainMenu();
                     break;
                 case Menu.Id.COLLECTION_MENU:
-                    System.err.println("you are in Collection Menu");
                     handleCommandsInCollectionMenu();
                     break;
                 case Menu.Id.BATTLE_MENU:
-                    System.err.println("you are in Battle Menu");
                     handleCommandsInBattleMenu();
                     break;
                 case Menu.Id.LOGIN_MENU:
-                    System.err.println("you are in Login Menu");
                     handleCommandsInLoginMenu();
                     break;
                 case Menu.Id.SHOP_MENU:
-                    System.err.println("you are in Shop Menu");
                     handleCommandsInShop();
                     break;
             }
@@ -103,6 +98,9 @@ public class Input {
             int index = Integer.parseInt(input) - 1;
             menuManager.performClickOnMenu(index);
         } else if (input.equalsIgnoreCase("back")) {
+            if(menuManager.getCurrentMenu().getId() == Menu.Id.MAIN_MENU){
+                MenuManager.exitGame();
+            }
             System.err.println("going back...");
             menuManager.back();
         }
@@ -264,7 +262,7 @@ public class Input {
             String[] cardNames = matcher.group(1).trim().split("\\s");
             Shop.sellCardsByName(cardNames);
         }
-        if (input.matches("show")){
+        if (input.matches("show")) {
             System.err.println("showing all cards in shop");
             Shop.showAllCards();
         }
