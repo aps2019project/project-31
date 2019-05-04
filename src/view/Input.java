@@ -147,8 +147,20 @@ public class Input {
             return;
         }
         if (input.equalsIgnoreCase("help")) {
-            System.err.println("showing user options");
-            //CollectionMenu.help();
+            System.err.println("showing user it's options");
+            System.out.println("commands you can enter :\n"
+                    + "show\n"
+                    + "save\n"
+                    + "search [card names]\n"
+                    + "create deck [deck name]\n"
+                    + "delete deck [deck name]\n"
+                    + "add [card ids] to deck [deck name]\n"
+                    + "remove [card ids] from deck [deck name]\n"
+                    + "validate deck [deck name]\n"
+                    + "select deck [deck name]\n"
+                    + "show deck [deck name]\n"
+                    + "show all decks\n"
+            );
             return;
         }
         Pattern pattern = Pattern.compile("search ((\\w+\\s*)+)\\s*");
@@ -156,7 +168,7 @@ public class Input {
         if (matcher.matches()) {
             System.err.println("searching in collection...");
             String[] names = matcher.group(1).trim().split("\\s");
-            System.err.println("showing founded cards :");
+            System.err.println("founded cards :");
             CollectionMenu.showCardsByNames(names);
             return;
         }
@@ -177,7 +189,7 @@ public class Input {
         pattern = Pattern.compile("add ((\\d+\\s*)+)to deck (\\w+)\\s*");
         matcher = pattern.matcher(input);
         if (matcher.matches()) {
-            System.err.println("adding card to deck");
+            System.err.println("adding cards to deck");
             String[] numbers = matcher.group(1).trim().split("\\s");
             CollectionMenu.addCardsToDeck(numbers, matcher.group(3).trim());
             return;
@@ -185,7 +197,7 @@ public class Input {
         pattern = Pattern.compile("remove ((\\d+\\s*)+)from deck (\\w+)\\s*");
         matcher = pattern.matcher(input);
         if (matcher.matches()) {
-            System.err.println("removing car from deck");
+            System.err.println("removing card from deck");
             String[] numbers = matcher.group(1).trim().split("\\s");
             CollectionMenu.removeCardsFromDeck(numbers, matcher.group(3).trim());
             return;
@@ -200,14 +212,14 @@ public class Input {
             CollectionMenu.selectAsMainDeck(input.replace("select deck", "").trim());
             return;
         }
-        if (input.matches("show all decks")) {
-            System.err.println("showing all decks");
-            CollectionMenu.showAllDecks();
-            return;
-        }
         if (input.matches("show deck \\w+")) {
             System.err.println("showing deck");
             CollectionMenu.showDeckByName(input.replace("show deck", "").trim());
+            return;
+        }
+        if (input.matches("show all decks")) {
+            System.err.println("showing all decks");
+            CollectionMenu.showAllDecks();
             return;
         }
     }
