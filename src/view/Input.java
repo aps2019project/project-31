@@ -147,17 +147,17 @@ public class Input {
         if (input.equalsIgnoreCase("help")) {
             System.err.println("showing user it's options");
             System.out.println("commands you can enter :\n" +
-                     "-show\n" +
-                     "-save\n" +
-                     "-search [card1 name] [card2 name] ...\n" +
-                     "-create deck [deck name]\n" +
-                     "-delete deck [deck name]\n" +
-                     "-add [card ids] to deck [deck name]\n" +
-                     "-remove [card ids] from deck [deck name]\n" +
-                     "-validate deck [deck name]\n" +
-                     "-select deck [deck name]\n" +
-                     "-show deck [deck name]\n" +
-                     "-show all decks\n"
+                    "-show\n" +
+                    "-save\n" +
+                    "-search [card1 name] [card2 name] ...\n" +
+                    "-create deck [deck name]\n" +
+                    "-delete deck [deck name]\n" +
+                    "-add [card ids] to deck [deck name]\n" +
+                    "-remove [card ids] from deck [deck name]\n" +
+                    "-validate deck [deck name]\n" +
+                    "-select deck [deck name]\n" +
+                    "-show deck [deck name]\n" +
+                    "-show all decks\n"
             );
             return;
         }
