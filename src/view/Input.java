@@ -43,7 +43,7 @@ public class Input {
         Matcher matcher = pattern.matcher(input);
         if (matcher.matches()) {
             int opponentCardId = Integer.parseInt(matcher.group(1));
-            String[] strNumbers = matcher.group(2).split("\\s");
+            String[] strNumbers = matcher.group(2).split(",");
             BattleMenu.prepareComboAttack(strNumbers, opponentCardId);
         }
 
@@ -186,11 +186,11 @@ public class Input {
             );
             return;
         }
-        Pattern pattern = Pattern.compile("search ((\\w+\\s*)+)\\s*");
+        Pattern pattern = Pattern.compile("search (.+,*+)\\s*");
         Matcher matcher = pattern.matcher(input);
         if (matcher.matches()) {
             System.err.println("searching in collection...");
-            String[] names = matcher.group(1).trim().split("\\s");
+            String[] names = matcher.group(1).trim().split(",");
             System.err.println("founded cards :");
             CollectionMenu.showCardsByNames(names);
             return;
@@ -209,19 +209,19 @@ public class Input {
             CollectionMenu.deleteDeck(matcher.group(1));
             return;
         }
-        pattern = Pattern.compile("add ((\\d+\\s*)+)to deck (\\w+)\\s*");
+        pattern = Pattern.compile("add ((\\d+,*)+) to deck (\\w+)\\s*");
         matcher = pattern.matcher(input);
         if (matcher.matches()) {
             System.err.println("adding cards to deck");
-            String[] numbers = matcher.group(1).trim().split("\\s");
+            String[] numbers = matcher.group(1).trim().split(",");
             CollectionMenu.addCardsToDeck(numbers, matcher.group(3).trim());
             return;
         }
-        pattern = Pattern.compile("remove ((\\d+\\s*)+)from deck (\\w+)\\s*");
+        pattern = Pattern.compile("remove ((\\d+,*)+) from deck (\\w+)\\s*");
         matcher = pattern.matcher(input);
         if (matcher.matches()) {
             System.err.println("removing card from deck");
-            String[] numbers = matcher.group(1).trim().split("\\s");
+            String[] numbers = matcher.group(1).trim().split(",");
             CollectionMenu.removeCardsFromDeck(numbers, matcher.group(3).trim());
             return;
         }
@@ -276,32 +276,32 @@ public class Input {
             System.err.println("showing all cards in user collection");
             CollectionMenu.showAllMyCards();
         }
-        Pattern pattern = Pattern.compile("search ((\\w+\\s*)+)\\s*");
+        Pattern pattern = Pattern.compile("search (.+,*)+\\s*");
         Matcher matcher = pattern.matcher(input);
         if (matcher.matches()) {
             System.err.println("searching cards:");
-            String[] cardNames = matcher.group(1).trim().split("\\s");
+            String[] cardNames = matcher.group(1).trim().split(",");
             Shop.searchCardsByNames(cardNames);
         }
-        pattern = Pattern.compile("search collection ((\\w+\\s*)+)\\s*");
+        pattern = Pattern.compile("search collection (.+,*)+\\s*");
         matcher = pattern.matcher(input);
         if (matcher.matches()) {
             System.err.println("searching cards in collection");
-            String[] cardNames = matcher.group(1).trim().split("\\s");
+            String[] cardNames = matcher.group(1).trim().split(",");
             Shop.searchCardsByNamesInCollection(cardNames);
         }
-        pattern = Pattern.compile("buy ((\\w+\\s*)+)\\s*");
+        pattern = Pattern.compile("buy (.+,*)+\\s*");
         matcher = pattern.matcher(input);
         if (matcher.matches()) {
             System.err.println("buying cards");
-            String[] cardNames = matcher.group(1).trim().split("\\s");
+            String[] cardNames = matcher.group(1).trim().split(",");
             Shop.buyCardsByName(cardNames);
         }
-        pattern = Pattern.compile("sell ((\\w+\\s*)+)\\s*");
+        pattern = Pattern.compile("sell (.+,*)+\\s*");
         matcher = pattern.matcher(input);
         if (matcher.matches()) {
             System.err.println("selling cards");
-            String[] cardNames = matcher.group(1).trim().split("\\s");
+            String[] cardNames = matcher.group(1).trim().split(",");
             Shop.sellCardsByName(cardNames);
         }
     }

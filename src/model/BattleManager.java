@@ -24,7 +24,7 @@ public abstract class BattleManager {
     protected static Player player2;
     protected final int maxNumberOfFlags;
     protected final int maxTurnsOfHavingFlag;
-
+    protected int turn = 0;
 
     public int getMaxNumberOfFlags() {
         return maxNumberOfFlags;
@@ -66,6 +66,7 @@ public abstract class BattleManager {
                 Map.getCell(x1, x2), minion.attackRange, minion.currentHealth, minion.currentAttack,
                 uniqueId, minion.attackType, minion.isCombo, minion.maxHealth, minion.getAttack(),
                 minion.getHealth());
+
         Map.putCardInCell(theMinion, x1, x2);
         if (Map.getCell(x1, x2).doesHaveFlag()) {
             Map.getCell(x1, x2).setHasFlag(false);
@@ -74,11 +75,16 @@ public abstract class BattleManager {
                 currentPlayer.numberOfFlags++;
         }
         Output.insertionSuccessful(theMinion, x1, x2);
+        applyItemFunctions(theMinion,FunctionType.OnSpawn);
         currentPlayer.addCardToBattlefield(theMinion);
-
         currentPlayer.removeFromHand(minion);
+        applyOnSpawnFunction(theMinion);
         return true;
 
+    }
+
+    public void addTurn() {
+        turn++;
     }
 
     public static int generateUniqueId(int cardId) {
@@ -771,6 +777,10 @@ public abstract class BattleManager {
     }
 
     public void killTheThing(Deployable enemy) {
+        Player player;
+        if (player1.doesPlayerHaveDeployable(enemy))
+            player = player1;
+        else player = player2;
         if (enemy.hasFlag) {
             if (gameMode == GameMode.Domination)
                 getOtherPlayer().numberOfFlags--;
@@ -778,16 +788,17 @@ public abstract class BattleManager {
                 getOtherPlayer().numberOfTurnsHavingFlag = 0;
             enemy.cell.setHasFlag(true);
         }
+        applyItemFunctions(enemy,FunctionType.OnDeath);
         for (Function function : enemy.functions) {
             if (function.getFunctionType() == FunctionType.OnDeath) {
                 compileFunction(function, enemy.cell.getX1Coordinate(), enemy.cell.getX2Coordinate());
             }
         }
+
         enemy.cell.setCardInCell(null);
-        if (player1.doesPlayerHaveDeployable(enemy))
-            player1.getCardsOnBattleField().remove(enemy);
-        else
-            player2.getCardsOnBattleField().remove(enemy);
+
+        player.addCardToGraveYard(enemy);
+        player.getCardsOnBattleField().remove(enemy);
 
     }
 
@@ -838,6 +849,8 @@ public abstract class BattleManager {
             }
             applyOnAttackFunction(card, enemy);
             applyOnDefendFunction(enemy, card);
+            applyItemFunctions(card,FunctionType.OnAttack);
+            applyItemFunctions(enemy,FunctionType.OnDefend);
         }
     }
 
@@ -854,6 +867,24 @@ public abstract class BattleManager {
             if (function.getFunctionType() == FunctionType.OnAttack) {
                 compileFunction(function, card.cell.getX1Coordinate(), card.cell.getX2Coordinate(), enemy);
             }
+        }
+    }
+
+    private void applyOnSpawnFunction(Deployable card) {
+        for (Function function : card.functions) {
+            if (function.getFunctionType() == FunctionType.OnSpawn) {
+                compileFunction(function, card.cell.getX1Coordinate(), card.cell.getX2Coordinate(), );
+            }
+        }
+    }
+    public void applyItemFunctions(Deployable card, FunctionType functionType) {
+        for (Function function : player1.currentDeck.getItem().functions) {
+            if (function.getFunctionType() == functionType)
+                compileFunction(function, card.cell.getX1Coordinate(), card.cell.getX2Coordinate());
+        }
+        for (Function function : player2.currentDeck.getItem().functions) {
+            if (function.getFunctionType() == functionType)
+                compileFunction(function, card.cell.getX1Coordinate(), card.cell.getX2Coordinate());
         }
     }
 
@@ -1009,4 +1040,12 @@ public abstract class BattleManager {
         return null;
     }
 
+    public void assignManaToPlayers() {
+        if (currentPlayer == player1)
+            player1.mana = (turn - 1) / 2 + 2;
+        else
+            player2.mana = turn / 2 + 2;
+        getOtherPlayer().mana = 0;
+
+    }
 }
