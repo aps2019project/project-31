@@ -1,5 +1,6 @@
 package model;
 
+import constants.CardType;
 import view.Output;
 
 import java.util.ArrayList;
@@ -35,8 +36,13 @@ public abstract class Card {
         return this.name;
     }
 
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
     abstract public String toString();
-    public void show(){
+
+    public void show() {
         Output.print(this.toString());
     }
 
@@ -90,16 +96,4 @@ public abstract class Card {
     public CardType getType() {
         return type;
     }
-    public enum CardType {
-        minion,
-        hero,
-        spell,
-        item,
-        herospell;
-
-        public static ArrayList<CardType> getAll(){
-            return new ArrayList<>(Arrays.asList(minion, hero, spell, item));
-        }
-    }
-
 }

@@ -1,6 +1,7 @@
 package model;
 
 import constants.AttackType;
+import constants.CardType;
 
 import java.util.ArrayList;
 
@@ -61,7 +62,7 @@ public class Minion extends Deployable {
                 return "Minion: \nName: " + name + "\nDesc: " + cardText + "\nCoordination: " + "\nHP: " +
                         maxHealth + "\nAP: " + attack + "\nMP: " + manaCost + "\ntype: " + attackType + "\nRange: " + attackRange +
                         "\nCombo ability: " + isCombo;
-        }catch (Exception e){
+        } catch (Exception e) {
             System.err.println(e.getMessage());
         }
         return " ";

@@ -1,5 +1,6 @@
 package model;
 
+import constants.CardType;
 import view.Output;
 
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ public class Deck {
     public int numberOfItemsInDeck() {
         int numberOfItem = 0;
         for (Card card : cards) {
-            if (card.getType() == Card.CardType.item)
+            if (card.getType() == CardType.item)
                 numberOfItem++;
         }
         return numberOfItem;
@@ -65,18 +66,19 @@ public class Deck {
         this.cards = new ArrayList<Card>(cards);
         this.hero = hero;
     }
-    public void show(){
+
+    public void show() {
         Output.print("Heroes:\n");
-        if(hero!=null)
+        if (hero != null)
             Output.print(hero.toString());
         Output.print("Items:\n");
-        for (Card card:cards) {
-            if(card.type== Card.CardType.item)
+        for (Card card : cards) {
+            if (card.type == CardType.item)
                 Output.print(card.toString());
         }
         Output.print("Cards:\n");
-        for (Card card:cards) {
-            if(card.type!= Card.CardType.item && card.type!= Card.CardType.hero)
+        for (Card card : cards) {
+            if (card.type != CardType.item && card.type != CardType.hero)
                 Output.print(card.toString());
         }
 
@@ -90,7 +92,8 @@ public class Deck {
             Collections.swap(cards, first, second);
         }
     }
-    public boolean checkIfValid(){
+
+    public boolean checkIfValid() {
         if (hero == null)
             return false;
         if (cards.size() != 19)

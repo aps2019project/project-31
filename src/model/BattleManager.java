@@ -1,6 +1,8 @@
 package model;
 
 import constants.AttackType;
+import constants.CardType;
+import constants.FunctionType;
 import constants.GameMode;
 import controller.BattleMenu;
 import view.Output;
@@ -105,7 +107,7 @@ public abstract class BattleManager {
                         Card cardInCell = Map.getCardInCell(x1 - distance + i, x2 - distance + j);
                         if (cardInCell != null) {
                             if (!cardInCell.getAccount().equals(currentPlayer.getAccount()) &&
-                                    cardInCell.getType() == Card.CardType.minion) {
+                                    cardInCell.getType() == CardType.minion) {
                                 targetCards.add(cardInCell);
                             }
                         }
@@ -113,6 +115,31 @@ public abstract class BattleManager {
                 }
             }
 
+            if (target.matches("(.*)" + TargetStrings.RANDOM_ALLIED_UNIT + "(.*)")){
+                Random random = new Random();
+                targetCards.add(currentPlayer.getCardsOnBattleField().
+                        get(random.nextInt(currentPlayer.getCardsOnBattleField().size())));
+            }
+
+            if (target.matches("(.*)" + TargetStrings.RANDOM_ENEMY_UNIT + "(.*)")){
+                Random random = new Random();
+                targetCards.add(getOtherPlayer().getCardsOnBattleField().
+                        get(random.nextInt(getOtherPlayer().getCardsOnBattleField().size())));
+            }
+
+            if (target.matches("(.*)" + TargetStrings.ALL_MELEE_UNITS + "(.*)")){
+                for (Deployable deployable: currentPlayer.getCardsOnBattleField()){
+                    if (deployable.getAttackType() == AttackType.melee){
+                        targetCards.add(deployable);
+                    }
+                }
+
+                for (Deployable deployable: getOtherPlayer().getCardsOnBattleField()){
+                    if (deployable.getAttackType() == AttackType.melee){
+                        targetCards.add(deployable);
+                    }
+                }
+            }
             if (target.matches("(.*)" + TargetStrings.RANDOM_MINION + "(.*)")){
                 ArrayList<Deployable> deployables = new ArrayList<>();
                 deployables.addAll(getOtherPlayer().getCardsOnBattleField());
@@ -166,7 +193,7 @@ public abstract class BattleManager {
             if (target.matches("(.*)" + TargetStrings.ALLIED_MINION + "(.*)")) {
                 Card card = Map.getCardInCell(x1, x2);
                 if (card.getAccount().equals(currentPlayer.getAccount()) &&
-                        card.getType() == Card.CardType.minion) {
+                        card.getType() == CardType.minion) {
                     targetCards.add(card);
                 } else {
                     //Invalid target
@@ -233,7 +260,7 @@ public abstract class BattleManager {
                 addEnemiesInRow(targetCards, x1);
             } else if (target.matches("(.*)" + TargetStrings.ALL_ENEMY_MINIONS + "(.*)")) {
                 for (Card card : getOtherPlayer().getCardsOnBattleField()) {
-                    if (card.getType() == Card.CardType.minion) {
+                    if (card.getType() == CardType.minion) {
                         targetCards.add(card);
                     }
                 }
@@ -243,7 +270,7 @@ public abstract class BattleManager {
 
             if (target.matches("(.*)" + TargetStrings.ENEMY_MINION + "(.*)")) {
                 if (Map.getCardInCell(x1, x2) != null
-                        && Map.getCardInCell(x1, x2).getType() == Card.CardType.minion
+                        && Map.getCardInCell(x1, x2).getType() == CardType.minion
                         && Map.getCardInCell(x1, x2).getAccount().equals(currentPlayer.getAccount())) {
                     // isn't it better if we make haveCardInBattle instead of .equals ?
                     targetCards.add(Map.getCardInCell(x1, x2));
@@ -295,7 +322,7 @@ public abstract class BattleManager {
             if (target.matches("(.*)" + TargetStrings.RANDOM_ENEMY_MINION + "(.*)")) {
                 ArrayList<Card> cardsToPickFrom = new ArrayList<>();
                 for (Card card : getOtherPlayer().getCardsOnBattleField()) {
-                    if (card.getType() == Card.CardType.minion) {
+                    if (card.getType() == CardType.minion) {
                         cardsToPickFrom.add(card);
                     }
                 }
@@ -377,16 +404,16 @@ public abstract class BattleManager {
         Pattern pattern = Pattern.compile(FunctionStrings.GIVE_FUNCTION + "type:(.*)" + "function:(.*)" + "target:(.*)");
         Matcher matcher = pattern.matcher(function.getFunction());
         if (matcher.matches()) {
-            Function.FunctionType functionType = null;
+            FunctionType functionType = null;
             switch (matcher.group(1).replaceAll("type:", "")) {
                 case "OnDeath":
-                    functionType = Function.FunctionType.OnDeath;
+                    functionType = FunctionType.OnDeath;
                     break;
                 case "OnAttack":
-                    functionType = Function.FunctionType.OnAttack;
+                    functionType = FunctionType.OnAttack;
                     break;
                 case "OnDefend":
-                    functionType = Function.FunctionType.OnDefend;
+                    functionType = FunctionType.OnDefend;
             }
             Function function1 = new Function(functionType, matcher.group(2).replaceAll("function:", ""),
                     matcher.group(3).replaceAll("target:", ""));
@@ -553,6 +580,23 @@ public abstract class BattleManager {
                 int turns = Integer.parseInt(matcher.group(1).replace("disarm", ""));
                 Buff buff = new Buff(Buff.BuffType.Disarm, turns, 0, 0, false);
                 addBuffs(targetCards, buff);
+            }
+            if (matcher.group(1).trim().matches("(\\d+)holy(\\d+|continuous)")) {
+                int amount = Integer.parseInt(matcher.group(1).replaceAll("holy(.*)", ""));
+                if (matcher.group(1).replace("holy", "").matches(CONTINUOUS)) {
+                    Buff buff = new Buff(Buff.BuffType.Holy, PERMANENT, 0, 0, true);
+                    buff.makeContinuous();
+                    for (int i = 0; i < amount; i++) {
+                     addBuffs(targetCards, buff);
+                    }
+                    return;
+                }
+                int turns = Integer.parseInt(matcher.group(1).replace("holy", ""));
+                Buff buff = new Buff(Buff.BuffType.Holy, turns, 0, 0, true);
+                for (int i = 0; i < amount; i++) {
+                    addBuffs(targetCards, buff);
+                }
+
             }
             if (matcher.group(1).trim().matches("holy(\\d+|continuous)")) {
                 if (matcher.group(1).replace("holy", "").matches(CONTINUOUS)) {
@@ -796,7 +840,7 @@ public abstract class BattleManager {
 
     private void applyOnAttackFunction(Deployable card, Deployable enemy) {
         for (Function function : card.functions) {
-            if (function.getFunctionType() == Function.FunctionType.OnAttack) {
+            if (function.getFunctionType() == FunctionType.OnAttack) {
                 compileFunction(function, card.cell.getX1Coordinate(), card.cell.getX2Coordinate(), enemy);
             }
         }
@@ -804,7 +848,7 @@ public abstract class BattleManager {
 
     private void applyOnDefendFunction(Deployable enemy, Deployable card) {
         for (Function function : enemy.functions) {
-            if (function.getFunctionType() == Function.FunctionType.OnDefend) {
+            if (function.getFunctionType() == FunctionType.OnDefend) {
                 compileFunction(function, enemy.cell.getX1Coordinate(), enemy.cell.getX2Coordinate(), card);
             }
 

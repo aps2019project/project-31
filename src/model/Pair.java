@@ -9,11 +9,11 @@ public class Pair<E, F> {
         this.second = second;
     }
 
-    public boolean firstEquals(Pair<E,F> pair){
+    public boolean firstEquals(Pair<E, F> pair) {
         return pair.getFirst().equals(this.first);
     }
 
-    public boolean secondEquals(Pair<E,F> pair){
+    public boolean secondEquals(Pair<E, F> pair) {
         return pair.getSecond().equals(this.second);
     }
 

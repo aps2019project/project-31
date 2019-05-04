@@ -1,5 +1,7 @@
 package model;
 
+import constants.CardType;
+
 import java.util.ArrayList;
 
 public class Item extends Card {
@@ -11,17 +13,20 @@ public class Item extends Card {
         this.isCollectible = isCollectible;
     }
 
+
     public boolean isCollectible() {
         return isCollectible;
     }
 
 
     @Override
-    public String  toString() {
-        return "Type: Item _ Name: "+ name+" _ MP: "+manaCost+" _ Desc: "+cardText;
+    public String toString() {
+        return "Type: Item _ Name: "
+                + name
+                + " _ MP: "
+                + manaCost
+                + " _ Desc: "
+                + cardText;
     }
 
-    public void showCardInfo() {
-
-    }
 }

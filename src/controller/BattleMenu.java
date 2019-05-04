@@ -1,5 +1,6 @@
 package controller;
 
+import constants.CardType;
 import constants.GameMode;
 import model.*;
 import view.Input;
@@ -19,8 +20,9 @@ public class BattleMenu extends Menu {
     public static void setGameFinished(boolean gameFinished) {
         isGameFinished = gameFinished;
     }
-    public static void showPlayerMinions(Player player){
-        for (Deployable deployable:player.getCardsOnBattleField()) {
+
+    public static void showPlayerMinions(Player player) {
+        for (Deployable deployable : player.getCardsOnBattleField()) {
             Output.print(deployable.infoToString());
         }
     }

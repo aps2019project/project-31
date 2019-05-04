@@ -1,5 +1,6 @@
 package model;
 
+import constants.FunctionType;
 import view.Output;
 
 import java.util.ArrayList;
@@ -177,7 +178,7 @@ public class Player {
     private void applyPassiveAndPoisonBuffs() {
         for (Deployable card : cardsOnBattleField) {
             for (int i = 0; i < card.functions.size(); i++) {
-                if (card.functions.get(i).getFunctionType() == Function.FunctionType.Passive) {
+                if (card.functions.get(i).getFunctionType() == FunctionType.Passive) {
                     battle.compileFunction(card.functions.get(i), card.cell.getX1Coordinate(),
                             card.cell.getX2Coordinate());
                 }

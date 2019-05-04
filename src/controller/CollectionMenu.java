@@ -1,5 +1,6 @@
 package controller;
 
+import constants.CardType;
 import model.Account;
 import model.Card;
 import model.Deck;
@@ -15,7 +16,7 @@ public class CollectionMenu extends Menu {
 
     public static void createDeck(String name) {
         Deck deck = new Deck(name);
-        account.getDecks().add(deck);
+        account.addDeck(deck);
         editingDeck = deck;
     }
 
@@ -23,7 +24,7 @@ public class CollectionMenu extends Menu {
         if (editingDeck.getCards().size() < 19 && editingDeck.numberOfCardInDeck(card) < 3) {
             editingDeck.addCard(card);
         }
-        if (card.getType() == Card.CardType.hero && editingDeck.getHero() == null) {
+        if (card.getType() == CardType.hero && editingDeck.getHero() == null) {
             editingDeck.setHero((Hero) card);
         }
     }
@@ -48,7 +49,7 @@ public class CollectionMenu extends Menu {
                 } catch (Exception e) {
                     Output.notInDeck();
                 }
-                if (card.getType() == Card.CardType.hero)
+                if (card.getType() == CardType.hero)
                     editingDeck.setHero(null);
             }
 
@@ -63,16 +64,16 @@ public class CollectionMenu extends Menu {
     }
 
     public static void showAllDecks() {
-        // account.getTheMainDeck().show();
+        account.getTheMainDeck().show();
         for (Deck deck : account.getDecks()) {
-            // if (deck != account.getTheMainDeck())
-            //    deck.show();
+            if (deck != account.getTheMainDeck())
+                deck.show();
         }
     }
 
     public static void showDeckByName(String deckName) {
         selectDeck(deckName);
-        //  editingDeck.show();
+        editingDeck.show();
     }
 
 
@@ -126,9 +127,6 @@ public class CollectionMenu extends Menu {
         CollectionMenu.account = account;
     }
 
-    public static void back() {
-
-    }
 
     public static ArrayList<Card> getCollection() {
         return collection;
@@ -140,6 +138,5 @@ public class CollectionMenu extends Menu {
 
     public static void saveAndGoBack() {
 
-        back();
     }
 }

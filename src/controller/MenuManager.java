@@ -13,6 +13,7 @@ public class MenuManager {
     private static ParentMenu battleMenu;
     private static ParentMenu shopMenu;
     private static ParentMenu collectionMenu;
+
     public static ParentMenu getMainMenu() {
         return mainMenu;
     }
@@ -44,6 +45,7 @@ public class MenuManager {
     private void callOnMenuChangeListeners() {
         menuChangeListeners.forEach(listener -> listener.onMenuChanged(currentMenu));
     }
+
     public static void initMenus() {
         mainMenu = new ParentMenu(Menu.Id.MAIN_MENU, "Main Menu");
 
@@ -56,25 +58,15 @@ public class MenuManager {
         battleMenu = new ParentMenu(Menu.Id.BATTLE_MENU, "Battle Menu");
 
         collectionMenu.addSubMenu(shopMenu);
-        collectionMenu.addSubMenu(Menu.Id.BACK, "Back");
-        collectionMenu.addSubMenu(new Menu(Menu.Id.HELP, "Help"));
 
         shopMenu.addSubMenu(collectionMenu);
-        shopMenu.addSubMenu(Menu.Id.BACK, "Back");
-        shopMenu.addSubMenu(new Menu(Menu.Id.HELP, "Help"));
-
-        battleMenu.addSubMenu(Menu.Id.BACK, "Back");
-        battleMenu.addSubMenu(new Menu(Menu.Id.HELP, "Help"));
 
         mainMenu.addSubMenu(loginMenu);
         mainMenu.addSubMenu(battleMenu);
         mainMenu.addSubMenu(collectionMenu);
         mainMenu.addSubMenu(shopMenu);
-        mainMenu.addSubMenu(new Menu(Menu.Id.HELP, "Help"));
-        mainMenu.addSubMenu(new Menu(Menu.Id.EXIT, "Exit"));
 
         Input.setMenuManager(new MenuManager());
-        System.err.println("fuck");
         Input.getMenuManager().addOnMenuChangeListener(Input.getInstance()::showMenu);    //Add listeners - (Method reference)
         Input.getMenuManager().addOnClickListener(Input.getInstance()::onItemClicked);
         Input.getMenuManager().setCurrentMenu(mainMenu);
@@ -85,7 +77,7 @@ public class MenuManager {
             System.err.println("user clicked out of range");
             return;
         }
-        if(currentMenu.getSubMenus().get(index).getId() == Menu.Id.EXIT){
+        if (currentMenu.getSubMenus().get(index).getId() == Menu.Id.EXIT) {
             exitGame();
             return;
         }
@@ -96,9 +88,9 @@ public class MenuManager {
             callOnClickListeners(clickedMenu.getId());
     }
 
-    private void exitGame() {
+    public static void exitGame() {
         //do before closing stuff
-        System.err.println("closing the program... bye bye");
+        System.err.println("closing the program... bye bye (*^ - ^*)");
         System.exit(0);
     }
 

@@ -1,5 +1,7 @@
 package model;
 
+import constants.CardType;
+
 import java.util.ArrayList;
 
 public class Spell extends Card {
@@ -17,15 +19,5 @@ public class Spell extends Card {
                 + this.manaCost
                 + " - Desc: "
                 + this.cardText;
-
-    }
-
-    public String infoToString() {
-        return "Spell:\nName: " + name + "\nMP: " + manaCost + "\nDesc: " + cardText;
-    }
-
-
-    public void showCardInfo() {
-
     }
 }

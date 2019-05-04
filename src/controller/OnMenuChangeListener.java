@@ -1,6 +1,5 @@
 package controller;
 
-public interface OnMenuChangeListener
-{
+public interface OnMenuChangeListener {
     void onMenuChanged(ParentMenu newMenu);
 }
