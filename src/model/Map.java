@@ -14,8 +14,6 @@ public class Map {
     }
 
 
-
-
     public static int getDistance(Cell cell1, Cell cell2) {
         return Math.abs(cell1.getX1Coordinate() - cell2.getX1Coordinate()) +
                 Math.abs(cell1.getX2Coordinate() - cell2.getX2Coordinate());

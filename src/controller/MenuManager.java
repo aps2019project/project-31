@@ -13,6 +13,7 @@ public class MenuManager {
     private static ParentMenu battleMenu;
     private static ParentMenu shopMenu;
     private static ParentMenu collectionMenu;
+
     public static ParentMenu getMainMenu() {
         return mainMenu;
     }
@@ -44,6 +45,7 @@ public class MenuManager {
     private void callOnMenuChangeListeners() {
         menuChangeListeners.forEach(listener -> listener.onMenuChanged(currentMenu));
     }
+
     public static void initMenus() {
         mainMenu = new ParentMenu(Menu.Id.MAIN_MENU, "Main Menu");
 
@@ -75,7 +77,7 @@ public class MenuManager {
             System.err.println("user clicked out of range");
             return;
         }
-        if(currentMenu.getSubMenus().get(index).getId() == Menu.Id.EXIT){
+        if (currentMenu.getSubMenus().get(index).getId() == Menu.Id.EXIT) {
             exitGame();
             return;
         }

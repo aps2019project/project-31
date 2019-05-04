@@ -1,5 +1,7 @@
 package model;
 
+import constants.FunctionType;
+
 public class Function {
     private FunctionType functionType;
     private String function;
@@ -33,18 +35,6 @@ public class Function {
 
     public String getTarget() {
         return target;
-    }
-
-
-    public enum FunctionType{
-        OnDeath,
-        OnSpawn,
-        OnAttack,
-        OnDefend,
-        Passive,
-        Combo,
-        Vanilla,
-        Spell
     }
 }
 

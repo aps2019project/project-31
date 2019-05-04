@@ -3,6 +3,7 @@ package controller;
 
 import com.gilecode.yagson.YaGson;
 import com.gilecode.yagson.YaGsonBuilder;
+import constants.CardType;
 import model.Card;
 import model.Minion;
 import model.*;
@@ -23,7 +24,7 @@ public class Shop extends Menu {
     private static ArrayList<Hero> allHeroes = new ArrayList<>();
     private static ArrayList<Item> allUsables = new ArrayList<>();
 
-    public static void loadAllCards(){
+    public static void loadAllCards() {
         YaGson yaGson = new YaGsonBuilder().create();
         String path = System.getProperty("user.dir") + "/Sources/Cards/Minions.txt";
         loadMinions(yaGson, path);
@@ -42,14 +43,14 @@ public class Shop extends Menu {
     }
 
     private static void loadHeroes(YaGson yaGson, String path) {
-        try(BufferedReader bufferedReader = new BufferedReader(new FileReader(path))) {
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(path))) {
             String line = bufferedReader.readLine();
-            while(line != null) {
+            while (line != null) {
                 allCards.add(yaGson.fromJson(line, Hero.class));
-                allHeroes.add(yaGson.fromJson(line,Hero.class));
+                allHeroes.add(yaGson.fromJson(line, Hero.class));
                 line = bufferedReader.readLine();
             }
-        }  catch (FileNotFoundException e) {
+        } catch (FileNotFoundException e) {
             // exception handling
             System.err.println("File not found error");
         } catch (IOException e) {
@@ -59,14 +60,14 @@ public class Shop extends Menu {
     }
 
     private static void loadSpells(YaGson yaGson, String path) {
-        try(BufferedReader bufferedReader = new BufferedReader(new FileReader(path))) {
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(path))) {
             String line = bufferedReader.readLine();
-            while(line != null) {
+            while (line != null) {
                 allCards.add(yaGson.fromJson(line, Spell.class));
-                allSpells.add(yaGson.fromJson(line,Spell.class));
+                allSpells.add(yaGson.fromJson(line, Spell.class));
                 line = bufferedReader.readLine();
             }
-        }  catch (FileNotFoundException e) {
+        } catch (FileNotFoundException e) {
             // exception handling
             System.err.println("File not found error");
         } catch (IOException e) {
@@ -76,14 +77,14 @@ public class Shop extends Menu {
     }
 
     private static void loadMinions(YaGson yaGson, String path) {
-        try(BufferedReader bufferedReader = new BufferedReader(new FileReader(path))) {
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(path))) {
             String line = bufferedReader.readLine();
-            while(line != null) {
+            while (line != null) {
                 allCards.add(yaGson.fromJson(line, Minion.class));
-                allMinions.add(yaGson.fromJson(line,Minion.class));
+                allMinions.add(yaGson.fromJson(line, Minion.class));
                 line = bufferedReader.readLine();
             }
-        }  catch (FileNotFoundException e) {
+        } catch (FileNotFoundException e) {
             // exception handling
             System.err.println("File not found error");
         } catch (IOException e) {
@@ -107,11 +108,6 @@ public class Shop extends Menu {
             // exception handling
             System.err.println("File error");
         }
-    }
-
-
-    public static void goBack() {
-
     }
 
     public static void searchCardsByNames(String[] cardNames) {
@@ -163,29 +159,17 @@ public class Shop extends Menu {
     }
 
     public static void showAllCards() {
-        for (Card card : allCards)
-            if (card.getType() == Card.CardType.hero)
-                card.show();
-        for (Card card : allCards)
-            if (card.getType() == Card.CardType.item)
-                card.show();
-        for (Card card : allCards)
-            if (card.getType() == Card.CardType.minion)
-                card.show();
-        for (Card card : allCards)
-            if (card.getType() == Card.CardType.spell)
-                card.show();
+        for (CardType cardType : CardType.getAll()) {
+            for (Card card : allCards) {
+                if (card.getType() == cardType)
+                    card.show();
+            }
+        }
     }
-
-    public void run() {
-        Input.handleCommandsInShop();
-    }
-
 
     public void show() {
 
     }
-
 
     public void help() {
 

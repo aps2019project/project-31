@@ -31,10 +31,10 @@ public class FunctionStrings {
     public static final String HOLY_CELL = "holy cell";
     public static final String GIVE_FUNCTION = "give function";
 
-    public static ArrayList<String> allFunctionStrings(){
-       return new ArrayList<>(Arrays.asList(STUN, ACCUMULATING_ATTACKS, DEAL_DAMAGE,
-               IGNORE_HOLYBUFF, APPLY_BUFF, IGNORE_LESSER_ATTACK, DISPEL,
-               INCREASE_ATTACK, POISON_CELL, SET_ON_FIRE, KILL_TARGETS, INDISARMABLE, UNPOISONABLE,
-               HEAL, INVULNERABLE, HOLY_CELL, GIVE_FUNCTION));
+    public static ArrayList<String> allFunctionStrings() {
+        return new ArrayList<>(Arrays.asList(STUN, ACCUMULATING_ATTACKS, DEAL_DAMAGE,
+                IGNORE_HOLYBUFF, APPLY_BUFF, IGNORE_LESSER_ATTACK, DISPEL,
+                INCREASE_ATTACK, POISON_CELL, SET_ON_FIRE, KILL_TARGETS, INDISARMABLE, UNPOISONABLE,
+                HEAL, INVULNERABLE, HOLY_CELL, GIVE_FUNCTION));
     }
 }
