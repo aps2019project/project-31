@@ -1,15 +1,13 @@
 package view;
 
 import controller.*;
-<<<<<<< HEAD
 import controller.BattleMenu;
 import controller.CollectionMenu;
 import controller.Menu;
 import controller.MenuManager;
 import controller.ParentMenu;
 import model.BattleManager;
-=======
->>>>>>> origin/MVC
+
 import model.Player;
 
 import java.util.Scanner;
@@ -79,7 +77,7 @@ public class Input {
     }
 
     public static void start() {
-        MenuManager.iniسبسtMenus();
+        MenuManager.initMenus();
         System.err.println("MenuManager initialized");
         while (scanner.hasNextLine()) {
             switch (menuManager.getCurrentMenu().getId()) {
