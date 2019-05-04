@@ -44,7 +44,8 @@ public class Function {
         Passive,
         Combo,
         Vanilla,
-        Spell
+        Spell,
+        GameStart
     }
 }
 

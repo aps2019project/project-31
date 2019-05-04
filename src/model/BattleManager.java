@@ -128,6 +128,19 @@ public abstract class BattleManager {
                     }
                 }
             }
+
+            if (target.matches("(.*)" + TargetStrings.RANDOM_ALLIED_UNIT + "(.*)")){
+                Random random = new Random();
+                targetCards.add(currentPlayer.getCardsOnBattleField().
+                        get(random.nextInt(currentPlayer.getCardsOnBattleField().size())));
+            }
+
+            if (target.matches("(.*)" + TargetStrings.RANDOM_ENEMY_UNIT + "(.*)")){
+                Random random = new Random();
+                targetCards.add(getOtherPlayer().getCardsOnBattleField().
+                        get(random.nextInt(getOtherPlayer().getCardsOnBattleField().size())));
+            }
+
             if (target.matches("(.*)" + TargetStrings.ALL_MELEE_UNITS + "(.*)")){
                 for (Deployable deployable: currentPlayer.getCardsOnBattleField()){
                     if (deployable.getAttackType() == AttackType.melee){

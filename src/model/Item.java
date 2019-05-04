@@ -11,6 +11,7 @@ public class Item extends Card {
         this.isCollectible = isCollectible;
     }
 
+
     public boolean isCollectible() {
         return isCollectible;
     }
