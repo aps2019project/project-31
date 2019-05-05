@@ -33,7 +33,7 @@ public class Account {
         Account.mainAccount = mainAccount;
     }
 
-    public Account(String username, String password, int daric){
+    public Account(String username, String password, int daric) {
         this.username = username;
         this.password = password;
         this.daric = daric;
@@ -59,7 +59,8 @@ public class Account {
     public ArrayList<Deck> getDecks() {
         return decks;
     }
-    public void addDeck(Deck deck){
+
+    public void addDeck(Deck deck) {
         decks.add(deck);
     }
 
@@ -83,6 +84,14 @@ public class Account {
             }
         }
         return null;
+    }
+
+    public void addDaric(int add) {
+        daric += add;
+    }
+
+    public void decreaseDaric(int decrease) {
+        daric -= decrease;
     }
 
     public String getUsername() {
