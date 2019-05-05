@@ -344,6 +344,15 @@ public class Input {
     }
 
     private static void handleCommandsInMultiPlayerMenu() {
+        String input = scanner.nextLine();
+        checkGenerals(input);
+        if(input.equalsIgnoreCase("help")){
+            System.err.println("showing user it's options");
+            System.out.println("commands you can enter :\n" +
+                    "select user [username]\n" +
+                    "start multiplayer game [mode] [number of flags]\n"
+            );
+        }
     }
 
     private static void handleCommandsInSinglePlayerMenu() {
@@ -368,18 +377,18 @@ public class Input {
                     "-story_3"
             );
         }
-        if (input.equalsIgnoreCase("story_1")) {
-            BattleMenu.setBattleManagerMode(Story.getFirstBattleManager());
-            battleMenu.runTheGame();
-        }
-        if (input.equalsIgnoreCase("story_2")) {
-            BattleMenu.setBattleManagerMode(Story.getSecondBattleManagerDeck());
-            battleMenu.runTheGame();
-        }
-        if (input.equalsIgnoreCase("story_3")) {
-            BattleMenu.setBattleManagerMode(Story.getThirdBattleManagerDeck());
-            battleMenu.runTheGame();
-        }
+//        if (input.equalsIgnoreCase("story_1")) {
+//            BattleMenu.setBattleManagerMode(Story.getFirstBattleManagerDeck());
+//            battleMenu.runTheGame();
+//        }
+//        if (input.equalsIgnoreCase("story_2")) {
+//            BattleMenu.setBattleManagerMode(Story.getSecondBattleManagerDeck());
+//            battleMenu.runTheGame();
+//        }
+//        if (input.equalsIgnoreCase("story_3")) {
+//            BattleMenu.setBattleManagerMode(Story.getThirdBattleManagerDeck());
+//            battleMenu.runTheGame();
+//        }
     }
 
     public static void handleCommandsInSinglePlayerCustomMenu(BattleMenu battleMenu) {
