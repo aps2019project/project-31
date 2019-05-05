@@ -222,6 +222,7 @@ public class Input {
         if (matcher.matches()) {
             System.err.println("creating deck");
             CollectionMenu.createDeck(matcher.group(1));
+            System.err.println("deck '" + matcher.group(1) + "' created");
             return;
         }
         pattern = Pattern.compile("delete deck (\\w+)\\s*");
