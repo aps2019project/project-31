@@ -64,7 +64,7 @@ public class Input {
         matcher = pattern.matcher(input);
         if (matcher.matches()) {
             BattleMenu.insert(BattleMenu.getBattleManager().getCurrentPlayer().getSelectedCard(),
-                    Integer.parseInt(matcher.group(2)), Integer.parseInt(matcher.group(3)));
+                    Integer.parseInt(matcher.group(1)), Integer.parseInt(matcher.group(2)));
         }
         BattleMenu.getBattleManager().checkTheEndSituation();
     }
@@ -82,7 +82,7 @@ public class Input {
                     handleCommandsInCollectionMenu();
                     break;
                 case Menu.Id.BATTLE_MENU:
-                    handleCommandsInBattleMenu();
+                    handleCommandsInBattle();
                     break;
                 case Menu.Id.LOGIN_MENU:
                     handleCommandsInLoginMenu();
@@ -121,16 +121,18 @@ public class Input {
         }
     }
 
-    public static void handleCommandsInBattleMenu(Player player, boolean isThereSelectedCard) {
+    public static void handleCommandsInBattle(Player player, boolean isThereSelectedCard) {
         String input = scanner.nextLine();
         if (input.matches("\\s*end turn\\s*"))
             BattleMenu.setAreWeInMiddleOfTurn(false);
         if (input.matches("select \\d+"))
-            player.selectACard(Integer.parseInt(input.replace("select", "").trim()));
+            player.selectACard(Integer.parseInt(input.replace("select ", "").trim()));
         if (isThereSelectedCard)
             moveAttackPlayCard(input);
         else
             handleSelectComboCards(input);
+        if(input.equalsIgnoreCase("show mana point"))
+            System.out.println("the mana is:  "+BattleMenu.getBattleManager().getCurrentPlayer().getMana());
         if (input.equalsIgnoreCase("game info"))
             BattleMenu.showGameInfo();
         else if (input.trim().equalsIgnoreCase("show my minions")) {
@@ -463,7 +465,7 @@ public class Input {
         }
     }
 
-    public static void handleCommandsInBattleMenu() {
+    public static void handleCommandsInBattle() {
         String input = scanner.nextLine();
         checkGenerals(input);
         if (!Account.getMainAccount().getTheMainDeck().checkIfValid()) {

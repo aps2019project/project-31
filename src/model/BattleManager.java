@@ -725,8 +725,10 @@ public class BattleManager {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 if (i != 1 || j != 1) {
-                    if (Map.getCardInCell(x1 - 1 + i, x2 - 1 + j).getAccount().equals(currentPlayer.getAccount())) {
-                        return true;
+                    if(Map.getCardInCell(x1 - 1 + i, x2 - 1 + j)!=null) {
+                        if (Map.getCardInCell(x1 - 1 + i, x2 - 1 + j).getAccount().equals(currentPlayer.getAccount())) {
+                            return true;
+                        }
                     }
                 }
             }
@@ -1019,10 +1021,8 @@ public class BattleManager {
     public static void initialTheGame() {
         player1.duplicateTheDeck();
         player2.duplicateTheDeck();
-        Collections.shuffle(player1.currentDeck.getCards());
-        Collections.shuffle(player2.currentDeck.getCards());
-//        Map.getCell(3, 1).setCardInCell(player1.getHero().deepClone());
-//        Map.getCell(3, 9).setCardInCell(player2.getHero().deepClone());
+     //   Collections.shuffle(player1.currentDeck.getCards());
+     //   Collections.shuffle(player2.currentDeck.getCards());
         initialTheHands();
         generateFlags();
     }

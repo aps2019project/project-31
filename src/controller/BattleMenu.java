@@ -22,6 +22,7 @@ public class BattleMenu extends Menu {
     }
 
     public static void showPlayerMinions(Player player) {
+        System.out.println(player.getHero().infoToString());
         for (Deployable deployable : player.getCardsOnBattleField()) {
             Output.print(deployable.infoToString());
         }
@@ -40,15 +41,15 @@ public class BattleMenu extends Menu {
     }
 
     public static void setBattleManagerForMultiPlayer(Account player1Acc, Account player2Acc, int numberOfFlags,
-                                                          int maxNumberOfHavingFlag, GameMode gameMode) {
+                                                      int maxNumberOfHavingFlag, GameMode gameMode) {
         Player player1 = new Player(player1Acc, false);
         Player player2 = new Player(player2Acc, false);
         makeInstanceOfBattleManager(player1, player2, numberOfFlags, maxNumberOfHavingFlag, gameMode);
     }
 
     public static void setBattleManagerForSinglePLayer(BattleManagerMode battleManagerMode, Account account,
-                                                           int numberOfFlags, int maxNumberOfHavingFlag,
-                                                           GameMode gameMode, int storyNumber) {
+                                                       int numberOfFlags, int maxNumberOfHavingFlag,
+                                                       GameMode gameMode, int storyNumber) {
         Player player1 = new Player(account, false);
         Story.loadStoryDecks();
         Deck theAiDeck = null;
@@ -126,7 +127,7 @@ public class BattleMenu extends Menu {
                 boolean sit = true;
                 while (sit == areWeInMiddleOfTurn) {
                     System.err.println("we are doing stuff");
-                    Input.handleCommandsInBattleMenu(battleManager.getCurrentPlayer(),
+                    Input.handleCommandsInBattle(battleManager.getCurrentPlayer(),
                             battleManager.getCurrentPlayer().getSelectedCard() != null);
                     if (isGameFinished) {
                         battleManager = null;
@@ -153,7 +154,6 @@ public class BattleMenu extends Menu {
         battleManager.addTurn();
 
     }
-
 
 
     public static void prepareComboAttack(String[] strNumbers, int opponentCardId) {
@@ -230,7 +230,7 @@ public class BattleMenu extends Menu {
 
     public static void selectCollectibleItem(int cardUniqueId) {
         for (Deployable deployable : battleManager.getCurrentPlayer().getCardsOnBattleField()) {
-            if (deployable.getItem().getUniqueId() == cardUniqueId)
+            if (deployable!=null && deployable.getItem().getUniqueId() == cardUniqueId)
                 battleManager.getCurrentPlayer().setSelectedCard(deployable.getItem());
         }
     }
@@ -259,7 +259,10 @@ public class BattleMenu extends Menu {
     }
 
     public static void showSelectedCardInfo() {
-        System.out.println(battleManager.getCurrentPlayer().getSelectedCard().infoToString());
+        if (battleManager.getCurrentPlayer().getSelectedCard() != null)
+            System.out.println(battleManager.getCurrentPlayer().getSelectedCard().infoToString());
+        else
+            System.out.println("Card not in hand");
     }
 
     public static Deployable findDeadMinion(int uniqueId) {

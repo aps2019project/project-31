@@ -158,8 +158,10 @@ public class Player {
     }
 
     public boolean selectACard(int cardId) {
+        System.err.println("cardId: " + cardId);
         for (Card card : hand) {
-            if (cardId == card.getId()) {
+            if (card != null && cardId == card.getId()) {
+                System.err.println("selected card successfully");
                 selectedCard = card;
                 return true;
             }
@@ -271,7 +273,8 @@ public class Player {
 
     public void showHand() {
         for (Card card : hand) {
-            card.show();
+            if(card!=null)
+                card.show();
         }
     }
 
