@@ -31,17 +31,19 @@ public class CollectionMenu extends Menu {
     public static void addCardsToDeck(String[] numbers, String deckName) {
         selectDeck(deckName);
         for (String number : numbers) {
-            Card card = findCardById(Integer.valueOf(number));
+            Card card = findCardByIdInCollection(Integer.valueOf(number));
             if (card != null)
                 addCardToDeck(card);
+            else{
+                Output.print("card :" + number + " is not in your collection");
+            }
         }
-
     }
 
     public static void removeCardsFromDeck(String[] numbers, String deckName) {
         selectDeck(deckName);
         for (String number : numbers) {
-            Card card = findCardById(Integer.valueOf(number));
+            Card card = findCardByIdInCollection(Integer.valueOf(number));
             if (card != null) {
                 try {
                     editingDeck.getCards().remove(card);
@@ -85,7 +87,7 @@ public class CollectionMenu extends Menu {
         Output.showValidationOfDeck(editingDeck.checkIfValid());
     }
 
-    private static Card findCardById(int cardId) {
+    private static Card findCardByIdInCollection(int cardId) {
         for (Card card : collection) {
             if (cardId == card.getId())
                 return card;
