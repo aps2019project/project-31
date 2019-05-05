@@ -86,7 +86,7 @@ public class MenuManager {
         mainMenu.addSubMenu(shopMenu);
 
         Input.setMenuManager(new MenuManager());
-        Input.getMenuManager().addOnMenuChangeListener(Input.getInstance()::showMenu);    //Add listeners - (Method reference)
+//        Input.getMenuManager().addOnMenuChangeListener(Input.getInstance()::showMenu);    //Add listeners - (Method reference)
         Input.getMenuManager().addOnClickListener(Input.getInstance()::onItemClicked);
         Input.getMenuManager().setCurrentMenu(mainMenu);
     }
