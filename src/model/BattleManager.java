@@ -770,7 +770,8 @@ public class BattleManager {
         for (Function function : item.functions) {
             compileFunction(function, x1, x2);
         }
-        //    if (item.name.equalsIgnoreCase(""))
+        if (item.id == 509)
+            currentPlayer.increaseManaInTheTurn(turn + 2, 3);
         return true;
     }
 
@@ -1104,5 +1105,16 @@ public class BattleManager {
                 player1.increaseManaInTheTurn(i * 2 + 1, 1);
             }
         }
+        if (player2.currentDeck.getItem().id == 601) {
+            for (int i = 1; i < 3; i++) {
+                player1.increaseManaInTheTurn(i * 2, 1);
+            }
+        }
+        if (player2.currentDeck.getItem().id == 606) {
+            for (int i = 1; i <= 19; i++) {
+                player1.increaseManaInTheTurn(i * 2, 1);
+            }
+        }
+
     }
 }
