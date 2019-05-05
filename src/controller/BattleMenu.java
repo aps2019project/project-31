@@ -49,13 +49,14 @@ public class BattleMenu extends Menu {
         // battleManager = new
     }
 
-    public void doAllAtTheBeginingOfTurnThings(){
-        Map.putCardInCell(battleManager.getPlayer1().getHero(),3,1);
-        Map.putCardInCell(battleManager.getPlayer2().getHero(),3,9);
+    public void doAllAtTheBeginingOfTurnThings() {
+        Map.putCardInCell(battleManager.getPlayer1().getHero(), 3, 1);
+        Map.putCardInCell(battleManager.getPlayer2().getHero(), 3, 9);
         battleManager.assignManaToPlayers();
         battleManager.manaAdderItem();
 
     }
+
     public void runTheGame() {
         boolean isPlayer1Turn = false;
         battleManager.setCurrentPlayer(battleManager.getPlayer2());

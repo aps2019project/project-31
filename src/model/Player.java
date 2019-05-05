@@ -24,9 +24,6 @@ public class Player {
     private boolean isAi;
     protected int[] manaChangerInTurn = new int[40];
 
-    public boolean isAi() {
-        return isAi;
-    }
 
     public Player(Account account, ArrayList<Deployable> cardsOnBattleField, ArrayList<Deployable> graveYard,
                   BattleManager battle) {
@@ -38,9 +35,13 @@ public class Player {
         this.graveYard = new ArrayList<>();
         this.battle = battle;
         this.currentDeck = new Deck("temp: " + account.getTheMainDeck().getDeckName(),
-                    account.getTheMainDeck().getHero().duplicateDeployed(battle),
-                    account.getTheMainDeck().getItem());
+                account.getTheMainDeck().getHero().duplicateDeployed(battle),
+                account.getTheMainDeck().getItem());
 
+    }
+
+    public boolean isAi() {
+        return isAi;
     }
 
     public Player(Account account) {

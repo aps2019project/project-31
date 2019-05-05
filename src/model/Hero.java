@@ -27,13 +27,12 @@ public class Hero extends Deployable {
     }
 
 
-
     public Hero duplicateDeployed(BattleManager battleManager) {
         Cell cell;
-        if (this.account.equals(battleManager.getPlayer1())){
-            cell = Map.getCell(3,1);
-        }else {
-            cell = Map.getCell(3,9);
+        if (this.account.equals(battleManager.getPlayer1())) {
+            cell = Map.getCell(3, 1);
+        } else {
+            cell = Map.getCell(3, 9);
         }
         return new Hero(this.price, this.manaCost, this.cardText, this.functions, account, name, id, type, true,
                 true, true, cell, attackRange, currentHealth, currentAttack, id, attackType,
