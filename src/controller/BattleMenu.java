@@ -51,6 +51,7 @@ public class BattleMenu extends Menu {
 
     public void doAllAtTheBeginingOfTurnThings(){
         battleManager.assignManaToPlayers();
+        battleManager.manaAdderItem();
 
     }
     public void runTheGame() {
@@ -61,7 +62,7 @@ public class BattleMenu extends Menu {
         while (true) {
             isPlayer1Turn = !isPlayer1Turn;
             battleManager.setCurrentPlayer(battleManager.getOtherPlayer());
-
+            doAllAtTheBeginingOfTurnThings();
             if (battleManager.getCurrentPlayer().isAi()) {
                 ((Ai) battleManager.getCurrentPlayer()).play();
             } else {
@@ -93,10 +94,7 @@ public class BattleMenu extends Menu {
             battleManager.getPlayer2().handleNumberOfTurnHavingFlagAtTheEndOfTurn();
         }
         battleManager.addTurn();
-        if(battleManager.getPlayer1().isIncreaseManaApplied())
-            battleManager.getPlayer1().setIncreaseOfManaNextHand(0);
-        if(battleManager.getPlayer2().isIncreaseManaApplied())
-            battleManager.getPlayer2().setIncreaseOfManaNextHand(0);
+
     }
 
 
