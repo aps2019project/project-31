@@ -49,10 +49,14 @@ public class BattleMenu extends Menu {
         // battleManager = new
     }
 
-    public void doAllAtTheBeginingOfTurnThings(){
+    public void doAllAtTheBeginingOfTurnThings() {
+        Map.putCardInCell(battleManager.getPlayer1().getHero(), 3, 1);
+        Map.putCardInCell(battleManager.getPlayer2().getHero(), 3, 9);
         battleManager.assignManaToPlayers();
+        battleManager.manaAdderItem();
 
     }
+
     public void runTheGame() {
         boolean isPlayer1Turn = false;
         battleManager.setCurrentPlayer(battleManager.getPlayer2());
@@ -61,7 +65,7 @@ public class BattleMenu extends Menu {
         while (true) {
             isPlayer1Turn = !isPlayer1Turn;
             battleManager.setCurrentPlayer(battleManager.getOtherPlayer());
-
+            doAllAtTheBeginingOfTurnThings();
             if (battleManager.getCurrentPlayer().isAi()) {
                 ((Ai) battleManager.getCurrentPlayer()).play();
             } else {
@@ -93,10 +97,7 @@ public class BattleMenu extends Menu {
             battleManager.getPlayer2().handleNumberOfTurnHavingFlagAtTheEndOfTurn();
         }
         battleManager.addTurn();
-        if(battleManager.getPlayer1().isIncreaseManaApplied())
-            battleManager.getPlayer1().setIncreaseOfManaNextHand(0);
-        if(battleManager.getPlayer2().isIncreaseManaApplied())
-            battleManager.getPlayer2().setIncreaseOfManaNextHand(0);
+
     }
 
 

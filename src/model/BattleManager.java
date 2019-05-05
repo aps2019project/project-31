@@ -35,6 +35,7 @@ public class BattleManager {
         setPlayer2(player2);
     }
 
+
     public static void setPlayer1(Player player1) {
         BattleManager.player1 = player1;
     }
@@ -759,20 +760,19 @@ public class BattleManager {
     }
 
     public boolean playSpell(Spell spell, int x1, int x2) {
-        for (Function function: spell.functions) {
-            if(function.getFunctionType()==FunctionType.OnSpawn)
-                compileFunction(function,x1,x2);
+        for (Function function : spell.functions) {
+            if (function.getFunctionType() == FunctionType.OnSpawn)
+                compileFunction(function, x1, x2);
         }
         return true;
     }
 
     public boolean useItem(Item item, int x1, int x2) {
-        for (Function function: item.functions) {
-            if(function.getFunctionType()==FunctionType.OnSpawn)
-                compileFunction(function,x1,x2);
+        for (Function function : item.functions) {
+            compileFunction(function, x1, x2);
         }
-    //    if (item.name.equalsIgnoreCase(""))
-            return true;
+        //    if (item.name.equalsIgnoreCase(""))
+        return true;
     }
 
 
@@ -1078,22 +1078,32 @@ public class BattleManager {
     public void assignManaToPlayers() {
         if (turn <= 14) {
             if (currentPlayer == player1) {
-                player1.mana = (turn - 1) / 2 + 2 + player1.increaseOfManaNextHand;
-                player1.setIncreaseManaApplied(true);
+                player1.mana = (turn - 1) / 2 + 2 + player1.manaChangerInTurn[turn];
+
             } else {
-                player2.mana = turn / 2 + 2 + player2.increaseOfManaNextHand;
-                player2.setIncreaseManaApplied(true);
+                player2.mana = turn / 2 + 2 + player2.manaChangerInTurn[turn];
             }
             getOtherPlayer().mana = 0;
         } else {
             if (currentPlayer == player1) {
-                player1.mana = 9 + player1.increaseOfManaNextHand;
-                player1.setIncreaseManaApplied(true);
+                player1.mana = 9 + player1.manaChangerInTurn[turn];
             } else {
-                player2.mana = 9 + player2.increaseOfManaNextHand;
-                player2.setIncreaseManaApplied(true);
+                player2.mana = 9 + player2.manaChangerInTurn[turn];
             }
             getOtherPlayer().mana = 0;
+        }
+    }
+
+    public void manaAdderItem() {
+        if (player1.currentDeck.getItem().id == 601) {
+            for (int i = 0; i < 3; i++) {
+                player1.increaseManaInTheTurn(i * 2 + 1, 1);
+            }
+        }
+        if (player1.currentDeck.getItem().id == 606) {
+            for (int i = 0; i < 19; i++) {
+                player1.increaseManaInTheTurn(i * 2 + 1, 1);
+            }
         }
     }
 }
