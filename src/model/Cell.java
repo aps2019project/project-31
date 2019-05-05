@@ -26,6 +26,10 @@ public class Cell {
         this.x1Coordinate = x1Coordinate;
         this.x2Coordinate = x2Coordinate;
         this.cardInCell = cardInCell;
+        onFireTurns = 0;
+        onPoisonTurns = 0;
+        hasFlag = false;
+        item = null;
 
     }
 

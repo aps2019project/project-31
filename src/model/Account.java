@@ -1,11 +1,15 @@
 package model;
 
+import constants.CardType;
+import controller.CollectionMenu;
+import view.Output;
+
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class Account {
     private static ArrayList<Account> allAccounts = new ArrayList<>();
-
+    private static Deck editingDeck;
     private static Account mainAccount;
 
     private ArrayList<Card> collection = new ArrayList<>();
@@ -132,5 +136,107 @@ public class Account {
 
     public void setTheMainDeck(Deck theMainDeck) {
         this.theMainDeck = theMainDeck;
+    }
+
+    public void createDeck(String name) {
+        Deck deck = new Deck(name);
+        addDeck(deck);
+        editingDeck = deck;
+    }
+
+    private static void addCardToDeck(Card card) {
+        if (editingDeck == null) {
+            System.err.println("editing deck is null");
+            return;
+        }
+        if (editingDeck.getCards().size() <= 17 && editingDeck.numberOfCardInDeck(card) < 3) {
+            editingDeck.addCard(card);
+            System.err.println("The card with id: " + card.getId() + " added");
+        }
+        if (card.getType() == CardType.hero && editingDeck.getHero() == null) {
+            editingDeck.setHero((Hero) card);
+            System.err.println("Hero added");
+        }
+    }
+
+    public void addCardsToDeck(String[] numbers, String deckName) {
+        selectDeck(deckName);
+        for (String number : numbers) {
+            Card card = CollectionMenu.findCardByIdInCollection(Integer.valueOf(number));
+            if (card != null)
+                addCardToDeck(card);
+            else {
+                Output.print("card :" + number + " is not in your collection");
+            }
+        }
+    }
+
+    public void removeCardsFromDeck(String[] numbers, String deckName) {
+        selectDeck(deckName);
+        if (editingDeck == null) {
+            System.err.println("editing deck is null");
+            return;
+        }
+        for (String number : numbers) {
+            Card card = CollectionMenu.findCardByIdInCollection(Integer.valueOf(number));
+            if (card != null) {
+                try {
+                    editingDeck.getCards().remove(card);
+                } catch (Exception e) {
+                    Output.notInDeck();
+                }
+                if (card.getType() == CardType.hero)
+                    editingDeck.setHero(null);
+            }
+
+        }
+    }
+
+    public void selectAsMainDeck(String deckName) {
+        selectDeck(deckName);
+        checkValidationOfDeck(deckName);
+        if (editingDeck == null)
+            return;
+        if (editingDeck.checkIfValid())
+            setTheMainDeck(editingDeck);
+    }
+
+    public void showDeckByName(String deckName) {
+        selectDeck(deckName);
+        if (editingDeck == null)
+            return;
+        editingDeck.show();
+    }
+
+
+    public void checkValidationOfDeck(String deckName) {
+        selectDeck(deckName);
+        if (editingDeck == null)
+            return;
+        Output.showValidationOfDeck(editingDeck.checkIfValid());
+    }
+
+    public void selectDeck(String deckName) {
+        if (findDeckByName(deckName) == null) {
+            Output.thereIsntDeck();
+            return;
+        }
+        editingDeck = findDeckByName(deckName);
+    }
+
+    public Deck findDeckByName(String deckName) {
+        for (Deck deck : getDecks()) {
+            if (deck.getDeckName().equals(deckName))
+                return deck;
+        }
+        return null;
+    }
+
+    public void deleteDeck(String deckName) {
+        if (findDeckByName(deckName) == null) {
+            Output.thereIsntDeck();
+            return;
+        }
+        getDecks().remove(findDeckByName(deckName));
     }
 }

@@ -102,7 +102,7 @@ public class BattleMenu extends Menu {
 
     }
 
-    public static void doAllAtTheBeginingOfTurnThings() {
+    public static void doAllAtTheBeginningOfTurnThings() {
         Map.putCardInCell(battleManager.getPlayer1().getHero(), 3, 1);
         Map.putCardInCell(battleManager.getPlayer2().getHero(), 3, 9);
         battleManager.assignManaToPlayers();
@@ -118,13 +118,14 @@ public class BattleMenu extends Menu {
         while (true) {
             isPlayer1Turn = !isPlayer1Turn;
             battleManager.setCurrentPlayer(battleManager.getOtherPlayer());
-            doAllAtTheBeginingOfTurnThings();
+            doAllAtTheBeginningOfTurnThings();
             if (battleManager.getCurrentPlayer().isAi()) {
                 ((Ai) battleManager.getCurrentPlayer()).play();
             } else {
                 areWeInMiddleOfTurn = true;
                 boolean sit = true;
                 while (sit == areWeInMiddleOfTurn) {
+                    System.err.println("we are doing stuff");
                     Input.handleCommandsInBattleMenu(battleManager.getCurrentPlayer(),
                             battleManager.getCurrentPlayer().getSelectedCard() != null);
                     if (isGameFinished) {

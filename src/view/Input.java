@@ -131,8 +131,6 @@ public class Input {
             moveAttackPlayCard(input);
         else
             handleSelectComboCards(input);
-        if (input.matches("\\s*end turn\\s*"))
-            BattleMenu.setAreWeInMiddleOfTurn(false);
         if (input.equalsIgnoreCase("game info"))
             BattleMenu.showGameInfo();
         else if (input.trim().equalsIgnoreCase("show my minions")) {
@@ -233,7 +231,7 @@ public class Input {
         matcher = pattern.matcher(input);
         if (matcher.matches()) {
             System.err.println("creating deck");
-            CollectionMenu.createDeck(matcher.group(1));
+            Account.getMainAccount().createDeck(matcher.group(1));
             System.err.println("deck '" + matcher.group(1) + "' created");
             return;
         }
@@ -241,7 +239,7 @@ public class Input {
         matcher = pattern.matcher(input);
         if (matcher.matches()) {
             System.err.println("deleting deck");
-            CollectionMenu.deleteDeck(matcher.group(1));
+            Account.getMainAccount().deleteDeck(matcher.group(1));
             System.err.println("deck '" + matcher.group(1) + "' deleted");
             return;
         }
@@ -250,7 +248,7 @@ public class Input {
         if (matcher.matches()) {
             System.err.println("adding cards to deck");
             String[] numbers = matcher.group(1).trim().split(",");
-            CollectionMenu.addCardsToDeck(numbers, matcher.group(3).trim());
+            Account.getMainAccount().addCardsToDeck(numbers, matcher.group(3).trim());
             System.err.println("adding cards finished");
             return;
         }
@@ -259,23 +257,23 @@ public class Input {
         if (matcher.matches()) {
             System.err.println("removing card from deck");
             String[] numbers = matcher.group(1).trim().split(",");
-            CollectionMenu.removeCardsFromDeck(numbers, matcher.group(3).trim());
+            Account.getMainAccount().removeCardsFromDeck(numbers, matcher.group(3).trim());
             System.err.println("removed");
             return;
         }
         if (input.matches("validate deck \\w+")) {
             System.err.println("validating deck");
-            CollectionMenu.checkValidationOfDeck(input.replace("validate deck", "").trim());
+            Account.getMainAccount().checkValidationOfDeck(input.replace("validate deck", "").trim());
             return;
         }
         if (input.matches("select deck \\w+")) {
             System.err.println("selecting deck");
-            CollectionMenu.selectAsMainDeck(input.replace("select deck", "").trim());
+            Account.getMainAccount().selectAsMainDeck(input.replace("select deck", "").trim());
             return;
         }
         if (input.matches("show deck \\w+")) {
             System.err.println("showing deck");
-            CollectionMenu.showDeckByName(input.replace("show deck", "").trim());
+            Account.getMainAccount().showDeckByName(input.replace("show deck", "").trim());
             return;
         }
         if (input.matches("show all decks")) {
@@ -362,12 +360,15 @@ public class Input {
                 System.err.println("the user do not exist!");
                 return;
             }
-            Deck thePlayer2Deck = CollectionMenu.findDeckByName(matcher.group(2));
-            if (thePlayer2Deck == null)
+            Deck thePlayer2Deck = theAccount.findDeckByName(matcher.group(2));
+            if (thePlayer2Deck == null) {
+                System.err.println("the fuckin deck isn't ther u asshole");
                 return;
-            CollectionMenu.checkValidationOfDeck(thePlayer2Deck.getDeckName());
+            }
+            Account.getMainAccount().checkValidationOfDeck(thePlayer2Deck.getDeckName());
             if (thePlayer2Deck.checkIfValid())
                 theAccount.setTheMainDeck(thePlayer2Deck);
+            System.err.println("heeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeere");
             if (matcher.group(3).trim().equalsIgnoreCase("domination")) {
                 BattleMenu.setBattleManagerForMultiPlayer(Account.getMainAccount(), theAccount,
                         Integer.parseInt(matcher.group(4)), 100, GameMode.Domination);
@@ -381,6 +382,7 @@ public class Input {
             if (matcher.group(3).trim().equalsIgnoreCase("deathMatch")) {
                 BattleMenu.setBattleManagerForMultiPlayer(Account.getMainAccount(), theAccount,
                         100, 100, GameMode.DeathMatch);
+                System.err.println("this nigaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa gay!!!!!!!!!!!!!!!!!");
                 BattleMenu.runTheGame();
             }
 

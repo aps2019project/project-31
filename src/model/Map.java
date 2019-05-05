@@ -2,9 +2,9 @@ package model;
 
 public class Map {
     private static final int maxMoveRange = 2;
-    public static final int MAP_X1_LENGTH = 9;
-    public static final int MAP_X2_LENGTH = 5;
-    private static Cell[][] map = new Cell[MAP_X2_LENGTH][MAP_X1_LENGTH];
+    public static final int MAP_X1_LENGTH = 5;
+    public static final int MAP_X2_LENGTH = 9;
+    private static Cell[][] map;
 
     public static Cell getCell(int x1, int x2) {
         if (x1 <= MAP_X1_LENGTH && x2 <= MAP_X2_LENGTH && x1 > 0 && x2 > 0) {
@@ -13,6 +13,14 @@ public class Map {
         return null;
     }
 
+    public static void createTheMap() {
+        map = new Cell[MAP_X1_LENGTH+1][MAP_X2_LENGTH+1];
+        for (int i = 1; i <= 5; i++) {
+            for (int j = 1; j <=9 ; j++) {
+                map[i][j]=new Cell(i,j,null);
+            }
+        }
+    }
 
     public static int getDistance(Cell cell1, Cell cell2) {
         return Math.abs(cell1.getX1Coordinate() - cell2.getX1Coordinate()) +

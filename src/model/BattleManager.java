@@ -72,7 +72,7 @@ public class BattleManager {
     public boolean playMinion(Minion minion, int x1, int x2) {
 
         int uniqueId = generateUniqueId(minion.id);
-        Minion theMinion = minion.duplicateDeployed(Map.getCell(x1, x2),currentPlayer.account);
+        Minion theMinion = minion.duplicateDeployed(Map.getCell(x1, x2), currentPlayer.account);
         Map.putCardInCell(theMinion, x1, x2);
         if (Map.getCell(x1, x2).doesHaveFlag()) {
             Map.getCell(x1, x2).setHasFlag(false);
@@ -894,13 +894,17 @@ public class BattleManager {
     }
 
     public void applyItemFunctions(Deployable card, FunctionType functionType) {
-        for (Function function : player1.currentDeck.getItem().functions) {
-            if (function.getFunctionType() == functionType)
-                compileFunction(function, card.cell.getX1Coordinate(), card.cell.getX2Coordinate());
-        }
-        for (Function function : player2.currentDeck.getItem().functions) {
-            if (function.getFunctionType() == functionType)
-                compileFunction(function, card.cell.getX1Coordinate(), card.cell.getX2Coordinate());
+        try {
+            for (Function function : player1.currentDeck.getItem().functions) {
+                if (function.getFunctionType() == functionType)
+                    compileFunction(function, card.cell.getX1Coordinate(), card.cell.getX2Coordinate());
+            }
+            for (Function function : player2.currentDeck.getItem().functions) {
+                if (function.getFunctionType() == functionType)
+                    compileFunction(function, card.cell.getX1Coordinate(), card.cell.getX2Coordinate());
+            }
+        }catch (Exception e){
+            System.err.println("midunm item nadarim");
         }
     }
 
@@ -1091,6 +1095,10 @@ public class BattleManager {
     }
 
     public void manaAdderItem() {
+        if(player1.currentDeck.getItem() ==null ||player2.currentDeck.getItem() ==null ){
+            System.err.println("midunm item nadarim");
+            return;
+        }
         if (player1.currentDeck.getItem().id == 601) {
             for (int i = 0; i < 3; i++) {
                 player1.increaseManaInTheTurn(i * 2 + 1, 1);

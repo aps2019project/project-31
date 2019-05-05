@@ -48,7 +48,8 @@ public class Deck {
     }
 
     public void addCard(Card card) {
-        cards.add(card);
+        if (card.getType() == CardType.spell || card.getType() == CardType.minion || card.getType() == CardType.minion)
+            cards.add(card);
     }
 
     public void setHero(Hero hero) {

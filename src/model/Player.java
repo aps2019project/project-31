@@ -23,7 +23,7 @@ public class Player {
     protected BattleManager battle;
     private boolean isAi;
     protected int[] manaChangerInTurn = new int[40];
-
+    private static int howFuckedUpIAm = 0;
 
     public Player(Account account, boolean isAi) {
         this.account = account;
@@ -34,13 +34,19 @@ public class Player {
         this.graveYard = new ArrayList<>();
         try {
             this.currentDeck = new Deck("temp: " + account.getTheMainDeck().getDeckName(),
-                    account.getTheMainDeck().getHero().duplicateDeployed(battle,account),
+                    account.getTheMainDeck().getHero().duplicateDeployed(battle, account),
                     account.getTheMainDeck().getItem());
-        }catch (Exception e){
-            System.err.println("the deck in account in player is null!!");
+        } catch (Exception e) {
+            this.currentDeck = new Deck("temp: " + account.getTheMainDeck().getDeckName(),
+                    account.getTheMainDeck().getHero().duplicateDeployed(account, howFuckedUpIAm++),
+                    account.getTheMainDeck().getItem());
         }
         this.isAi = isAi;
 
+    }
+
+    public void setCurrentDeck(Deck currentDeck) {
+        this.currentDeck = currentDeck;
     }
 
     public void setBattle(BattleManager battle) {
