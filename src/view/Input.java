@@ -384,6 +384,12 @@ public class Input {
 
     public static void handleCommandsInSinglePlayerCustomMenu(BattleMenu battleMenu) {
         String input = scanner.nextLine();
+        if(input.equalsIgnoreCase("help")){
+            System.err.println("showing user it's options");
+            System.out.println("commands you can enter :\n" +
+                ""
+            );
+        }
         Pattern pattern = Pattern.compile("start game (\\w+)\\s*(\\d+)*");
         Matcher matcher = pattern.matcher(input);
         if (matcher.matches()) {
@@ -411,7 +417,9 @@ public class Input {
             System.out.println("commands you can enter :\n" +
                     "-create account [username]\n" +
                     "-login [username]\n" +
-                    ""
+                    "-logout\n" +
+                    "-save\n" +
+                    "-show leaderBoard"
             );
         }
         Pattern pattern = Pattern.compile("create account (\\w+)\\s*");
@@ -450,6 +458,18 @@ public class Input {
                 System.out.println("incorrect password");
                 return;
             }
+        }
+        if(input.equalsIgnoreCase("logout")){
+            Account.setMainAccount(null);
+            return;
+        }
+        if(input.equalsIgnoreCase("save")){
+            //masih!?
+            return;
+        }
+        if(input.equalsIgnoreCase("show leaderBoard")){
+            Output.showLeaderBoard();
+            return;
         }
     }
 
