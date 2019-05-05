@@ -125,7 +125,7 @@ public class Shop extends Menu {
     }
 
     public static void searchCardsByNamesInCollection(String[] cardNames) {
-        for (Card card : CollectionMenu.getCollection()) {
+        for (Card card : Account.getMainAccount().getCollection()) {
             for (String name : cardNames) {
                 if (name.equals(card.getName()))
                     Output.showCardIdAndStuff(card);
@@ -155,16 +155,23 @@ public class Shop extends Menu {
     }
 
     private static void sellCard(Card card) {
-        Card theCard=null;
+        Card theCard = null;
         for (Card c : Account.getMainAccount().getCollection()) {
             if (c.getName().equalsIgnoreCase(card.getName())) {
                 theCard = c;
                 break;
             }
         }
-        if(theCard==null){
+        if (theCard == null) {
             Output.print("card not in collection");
             return;
+        }
+        for (Deck deck : Account.getMainAccount().getDecks()) {
+            try {
+                deck.getCards().remove(theCard);
+            } catch (Exception e) {
+
+            }
         }
         Account.getMainAccount().addDaric(card.getPrice());
         Account.getMainAccount().getCollection().remove(theCard);

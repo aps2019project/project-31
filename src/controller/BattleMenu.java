@@ -39,17 +39,70 @@ public class BattleMenu extends Menu {
         return battleManager;
     }
 
-    public static void setBattleManagerMode() {
-        //       battleManager = new ();
+    public static void setBattleManagerForMultiPlayer(Account player1Acc, Account player2Acc, int numberOfFlags,
+                                                          int maxNumberOfHavingFlag, GameMode gameMode) {
+        Player player1 = new Player(player1Acc, false);
+        Player player2 = new Player(player2Acc, false);
+        makeInstanceOfBattleManager(player1, player2, numberOfFlags, maxNumberOfHavingFlag, gameMode);
+    }
 
+    public static void setBattleManagerForSinglePLayer(BattleManagerMode battleManagerMode, Account account,
+                                                           int numberOfFlags, int maxNumberOfHavingFlag,
+                                                           GameMode gameMode, int storyNumber) {
+        Player player1 = new Player(account, false);
+        Story.loadStoryDecks();
+        Deck theAiDeck = null;
+        switch (battleManagerMode) {
+            case Story:
+                switch (storyNumber) {
+                    case 1:
+                        theAiDeck = Story.getFirstBattleManagerDeck();
+                        break;
+                    case 2:
+                        theAiDeck = Story.getSecondBattleManagerDeck();
+                        break;
+                    case 3:
+                        theAiDeck = Story.getThirdBattleManagerDeck();
+                        break;
+                }
+                if (theAiDeck == null) {
+                    System.err.println("story number invalid");
+                    return;
+                }
+                SinglePlayer.getAiPlayer().getAccount().setTheMainDeck(theAiDeck);
+                makeInstanceOfBattleManager(player1, SinglePlayer.getAiPlayer(), numberOfFlags, maxNumberOfHavingFlag, gameMode);
+                break;
+            case CustomGame:
+                // theAiDeck=Story.getCustomGameDeck;
+                if (theAiDeck == null) {
+                    System.err.println("story number invalid");
+                    return;
+                }
+                SinglePlayer.getAiPlayer().getAccount().setTheMainDeck(theAiDeck);
+                makeInstanceOfBattleManager(player1, SinglePlayer.getAiPlayer(), numberOfFlags, maxNumberOfHavingFlag, gameMode);
+                break;
+        }
+    }
+
+    private static void makeInstanceOfBattleManager(Player player1, Player player2, int numberOfFlags,
+                                                    int maxTurnsHavingFlag, GameMode gameMode) {
+        switch (gameMode) {
+            case DeathMatch:
+                battleManager = new BattleManager(player1, player2, 100, 100, GameMode.DeathMatch);
+                break;
+            case Flag:
+                battleManager = new BattleManager(player1, player2, 100, maxTurnsHavingFlag, GameMode.Flag);
+                break;
+            case Domination:
+                battleManager = new BattleManager(player1, player2, numberOfFlags, 100, GameMode.Domination);
+                break;
+        }
+        player1.setBattle(battleManager);
+        player2.setBattle(battleManager);
 
     }
 
-    public static void setBattleManagerMode(BattleManager battleManager) {
-        // battleManager = new
-    }
-
-    public void doAllAtTheBeginingOfTurnThings() {
+    public static void doAllAtTheBeginingOfTurnThings() {
         Map.putCardInCell(battleManager.getPlayer1().getHero(), 3, 1);
         Map.putCardInCell(battleManager.getPlayer2().getHero(), 3, 9);
         battleManager.assignManaToPlayers();
@@ -57,7 +110,7 @@ public class BattleMenu extends Menu {
 
     }
 
-    public void runTheGame() {
+    public static void runTheGame() {
         boolean isPlayer1Turn = false;
         battleManager.setCurrentPlayer(battleManager.getPlayer2());
         battleManager.applyItemFunctions(battleManager.getCurrentPlayer().getHero(), FunctionType.GameStart);
@@ -76,7 +129,7 @@ public class BattleMenu extends Menu {
                             battleManager.getCurrentPlayer().getSelectedCard() != null);
                     if (isGameFinished) {
                         battleManager = null;
-                        run();
+                        return;
                     }
 
                 }
@@ -100,30 +153,6 @@ public class BattleMenu extends Menu {
 
     }
 
-
-    public void run() {
-        if (!Account.getMainAccount().getTheMainDeck().checkIfValid()) {
-            System.err.println("selected deck is invalid");
-            return;
-        }
-        while (true) {
-
-            Output.showGameModes();
-
-            //if (out)
-            //    break;
-        }
-    }
-
-
-    public void show() {
-
-    }
-
-
-    public void help() {
-
-    }
 
 
     public static void prepareComboAttack(String[] strNumbers, int opponentCardId) {

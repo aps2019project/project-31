@@ -25,18 +25,26 @@ public class Player {
     protected int[] manaChangerInTurn = new int[40];
 
 
-    public Player(Account account) {
+    public Player(Account account, boolean isAi) {
         this.account = account;
         this.numberOfFlags = 0;
         this.numberOfTurnsHavingFlag = 0;
         this.hand = new ArrayList<>();
         this.cardsOnBattleField = new ArrayList<>();
         this.graveYard = new ArrayList<>();
-        this.battle = battle;
-        this.currentDeck = new Deck("temp: " + account.getTheMainDeck().getDeckName(),
-                account.getTheMainDeck().getHero().duplicateDeployed(battle),
-                account.getTheMainDeck().getItem());
+        try {
+            this.currentDeck = new Deck("temp: " + account.getTheMainDeck().getDeckName(),
+                    account.getTheMainDeck().getHero().duplicateDeployed(battle),
+                    account.getTheMainDeck().getItem());
+        }catch (Exception e){
+            System.err.println("the deck in account in player is null!!");
+        }
+        this.isAi = isAi;
 
+    }
+
+    public void setBattle(BattleManager battle) {
+        this.battle = battle;
     }
 
     public boolean isAi() {

@@ -60,9 +60,10 @@ public class Deck {
         this.cards = new ArrayList<>();
     }
 
-    public void addCards(ArrayList<Card> cards){
+    public void addCards(ArrayList<Card> cards) {
         this.cards.addAll(cards);
     }
+
     public Deck(String deckName, Hero hero, Item item) {
         this.deckName = deckName;
         this.hero = hero;
