@@ -74,6 +74,7 @@ public class Input {
     public static void start() {
         MenuManager.initMenus();
         System.err.println("MenuManager initialized");
+        Input.getInstance().showMenu(menuManager.getCurrentMenu());
         while (scanner.hasNextLine()) {
             switch (menuManager.getCurrentMenu().getId()) {
                 case Menu.Id.MAIN_MENU:
@@ -104,6 +105,7 @@ public class Input {
 //                    handleCommandsInSinglePlayerStoryMenu();
                     break;
             }
+            Input.getInstance().showMenu(menuManager.getCurrentMenu());
         }
     }
 
@@ -499,3 +501,4 @@ public class Input {
         System.out.println("--enter 'back' to go back");
     }
 }
+//hero item 18 chiz dige
