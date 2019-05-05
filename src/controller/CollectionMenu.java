@@ -135,7 +135,7 @@ public class CollectionMenu extends Menu {
         editingDeck = findDeckByName(deckName);
     }
 
-    private static Deck findDeckByName(String deckName) {
+    public static Deck findDeckByName(String deckName) {
         for (Deck deck : Account.getMainAccount().getDecks()) {
             if (deck.getDeckName().equals(deckName))
                 return deck;

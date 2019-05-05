@@ -129,7 +129,7 @@ public class BattleMenu extends Menu {
                             battleManager.getCurrentPlayer().getSelectedCard() != null);
                     if (isGameFinished) {
                         battleManager = null;
-                        run();
+                        return;
                     }
 
                 }
@@ -153,30 +153,6 @@ public class BattleMenu extends Menu {
 
     }
 
-
-    public static void run() {
-        if (!Account.getMainAccount().getTheMainDeck().checkIfValid()) {
-            System.err.println("selected deck is invalid");
-            return;
-        }
-        while (true) {
-
-            Output.showGameModes();
-
-            //if (out)
-            //    break;
-        }
-    }
-
-
-    public void show() {
-
-    }
-
-
-    public void help() {
-
-    }
 
 
     public static void prepareComboAttack(String[] strNumbers, int opponentCardId) {
