@@ -71,7 +71,6 @@ public class BattleManager {
 
     public boolean playMinion(Minion minion, int x1, int x2) {
 
-        int uniqueId = generateUniqueId(minion.id);
         Minion theMinion = minion.duplicateDeployed(Map.getCell(x1, x2), currentPlayer.account);
         Map.putCardInCell(theMinion, x1, x2);
         if (Map.getCell(x1, x2).doesHaveFlag()) {
@@ -725,7 +724,8 @@ public class BattleManager {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 if (i != 1 || j != 1) {
-                    if(Map.getCardInCell(x1 - 1 + i, x2 - 1 + j)!=null) {
+                    if (x1 - 1 + i >= 1 && x1 - 1 + i <= Map.MAP_X1_LENGTH && x2 - 1 + j >= 1 &&
+                            x2 - 1 + j <= Map.MAP_X2_LENGTH && Map.getCardInCell(x1 - 1 + i, x2 - 1 + j) != null) {
                         if (Map.getCardInCell(x1 - 1 + i, x2 - 1 + j).getAccount().equals(currentPlayer.getAccount())) {
                             return true;
                         }
@@ -739,7 +739,7 @@ public class BattleManager {
 
     public Card cardInHandByCardId(int cardId) {
         for (Card card : currentPlayer.getHand()) {
-            if (card.getId() == cardId) {
+            if (card != null && card.getId() == cardId) {
                 return card;
             }
         }
@@ -905,7 +905,7 @@ public class BattleManager {
                 if (function.getFunctionType() == functionType)
                     compileFunction(function, card.cell.getX1Coordinate(), card.cell.getX2Coordinate());
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             System.err.println("midunm item nadarim");
         }
     }
@@ -1021,8 +1021,8 @@ public class BattleManager {
     public static void initialTheGame() {
         player1.duplicateTheDeck();
         player2.duplicateTheDeck();
-     //   Collections.shuffle(player1.currentDeck.getCards());
-     //   Collections.shuffle(player2.currentDeck.getCards());
+        //   Collections.shuffle(player1.currentDeck.getCards());
+        //   Collections.shuffle(player2.currentDeck.getCards());
         initialTheHands();
         generateFlags();
     }
@@ -1095,7 +1095,7 @@ public class BattleManager {
     }
 
     public void manaAdderItem() {
-        if(player1.currentDeck.getItem() ==null ||player2.currentDeck.getItem() ==null ){
+        if (player1.currentDeck.getItem() == null || player2.currentDeck.getItem() == null) {
             System.err.println("midunm item nadarim");
             return;
         }
@@ -1120,5 +1120,19 @@ public class BattleManager {
             }
         }
 
+    }
+    public void makeIsMovedAndStunnedAndStuffFalse(){
+        for (Deployable deployable:player1.getCardsOnBattleField()) {
+            if(deployable!=null ){
+                deployable.setAttacked(false);
+                deployable.setMoved(false);
+            }
+        }
+        for (Deployable deployable:player2.getCardsOnBattleField()) {
+            if(deployable!=null ){
+                deployable.setAttacked(false);
+                deployable.setMoved(false);
+            }
+        }
     }
 }

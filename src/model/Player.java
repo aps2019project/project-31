@@ -168,6 +168,7 @@ public class Player {
         }
         for (Deployable card : cardsOnBattleField) {
             if (card !=null && cardId == card.getUniqueId()) {
+                System.err.println("selected card successfully");
                 selectedCard = card;
                 return true;
             }

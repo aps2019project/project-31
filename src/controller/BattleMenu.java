@@ -142,6 +142,7 @@ public class BattleMenu extends Menu {
     }
 
     private static void doAllThingsInEndingOfTheTurns() {
+        battleManager.makeIsMovedAndStunnedAndStuffFalse();
         battleManager.applyItemFunctions(battleManager.getPlayer1().getHero(), FunctionType.Passive);
         battleManager.getCurrentPlayer().placeNextCardToHand();
         battleManager.getCurrentPlayer().endOfTurnBuffsAndFunctions();
@@ -230,8 +231,9 @@ public class BattleMenu extends Menu {
 
     public static void selectCollectibleItem(int cardUniqueId) {
         for (Deployable deployable : battleManager.getCurrentPlayer().getCardsOnBattleField()) {
-            if (deployable!=null && deployable.getItem().getUniqueId() == cardUniqueId)
-                battleManager.getCurrentPlayer().setSelectedCard(deployable.getItem());
+            if (deployable != null && deployable.getItem() != null)
+                if (deployable.getItem().getUniqueId() == cardUniqueId)
+                    battleManager.getCurrentPlayer().setSelectedCard(deployable.getItem());
         }
     }
 
