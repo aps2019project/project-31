@@ -360,6 +360,14 @@ public class Input {
     public static void handleCommandsInSinglePlayerStoryMenu(BattleMenu battleMenu) {
         String input = scanner.nextLine();
         checkGenerals(input);
+        if(input.equalsIgnoreCase("help")){
+            System.err.println("showing user it's options");
+            System.out.println("commands you can enter :\n" +
+                    "-story_1\n" +
+                    "-story_2\n" +
+                    "-story_3"
+            );
+        }
         if (input.equalsIgnoreCase("story_1")) {
             BattleMenu.setBattleManagerMode(Story.getFirstBattleManager());
             battleMenu.runTheGame();
