@@ -19,6 +19,10 @@ public class CollectionMenu extends Menu {
     }
 
     private static void addCardToDeck(Card card) {
+        if(editingDeck==null){
+            System.err.println("editing deck is null");
+            return;
+        }
         if (editingDeck.getCards().size() < 19 && editingDeck.numberOfCardInDeck(card) < 3) {
             editingDeck.addCard(card);
             System.err.println("The card with id: "+ card.getId()+" added");
@@ -39,11 +43,14 @@ public class CollectionMenu extends Menu {
                 Output.print("card :" + number + " is not in your collection");
             }
         }
-
     }
 
     public static void removeCardsFromDeck(String[] numbers, String deckName) {
         selectDeck(deckName);
+        if(editingDeck==null){
+            System.err.println("editing deck is null");
+            return;
+        }
         for (String number : numbers) {
             Card card = findCardByIdInCollection(Integer.valueOf(number));
             if (card != null) {
@@ -62,6 +69,8 @@ public class CollectionMenu extends Menu {
     public static void selectAsMainDeck(String deckName) {
         selectDeck(deckName);
         checkValidationOfDeck(deckName);
+        if(editingDeck==null)
+            return;
         if (editingDeck.checkIfValid())
             Account.getMainAccount().setTheMainDeck(editingDeck);
     }
@@ -80,12 +89,16 @@ public class CollectionMenu extends Menu {
 
     public static void showDeckByName(String deckName) {
         selectDeck(deckName);
+        if(editingDeck==null)
+            return;
         editingDeck.show();
     }
 
 
     public static void checkValidationOfDeck(String deckName) {
         selectDeck(deckName);
+        if(editingDeck==null)
+            return;
         Output.showValidationOfDeck(editingDeck.checkIfValid());
     }
 

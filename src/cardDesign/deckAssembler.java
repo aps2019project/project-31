@@ -1,22 +1,14 @@
-
-package controller;
+package cardDesign;
 
 import com.gilecode.yagson.YaGson;
 import com.gilecode.yagson.YaGsonBuilder;
-import constants.CardType;
-import model.Card;
-import model.Minion;
 import model.*;
-import view.Input;
-import view.Output;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
+import java.util.Scanner;
 
-public class Shop extends Menu {
+public class deckAssembler {
     private static ArrayList<Card> allCards = new ArrayList<>();
     private static ArrayList<Minion> allMinions = new ArrayList<>();
     private static ArrayList<Spell> allSpells = new ArrayList<>();
@@ -24,7 +16,7 @@ public class Shop extends Menu {
     private static ArrayList<Hero> allHeroes = new ArrayList<>();
     private static ArrayList<Item> allUsables = new ArrayList<>();
 
-    public static void loadAllCards() {
+    private static void loadAllCards() {
         YaGson yaGson = new YaGsonBuilder().create();
         System.err.println("loading minions...");
         String path = System.getProperty("user.dir") + "/Sources/Cards/Minions.txt";
@@ -114,94 +106,59 @@ public class Shop extends Menu {
             System.err.println("File error");
         }
     }
-
-    public static void searchCardsByNames(String[] cardNames) {
-        for (Card card : allCards) {
-            for (String name : cardNames) {
-                if (name.equals(card.getName()))
-                    Output.showCardIdAndStuff(card);
+    public static void main(String[] args) {
+        loadAllCards();
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter deck name");
+        String name = scanner.nextLine();
+        for (Item item: allUsables){
+            System.out.println(item.getId() + ": " + item.getName());
+        }
+        System.out.println("Enter item ID:");
+        int itemNum = scanner.nextInt();
+        Item item = null;
+        for (Item item1: allUsables){
+            if (item1.getId() == itemNum)
+            {
+                item = item1;
+                System.out.println("okay");
             }
         }
-    }
-
-    public static void searchCardsByNamesInCollection(String[] cardNames) {
-        for (Card card : Account.getMainAccount().getCollection()) {
-            for (String name : cardNames) {
-                if (name.equals(card.getName()))
-                    Output.showCardIdAndStuff(card);
+        for (Hero hero: allHeroes){
+            System.out.println(hero.getId() + ": " + hero.getName());
+        }
+        System.out.println("Enter hero ID:");
+        int heroNum = scanner.nextInt();
+        Hero hero = null;
+        for (Hero hero1: allHeroes){
+            if (hero1.getId() == heroNum)
+            {
+                hero = hero1;
+                System.out.println("okay");
             }
         }
-    }
 
-    private static void buyCard(Card card) {
-        if (Account.getMainAccount().getDaric() < card.getPrice()) {
-            Output.print("not enough money");
-            return;
-        } else {
-            int numberOfCards = 0;
-            for (Card c : Account.getMainAccount().getCollection()) {
-                if (card.getName().equals(c.getName()))
-                    numberOfCards++;
+        Deck newDeck = new Deck(name, hero, item);
+        System.out.println("Enter card ID and then -1 to exit:");
+        int num = scanner.nextInt();
+        while (num != -1){
+            for (Card card: allCards){
+                if (card.getId() == num){
+                    newDeck.addCard(card);
+                    System.out.println(card.getId() + " " + card.getName() + "added");
+                }
             }
-            if (numberOfCards >= 3) {
-                Output.print("Not more than 3 cards");
-                return;
-            }
+            System.out.println("Enter next card ID:");
+            num = scanner.nextInt();
         }
-        Account.getMainAccount().decreaseDaric(card.getPrice());
-        Account.getMainAccount().getCollection().add(card);
-        Output.print("bought successfully");
+        YaGson yaGson = new YaGsonBuilder().create();
+        String path = System.getProperty("user.dir") + "/Sources/Story Decks/storyDecks.txt";
+        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(path,true))){
+            bufferedWriter.write(yaGson.toJson(newDeck));
+        }catch (IOException e){
 
-    }
+        }
 
-    private static void sellCard(Card card) {
-        Card theCard = null;
-        for (Card c : Account.getMainAccount().getCollection()) {
-            if (c.getName().equalsIgnoreCase(card.getName())) {
-                theCard = c;
-                break;
-            }
-        }
-        if (theCard == null) {
-            Output.print("card not in collection");
-            return;
-        }
-        for (Deck deck : Account.getMainAccount().getDecks()) {
-            try {
-                deck.getCards().remove(theCard);
-            } catch (Exception e) {
 
-            }
-        }
-        Account.getMainAccount().addDaric(card.getPrice());
-        Account.getMainAccount().getCollection().remove(theCard);
-        Output.print("sold successfully");
-    }
-
-    public static void buyCardsByName(String[] cardNames) {
-        for (Card card : allCards) {
-            for (String name : cardNames) {
-                if (name.equals(card.getName()))
-                    buyCard(card);
-            }
-        }
-    }
-
-    public static void sellCardsByName(String[] cardNames) {
-        for (Card card : allCards) {
-            for (String name : cardNames) {
-                if (name.equals(card.getName()))
-                    sellCard(card);
-            }
-        }
-    }
-
-    public static void showAllCards() {
-        for (CardType cardType : CardType.getAll()) {
-            for (Card card : allCards) {
-                if (card.getType() == cardType)
-                    card.show();
-            }
-        }
     }
 }

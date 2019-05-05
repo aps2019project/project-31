@@ -4,7 +4,7 @@ import controller.BattleMenu;
 
 public class Ai extends Player {
     public Ai(Account account) {
-        super(account);
+        super(account,true);
     }
 
     public void play() {

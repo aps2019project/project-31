@@ -1,5 +1,6 @@
 package view;
 
+import constants.BattleManagerMode;
 import controller.*;
 import model.Account;
 import model.BattleManager;
@@ -210,8 +211,8 @@ public class Input {
                     "-search [card1 name],[card2 name],[...\n" +
                     "-create deck [deck name]\n" +
                     "-delete deck [deck name]\n" +
-                    "-add [card ids] to deck [deck name]\n" +
-                    "-remove [card ids] from deck [deck name]\n" +
+                    "-add [card1 id],[card2 id],[...] to deck [deck name]\n" +
+                    "-remove [card1 id],[card2 id],[...] from deck [deck name]\n" +
                     "-validate deck [deck name]\n" +
                     "-select deck [deck name]\n" +
                     "-show deck [deck name]\n" +
@@ -241,7 +242,7 @@ public class Input {
         if (matcher.matches()) {
             System.err.println("deleting deck");
             CollectionMenu.deleteDeck(matcher.group(1));
-            System.err.println("deck '" + matcher.group(1)+ "' deleted");
+            System.err.println("deck '" + matcher.group(1) + "' deleted");
             return;
         }
         pattern = Pattern.compile("add ((\\d+,*)+) to deck (\\w+)\\s*");
@@ -344,12 +345,31 @@ public class Input {
     }
 
     private static void handleCommandsInMultiPlayerMenu() {
+        String input = scanner.nextLine();
+        checkGenerals(input);
+        if (input.equalsIgnoreCase("help")) {
+            System.err.println("showing user it's options");
+            System.out.println("commands you can enter :\n" +
+                    "select user [username]\n" +
+                    "start multiplayer game [mode] [number of flags]\n"
+            );
+        }
+        Pattern pattern = Pattern.compile("select user (\\w+)");
+        Matcher matcher = pattern.matcher(input);
+        if (matcher.matches()) {
+            Account theAccount = Account.findAccount(matcher.group(1));
+            if(theAccount==null){
+                System.err.println("the user do not exist!");
+                return;
+            }
+
+        }
     }
 
     private static void handleCommandsInSinglePlayerMenu() {
         String input = scanner.nextLine();
         checkGenerals(input);
-        if(input.equalsIgnoreCase("help")){
+        if (input.equalsIgnoreCase("help")) {
             System.err.println("showing user it's options");
             System.out.println("commands you can enter :\n" +
                     ""
@@ -360,33 +380,47 @@ public class Input {
     public static void handleCommandsInSinglePlayerStoryMenu(BattleMenu battleMenu) {
         String input = scanner.nextLine();
         checkGenerals(input);
-        if (input.equalsIgnoreCase("story_1")) {
-            BattleMenu.setBattleManagerMode(Story.getFirstBattleManager());
-            battleMenu.runTheGame();
+        if (input.equalsIgnoreCase("help")) {
+            System.err.println("showing user it's options");
+            System.out.println("commands you can enter :\n" +
+                    "-story_1\n" +
+                    "-story_2\n" +
+                    "-story_3"
+            );
         }
-        if (input.equalsIgnoreCase("story_2")) {
-            BattleMenu.setBattleManagerMode(Story.getSecondBattleManager());
-            battleMenu.runTheGame();
-        }
-        if (input.equalsIgnoreCase("story_3")) {
-            BattleMenu.setBattleManagerMode(Story.getThirdBattleManager());
-            battleMenu.runTheGame();
-        }
+//        if (input.equalsIgnoreCase("story_1")) {
+//            BattleMenu.setBattleManagerModeForSinglePLayer(Story.getFirstBattleManagerDeck());
+//            battleMenu.runTheGame();
+//        }
+//        if (input.equalsIgnoreCase("story_2")) {
+//            BattleMenu.setBattleManagerModeForSinglePLayer(Story.getSecondBattleManagerDeck());
+//            battleMenu.runTheGame();
+//        }
+//        if (input.equalsIgnoreCase("story_3")) {
+//            BattleMenu.setBattleManagerModeForSinglePLayer(Story.getThirdBattleManagerDeck());
+//            battleMenu.runTheGame();
+//        }
     }
 
     public static void handleCommandsInSinglePlayerCustomMenu(BattleMenu battleMenu) {
         String input = scanner.nextLine();
+        if (input.equalsIgnoreCase("help")) {
+            System.err.println("showing user it's options");
+            System.out.println("commands you can enter :\n" +
+                    ""
+            );
+        }
         Pattern pattern = Pattern.compile("start game (\\w+)\\s*(\\d+)*");
         Matcher matcher = pattern.matcher(input);
         if (matcher.matches()) {
          /*   try {
 
-                BattleMenu.setBattleManagerMode(Player loadingRegularPlayer, matcher.group(1),
+                BattleMenu.setBattleManagerModeForSinglePLayer(Player loadingRegularPlayer, matcher.group(1),
                         Integer.parseInt(matcher.group(2)));
             } catch (Exception e) {
-                BattleMenu.setBattleManagerMode(Player loadingRegularPlayer, matcher.group(1), 0);
+                BattleMenu.setBattleManagerModeForSinglePLayer(Player loadingRegularPlayer, matcher.group(1), 0);
             }*/
-            battleMenu.runTheGame();
+            BattleMenu.runTheGame();
         }
     }
 
@@ -403,7 +437,9 @@ public class Input {
             System.out.println("commands you can enter :\n" +
                     "-create account [username]\n" +
                     "-login [username]\n" +
-                    ""
+                    "-logout\n" +
+                    "-save\n" +
+                    "-show leaderBoard"
             );
         }
         Pattern pattern = Pattern.compile("create account (\\w+)\\s*");
@@ -442,6 +478,18 @@ public class Input {
                 System.out.println("incorrect password");
                 return;
             }
+        }
+        if (input.equalsIgnoreCase("logout")) {
+            Account.setMainAccount(null);
+            return;
+        }
+        if (input.equalsIgnoreCase("save")) {
+            //masih!?
+            return;
+        }
+        if (input.equalsIgnoreCase("show leaderBoard")) {
+            Output.showLeaderBoard();
+            return;
         }
     }
 

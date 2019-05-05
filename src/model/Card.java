@@ -33,6 +33,10 @@ public abstract class Card {
         this.isDeployed = isDeployed;
     }
 
+    public void setAccount(Account account){
+        this.account = account;
+    }
+
     public String getName() {
         return this.name;
     }

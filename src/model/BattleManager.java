@@ -18,7 +18,7 @@ public class BattleManager {
     public static final int PERMANENT = 100;
     public static final String CONTINUOUS = "continuous";
     protected static GameMode gameMode;
-    protected Player currentPlayer;
+    protected static Player currentPlayer;
     protected static Player player1;
     protected static Player player2;
     protected final int maxNumberOfFlags;
@@ -26,12 +26,12 @@ public class BattleManager {
     protected int turn = 1;
 
 
-    public BattleManager(Player player1, Player player2, int maxNumberOfFlags, int maxTurnsOfHavingFlag) {
-        this.currentPlayer = player1;
+    public BattleManager(Player player1, Player player2, int maxNumberOfFlags, int maxTurnsOfHavingFlag, GameMode gameMode) {
         this.maxNumberOfFlags = maxNumberOfFlags;
         this.maxTurnsOfHavingFlag = maxTurnsOfHavingFlag;
         setPlayer1(player1);
         setPlayer2(player2);
+        BattleManager.gameMode = gameMode;
     }
 
 
@@ -49,7 +49,7 @@ public class BattleManager {
     }
 
     public void setCurrentPlayer(Player currentPlayer) {
-        this.currentPlayer = currentPlayer;
+        BattleManager.currentPlayer = currentPlayer;
     }
 
     public Player getCurrentPlayer() {
