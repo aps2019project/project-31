@@ -1,6 +1,6 @@
 package controller;
 
-import constants.CardType;
+import constants.*;
 import constants.GameMode;
 import model.*;
 import view.Input;
@@ -49,10 +49,12 @@ public class BattleMenu extends Menu {
     private void runTheGame(BattleManager battleManager) {
         boolean isPlayer1Turn = false;
         battleManager.setCurrentPlayer(battleManager.getPlayer2());
+        battleManager.applyItemFunctions(battleManager.getCurrentPlayer().getHero(), FunctionType.GameStart);
         BattleManager.initialTheGame();
         while (true) {
             isPlayer1Turn = !isPlayer1Turn;
             battleManager.setCurrentPlayer(battleManager.getOtherPlayer());
+            battleManager.assignManaToPlayers();
             if (battleManager.getCurrentPlayer().isAi()) {
                 ((Ai) battleManager.getCurrentPlayer()).play();
             } else {
@@ -67,7 +69,6 @@ public class BattleMenu extends Menu {
                     }
 
                 }
-
             }
             doAllThingsInEndingOfTheTurns();
             Output.theTurnEnded();
@@ -75,6 +76,7 @@ public class BattleMenu extends Menu {
     }
 
     private void doAllThingsInEndingOfTheTurns() {
+        battleManager.applyItemFunctions(battleManager.getPlayer1().getHero(), FunctionType.Passive);
         battleManager.getCurrentPlayer().placeNextCardToHand();
         battleManager.getCurrentPlayer().endOfTurnBuffsAndFunctions();
         battleManager.getOtherPlayer().endOfTurnBuffsAndFunctions();
@@ -83,17 +85,21 @@ public class BattleMenu extends Menu {
             battleManager.getPlayer1().handleNumberOfTurnHavingFlagAtTheEndOfTurn();
             battleManager.getPlayer2().handleNumberOfTurnHavingFlagAtTheEndOfTurn();
         }
+        battleManager.addTurn();
     }
 
 
     public void run() {
-        if (!Account.getMainAccount().getTheMainDeck().checkIfValid())
+        if (!Account.getMainAccount().getTheMainDeck().checkIfValid()) {
+            System.err.println("selected deck is invalid");
             return;
+        }
         while (true) {
-            /*View.showModes();
+
+            Output.showGameModes();
             handleInputCommand();
-            if (out)
-                break;*/
+            //if (out)
+            //    break;
         }
     }
 
@@ -146,26 +152,50 @@ public class BattleMenu extends Menu {
             battleManager.move((Deployable) (battleManager.getCurrentPlayer().getSelectedCard()), x1, x2);
     }
 
-    public static boolean insert(int cardId, int x1, int x2) {
-        boolean canInsert = true;
-        if (battleManager.cardInHandByCardId(cardId) != null) {
-            Card card = battleManager.cardInHandByCardId(cardId);
+    public static boolean insert(Card card, int x1, int x2) {
+        if (battleManager.cardInHandByCardId(card.getId()) != null) {
+            if (!battleManager.checkCoordinates(x1, x2)) {
+                Output.invalidInsertionTarget();
+                System.err.println("Invalid Coordinates");
+                return false;
+
+            }
+
+            if (card.getManaCost() > battleManager.getCurrentPlayer().getMana()) {
+                Output.notHaveEnoughMana();
+                System.err.println("Not enough mana");
+                return false;
+            }
+
             if (card.getType() == CardType.minion) {
-                canInsert = battleManager.playMinion((Minion) card, x1, x2);
+
+                battleManager.playMinion((Minion) card, x1, x2);
             }
             if (card.getType() == CardType.spell) {
 
-                canInsert = battleManager.playSpell((Spell) card, x1, x2);
+                battleManager.playSpell((Spell) card, x1, x2);
             }
             if (card.getType() == CardType.item) {
-                canInsert = battleManager.useItem((Item) card, x1, x2);
+                battleManager.useItem((Item) card, x1, x2);
+            }
+            for (Function function : card.getFunctions()) {
+                if (function.getFunctionType() == FunctionType.OnSpawn) {
+                    battleManager.compileFunction(function, x1, x2);
+                }
             }
         } else {
             Output.notInHand();
             System.err.println("Minion not in hand");
             return false;
         }
-        return canInsert;
+        return true;
+    }
+
+    public static void selectCollectibleItem(int cardUniqueId) {
+        for (Deployable deployable : battleManager.getCurrentPlayer().getCardsOnBattleField()) {
+            if (deployable.getItem().getUniqueId() == cardUniqueId)
+                battleManager.getCurrentPlayer().setSelectedCard(deployable.getItem());
+        }
     }
 
     public static void showGameInfo() {
@@ -191,5 +221,21 @@ public class BattleMenu extends Menu {
 
     }
 
+    public static void showSelectedCardInfo() {
+        System.out.println(battleManager.getCurrentPlayer().getSelectedCard().infoToString());
+    }
+
+    public static Deployable findDeadMinion(int uniqueId) {
+        for (Deployable deployable : battleManager.getPlayer1().getGraveYard()) {
+            if (deployable.getUniqueId() == uniqueId)
+                return deployable;
+        }
+        for (Deployable deployable : battleManager.getPlayer2().getGraveYard()) {
+            if (deployable.getUniqueId() == uniqueId)
+                return deployable;
+        }
+        return null;
+
+    }
 }
 

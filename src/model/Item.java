@@ -6,6 +6,15 @@ import java.util.ArrayList;
 
 public class Item extends Card {
     protected boolean isCollectible;
+    protected int uniqueId;
+
+    public int getUniqueId() {
+        return uniqueId;
+    }
+
+    public void setUniqueId(int uniqueId) {
+        this.uniqueId = uniqueId;
+    }
 
     public Item(int price, int manaCost, String cardText, ArrayList<Function> functions,
                 Account account, String name, int id, CardType type, boolean isDeployed, boolean isCollectible) {
@@ -29,4 +38,25 @@ public class Item extends Card {
                 + cardText;
     }
 
+    public String infoToString() {
+        try {
+            return "Item  \nName:" + name + "\nDesc: " + cardText + "\nCoordination: " +
+                    findCellByCollectibleItem().getX1Coordinate() + " , " +
+                    findCellByCollectibleItem().getX2Coordinate();
+        }catch (Exception e){
+            System.err.println("Item not in map!");
+        }
+        return " ";
+
+    }
+
+    public Cell findCellByCollectibleItem() {
+        for (Cell[] cells : Map.getMap()) {
+            for (Cell cell : cells) {
+                if (cell.getItem().getUniqueId() == uniqueId)
+                    return cell;
+            }
+        }
+        return null;
+    }
 }

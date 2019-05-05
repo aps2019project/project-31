@@ -18,6 +18,7 @@ public class Deployable extends Card {
     protected boolean isCombo;
     protected ArrayList<Pair<Deployable, Integer>> accumulatingAttacks = new ArrayList<>();
     protected int maxHealth;
+    protected Item item;
 
     public Deployable(int price, int manaCost,
                       String cardText, ArrayList<Function> functions,
@@ -36,6 +37,10 @@ public class Deployable extends Card {
         this.attackType = attackType;
         this.isCombo = isCombo;
         this.maxHealth = maxHealth;
+    }
+
+    public Item getItem() {
+        return item;
     }
 
     protected boolean hasFlag;
@@ -222,4 +227,6 @@ public class Deployable extends Card {
     public String infoToString() {
         return " ";
     }
+
+
 }

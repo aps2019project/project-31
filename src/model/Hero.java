@@ -55,7 +55,9 @@ public class Hero extends Deployable {
                     "\nHP: " + currentHealth + "\nAP: " + currentAttack;
     }
 
+    public Hero deepClone( ){
 
+    }
     public void setAttack(int attack) {
         this.attack = attack;
     }

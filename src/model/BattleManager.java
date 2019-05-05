@@ -14,7 +14,7 @@ import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public abstract class BattleManager {
+public class BattleManager {
     public static final int PERMANENT = 100;
     public static final String CONTINUOUS = "continuous";
     protected Map map;
@@ -24,7 +24,7 @@ public abstract class BattleManager {
     protected static Player player2;
     protected final int maxNumberOfFlags;
     protected final int maxTurnsOfHavingFlag;
-
+    protected int turn = 1;
 
     public int getMaxNumberOfFlags() {
         return maxNumberOfFlags;
@@ -59,30 +59,14 @@ public abstract class BattleManager {
     }
 
     public boolean playMinion(Minion minion, int x1, int x2) {
-        if (!checkCoordinates(x1, x2)) {
-            Output.invalidInsertionTarget();
-            System.err.println("Invalid Coordinates");
-            return false;
 
-        }
-
-        if (minion.manaCost > currentPlayer.getMana()) {
-            Output.notHaveEnoughMana();
-            System.err.println("Not enough mana");
-            return false;
-        }
-
-        for (Function function : minion.getFunctions()) {
-            if (function.getFunctionType() == FunctionType.OnSpawn) {
-                compileFunction(function, x1, x2);
-            }
-        }
         int uniqueId = generateUniqueId(minion.id);
         Minion theMinion = new Minion(minion.price, minion.manaCost, minion.cardText, minion.functions, minion.account,
                 minion.name, minion.id, minion.type, minion.isDeployed, true, false,
                 Map.getCell(x1, x2), minion.attackRange, minion.currentHealth, minion.currentAttack,
                 uniqueId, minion.attackType, minion.isCombo, minion.maxHealth, minion.getAttack(),
                 minion.getHealth());
+
         Map.putCardInCell(theMinion, x1, x2);
         if (Map.getCell(x1, x2).doesHaveFlag()) {
             Map.getCell(x1, x2).setHasFlag(false);
@@ -91,10 +75,16 @@ public abstract class BattleManager {
                 currentPlayer.numberOfFlags++;
         }
         Output.insertionSuccessful(theMinion, x1, x2);
+        applyItemFunctions(theMinion, FunctionType.OnSpawn);
         currentPlayer.addCardToBattlefield(theMinion);
         currentPlayer.removeFromHand(minion);
+        applyOnSpawnFunction(theMinion);
         return true;
 
+    }
+
+    public void addTurn() {
+        turn++;
     }
 
     public static int generateUniqueId(int cardId) {
@@ -107,8 +97,19 @@ public abstract class BattleManager {
             if (card.id == cardId)
                 numberOfMinionInBattleField++;
         }
-        return (cardId * 10) + numberOfMinionInBattleField;
+        return (cardId * 100) + numberOfMinionInBattleField;
 
+    }
+
+    public static int generateUniqueIdForCollectibleItem(int cardId) {
+        int numberOfItems = 0;
+        for (Cell[] cells : Map.getMap()) {
+            for (Cell cell : cells) {
+                if (cell.getItem() != null && cell.getItem().getId() == cardId)
+                    numberOfItems++;
+            }
+        }
+        return (cardId * 100) + numberOfItems;
     }
 
     public boolean compileTargetString(ArrayList<Card> targetCards, ArrayList<Cell> targetCells, String target,
@@ -131,32 +132,32 @@ public abstract class BattleManager {
                 }
             }
 
-            if (target.matches("(.*)" + TargetStrings.RANDOM_ALLIED_UNIT + "(.*)")){
+            if (target.matches("(.*)" + TargetStrings.RANDOM_ALLIED_UNIT + "(.*)")) {
                 Random random = new Random();
                 targetCards.add(currentPlayer.getCardsOnBattleField().
                         get(random.nextInt(currentPlayer.getCardsOnBattleField().size())));
             }
 
-            if (target.matches("(.*)" + TargetStrings.RANDOM_ENEMY_UNIT + "(.*)")){
+            if (target.matches("(.*)" + TargetStrings.RANDOM_ENEMY_UNIT + "(.*)")) {
                 Random random = new Random();
                 targetCards.add(getOtherPlayer().getCardsOnBattleField().
                         get(random.nextInt(getOtherPlayer().getCardsOnBattleField().size())));
             }
 
-            if (target.matches("(.*)" + TargetStrings.ALL_MELEE_UNITS + "(.*)")){
-                for (Deployable deployable: currentPlayer.getCardsOnBattleField()){
-                    if (deployable.getAttackType() == AttackType.melee){
+            if (target.matches("(.*)" + TargetStrings.ALL_MELEE_UNITS + "(.*)")) {
+                for (Deployable deployable : currentPlayer.getCardsOnBattleField()) {
+                    if (deployable.getAttackType() == AttackType.melee) {
                         targetCards.add(deployable);
                     }
                 }
 
-                for (Deployable deployable: getOtherPlayer().getCardsOnBattleField()){
-                    if (deployable.getAttackType() == AttackType.melee){
+                for (Deployable deployable : getOtherPlayer().getCardsOnBattleField()) {
+                    if (deployable.getAttackType() == AttackType.melee) {
                         targetCards.add(deployable);
                     }
                 }
             }
-            if (target.matches("(.*)" + TargetStrings.RANDOM_MINION + "(.*)")){
+            if (target.matches("(.*)" + TargetStrings.RANDOM_MINION + "(.*)")) {
                 ArrayList<Deployable> deployables = new ArrayList<>();
                 deployables.addAll(getOtherPlayer().getCardsOnBattleField());
                 deployables.addAll(currentPlayer.getCardsOnBattleField());
@@ -166,7 +167,7 @@ public abstract class BattleManager {
                 targetCards.add(deployables.get(random.nextInt(deployables.size())));
             }
 
-            if (target.matches("(.*)" + TargetStrings.RANDOM_UNIT + "(.*)")){
+            if (target.matches("(.*)" + TargetStrings.RANDOM_UNIT + "(.*)")) {
                 ArrayList<Deployable> deployables = new ArrayList<>();
                 deployables.addAll(getOtherPlayer().getCardsOnBattleField());
                 deployables.addAll(currentPlayer.getCardsOnBattleField());
@@ -174,17 +175,17 @@ public abstract class BattleManager {
                 targetCards.add(deployables.get(random.nextInt(deployables.size())));
             }
 
-            if (target.matches("(.*)" + TargetStrings.RANDOM_RANGED_HYBRID + "(.*)")){
+            if (target.matches("(.*)" + TargetStrings.RANDOM_RANGED_HYBRID + "(.*)")) {
                 ArrayList<Deployable> deployables = new ArrayList<>();
-                for (Deployable deployable: currentPlayer.getCardsOnBattleField()){
+                for (Deployable deployable : currentPlayer.getCardsOnBattleField()) {
                     if (deployable.getAttackType() == AttackType.ranged ||
-                        deployable.getAttackType() == AttackType.hybrid){
+                            deployable.getAttackType() == AttackType.hybrid) {
                         deployables.add(deployable);
                     }
                 }
-                for (Deployable deployable: getOtherPlayer().getCardsOnBattleField()){
+                for (Deployable deployable : getOtherPlayer().getCardsOnBattleField()) {
                     if (deployable.getAttackType() == AttackType.ranged ||
-                            deployable.getAttackType() == AttackType.hybrid){
+                            deployable.getAttackType() == AttackType.hybrid) {
                         deployables.add(deployable);
                     }
                 }
@@ -192,14 +193,14 @@ public abstract class BattleManager {
                 targetCards.add(deployables.get(random.nextInt(deployables.size())));
             }
 
-            if (target.matches("(.*)" + TargetStrings.ALLIED_GENERAL_RANGED_HYBRID + "(.*)")){
+            if (target.matches("(.*)" + TargetStrings.ALLIED_GENERAL_RANGED_HYBRID + "(.*)")) {
                 if (currentPlayer.getHero().getAttackType() == AttackType.ranged ||
                         currentPlayer.getHero().getAttackType() == AttackType.hybrid)
                     targetCards.add(currentPlayer.getHero());
 
             }
 
-            if (target.matches("(.*)" + TargetStrings.ENEMY_GENERAL_RANGED_HYBRID + "(.*)")){
+            if (target.matches("(.*)" + TargetStrings.ENEMY_GENERAL_RANGED_HYBRID + "(.*)")) {
                 if (getOtherPlayer().getHero().getAttackType() == AttackType.ranged ||
                         getOtherPlayer().getHero().getAttackType() == AttackType.hybrid)
                     targetCards.add(getOtherPlayer().getHero());
@@ -383,7 +384,7 @@ public abstract class BattleManager {
         ArrayList<Cell> targetCells = new ArrayList<>();
         ArrayList<Card> targetCards = new ArrayList<>();
         if (!compileTargetString(targetCards, targetCells, function.getTarget(), x1, x2, attackTarget)) {
-             System.err.println("Invalid target");
+            System.err.println("Invalid target");
             return;
         }
 
@@ -603,7 +604,7 @@ public abstract class BattleManager {
                     Buff buff = new Buff(Buff.BuffType.Holy, PERMANENT, 0, 0, true);
                     buff.makeContinuous();
                     for (int i = 0; i < amount; i++) {
-                     addBuffs(targetCards, buff);
+                        addBuffs(targetCards, buff);
                     }
                     return;
                 }
@@ -708,7 +709,7 @@ public abstract class BattleManager {
         addBuffs(targetCards, buff);
     }
 
-    private boolean checkCoordinates(int x1, int x2) {
+    public boolean checkCoordinates(int x1, int x2) {
         if (Map.getCell(x1, x2) == null ||
                 Map.getCardInCell(x1, x2) != null) {
             return false;
@@ -776,6 +777,10 @@ public abstract class BattleManager {
     }
 
     public void killTheThing(Deployable enemy) {
+        Player player;
+        if (player1.doesPlayerHaveDeployable(enemy))
+            player = player1;
+        else player = player2;
         if (enemy.hasFlag) {
             if (gameMode == GameMode.Domination)
                 getOtherPlayer().numberOfFlags--;
@@ -783,16 +788,17 @@ public abstract class BattleManager {
                 getOtherPlayer().numberOfTurnsHavingFlag = 0;
             enemy.cell.setHasFlag(true);
         }
+        applyItemFunctions(enemy, FunctionType.OnDeath);
         for (Function function : enemy.functions) {
             if (function.getFunctionType() == FunctionType.OnDeath) {
                 compileFunction(function, enemy.cell.getX1Coordinate(), enemy.cell.getX2Coordinate());
             }
         }
+
         enemy.cell.setCardInCell(null);
-        if (player1.doesPlayerHaveDeployable(enemy))
-            player1.getCardsOnBattleField().remove(enemy);
-        else
-            player2.getCardsOnBattleField().remove(enemy);
+
+        player.addCardToGraveYard(enemy);
+        player.getCardsOnBattleField().remove(enemy);
 
     }
 
@@ -843,12 +849,14 @@ public abstract class BattleManager {
             }
             applyOnAttackFunction(card, enemy);
             applyOnDefendFunction(enemy, card);
+            applyItemOnAttackDefendFunctions(card, FunctionType.OnAttack, currentPlayer);
+            applyItemOnAttackDefendFunctions(enemy, FunctionType.OnDefend, getOtherPlayer());
         }
     }
 
     private boolean ignoreHolyBuff(Card card) {
         for (Function function : card.functions) {
-            if (function.getFunction() == FunctionStrings.IGNORE_HOLYBUFF)
+            if (function.getFunction().equals(FunctionStrings.IGNORE_HOLYBUFF))
                 return true;
         }
         return false;
@@ -859,6 +867,32 @@ public abstract class BattleManager {
             if (function.getFunctionType() == FunctionType.OnAttack) {
                 compileFunction(function, card.cell.getX1Coordinate(), card.cell.getX2Coordinate(), enemy);
             }
+        }
+    }
+
+    private void applyOnSpawnFunction(Deployable card) {
+        for (Function function : card.functions) {
+            if (function.getFunctionType() == FunctionType.OnSpawn) {
+                compileFunction(function, card.cell.getX1Coordinate(), card.cell.getX2Coordinate());
+            }
+        }
+    }
+
+    public void applyItemFunctions(Deployable card, FunctionType functionType) {
+        for (Function function : player1.currentDeck.getItem().functions) {
+            if (function.getFunctionType() == functionType)
+                compileFunction(function, card.cell.getX1Coordinate(), card.cell.getX2Coordinate());
+        }
+        for (Function function : player2.currentDeck.getItem().functions) {
+            if (function.getFunctionType() == functionType)
+                compileFunction(function, card.cell.getX1Coordinate(), card.cell.getX2Coordinate());
+        }
+    }
+
+    public void applyItemOnAttackDefendFunctions(Deployable card, FunctionType functionType, Player player) {
+        for (Function function : player.currentDeck.getItem().functions) {
+            if (function.getFunctionType() == functionType)
+                compileFunction(function, card.cell.getX1Coordinate(), card.cell.getX2Coordinate());
         }
     }
 
@@ -922,7 +956,12 @@ public abstract class BattleManager {
         BattleMenu.setGameFinished(true);
     }
 
-    public abstract Player getOtherPlayer();
+    public Player getOtherPlayer() {
+        if (currentPlayer == player1)
+            return player2;
+        else
+            return player1;
+    }
 
     public void checkTheEndSituation() {
         isFinishedDueToHeroDying();
@@ -962,6 +1001,8 @@ public abstract class BattleManager {
         player2.duplicateTheDeck();
         Collections.shuffle(player1.currentDeck.getCards());
         Collections.shuffle(player2.currentDeck.getCards());
+        Map.getCell(3, 1).setCardInCell(player1.getHero().deepClone());
+        Map.getCell(3, 9).setCardInCell(player2.getHero().deepClone());
         initialTheHands();
         generateFlags();
     }
@@ -1001,15 +1042,32 @@ public abstract class BattleManager {
         }
         return new int[]{-1, -1};
     }
-    public static Deployable findCardByUniqueid(int uniqueCardId){
-        for (Deployable deployable:player1.getCardsOnBattleField()) {
-            if(deployable.uniqueId==uniqueCardId)
+
+    public static Deployable findCardByUniqueid(int uniqueCardId) {
+        for (Deployable deployable : player1.getCardsOnBattleField()) {
+            if (deployable.uniqueId == uniqueCardId)
                 return deployable;
-        }for (Deployable deployable:player2.getCardsOnBattleField()) {
-            if(deployable.uniqueId==uniqueCardId)
+        }
+        for (Deployable deployable : player2.getCardsOnBattleField()) {
+            if (deployable.uniqueId == uniqueCardId)
                 return deployable;
         }
         return null;
     }
 
+    public void assignManaToPlayers() {
+        if (turn <= 14) {
+            if (currentPlayer == player1)
+                player1.mana = (turn - 1) / 2 + 2;
+            else
+                player2.mana = turn / 2 + 2;
+            getOtherPlayer().mana = 0;
+        } else {
+            if (currentPlayer == player1)
+                player1.mana = 9;
+            else
+                player2.mana = 9;
+            getOtherPlayer().mana = 0;
+        }
+    }
 }

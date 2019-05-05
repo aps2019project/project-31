@@ -1,5 +1,7 @@
 package model;
 
+import controller.BattleMenu;
+
 public class Ai extends Player {
     public Ai(Account account) {
         super(account);
@@ -20,9 +22,9 @@ public class Ai extends Player {
         for (Card card : hand) {
             for (int i = 1; i <= Map.MAP_X1_LENGTH; i++) {
                 for (int j = 1; j < Map.MAP_X2_LENGTH; j++) {
-                    /*if(playCard(card,i,j)) {
+                    if(BattleMenu.insert(card,i,j)) {
                         continue outerLoop;
-                    }*/
+                    }
                     //needs to be fixed
                 }
             }
@@ -37,7 +39,7 @@ public class Ai extends Player {
     }
 
     public Player getOtherPlayer() {
-        return battle.player2;
+        return BattleManager.player2;
     }
 
     public int coefficient(int a) {

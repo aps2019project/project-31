@@ -3,6 +3,7 @@ package view;
 import controller.*;
 import model.Account;
 import model.BattleManager;
+import model.Deployable;
 import model.Player;
 
 import java.util.Scanner;
@@ -33,17 +34,18 @@ public class Input {
         Input.menuManager = menuManager;
     }
 
+
     public static String giveMeInput() {
         return scanner.nextLine();
     }
 
-    public static void handleSelectComboCards(Player player, String input) {
+    public static void handleSelectComboCards(String input) {
 
         Pattern pattern = Pattern.compile("attack combo (\\d+)\\s+((\\d\\s*)+)");
         Matcher matcher = pattern.matcher(input);
         if (matcher.matches()) {
             int opponentCardId = Integer.parseInt(matcher.group(1));
-            String[] strNumbers = matcher.group(2).split("\\s");
+            String[] strNumbers = matcher.group(2).split(",");
             BattleMenu.prepareComboAttack(strNumbers, opponentCardId);
         }
 
@@ -60,11 +62,11 @@ public class Input {
         if (matcher.matches()) {
             BattleMenu.move(Integer.parseInt(matcher.group(1)), Integer.parseInt(matcher.group(2)));
         }
-        pattern = Pattern.compile("insert (\\d+) in \\((\\d),(\\d)\\)\\s*");
+        pattern = Pattern.compile("insert in \\((\\d),(\\d)\\)\\s*");
         matcher = pattern.matcher(input);
         if (matcher.matches()) {
-            BattleMenu.insert(Integer.parseInt(matcher.group(1)), Integer.parseInt(matcher.group(2)),
-                    Integer.parseInt(matcher.group(3)));
+            BattleMenu.insert(BattleMenu.getBattleManager().getCurrentPlayer().getSelectedCard(),
+                    Integer.parseInt(matcher.group(2)), Integer.parseInt(matcher.group(3)));
         }
         BattleMenu.getBattleManager().checkTheEndSituation();
     }
@@ -108,27 +110,73 @@ public class Input {
 
     public static void handleCommandsInBattleMenu(Player player, boolean isThereSelectedCard) {
         String input = scanner.nextLine();
+        if (input.matches("\\s*end turn\\s*"))
+            BattleMenu.setAreWeInMiddleOfTurn(false);
         if (input.matches("select \\d+"))
             player.selectACard(Integer.parseInt(input.replace("select", "").trim()));
-        if (isThereSelectedCard) {
+        if (isThereSelectedCard)
             moveAttackPlayCard(input);
-        } else {
-            handleSelectComboCards(player, input);
-        }
-        if (input.matches("\\s*end turn\\s*")) {
+        else
+            handleSelectComboCards(input);
+        if (input.matches("\\s*end turn\\s*"))
             BattleMenu.setAreWeInMiddleOfTurn(false);
-        }
-        if (input.equalsIgnoreCase("game info")) {
+        if (input.equalsIgnoreCase("game info"))
             BattleMenu.showGameInfo();
-        } else if (input.trim().equalsIgnoreCase("show my minions")) {
+        else if (input.trim().equalsIgnoreCase("show my minions")) {
             BattleMenu.showPlayerMinions(player);
-        } else if (input.trim().equalsIgnoreCase("show opponent minions")) {
+        } else if (input.trim().equalsIgnoreCase("show opponent minions"))
             BattleMenu.showPlayerMinions(BattleMenu.getBattleManager().getOtherPlayer());
-        } else if (input.matches("show card info \\d+")) {
+        else if (input.matches("show card info \\d+")) {
             String cardUniqueId = input.replace("show card info", "").trim();
             System.out.println(BattleManager.findCardByUniqueid(Integer.parseInt(cardUniqueId)).infoToString());
         }
+        Pattern pattern = Pattern.compile("use special power \\((\\d+),(\\d+)\\)");
+        Matcher matcher = pattern.matcher(input);
+        if (matcher.matches()) {
+            int x1 = Integer.parseInt(matcher.group(1));
+            int x2 = Integer.parseInt(matcher.group(2));
+            BattleMenu.getBattleManager().playSpell(player.getHero().getHeroSpell(), x1, x2);
+        }
+        if (input.equalsIgnoreCase("show hand"))
+            player.showHand();
+        else if (input.equalsIgnoreCase("show collectables")) {
+            BattleMenu.getBattleManager().getCurrentPlayer().showCollectibleItems();
+        }
+        pattern = Pattern.compile("select (\\d+)\\s*");
+        matcher = pattern.matcher(input);
+        if (matcher.matches())
+            BattleMenu.selectCollectibleItem(Integer.parseInt(matcher.group(1)));
+        if (input.equalsIgnoreCase("show info"))
+            BattleMenu.showSelectedCardInfo();
+        else if (input.equalsIgnoreCase("show next card")) {
+            BattleMenu.getBattleManager().getCurrentPlayer().showNextCard();
+        } else if (input.equalsIgnoreCase("enter graveyard"))
+            enterGraveYard();
+
+
         BattleMenu.getBattleManager().checkTheEndSituation();
+    }
+
+    private static void enterGraveYard() {
+        while (true) {
+            String input = scanner.nextLine();
+            if (input.equalsIgnoreCase("show cards"))
+                showAllGraveyardCards();
+            Pattern pattern = Pattern.compile("show info (\\d+)");
+            Matcher matcher = pattern.matcher(input);
+            if (matcher.matches()) {
+                System.out.println(BattleMenu.findDeadMinion(Integer.parseInt(matcher.group(1))).infoToString());
+            }
+            if (input.equalsIgnoreCase("exit"))
+                return;
+        }
+    }
+
+    public static void showAllGraveyardCards() {
+        System.out.println("Player 1 dead minions:\n");
+        for (Deployable card : BattleMenu.getBattleManager().getPlayer1().getGraveYard()) {
+            System.out.println(card.infoToString());
+        }
     }
 
     public static void handleCommandsInCollectionMenu() {
@@ -161,11 +209,11 @@ public class Input {
             );
             return;
         }
-        Pattern pattern = Pattern.compile("search ((\\w+\\s*)+)\\s*");
+        Pattern pattern = Pattern.compile("search (.+,*+)\\s*");
         Matcher matcher = pattern.matcher(input);
         if (matcher.matches()) {
             System.err.println("searching in collection...");
-            String[] names = matcher.group(1).trim().split("\\s");
+            String[] names = matcher.group(1).trim().split(",");
             System.err.println("founded cards :");
             CollectionMenu.showCardsByNames(names);
             return;
@@ -184,19 +232,19 @@ public class Input {
             CollectionMenu.deleteDeck(matcher.group(1));
             return;
         }
-        pattern = Pattern.compile("add ((\\d+\\s*)+)to deck (\\w+)\\s*");
+        pattern = Pattern.compile("add ((\\d+,*)+) to deck (\\w+)\\s*");
         matcher = pattern.matcher(input);
         if (matcher.matches()) {
             System.err.println("adding cards to deck");
-            String[] numbers = matcher.group(1).trim().split("\\s");
+            String[] numbers = matcher.group(1).trim().split(",");
             CollectionMenu.addCardsToDeck(numbers, matcher.group(3).trim());
             return;
         }
-        pattern = Pattern.compile("remove ((\\d+\\s*)+)from deck (\\w+)\\s*");
+        pattern = Pattern.compile("remove ((\\d+,*)+) from deck (\\w+)\\s*");
         matcher = pattern.matcher(input);
         if (matcher.matches()) {
             System.err.println("removing card from deck");
-            String[] numbers = matcher.group(1).trim().split("\\s");
+            String[] numbers = matcher.group(1).trim().split(",");
             CollectionMenu.removeCardsFromDeck(numbers, matcher.group(3).trim());
             return;
         }
@@ -251,32 +299,32 @@ public class Input {
             System.err.println("showing all cards in user collection");
             CollectionMenu.showAllMyCards();
         }
-        Pattern pattern = Pattern.compile("search ((\\w+\\s*)+)\\s*");
+        Pattern pattern = Pattern.compile("search (.+,*)+\\s*");
         Matcher matcher = pattern.matcher(input);
         if (matcher.matches()) {
             System.err.println("searching cards:");
-            String[] cardNames = matcher.group(1).trim().split("\\s");
+            String[] cardNames = matcher.group(1).trim().split(",");
             Shop.searchCardsByNames(cardNames);
         }
-        pattern = Pattern.compile("search collection ((\\w+\\s*)+)\\s*");
+        pattern = Pattern.compile("search collection (.+,*)+\\s*");
         matcher = pattern.matcher(input);
         if (matcher.matches()) {
             System.err.println("searching cards in collection");
-            String[] cardNames = matcher.group(1).trim().split("\\s");
+            String[] cardNames = matcher.group(1).trim().split(",");
             Shop.searchCardsByNamesInCollection(cardNames);
         }
-        pattern = Pattern.compile("buy ((\\w+\\s*)+)\\s*");
+        pattern = Pattern.compile("buy (.+,*)+\\s*");
         matcher = pattern.matcher(input);
         if (matcher.matches()) {
             System.err.println("buying cards");
-            String[] cardNames = matcher.group(1).trim().split("\\s");
+            String[] cardNames = matcher.group(1).trim().split(",");
             Shop.buyCardsByName(cardNames);
         }
-        pattern = Pattern.compile("sell ((\\w+\\s*)+)\\s*");
+        pattern = Pattern.compile("sell (.+,*)+\\s*");
         matcher = pattern.matcher(input);
         if (matcher.matches()) {
             System.err.println("selling cards");
-            String[] cardNames = matcher.group(1).trim().split("\\s");
+            String[] cardNames = matcher.group(1).trim().split(",");
             Shop.sellCardsByName(cardNames);
         }
     }
