@@ -127,7 +127,7 @@ public class CollectionMenu extends Menu {
     }
 
     public static void showAllMyCards() {
-
+        
     }
 
     public static void saveAndGoBack() {
