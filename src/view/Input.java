@@ -348,7 +348,8 @@ public class Input {
         if (input.equalsIgnoreCase("help")) {
             System.err.println("showing user it's options");
             System.out.println("commands you can enter :\n" +
-                    "select user [username] with deck [deck name] and game mode [game mode] [number of flags/max number of turn having flag (optional)]\n"
+                    "select user [username] with deck [deck name] and game mode [game mode] [number of flags/max number" +
+                    "x of turn having flag (optional)]\n"
             );
         }
         Pattern pattern = Pattern.compile("select user (\\w+) with deck (\\w+) and game mode (\\w+)\\s*(\\d+)*");

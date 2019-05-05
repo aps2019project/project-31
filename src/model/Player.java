@@ -34,7 +34,7 @@ public class Player {
         this.graveYard = new ArrayList<>();
         try {
             this.currentDeck = new Deck("temp: " + account.getTheMainDeck().getDeckName(),
-                    account.getTheMainDeck().getHero().duplicateDeployed(battle),
+                    account.getTheMainDeck().getHero().duplicateDeployed(battle,account),
                     account.getTheMainDeck().getItem());
         }catch (Exception e){
             System.err.println("the deck in account in player is null!!");

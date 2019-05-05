@@ -27,7 +27,7 @@ public class Hero extends Deployable {
     }
 
 
-    public Hero duplicateDeployed(BattleManager battleManager) {
+    public Hero duplicateDeployed(BattleManager battleManager,Account account) {
         Cell cell;
         if (this.account.equals(battleManager.getPlayer1())) {
             cell = Map.getCell(3, 1);

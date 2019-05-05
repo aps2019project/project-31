@@ -72,7 +72,7 @@ public class BattleManager {
     public boolean playMinion(Minion minion, int x1, int x2) {
 
         int uniqueId = generateUniqueId(minion.id);
-        Minion theMinion = minion.duplicateDeployed(Map.getCell(x1, x2));
+        Minion theMinion = minion.duplicateDeployed(Map.getCell(x1, x2),currentPlayer.account);
         Map.putCardInCell(theMinion, x1, x2);
         if (Map.getCell(x1, x2).doesHaveFlag()) {
             Map.getCell(x1, x2).setHasFlag(false);

@@ -6,7 +6,6 @@ import java.util.Arrays;
 public class Buff {
     BuffType buffType;
     private int turnsLeft;
-
     boolean isBeneficial;
     private boolean isContinuous;
     private boolean isActive;
