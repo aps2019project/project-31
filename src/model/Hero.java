@@ -30,7 +30,7 @@ public class Hero extends Deployable {
 
     public Hero duplicateDeployed() {
         Cell cell;
-        if (this.account.equals())
+       // if (this.account.equals())
         return new Hero(this.price, this.manaCost, this.cardText, this.functions, account, name, id, type, true,
                 true, true, cell, attackRange, currentHealth, currentAttack, id, attackType,
                 isCombo, maxHealth, attack, health, heroSpell);
