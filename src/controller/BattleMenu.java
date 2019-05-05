@@ -87,7 +87,7 @@ public class BattleMenu extends Menu {
 
 
     public void run() {
-        if (!account.getTheMainDeck().checkIfValid())
+        if (!Account.getMainAccount().getTheMainDeck().checkIfValid())
             return;
         while (true) {
             /*View.showModes();

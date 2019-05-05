@@ -9,10 +9,13 @@ public class MenuManager {
     private ParentMenu currentMenu;
 
     private static ParentMenu mainMenu;
+
     private static ParentMenu loginMenu;
     private static ParentMenu battleMenu;
     private static ParentMenu shopMenu;
     private static ParentMenu collectionMenu;
+    private static ParentMenu singlePlayerMenu;
+    private static ParentMenu multiPlayerMenu;
 
     public static ParentMenu getMainMenu() {
         return mainMenu;
@@ -56,6 +59,13 @@ public class MenuManager {
         shopMenu = new ParentMenu(Menu.Id.SHOP_MENU, "Shop Menu");
 
         battleMenu = new ParentMenu(Menu.Id.BATTLE_MENU, "Battle Menu");
+
+        singlePlayerMenu = new ParentMenu(Menu.Id.SINGLE_PLAYER_MENU, "Single Player Menu");
+
+        multiPlayerMenu = new ParentMenu(Menu.Id.MULTI_PLAYER_MENU, "Multi Player Menu");
+
+        battleMenu.addSubMenu(singlePlayerMenu);
+        battleMenu.addSubMenu(multiPlayerMenu);
 
         collectionMenu.addSubMenu(shopMenu);
 

@@ -1,6 +1,7 @@
 package view;
 
 import controller.*;
+import model.Account;
 import model.BattleManager;
 import model.Player;
 
@@ -101,7 +102,6 @@ public class Input {
             if (menuManager.getCurrentMenu().getId() == Menu.Id.MAIN_MENU) {
                 MenuManager.exitGame();
             }
-            System.err.println("going back...");
             menuManager.back();
         }
     }
@@ -149,7 +149,7 @@ public class Input {
             System.out.println("commands you can enter :\n" +
                     "-show\n" +
                     "-save\n" +
-                    "-search [card1 name] [card2 name] ...\n" +
+                    "-search [card1 name],[card2 name],[...\n" +
                     "-create deck [deck name]\n" +
                     "-delete deck [deck name]\n" +
                     "-add [card ids] to deck [deck name]\n" +
@@ -235,10 +235,10 @@ public class Input {
             System.out.println("commands you can enter :\n" +
                     "-show\n" +
                     "-show collection\n" +
-                    "-search cards [card1 name] [card2 name] ...\n" +
-                    "-search collection [card1 name] [card2 name] ...\n" +
-                    "-buy [card1 name] [card2 name] ...\n" +
-                    "-sell [card1 name] [card2 name] ..."
+                    "-search cards [card1 name],[card2 name],[...\n" +
+                    "-search collection [card1 name],[card2 name],[...\n" +
+                    "-buy [card1 name],[card2 name],[...\n" +
+                    "-sell [card1 name],[card2 name],[..."
             );
             System.err.println("showing all cards :");
             Shop.showAllCards();
@@ -289,6 +289,50 @@ public class Input {
     public static void handleCommandsInLoginMenu() {
         String input = scanner.nextLine();
         checkGenerals(input);
+        if (input.equalsIgnoreCase("help")) {
+            System.err.println("showing user it's options");
+            System.out.println("commands you can enter :\n" +
+                    "-create account [username]\n" +
+                    "-login [username]\n" +
+                    ""
+            );
+        }
+        Pattern pattern = Pattern.compile("create account (\\w+)\\s*");
+        Matcher matcher = pattern.matcher(input);
+        if (matcher.matches()) {
+            Output.print("enter your password:");
+            String username = matcher.group(1).trim();
+            String password = scanner.nextLine();
+            System.err.println("checking..");
+            if (Account.findAccount(username) != null) {
+                System.out.println("this username is already taken");
+                return;
+            }
+            Account account = Account.createAccount(username, password.trim());
+            Account.setMainAccount(account);
+            System.err.println("account created");
+            return;
+        }
+        pattern = Pattern.compile("login (\\w+)\\s*");
+        matcher = pattern.matcher(input);
+        if (matcher.matches()) {
+            System.out.println("enter password");
+            String password = scanner.nextLine();
+            String username = matcher.group(1).trim();
+            Account account = Account.findAccount(username);
+            if (account == null) {
+                System.out.println("account does not exist!");
+                return;
+            }
+            if (account.getPassword().equals(password)) {
+                System.out.println("login successful");
+                Account.setMainAccount(account);
+                return;
+            } else {
+                System.out.println("incorrect password");
+                return;
+            }
+        }
     }
 
     public void onItemClicked(int id) {
