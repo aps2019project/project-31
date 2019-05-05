@@ -63,7 +63,11 @@ public class CollectionMenu extends Menu {
     }
 
     public static void showAllDecks() {
-        Account.getMainAccount().getTheMainDeck().show();
+       try {
+           Account.getMainAccount().getTheMainDeck().show();
+       }catch (NullPointerException e){
+           System.err.println("main deck not initialized yet");
+       }
         for (Deck deck : Account.getMainAccount().getDecks()) {
             if (deck != Account.getMainAccount().getTheMainDeck())
                 deck.show();
@@ -127,7 +131,9 @@ public class CollectionMenu extends Menu {
     }
 
     public static void showAllMyCards() {
-
+        for (Card card: Account.getMainAccount().getCollection()) {
+            Output.print(card.toString());
+        }
     }
 
     public static void saveAndGoBack() {

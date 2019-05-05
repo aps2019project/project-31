@@ -14,7 +14,9 @@ public class Spell extends Card {
 
     public String toString() {
         return "Type: Spell - Name: "
-                + this.getName()
+                + this.name
+                + " id : "
+                + this.id
                 + " - MP : "
                 + this.manaCost
                 + " - Desc: "

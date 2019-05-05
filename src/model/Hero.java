@@ -33,8 +33,10 @@ public class Hero extends Deployable {
     }
 
     public String toString() {
-        return " Name: "
-                + getName()
+        return " Name : "
+                + this.name
+                + " id : "
+                + this.id
                 + " - AP : "
                 + attack
                 + " - HP : "

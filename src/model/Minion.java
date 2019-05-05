@@ -39,6 +39,8 @@ public class Minion extends Deployable {
     public String toString() {
         return "Type : Minion - Name : "
                 + this.name
+                + " id : "
+                + this.id
                 + " - Class : "
                 + this.attackType
                 + " - AP : "
