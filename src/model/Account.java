@@ -8,13 +8,13 @@ public class Account {
 
     private static Account mainAccount;
 
-    private ArrayList<Card> collection;
+    private ArrayList<Card> collection = new ArrayList<>();
     private int daric;
     private ArrayList<Deck> decks = new ArrayList<>();
     private Deck theMainDeck;
     private String username;
     private String password;
-    private ArrayList<MatchHistory> matchHistories;
+    private ArrayList<MatchHistory> matchHistories = new ArrayList<>();
     private int[] winLoseDraw = new int[3];
 
     public String getPassword() {

@@ -34,7 +34,6 @@ public class Input {
         Input.menuManager = menuManager;
     }
 
-
     public static String giveMeInput() {
         return scanner.nextLine();
     }
@@ -152,8 +151,6 @@ public class Input {
             BattleMenu.getBattleManager().getCurrentPlayer().showNextCard();
         } else if (input.equalsIgnoreCase("enter graveyard"))
             enterGraveYard();
-
-
         BattleMenu.getBattleManager().checkTheEndSituation();
     }
 
@@ -359,6 +356,7 @@ public class Input {
             Account account = Account.createAccount(username, password.trim());
             Account.setMainAccount(account);
             System.err.println("account created");
+            menuManager.back();
             return;
         }
         pattern = Pattern.compile("login (\\w+)\\s*");
