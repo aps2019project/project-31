@@ -40,11 +40,12 @@ public class Menu {
         public static final int BATTLE_MENU = 4;
         public static final int SINGLE_PLAYER_MENU = 5;
         public static final int MULTI_PLAYER_MENU = 6;
+        public static final int SINGLE_PLAYER_CUSTOM_MENU = 7;
+        public static final int SINGLE_PLAYER_STORY_MENU = 8;
+        public static final int BACK = 9;
 
-        public static final int BACK = 7;
+        public static final int HELP = 10;
 
-        public static final int HELP = 8;
-
-        public static final int EXIT = 9;
+        public static final int EXIT = 11;
     }
 }

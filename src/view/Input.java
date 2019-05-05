@@ -91,7 +91,18 @@ public class Input {
                 case Menu.Id.SHOP_MENU:
                     handleCommandsInShop();
                     break;
-
+                case Menu.Id.SINGLE_PLAYER_MENU:
+                    handleCommandsInSinglePlayerMenu();
+                    break;
+                case Menu.Id.MULTI_PLAYER_MENU:
+                    handleCommandsInMultiPlayerMenu();
+                    break;
+                case Menu.Id.SINGLE_PLAYER_CUSTOM_MENU:
+//                    handleCommandsInSinglePlayerCustomMenu();
+                    break;
+                case Menu.Id.SINGLE_PLAYER_STORY_MENU:
+//                    handleCommandsInSinglePlayerStoryMenu();
+                    break;
             }
         }
     }
@@ -230,6 +241,7 @@ public class Input {
         if (matcher.matches()) {
             System.err.println("deleting deck");
             CollectionMenu.deleteDeck(matcher.group(1));
+            System.err.println("deck '" + matcher.group(1)+ "' deleted");
             return;
         }
         pattern = Pattern.compile("add ((\\d+,*)+) to deck (\\w+)\\s*");
@@ -238,6 +250,7 @@ public class Input {
             System.err.println("adding cards to deck");
             String[] numbers = matcher.group(1).trim().split(",");
             CollectionMenu.addCardsToDeck(numbers, matcher.group(3).trim());
+            System.err.println("cards added");
             return;
         }
         pattern = Pattern.compile("remove ((\\d+,*)+) from deck (\\w+)\\s*");
@@ -246,6 +259,7 @@ public class Input {
             System.err.println("removing card from deck");
             String[] numbers = matcher.group(1).trim().split(",");
             CollectionMenu.removeCardsFromDeck(numbers, matcher.group(3).trim());
+            System.err.println("removed");
             return;
         }
         if (input.matches("validate deck \\w+")) {
@@ -329,7 +343,21 @@ public class Input {
         }
     }
 
-    public static void handleCommandsInSinglePlayerStory(BattleMenu battleMenu) {
+    private static void handleCommandsInMultiPlayerMenu() {
+    }
+
+    private static void handleCommandsInSinglePlayerMenu() {
+        String input = scanner.nextLine();
+        checkGenerals(input);
+        if(input.equalsIgnoreCase("help")){
+            System.err.println("showing user it's options");
+            System.out.println("commands you can enter :\n" +
+                    ""
+            );
+        }
+    }
+
+    public static void handleCommandsInSinglePlayerStoryMenu(BattleMenu battleMenu) {
         String input = scanner.nextLine();
         checkGenerals(input);
         if (input.equalsIgnoreCase("story_1")) {
@@ -346,7 +374,7 @@ public class Input {
         }
     }
 
-    public static void handleCommandsInSinglePlayerCustom(BattleMenu battleMenu) {
+    public static void handleCommandsInSinglePlayerCustomMenu(BattleMenu battleMenu) {
         String input = scanner.nextLine();
         Pattern pattern = Pattern.compile("start game (\\w+)\\s*(\\d+)*");
         Matcher matcher = pattern.matcher(input);
