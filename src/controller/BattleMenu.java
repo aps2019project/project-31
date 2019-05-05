@@ -39,14 +39,21 @@ public class BattleMenu extends Menu {
         return battleManager;
     }
 
-    private void setBattleManagerMode() {
+    public static void setBattleManagerMode() {
         //       battleManager = new ();
 
 
-        runTheGame(battleManager);
     }
 
-    private void runTheGame(BattleManager battleManager) {
+    public static void setBattleManagerMode(BattleManager battleManager) {
+        // battleManager = new
+    }
+
+    public void doAllAtTheBeginingOfTurnThings(){
+        battleManager.assignManaToPlayers();
+
+    }
+    public void runTheGame() {
         boolean isPlayer1Turn = false;
         battleManager.setCurrentPlayer(battleManager.getPlayer2());
         battleManager.applyItemFunctions(battleManager.getCurrentPlayer().getHero(), FunctionType.GameStart);
@@ -54,7 +61,7 @@ public class BattleMenu extends Menu {
         while (true) {
             isPlayer1Turn = !isPlayer1Turn;
             battleManager.setCurrentPlayer(battleManager.getOtherPlayer());
-            battleManager.assignManaToPlayers();
+
             if (battleManager.getCurrentPlayer().isAi()) {
                 ((Ai) battleManager.getCurrentPlayer()).play();
             } else {
@@ -75,7 +82,7 @@ public class BattleMenu extends Menu {
         }
     }
 
-    private void doAllThingsInEndingOfTheTurns() {
+    private static void doAllThingsInEndingOfTheTurns() {
         battleManager.applyItemFunctions(battleManager.getPlayer1().getHero(), FunctionType.Passive);
         battleManager.getCurrentPlayer().placeNextCardToHand();
         battleManager.getCurrentPlayer().endOfTurnBuffsAndFunctions();
@@ -86,6 +93,10 @@ public class BattleMenu extends Menu {
             battleManager.getPlayer2().handleNumberOfTurnHavingFlagAtTheEndOfTurn();
         }
         battleManager.addTurn();
+        if(battleManager.getPlayer1().isIncreaseManaApplied())
+            battleManager.getPlayer1().setIncreaseOfManaNextHand(0);
+        if(battleManager.getPlayer2().isIncreaseManaApplied())
+            battleManager.getPlayer2().setIncreaseOfManaNextHand(0);
     }
 
 
@@ -97,7 +108,7 @@ public class BattleMenu extends Menu {
         while (true) {
 
             Output.showGameModes();
-            handleInputCommand();
+
             //if (out)
             //    break;
         }
@@ -113,11 +124,6 @@ public class BattleMenu extends Menu {
 
     }
 
-    private void handleInputCommand() {
-
-
-        setBattleManagerMode();
-    }
 
     public static void prepareComboAttack(String[] strNumbers, int opponentCardId) {
         ArrayList<Deployable> validCards = new ArrayList<>();

@@ -5,6 +5,7 @@ import model.Account;
 import model.BattleManager;
 import model.Deployable;
 import model.Player;
+import model.Story;
 
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -90,6 +91,7 @@ public class Input {
                 case Menu.Id.SHOP_MENU:
                     handleCommandsInShop();
                     break;
+
             }
         }
     }
@@ -323,6 +325,39 @@ public class Input {
             System.err.println("selling cards");
             String[] cardNames = matcher.group(1).trim().split(",");
             Shop.sellCardsByName(cardNames);
+        }
+    }
+
+    public static void handleCommandsInSinglePlayerStory(BattleMenu battleMenu) {
+        String input = scanner.nextLine();
+        checkGenerals(input);
+        if (input.equalsIgnoreCase("story_1")) {
+            BattleMenu.setBattleManagerMode(Story.getFirstBattleManager());
+            battleMenu.runTheGame();
+        }
+        if (input.equalsIgnoreCase("story_2")) {
+            BattleMenu.setBattleManagerMode(Story.getSecondBattleManager());
+            battleMenu.runTheGame();
+        }
+        if (input.equalsIgnoreCase("story_3")) {
+            BattleMenu.setBattleManagerMode(Story.getThirdBattleManager());
+            battleMenu.runTheGame();
+        }
+    }
+
+    public static void handleCommandsInSinglePlayerCustom(BattleMenu battleMenu) {
+        String input = scanner.nextLine();
+        Pattern pattern = Pattern.compile("start game (\\w+)\\s*(\\d+)*");
+        Matcher matcher = pattern.matcher(input);
+        if (matcher.matches()) {
+         /*   try {
+
+                BattleMenu.setBattleManagerMode(Player loadingRegularPlayer, matcher.group(1),
+                        Integer.parseInt(matcher.group(2)));
+            } catch (Exception e) {
+                BattleMenu.setBattleManagerMode(Player loadingRegularPlayer, matcher.group(1), 0);
+            }*/
+            battleMenu.runTheGame();
         }
     }
 
