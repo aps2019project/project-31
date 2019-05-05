@@ -1021,8 +1021,8 @@ public class BattleManager {
         player2.duplicateTheDeck();
         Collections.shuffle(player1.currentDeck.getCards());
         Collections.shuffle(player2.currentDeck.getCards());
-        Map.getCell(3, 1).setCardInCell(player1.getHero().deepClone());
-        Map.getCell(3, 9).setCardInCell(player2.getHero().deepClone());
+//        Map.getCell(3, 1).setCardInCell(player1.getHero().deepClone());
+//        Map.getCell(3, 9).setCardInCell(player2.getHero().deepClone());
         initialTheHands();
         generateFlags();
     }
