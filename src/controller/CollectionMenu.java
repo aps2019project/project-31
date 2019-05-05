@@ -12,11 +12,10 @@ import java.util.ArrayList;
 public class CollectionMenu extends Menu {
     private static ArrayList<Card> collection = new ArrayList<>();
     private static Deck editingDeck;
-    private static Account account;
 
     public static void createDeck(String name) {
         Deck deck = new Deck(name);
-        account.addDeck(deck);
+        Account.getMainAccount().addDeck(deck);
         editingDeck = deck;
     }
 
@@ -60,13 +59,13 @@ public class CollectionMenu extends Menu {
         selectDeck(deckName);
         checkValidationOfDeck(deckName);
         if (editingDeck.checkIfValid())
-            account.setTheMainDeck(editingDeck);
+            Account.getMainAccount().setTheMainDeck(editingDeck);
     }
 
     public static void showAllDecks() {
-        account.getTheMainDeck().show();
-        for (Deck deck : account.getDecks()) {
-            if (deck != account.getTheMainDeck())
+        Account.getMainAccount().getTheMainDeck().show();
+        for (Deck deck : Account.getMainAccount().getDecks()) {
+            if (deck != Account.getMainAccount().getTheMainDeck())
                 deck.show();
         }
     }
@@ -104,7 +103,7 @@ public class CollectionMenu extends Menu {
             Output.thereIsntDeck();
             return;
         }
-        account.getDecks().remove(findDeckByName(deckName));
+        Account.getMainAccount().getDecks().remove(findDeckByName(deckName));
     }
 
     public static void selectDeck(String deckName) {
@@ -116,17 +115,12 @@ public class CollectionMenu extends Menu {
     }
 
     private static Deck findDeckByName(String deckName) {
-        for (Deck deck : account.getDecks()) {
+        for (Deck deck : Account.getMainAccount().getDecks()) {
             if (deck.getDeckName().equals(deckName))
                 return deck;
         }
         return null;
     }
-
-    public static void setAccount(Account account) {
-        CollectionMenu.account = account;
-    }
-
 
     public static ArrayList<Card> getCollection() {
         return collection;

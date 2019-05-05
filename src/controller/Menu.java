@@ -6,7 +6,6 @@ public class Menu {
     protected int id;
     protected String title;
     protected transient ParentMenu parent;
-    protected Account account;
 
     public Menu(int id, String title) {
         this.id = id;
@@ -38,14 +37,14 @@ public class Menu {
         public static final int LOGIN_MENU = 1;
         public static final int COLLECTION_MENU = 2;
         public static final int SHOP_MENU = 3;
-
         public static final int BATTLE_MENU = 4;
-        public static final int BATTLE = 8;
+        public static final int SINGLE_PLAYER_MENU = 5;
+        public static final int MULTI_PLAYER_MENU = 6;
 
-        public static final int BACK = 5;
+        public static final int BACK = 7;
 
-        public static final int HELP = 6;
+        public static final int HELP = 8;
 
-        public static final int EXIT = 7;
+        public static final int EXIT = 9;
     }
 }

@@ -90,8 +90,8 @@ public class Output {
         card.show();
     }
 
-    public static void print(String outpt) {
-        System.out.println(outpt);
+    public static void print(String output) {
+        System.out.println(output);
     }
     public static void showGameModes(){
         System.out.println("1.Single player\n2.Multi player");

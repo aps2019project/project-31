@@ -5,15 +5,44 @@ import java.util.Collections;
 
 public class Account {
     private static ArrayList<Account> allAccounts = new ArrayList<>();
+
     private static Account mainAccount;
+
     private ArrayList<Card> collection;
     private int daric;
-    private ArrayList<Deck> decks;
+    private ArrayList<Deck> decks = new ArrayList<>();
     private Deck theMainDeck;
     private String username;
     private String password;
     private ArrayList<MatchHistory> matchHistories;
     private int[] winLoseDraw = new int[3];
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public static Account getMainAccount() {
+        return mainAccount;
+    }
+
+    public static void setMainAccount(Account mainAccount) {
+        Account.mainAccount = mainAccount;
+    }
+
+    public Account(String username, String password, int daric){
+        this.username = username;
+        this.password = password;
+        this.daric = daric;
+        allAccounts.add(this);
+    }
+
+    public static Account createAccount(String username, String password) {
+        return new Account(username, password, Integer.MAX_VALUE);
+    }
 
     public ArrayList<Card> getCollection() {
         return collection;
@@ -47,7 +76,7 @@ public class Account {
         return account != null && account.password.equals(password);
     }
 
-    private static Account findAccount(String username) {
+    public static Account findAccount(String username) {
         for (Account account : allAccounts) {
             if (account.username.equals(username)) {
                 return account;
@@ -90,10 +119,6 @@ public class Account {
 
     public static ArrayList<Account> getAllAccounts() {
         return allAccounts;
-    }
-
-    public static Account getMainAccount() {
-        return mainAccount;
     }
 
     public void setTheMainDeck(Deck theMainDeck) {
