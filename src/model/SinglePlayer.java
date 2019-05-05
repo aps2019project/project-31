@@ -3,11 +3,20 @@ package model;
 import constants.GameMode;
 import controller.Menu;
 
-public class SinglePlayer extends Menu {
+public class SinglePlayer extends BattleManager {
 
+    private static Player aiPlayer;
 
-    public SinglePlayer(int id, String title) {
-        super(id, title);
+    public SinglePlayer(Player player1, Player player2, int maxNumberOfFlags, int maxTurnsOfHavingFlag) {
+        super(player1, player2, maxNumberOfFlags, maxTurnsOfHavingFlag);
     }
 
+    static{
+        Account AIAccount = new Account("AI","beepboop",100000);
+        aiPlayer = new Ai(AIAccount);
+    }
+
+    public static Player getAiPlayer() {
+        return aiPlayer;
+    }
 }

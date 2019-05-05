@@ -1,5 +1,6 @@
 package view;
 
+import constants.BattleManagerMode;
 import controller.*;
 import model.Account;
 import model.BattleManager;
@@ -361,15 +362,16 @@ public class Input {
         String input = scanner.nextLine();
         checkGenerals(input);
         if (input.equalsIgnoreCase("story_1")) {
-            BattleMenu.setBattleManagerMode(Story.getFirstBattleManager());
+            //you have to set the story deck here, not the game mode. game mode is set when it's selected
+            BattleMenu.setBattleManagerMode();
             battleMenu.runTheGame();
         }
         if (input.equalsIgnoreCase("story_2")) {
-            BattleMenu.setBattleManagerMode(Story.getSecondBattleManagerDeck());
+          //  BattleMenu.setBattleManagerMode(BattleManagerMode.);
             battleMenu.runTheGame();
         }
         if (input.equalsIgnoreCase("story_3")) {
-            BattleMenu.setBattleManagerMode(Story.getThirdBattleManagerDeck());
+           // BattleMenu.setBattleManagerMode(Story.getThirdBattleManagerDeck());
             battleMenu.runTheGame();
         }
     }

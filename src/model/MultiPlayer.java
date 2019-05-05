@@ -3,9 +3,9 @@ package model;
 import constants.GameMode;
 import controller.Menu;
 
-public class MultiPlayer extends Menu {
+public class MultiPlayer extends BattleManager{
 
-    public MultiPlayer(int id, String title) {
-        super(id, title);
+    public MultiPlayer(Player player1, Player player2, int maxNumberOfFlags, int maxTurnsOfHavingFlag) {
+        super(player1, player2, maxNumberOfFlags, maxTurnsOfHavingFlag);
     }
 }

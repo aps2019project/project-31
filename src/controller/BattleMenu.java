@@ -45,8 +45,15 @@ public class BattleMenu extends Menu {
 
     }
 
-    public static void setBattleManagerMode(BattleManager battleManager) {
+    public static void setBattleManagerMode(BattleManagerMode battleManagerMode) {
         // battleManager = new
+        switch (battleManagerMode){
+            case Story:
+
+                break;
+            case Multiplayer:
+            case CustomGame:
+        }
     }
 
     public void doAllAtTheBeginingOfTurnThings() {

@@ -10,7 +10,10 @@ public class Story extends SinglePlayer {
     private static Deck firstBattleManagerDeck;
     private static Deck secondBattleManagerDeck;
     private static Deck thirdBattleManagerDeck;
-    private static Player aiPlayer;
+
+    public Story(Player player1, Player player2, int maxNumberOfFlags, int maxTurnsOfHavingFlag) {
+        super(player1, player2, maxNumberOfFlags, maxTurnsOfHavingFlag);
+    }
 
     public static void loadStoryDecks(){
         YaGson yaGson = new YaGsonBuilder().create();
@@ -25,15 +28,9 @@ public class Story extends SinglePlayer {
         }
     }
 
-    public static void makeAI(){
-        Account AIAccount = new Account("AI","beepboop",100000);
-        aiPlayer = new Ai(AIAccount);
-    }
 
-    public Story(int id, String title, ArrayList<Deck> decks) {
-        super(id, title);
-        this.decks = decks;
-    }
+
+
 
     public static Deck getFirstBattleManagerDeck() {
         return firstBattleManagerDeck;
@@ -47,16 +44,11 @@ public class Story extends SinglePlayer {
         return thirdBattleManagerDeck;
     }
 
-    public static Player getAiPlayer() {
-        return aiPlayer;
-    }
-
-    public ArrayList<Deck> getDecks() {
-        return decks;
-    }
 
 
 
-    private ArrayList<Deck> decks;
+
+
+
 
 }
