@@ -35,6 +35,7 @@ public class BattleManager {
         setPlayer2(player2);
     }
 
+
     public static void setPlayer1(Player player1) {
         BattleManager.player1 = player1;
     }

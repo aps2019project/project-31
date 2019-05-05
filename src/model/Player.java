@@ -9,8 +9,7 @@ import java.util.ConcurrentModificationException;
 
 public class Player {
     protected Account account;
-    protected Deck currentDeck = new Deck("deck in game", account.getTheMainDeck().getHero().duplicateHero(),
-            account.getTheMainDeck().getItem());
+    protected Deck currentDeck;
     protected int mana;
     protected int remainingTime;
     protected int numberOfFlags;
@@ -25,20 +24,24 @@ public class Player {
     private boolean isAi;
     protected int[] manaChangerInTurn = new int[40];
 
-    public boolean isAi() {
-        return isAi;
-    }
 
     public Player(Account account, ArrayList<Deployable> cardsOnBattleField, ArrayList<Deployable> graveYard,
                   BattleManager battle) {
         this.account = account;
-        this.currentDeck = account.getTheMainDeck();
         this.numberOfFlags = 0;
         this.numberOfTurnsHavingFlag = 0;
         this.hand = new ArrayList<>();
         this.cardsOnBattleField = new ArrayList<>();
         this.graveYard = new ArrayList<>();
         this.battle = battle;
+        this.currentDeck = new Deck("temp: " + account.getTheMainDeck().getDeckName(),
+                account.getTheMainDeck().getHero().duplicateDeployed(battle),
+                account.getTheMainDeck().getItem());
+
+    }
+
+    public boolean isAi() {
+        return isAi;
     }
 
     public Player(Account account) {
