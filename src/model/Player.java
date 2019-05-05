@@ -167,7 +167,7 @@ public class Player {
             }
         }
         for (Deployable card : cardsOnBattleField) {
-            if (cardId == card.getUniqueId()) {
+            if (card !=null && cardId == card.getUniqueId()) {
                 selectedCard = card;
                 return true;
             }
@@ -178,7 +178,7 @@ public class Player {
     public void placeNextCardToHand() {
         if (hand.size() < 6) {
             hand.add(cardInReplace);
-            Collections.shuffle(currentDeck.getCards());
+            //    Collections.shuffle(currentDeck.getCards());
             cardInReplace = currentDeck.getCards().get(0);
             currentDeck.getCards().remove(0);
         }
@@ -186,7 +186,7 @@ public class Player {
 
     public boolean doesPlayerHaveDeployable(Deployable card) {
         for (Deployable deployable : cardsOnBattleField) {
-            if (deployable.equals(card))
+            if (deployable!=null && deployable.equals(card))
                 return true;
         }
         return false;
@@ -202,7 +202,7 @@ public class Player {
 
     public boolean doesHaveTheFlag() {
         for (Deployable card : cardsOnBattleField) {
-            if (card.hasFlag)
+            if (card != null && card.hasFlag)
                 return true;
         }
         return false;
@@ -222,6 +222,8 @@ public class Player {
 
     private void applyPassiveAndPoisonBuffs() {
         for (Deployable card : cardsOnBattleField) {
+            if (card == null)
+                continue;
             for (int i = 0; i < card.functions.size(); i++) {
                 if (card.functions.get(i).getFunctionType() == FunctionType.Passive) {
                     battle.compileFunction(card.functions.get(i), card.cell.getX1Coordinate(),
@@ -241,6 +243,8 @@ public class Player {
     public void buffsChangesAtTheEndOfTurn() {
         for (Deployable card : cardsOnBattleField) {
             for (int i = 0; i < card.buffs.size(); i++) {
+                if (card == null)
+                    break;
                 card.buffs.get(i).decreaseTurnsLeft();
                 if (!card.buffs.get(i).isContinuous() && card.buffs.get(i).getTurnsLeft() <= 0) {
                     card.buffs.remove(i);
@@ -255,7 +259,7 @@ public class Player {
 
     public boolean isSelectedCardDeployed() {
         for (Deployable card : cardsOnBattleField) {
-            if (card.equals(selectedCard))
+            if (card != null && card.equals(selectedCard))
                 return true;
         }
         return false;
@@ -273,7 +277,7 @@ public class Player {
 
     public void showHand() {
         for (Card card : hand) {
-            if(card!=null)
+            if (card != null)
                 card.show();
         }
     }
