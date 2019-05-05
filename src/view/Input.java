@@ -210,8 +210,8 @@ public class Input {
                     "-search [card1 name],[card2 name],[...\n" +
                     "-create deck [deck name]\n" +
                     "-delete deck [deck name]\n" +
-                    "-add [card ids] to deck [deck name]\n" +
-                    "-remove [card ids] from deck [deck name]\n" +
+                    "-add [card1 id],[card2 id],[...] to deck [deck name]\n" +
+                    "-remove [card1 id],[card2 id],[...] from deck [deck name]\n" +
                     "-validate deck [deck name]\n" +
                     "-select deck [deck name]\n" +
                     "-show deck [deck name]\n" +

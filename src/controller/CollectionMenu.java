@@ -38,7 +38,6 @@ public class CollectionMenu extends Menu {
                 Output.print("card :" + number + " is not in your collection");
             }
         }
-
     }
 
     public static void removeCardsFromDeck(String[] numbers, String deckName) {
