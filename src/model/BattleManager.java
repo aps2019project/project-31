@@ -19,7 +19,7 @@ public class BattleManager {
     public static final String CONTINUOUS = "continuous";
     protected Map map;
     protected static GameMode gameMode;
-    protected Player currentPlayer;
+    protected static Player currentPlayer;
     protected static Player player1;
     protected static Player player2;
     protected final int maxNumberOfFlags;

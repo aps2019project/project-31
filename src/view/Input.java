@@ -337,11 +337,11 @@ public class Input {
             battleMenu.runTheGame();
         }
         if (input.equalsIgnoreCase("story_2")) {
-            BattleMenu.setBattleManagerMode(Story.getSecondBattleManager());
+            BattleMenu.setBattleManagerMode(Story.getSecondBattleManagerDeck());
             battleMenu.runTheGame();
         }
         if (input.equalsIgnoreCase("story_3")) {
-            BattleMenu.setBattleManagerMode(Story.getThirdBattleManager());
+            BattleMenu.setBattleManagerMode(Story.getThirdBattleManagerDeck());
             battleMenu.runTheGame();
         }
     }

@@ -1,34 +1,61 @@
 package model;
 
-import constants.GameMode;
-import controller.BattleMenu;
+import com.gilecode.yagson.YaGson;
+import com.gilecode.yagson.YaGsonBuilder;
 
+import java.io.*;
 import java.util.ArrayList;
 
 public class Story extends SinglePlayer {
-    private static BattleManager firstBattleManager;
-    private static BattleManager secondBattleManager;
-    private static BattleManager thirdBattleManager;
+    private static Deck firstBattleManagerDeck;
+    private static Deck secondBattleManagerDeck;
+    private static Deck thirdBattleManagerDeck;
+    private static Player aiPlayer;
+
+    public static void loadStoryDecks(){
+        YaGson yaGson = new YaGsonBuilder().create();
+        String path = System.getProperty("user.dir") + "/Sources/Story Decks/storyDecks.txt";
+        try(BufferedReader bufferedReader = new BufferedReader(new FileReader(path))){
+            String line = bufferedReader.readLine();
+            firstBattleManagerDeck = yaGson.fromJson(line, Deck.class);
+            secondBattleManagerDeck = yaGson.fromJson(bufferedReader.readLine(), Deck.class);
+            thirdBattleManagerDeck = yaGson.fromJson(bufferedReader.readLine(), Deck.class);
+        }catch (IOException e){
+
+        }
+    }
+
+    public static void makeAI(){
+        Account AIAccount = new Account("AI","beepboop",100000);
+        aiPlayer = new Ai(AIAccount);
+    }
+
     public Story(int id, String title, ArrayList<Deck> decks) {
         super(id, title);
         this.decks = decks;
     }
 
-    public static BattleManager getSecondBattleManager() {
-        return secondBattleManager;
+    public static Deck getFirstBattleManagerDeck() {
+        return firstBattleManagerDeck;
     }
 
-    public static BattleManager getThirdBattleManager() {
-        return thirdBattleManager;
+    public static Deck getSecondBattleManagerDeck() {
+        return secondBattleManagerDeck;
+    }
+
+    public static Deck getThirdBattleManagerDeck() {
+        return thirdBattleManagerDeck;
+    }
+
+    public static Player getAiPlayer() {
+        return aiPlayer;
     }
 
     public ArrayList<Deck> getDecks() {
         return decks;
     }
 
-    public static BattleManager getFirstBattleManager() {
-        return firstBattleManager;
-    }
+
 
     private ArrayList<Deck> decks;
 
