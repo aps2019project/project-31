@@ -9,7 +9,6 @@ public class MenuManager {
     private ParentMenu currentMenu;
 
     private static ParentMenu mainMenu;
-
     private static ParentMenu loginMenu;
     private static ParentMenu battleMenu;
     private static ParentMenu shopMenu;

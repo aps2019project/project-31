@@ -345,6 +345,15 @@ public class Input {
     }
 
     private static void handleCommandsInMultiPlayerMenu() {
+        String input = scanner.nextLine();
+        checkGenerals(input);
+        if(input.equalsIgnoreCase("help")){
+            System.err.println("showing user it's options");
+            System.out.println("commands you can enter :\n" +
+                    "select user [username]\n" +
+                    "start multiplayer game [mode] [number of flags]\n"
+            );
+        }
     }
 
     private static void handleCommandsInSinglePlayerMenu() {
@@ -361,23 +370,36 @@ public class Input {
     public static void handleCommandsInSinglePlayerStoryMenu(BattleMenu battleMenu) {
         String input = scanner.nextLine();
         checkGenerals(input);
-        if (input.equalsIgnoreCase("story_1")) {
-            //you have to set the story deck here, not the game mode. game mode is set when it's selected
-            BattleMenu.setBattleManagerMode();
-            battleMenu.runTheGame();
+        if(input.equalsIgnoreCase("help")){
+            System.err.println("showing user it's options");
+            System.out.println("commands you can enter :\n" +
+                    "-story_1\n" +
+                    "-story_2\n" +
+                    "-story_3"
+            );
         }
-        if (input.equalsIgnoreCase("story_2")) {
-          //  BattleMenu.setBattleManagerMode(BattleManagerMode.);
-            battleMenu.runTheGame();
-        }
-        if (input.equalsIgnoreCase("story_3")) {
-           // BattleMenu.setBattleManagerMode(Story.getThirdBattleManagerDeck());
-            battleMenu.runTheGame();
-        }
+//        if (input.equalsIgnoreCase("story_1")) {
+//            BattleMenu.setBattleManagerMode(Story.getFirstBattleManagerDeck());
+//            battleMenu.runTheGame();
+//        }
+//        if (input.equalsIgnoreCase("story_2")) {
+//            BattleMenu.setBattleManagerMode(Story.getSecondBattleManagerDeck());
+//            battleMenu.runTheGame();
+//        }
+//        if (input.equalsIgnoreCase("story_3")) {
+//            BattleMenu.setBattleManagerMode(Story.getThirdBattleManagerDeck());
+//            battleMenu.runTheGame();
+//        }
     }
 
     public static void handleCommandsInSinglePlayerCustomMenu(BattleMenu battleMenu) {
         String input = scanner.nextLine();
+        if(input.equalsIgnoreCase("help")){
+            System.err.println("showing user it's options");
+            System.out.println("commands you can enter :\n" +
+                ""
+            );
+        }
         Pattern pattern = Pattern.compile("start game (\\w+)\\s*(\\d+)*");
         Matcher matcher = pattern.matcher(input);
         if (matcher.matches()) {
@@ -405,7 +427,9 @@ public class Input {
             System.out.println("commands you can enter :\n" +
                     "-create account [username]\n" +
                     "-login [username]\n" +
-                    ""
+                    "-logout\n" +
+                    "-save\n" +
+                    "-show leaderBoard"
             );
         }
         Pattern pattern = Pattern.compile("create account (\\w+)\\s*");
@@ -444,6 +468,18 @@ public class Input {
                 System.out.println("incorrect password");
                 return;
             }
+        }
+        if(input.equalsIgnoreCase("logout")){
+            Account.setMainAccount(null);
+            return;
+        }
+        if(input.equalsIgnoreCase("save")){
+            //masih!?
+            return;
+        }
+        if(input.equalsIgnoreCase("show leaderBoard")){
+            Output.showLeaderBoard();
+            return;
         }
     }
 
