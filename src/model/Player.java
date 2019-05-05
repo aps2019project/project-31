@@ -22,9 +22,19 @@ public class Player {
     protected Card cardInReplace;
     protected BattleManager battle;
     private boolean isAi;
+    protected int increaseOfManaNextHand = 0;
+    protected boolean increaseManaApplied = false;
 
     public boolean isAi() {
         return isAi;
+    }
+
+    public boolean isIncreaseManaApplied() {
+        return increaseManaApplied;
+    }
+
+    public void setIncreaseManaApplied(boolean increaseManaApplied) {
+        this.increaseManaApplied = increaseManaApplied;
     }
 
     public Player(Account account) {
@@ -33,6 +43,14 @@ public class Player {
 
     public Hero getHero() {
         return currentDeck.getHero();
+    }
+
+    public int getIncreaseOfManaNextHand() {
+        return increaseOfManaNextHand;
+    }
+
+    public void setIncreaseOfManaNextHand(int increaseOfManaNextHand) {
+        this.increaseOfManaNextHand = increaseOfManaNextHand;
     }
 
     public void addCardToBattlefield(Deployable card) {
@@ -238,7 +256,7 @@ public class Player {
 
     public void showCollectibleItems() {
         for (Deployable card : cardsOnBattleField) {
-            if(card.getItem()!=null)
+            if (card.getItem() != null)
                 card.getItem().show();
         }
     }

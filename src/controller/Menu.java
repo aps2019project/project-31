@@ -40,6 +40,7 @@ public class Menu {
         public static final int SHOP_MENU = 3;
 
         public static final int BATTLE_MENU = 4;
+        public static final int BATTLE = 8;
 
         public static final int BACK = 5;
 

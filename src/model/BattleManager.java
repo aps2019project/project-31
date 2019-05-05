@@ -26,6 +26,24 @@ public class BattleManager {
     protected final int maxTurnsOfHavingFlag;
     protected int turn = 1;
 
+
+    public BattleManager(Player player1, Player player2, int maxNumberOfFlags, int maxTurnsOfHavingFlag) {
+        this.currentPlayer = player1;
+        this.maxNumberOfFlags = maxNumberOfFlags;
+        this.maxTurnsOfHavingFlag = maxTurnsOfHavingFlag;
+        setPlayer1(player1);
+        setPlayer2(player2);
+    }
+
+    public static void setPlayer1(Player player1) {
+        BattleManager.player1 = player1;
+    }
+
+    public static void setPlayer2(Player player2) {
+        BattleManager.player2 = player2;
+    }
+
+
     public int getMaxNumberOfFlags() {
         return maxNumberOfFlags;
     }
@@ -46,13 +64,6 @@ public class BattleManager {
         return player2;
     }
 
-    public BattleManager(Map map, GameMode gameMode, Player currentPlayer, int maxNumberOfFlags) {
-        this.map = map;
-        this.currentPlayer = currentPlayer;
-        this.maxNumberOfFlags = maxNumberOfFlags;
-        maxTurnsOfHavingFlag = 0;
-        BattleManager.gameMode = gameMode;
-    }
 
     public static GameMode getGameMode() {
         return gameMode;
@@ -748,11 +759,20 @@ public class BattleManager {
     }
 
     public boolean playSpell(Spell spell, int x1, int x2) {
+        for (Function function: spell.functions) {
+            if(function.getFunctionType()==FunctionType.OnSpawn)
+                compileFunction(function,x1,x2);
+        }
         return true;
     }
 
     public boolean useItem(Item item, int x1, int x2) {
-        return true;
+        for (Function function: item.functions) {
+            if(function.getFunctionType()==FunctionType.OnSpawn)
+                compileFunction(function,x1,x2);
+        }
+    //    if (item.name.equalsIgnoreCase(""))
+            return true;
     }
 
 
@@ -1057,16 +1077,22 @@ public class BattleManager {
 
     public void assignManaToPlayers() {
         if (turn <= 14) {
-            if (currentPlayer == player1)
-                player1.mana = (turn - 1) / 2 + 2;
-            else
-                player2.mana = turn / 2 + 2;
+            if (currentPlayer == player1) {
+                player1.mana = (turn - 1) / 2 + 2 + player1.increaseOfManaNextHand;
+                player1.setIncreaseManaApplied(true);
+            } else {
+                player2.mana = turn / 2 + 2 + player2.increaseOfManaNextHand;
+                player2.setIncreaseManaApplied(true);
+            }
             getOtherPlayer().mana = 0;
         } else {
-            if (currentPlayer == player1)
-                player1.mana = 9;
-            else
-                player2.mana = 9;
+            if (currentPlayer == player1) {
+                player1.mana = 9 + player1.increaseOfManaNextHand;
+                player1.setIncreaseManaApplied(true);
+            } else {
+                player2.mana = 9 + player2.increaseOfManaNextHand;
+                player2.setIncreaseManaApplied(true);
+            }
             getOtherPlayer().mana = 0;
         }
     }
