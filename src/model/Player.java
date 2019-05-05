@@ -9,7 +9,7 @@ import java.util.ConcurrentModificationException;
 
 public class Player {
     protected Account account;
-    protected Deck currentDeck = new Deck("deck in game", account.getTheMainDeck().getHero().duplicateHero());
+    protected Deck currentDeck = new Deck("deck in game", account.getTheMainDeck().getHero().duplicateDeployed());
     protected int mana;
     protected int remainingTime;
     protected int numberOfFlags;
