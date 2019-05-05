@@ -9,7 +9,8 @@ import java.util.ConcurrentModificationException;
 
 public class Player {
     protected Account account;
-    protected Deck currentDeck = new Deck("deck in game", account.getTheMainDeck().getHero().duplicateHero());
+    protected Deck currentDeck = new Deck("deck in game", account.getTheMainDeck().getHero().duplicateHero(),
+            account.getTheMainDeck().getItem());
     protected int mana;
     protected int remainingTime;
     protected int numberOfFlags;
@@ -22,19 +23,22 @@ public class Player {
     protected Card cardInReplace;
     protected BattleManager battle;
     private boolean isAi;
-    protected int increaseOfManaNextHand = 0;
-    protected boolean increaseManaApplied = false;
+    protected int[] manaChangerInTurn = new int[40];
 
     public boolean isAi() {
         return isAi;
     }
 
-    public boolean isIncreaseManaApplied() {
-        return increaseManaApplied;
-    }
-
-    public void setIncreaseManaApplied(boolean increaseManaApplied) {
-        this.increaseManaApplied = increaseManaApplied;
+    public Player(Account account, ArrayList<Deployable> cardsOnBattleField, ArrayList<Deployable> graveYard,
+                  BattleManager battle) {
+        this.account = account;
+        this.currentDeck = account.getTheMainDeck();
+        this.numberOfFlags = 0;
+        this.numberOfTurnsHavingFlag = 0;
+        this.hand = new ArrayList<>();
+        this.cardsOnBattleField = new ArrayList<>();
+        this.graveYard = new ArrayList<>();
+        this.battle = battle;
     }
 
     public Player(Account account) {
@@ -45,12 +49,16 @@ public class Player {
         return currentDeck.getHero();
     }
 
-    public int getIncreaseOfManaNextHand() {
-        return increaseOfManaNextHand;
+    public void decreaseManaInTheTurn(int turn, int addMana) {
+        manaChangerInTurn[turn] += addMana;
     }
 
-    public void setIncreaseOfManaNextHand(int increaseOfManaNextHand) {
-        this.increaseOfManaNextHand = increaseOfManaNextHand;
+    public void increaseManaInTheTurn(int turn, int addMana) {
+        manaChangerInTurn[turn] += addMana;
+    }
+
+    public int[] getManaChangerInTurn() {
+        return manaChangerInTurn;
     }
 
     public void addCardToBattlefield(Deployable card) {

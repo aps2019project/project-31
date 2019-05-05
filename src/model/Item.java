@@ -32,6 +32,8 @@ public class Item extends Card {
     public String toString() {
         return "Type: Item _ Name: "
                 + name
+                + " id : "
+                + id
                 + " _ MP: "
                 + manaCost
                 + " _ Desc: "
