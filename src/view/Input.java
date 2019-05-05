@@ -250,7 +250,7 @@ public class Input {
             System.err.println("adding cards to deck");
             String[] numbers = matcher.group(1).trim().split(",");
             CollectionMenu.addCardsToDeck(numbers, matcher.group(3).trim());
-            System.err.println("cards added");
+            System.err.println("adding cards finished");
             return;
         }
         pattern = Pattern.compile("remove ((\\d+,*)+) from deck (\\w+)\\s*");

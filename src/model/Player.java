@@ -25,8 +25,7 @@ public class Player {
     protected int[] manaChangerInTurn = new int[40];
 
 
-    public Player(Account account, ArrayList<Deployable> cardsOnBattleField, ArrayList<Deployable> graveYard,
-                  BattleManager battle) {
+    public Player(Account account, BattleManager battle) {
         this.account = account;
         this.numberOfFlags = 0;
         this.numberOfTurnsHavingFlag = 0;

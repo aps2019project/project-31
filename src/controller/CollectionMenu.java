@@ -10,7 +10,6 @@ import view.Output;
 import java.util.ArrayList;
 
 public class CollectionMenu extends Menu {
-    private static ArrayList<Card> collection = new ArrayList<>();
     private static Deck editingDeck;
 
     public static void createDeck(String name) {
@@ -22,9 +21,11 @@ public class CollectionMenu extends Menu {
     private static void addCardToDeck(Card card) {
         if (editingDeck.getCards().size() < 19 && editingDeck.numberOfCardInDeck(card) < 3) {
             editingDeck.addCard(card);
+            System.err.println("The card with id: "+ card.getId()+" added");
         }
         if (card.getType() == CardType.hero && editingDeck.getHero() == null) {
             editingDeck.setHero((Hero) card);
+            System.err.println("Hero added");
         }
     }
 
@@ -89,7 +90,7 @@ public class CollectionMenu extends Menu {
     }
 
     private static Card findCardByIdInCollection(int cardId) {
-        for (Card card : collection) {
+        for (Card card : Account.getMainAccount().getCollection()) {
             if (cardId == card.getId())
                 return card;
         }
@@ -97,7 +98,7 @@ public class CollectionMenu extends Menu {
     }
 
     public static void showCardsByNames(String[] names) {
-        for (Card card : collection) {
+        for (Card card : Account.getMainAccount().getCollection()) {
             for (String name : names) {
                 if (card.getName().equals(name))
                     card.show();
@@ -127,10 +128,6 @@ public class CollectionMenu extends Menu {
                 return deck;
         }
         return null;
-    }
-
-    public static ArrayList<Card> getCollection() {
-        return collection;
     }
 
     public static void showAllMyCards() {

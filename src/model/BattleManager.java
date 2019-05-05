@@ -17,7 +17,6 @@ import java.util.regex.Pattern;
 public class BattleManager {
     public static final int PERMANENT = 100;
     public static final String CONTINUOUS = "continuous";
-    protected Map map;
     protected static GameMode gameMode;
     protected Player currentPlayer;
     protected static Player player1;
@@ -73,12 +72,7 @@ public class BattleManager {
     public boolean playMinion(Minion minion, int x1, int x2) {
 
         int uniqueId = generateUniqueId(minion.id);
-        Minion theMinion = new Minion(minion.price, minion.manaCost, minion.cardText, minion.functions, minion.account,
-                minion.name, minion.id, minion.type, minion.isDeployed, true, false,
-                Map.getCell(x1, x2), minion.attackRange, minion.currentHealth, minion.currentAttack,
-                uniqueId, minion.attackType, minion.isCombo, minion.maxHealth, minion.getAttack(),
-                minion.getHealth());
-
+        Minion theMinion = minion.duplicateDeployed(Map.getCell(x1, x2));
         Map.putCardInCell(theMinion, x1, x2);
         if (Map.getCell(x1, x2).doesHaveFlag()) {
             Map.getCell(x1, x2).setHasFlag(false);
@@ -956,6 +950,7 @@ public class BattleManager {
     public void player1Won() {
         MatchHistory matchHistory = new MatchHistory(player2.getAccount().getUsername(), "win");
         player1.getAccount().addMatchHistories(matchHistory);
+        //player1.account.addDaric();
         matchHistory = new MatchHistory(player1.getAccount().getUsername(), "lose");
         player2.getAccount().addMatchHistories(matchHistory);
         BattleMenu.setGameFinished(true);
