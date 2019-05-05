@@ -50,6 +50,8 @@ public class BattleMenu extends Menu {
     }
 
     public void doAllAtTheBeginingOfTurnThings(){
+        Map.putCardInCell(battleManager.getPlayer1().getHero(),3,1);
+        Map.putCardInCell(battleManager.getPlayer2().getHero(),3,9);
         battleManager.assignManaToPlayers();
         battleManager.manaAdderItem();
 
