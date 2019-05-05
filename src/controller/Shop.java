@@ -134,15 +134,41 @@ public class Shop extends Menu {
     }
 
     private static void buyCard(Card card) {
-        //card not valid
-        //not enough money
-        //not more than 3 same card
-        //bought successfully
+        if (Account.getMainAccount().getDaric() < card.getPrice()) {
+            Output.print("not enough money");
+            return;
+        } else {
+            int numberOfCards = 0;
+            for (Card c : Account.getMainAccount().getCollection()) {
+                if (card.getName().equals(c.getName()))
+                    numberOfCards++;
+            }
+            if (numberOfCards >= 3) {
+                Output.print("Not more than 3 cards");
+                return;
+            }
+        }
+        Account.getMainAccount().decreaseDaric(card.getPrice());
+        Account.getMainAccount().getCollection().add(card);
+        Output.print("bought successfully");
+
     }
 
     private static void sellCard(Card card) {
-        //card not in collection
-        //sold successfully
+        Card theCard=null;
+        for (Card c : Account.getMainAccount().getCollection()) {
+            if (c.getName().equalsIgnoreCase(card.getName())) {
+                theCard = c;
+                break;
+            }
+        }
+        if(theCard==null){
+            Output.print("card not in collection");
+            return;
+        }
+        Account.getMainAccount().addDaric(card.getPrice());
+        Account.getMainAccount().getCollection().remove(theCard);
+        Output.print("sold successfully");
     }
 
     public static void buyCardsByName(String[] cardNames) {
