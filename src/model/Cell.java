@@ -14,6 +14,10 @@ public class Cell {
         return item;
     }
 
+    public void setItem(Item item) {
+        this.item = item;
+    }
+
     public boolean doesHaveFlag() {
         return hasFlag;
     }
