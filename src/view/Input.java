@@ -187,7 +187,8 @@ public class Input {
             int x1 = Integer.parseInt(matcher.group(1));
             int x2 = Integer.parseInt(matcher.group(2));
             BattleMenu.getBattleManager().playSpell(player.getHero().getHeroSpell(), x1, x2);
-            BattleMenu.getBattleManager().getCurrentPlayer().getHero().setCooldownSpell(2);
+            BattleMenu.getBattleManager().getCurrentPlayer().getHero().getHeroSpell().setCoolDownRemaining
+                    (BattleMenu.getBattleManager().getCurrentPlayer().getHero().getHeroSpell().getCooldown());
         }
         if (input.equalsIgnoreCase("end game")) {
             if (BattleMenu.getBattleManager().getCurrentPlayer() == BattleMenu.getBattleManager().getPlayer1())

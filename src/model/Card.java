@@ -90,6 +90,8 @@ public abstract class Card {
     }
 
     private boolean equals(Card card) {
+        if(this ==null || card ==null)
+            return false;
         return card.name.equals(this.name) ||
                 card.id == this.id;
     }
