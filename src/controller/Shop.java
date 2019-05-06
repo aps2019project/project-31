@@ -202,6 +202,9 @@ public class Shop extends Menu {
                 if (card.getType() == cardType)
                     card.show();
             }
+            for (Item item: allUsables){
+                item.show();
+            }
         }
     }
 }
