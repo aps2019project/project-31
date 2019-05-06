@@ -130,6 +130,12 @@ public class Input {
 
     public static void handleCommandsInBattle(Player player, boolean isThereSelectedCard) {
         String input = scanner.nextLine();
+        if (input.equalsIgnoreCase("help"))
+            Output.showBattleCommandsOptions();
+        if (input.matches("replace card (\\d+)\\s*")) {
+            int cardId = Integer.parseInt(input.replace("replace card ", "").trim());
+            BattleMenu.replaceCardInHand(cardId);
+        }
         if (input.matches("\\s*end turn\\s*"))
             BattleMenu.setAreWeInMiddleOfTurn(false);
         if (input.matches("select \\d+"))
@@ -199,7 +205,6 @@ public class Input {
 
     public static void handleCommandsInCollectionMenu() {
         String input = scanner.nextLine();
-//        checkGenerals(input);
         if (input.equalsIgnoreCase("enter shop menu")) {
             setCurrentMenu(MenuManager.getShopMenu());
             return;
@@ -302,7 +307,6 @@ public class Input {
 
     public static void handleCommandsInMainMenu() {
         String input = scanner.nextLine();
-        //checkGenerals();
         if (input.equalsIgnoreCase("enter login menu")) {
             setCurrentMenu(MenuManager.getLoginMenu());
             return;
@@ -336,7 +340,6 @@ public class Input {
 
     public static void handleCommandsInShop() {
         String input = scanner.nextLine();
-//        checkGenerals(input);
         if (input.equalsIgnoreCase("enter collection menu")) {
             setCurrentMenu(MenuManager.getCollectionMenu());
             return;
@@ -398,7 +401,6 @@ public class Input {
 
     private static void handleCommandsInMultiPlayerMenu() {
         String input = scanner.nextLine();
-//        checkGenerals(input);
         if (input.equalsIgnoreCase("back")) {
             menuManager.back();
             return;
@@ -448,7 +450,6 @@ public class Input {
 
     private static void handleCommandsInSinglePlayerMenu() {
         String input = scanner.nextLine();
-//        checkGenerals(input);
         if (input.equalsIgnoreCase("enter story menu")) {
             setCurrentMenu(MenuManager.getSinglePlayerStoryMenu());
             return;
@@ -471,7 +472,6 @@ public class Input {
 
     public static void handleCommandsInSinglePlayerStoryMenu() {
         String input = scanner.nextLine();
-//        checkGenerals(input);
         if (input.equalsIgnoreCase("back")) {
             menuManager.back();
             return;
@@ -504,7 +504,6 @@ public class Input {
 
     public static void handleCommandsInSinglePlayerCustomMenu() {
         String input = scanner.nextLine();
-//        checkGenerals(input);
         if (input.equalsIgnoreCase("back")) {
             menuManager.back();
             return;
@@ -543,7 +542,6 @@ public class Input {
 
     public static void handleCommandsInBattleMenu() {
         String input = scanner.nextLine();
-//        checkGenerals(input);
         if (input.equalsIgnoreCase("enter single player menu")) {
             setCurrentMenu(MenuManager.getSinglePlayerMenu());
             return;
@@ -556,7 +554,6 @@ public class Input {
             menuManager.back();
             return;
         }
-
     }
 
     public static void handleCommandsInLoginMenu() {

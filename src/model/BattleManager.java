@@ -897,6 +897,8 @@ public class BattleManager {
 
     public void applyItemFunctions(Deployable card, FunctionType functionType) {
         try {
+            player1.currentDeck.getItem().setAccount(player1.account);
+            player2.currentDeck.getItem().setAccount(player2.account);
             for (Function function : player1.currentDeck.getItem().functions) {
                 if (function.getFunctionType() == functionType)
                     compileFunction(function, card.cell.getX1Coordinate(), card.cell.getX2Coordinate());
@@ -906,7 +908,7 @@ public class BattleManager {
                     compileFunction(function, card.cell.getX1Coordinate(), card.cell.getX2Coordinate());
             }
         } catch (Exception e) {
-            System.err.println("midunm item nadarim");
+            System.err.println("there isn't usable item in your deck");
         }
     }
 

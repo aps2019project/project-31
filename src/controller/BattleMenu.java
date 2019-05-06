@@ -210,10 +210,11 @@ public class BattleMenu extends Menu {
                 battleManager.playMinion((Minion) card, x1, x2);
             }
             if (card.getType() == CardType.spell) {
-
+                card.setAccount(battleManager.getCurrentPlayer().getAccount());
                 battleManager.playSpell((Spell) card, x1, x2);
             }
             if (card.getType() == CardType.item) {
+                card.setAccount(battleManager.getCurrentPlayer().getAccount());
                 battleManager.useItem((Item) card, x1, x2);
             }
             for (Function function : card.getFunctions()) {
@@ -278,6 +279,22 @@ public class BattleMenu extends Menu {
         }
         return null;
 
+    }
+
+    public static void replaceCardInHand(int cardId) {
+        for (Card card : battleManager.getCurrentPlayer().getHand()) {
+            if (card != null && card.getId() == cardId) {
+                Card tempCard = card;
+                battleManager.getCurrentPlayer().getHand().remove(card);
+                battleManager.getCurrentPlayer().getCurrentDeck().addCard(tempCard);
+                battleManager.getCurrentPlayer().getHand().add(battleManager.getCurrentPlayer().getCardInReplace());
+                battleManager.getCurrentPlayer().getCurrentDeck().getCards().remove
+                        (battleManager.getCurrentPlayer().getCardInReplace());
+                battleManager.getCurrentPlayer().generateCardInReplace();
+                return;
+            }
+        }
+        System.err.println("you don't have this card in your hand.");
     }
 }
 
