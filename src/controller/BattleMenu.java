@@ -179,6 +179,11 @@ public class BattleMenu extends Menu {
             battleManager.getPlayer2().handleNumberOfTurnHavingFlagAtTheEndOfTurn();
         }
         battleManager.addTurn();
+        if(battleManager.getPlayer1().getHero().getCooldownSpell()>0)
+            battleManager.getPlayer1().getHero().decreaseCooldown();
+        if(battleManager.getPlayer2().getHero().getCooldownSpell()>0)
+            battleManager.getPlayer2().getHero().decreaseCooldown();
+
 
     }
 

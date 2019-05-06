@@ -9,6 +9,7 @@ public class Hero extends Deployable {
     protected int attack;
     protected int health;
     protected HeroSpell heroSpell;
+    private int cooldownSpell = 2;
 
     public Hero(int price, int manaCost,
                 String cardText, ArrayList<Function> functions,
@@ -26,6 +27,17 @@ public class Hero extends Deployable {
         this.heroSpell = heroSpell;
     }
 
+    public int getCooldownSpell() {
+        return cooldownSpell;
+    }
+
+    public void setCooldownSpell(int cooldownSpell) {
+        this.cooldownSpell = cooldownSpell;
+    }
+
+    public void decreaseCooldown() {
+        cooldownSpell--;
+    }
 
     public Hero duplicateDeployed(BattleManager battleManager, Account account) {
         Cell cell;
@@ -49,7 +61,7 @@ public class Hero extends Deployable {
         return new Hero(this.price, this.manaCost, this.cardText, this.functions,
                 account, name, id, type, true,
                 true, true, cell, attackRange, currentHealth,
-                currentAttack, id*100 + howFucked%2,
+                currentAttack, id * 100 + howFucked % 2,
                 attackType, isCombo, maxHealth, attack, health, heroSpell);
     }
 

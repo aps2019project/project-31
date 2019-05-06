@@ -162,8 +162,8 @@ public class Input {
         Pattern pattern = Pattern.compile("select (\\d+)\\s*");
         Matcher matcher = pattern.matcher(input);
         if (matcher.matches()) {
-                player.selectACard(Integer.parseInt(matcher.group(1)));
-                BattleMenu.selectCollectibleItem(Integer.parseInt(matcher.group(1)));
+            player.selectACard(Integer.parseInt(matcher.group(1)));
+            BattleMenu.selectCollectibleItem(Integer.parseInt(matcher.group(1)));
         }
         if (isThereSelectedCard)
             moveAttackPlayCard(input);
@@ -187,6 +187,7 @@ public class Input {
             int x1 = Integer.parseInt(matcher.group(1));
             int x2 = Integer.parseInt(matcher.group(2));
             BattleMenu.getBattleManager().playSpell(player.getHero().getHeroSpell(), x1, x2);
+            BattleMenu.getBattleManager().getCurrentPlayer().getHero().setCooldownSpell(2);
         }
         if (input.equalsIgnoreCase("end game")) {
             if (BattleMenu.getBattleManager().getCurrentPlayer() == BattleMenu.getBattleManager().getPlayer1())
@@ -480,7 +481,7 @@ public class Input {
             if (matcher.group(3).trim().equalsIgnoreCase("domination")) {
                 BattleMenu.setBattleManagerForMultiPlayer(Account.getMainAccount(), theAccount,
                         Integer.parseInt(matcher.group(4)), 100, GameMode.Domination);
-                BattleMenu.runTheGame();
+                Initializer.getBattleMenu().runTheGame();
             }
             if (matcher.group(3).trim().equalsIgnoreCase("flag")) {
                 BattleMenu.setBattleManagerForMultiPlayer(Account.getMainAccount(), theAccount,
