@@ -49,7 +49,7 @@ public class Input {
 
     }
 
-    public static void  moveAttackPlayCard(String input) {
+    public static void moveAttackPlayCard(String input) {
         if (input.matches("\\s*end turn\\s*"))
             BattleMenu.setAreWeInMiddleOfTurn(false);
         if (input.matches("attack\\s+\\d+")) {
@@ -82,7 +82,7 @@ public class Input {
                     handleCommandsInCollectionMenu();
                     break;
                 case Menu.Id.BATTLE_MENU:
-                    handleCommandsInBattle();
+                    handleCommandsInBattleMenu();
                     break;
                 case Menu.Id.LOGIN_MENU:
                     handleCommandsInLoginMenu();
@@ -108,7 +108,7 @@ public class Input {
         }
     }
 
-    private static void checkGenerals(String input) {
+    private static boolean checkGenerals(String input) {
         if (input.matches("\\s*\\d+\\s*")) {
             System.err.println("user entered a number");
             int index = Integer.parseInt(input) - 1;
@@ -118,7 +118,9 @@ public class Input {
                 MenuManager.exitGame();
             }
             menuManager.back();
+            return false;
         }
+        return true;
     }
 
     public static void handleCommandsInBattle(Player player, boolean isThereSelectedCard) {
@@ -131,8 +133,8 @@ public class Input {
             moveAttackPlayCard(input);
         else
             handleSelectComboCards(input);
-        if(input.equalsIgnoreCase("show mana point"))
-            System.out.println("the mana is:  "+BattleMenu.getBattleManager().getCurrentPlayer().getMana());
+        if (input.equalsIgnoreCase("show mana point"))
+            System.out.println("the mana is:  " + BattleMenu.getBattleManager().getCurrentPlayer().getMana());
         if (input.equalsIgnoreCase("game info"))
             BattleMenu.showGameInfo();
         else if (input.trim().equalsIgnoreCase("show my minions")) {
@@ -415,18 +417,18 @@ public class Input {
         }
 
         if (input.equalsIgnoreCase("story_1")) {
-            BattleMenu.setBattleManagerForSinglePLayer(BattleManagerMode.Story,Account.getMainAccount(),100,
-                    100,GameMode.DeathMatch,1);
+            BattleMenu.setBattleManagerForSinglePLayer(BattleManagerMode.Story, Account.getMainAccount(), 100,
+                    100, GameMode.DeathMatch, 1);
             BattleMenu.runTheGame();
         }
         if (input.equalsIgnoreCase("story_2")) {
-            BattleMenu.setBattleManagerForSinglePLayer(BattleManagerMode.Story,Account.getMainAccount(),100,
-                    100,GameMode.DeathMatch,2);
+            BattleMenu.setBattleManagerForSinglePLayer(BattleManagerMode.Story, Account.getMainAccount(), 100,
+                    100, GameMode.DeathMatch, 2);
             BattleMenu.runTheGame();
         }
         if (input.equalsIgnoreCase("story_3")) {
-            BattleMenu.setBattleManagerForSinglePLayer(BattleManagerMode.Story,Account.getMainAccount(),100,
-                    100,GameMode.DeathMatch,3);
+            BattleMenu.setBattleManagerForSinglePLayer(BattleManagerMode.Story, Account.getMainAccount(), 100,
+                    100, GameMode.DeathMatch, 3);
             BattleMenu.runTheGame();
         }
     }
@@ -458,19 +460,33 @@ public class Input {
                             100, 100, GameMode.DeathMatch, 1);
                     BattleMenu.runTheGame();
                 }
-            }catch (Exception e){
+            } catch (Exception e) {
                 System.err.println("custom game error probably for null pointer exception");
             }
 
         }
     }
 
-    public static void handleCommandsInBattle() {
+    public static void handleCommandsInBattleMenu() {
         String input = scanner.nextLine();
-        checkGenerals(input);
-        if (!Account.getMainAccount().getTheMainDeck().checkIfValid()) {
-            System.err.println("selected deck is invalid");
+        if(!checkGenerals(input)){
             return;
+        }
+        if (Account.getMainAccount() != null) {
+            if (Account.getMainAccount().getTheMainDeck() != null) {
+                if (!Account.getMainAccount().getTheMainDeck().checkIfValid()) {
+                    System.err.println("selected deck is invalid");
+                    Input.getMenuManager().back();
+                }
+            } else {
+                System.out.println("No deck!");
+                System.err.println("No deck!");
+                Input.getMenuManager().back();
+            }
+        } else {
+            System.out.println("No account!");
+            System.err.println("No account!");
+            Input.getMenuManager().back();
         }
     }
 
