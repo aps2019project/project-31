@@ -6,6 +6,7 @@ import view.Output;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.ConcurrentModificationException;
+import java.util.Random;
 
 public class Player {
     protected Account account;
@@ -34,12 +35,10 @@ public class Player {
         this.graveYard = new ArrayList<>();
         try {
             this.currentDeck = new Deck("temp: " + account.getTheMainDeck().getDeckName(),
-                    account.getTheMainDeck().getHero().duplicateDeployed(battle, account),
-                    account.getTheMainDeck().getItem());
-        } catch (Exception e) {
-            this.currentDeck = new Deck("temp: " + account.getTheMainDeck().getDeckName(),
                     account.getTheMainDeck().getHero().duplicateDeployed(account, howFuckedUpIAm++),
                     account.getTheMainDeck().getItem());
+        } catch (Exception e) {
+            System.err.println("the account.getMainDeck() is null");
         }
         this.isAi = isAi;
 
@@ -75,7 +74,8 @@ public class Player {
     }
 
     public void addCardToBattlefield(Deployable card) {
-        cardsOnBattleField.add(card);
+        if (card != null)
+            cardsOnBattleField.add(card);
     }
 
     public void removeFromHand(Card card) throws ConcurrentModificationException {
@@ -126,11 +126,18 @@ public class Player {
     }
 
     public ArrayList<Card> getHand() {
+
         return hand;
+
     }
 
     public Card getNextCard() {
-        return nextCard;
+        if (nextCard != null)
+            return nextCard;
+        else {
+            System.err.println("next card is null, we are returning null !");
+            return null;
+        }
     }
 
     public ArrayList<Deployable> getCardsOnBattleField() {
@@ -142,11 +149,21 @@ public class Player {
     }
 
     public Card getSelectedCard() {
-        return selectedCard;
+        if (selectedCard != null)
+            return selectedCard;
+        else {
+            System.err.println("selected card is null, we are returning null !");
+            return null;
+        }
     }
 
     public Card getCardInReplace() {
-        return cardInReplace;
+        if (cardInReplace != null)
+            return cardInReplace;
+        else {
+            System.err.println("card in replace is null, we are returning null !");
+            return null;
+        }
     }
 
     public void generateDeckArrangement() {
@@ -167,7 +184,7 @@ public class Player {
             }
         }
         for (Deployable card : cardsOnBattleField) {
-            if (card !=null && cardId == card.getUniqueId()) {
+            if (card != null && cardId == card.getUniqueId()) {
                 System.err.println("selected card successfully");
                 selectedCard = card;
                 return true;
@@ -178,16 +195,16 @@ public class Player {
 
     public void placeNextCardToHand() {
         if (hand.size() < 6) {
-            hand.add(cardInReplace);
+            hand.add(nextCard);
             //    Collections.shuffle(currentDeck.getCards());
-            cardInReplace = currentDeck.getCards().get(0);
+            nextCard = currentDeck.getCards().get(0);
             currentDeck.getCards().remove(0);
         }
     }
 
     public boolean doesPlayerHaveDeployable(Deployable card) {
         for (Deployable deployable : cardsOnBattleField) {
-            if (deployable!=null && deployable.equals(card))
+            if (deployable != null && deployable.equals(card))
                 return true;
         }
         return false;
@@ -210,7 +227,7 @@ public class Player {
     }
 
     public void showNextCard() {
-        Output.print(cardInReplace.toString());
+        Output.print(nextCard.toString());
     }
 
     public void endOfTurnBuffsAndFunctions() {
@@ -288,6 +305,14 @@ public class Player {
             if (card.getItem() != null)
                 card.getItem().show();
         }
+    }
+
+    public void generateCardInReplace() {
+        Random random = new Random();
+        int value = random.nextInt(getCurrentDeck().getCards().size());
+        if (currentDeck.getCards().get(value).equals(nextCard))
+            generateCardInReplace();
+        cardInReplace = currentDeck.getCards().get(value);
     }
 }
 

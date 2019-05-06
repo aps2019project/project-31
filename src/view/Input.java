@@ -125,6 +125,10 @@ public class Input {
 
     public static void handleCommandsInBattle(Player player, boolean isThereSelectedCard) {
         String input = scanner.nextLine();
+        if (input.matches("replace card (\\d+)\\s*")) {
+            int cardId = Integer.parseInt(input.replace("replace card ", "").trim());
+            BattleMenu.replaceCardInHand(cardId);
+        }
         if (input.matches("\\s*end turn\\s*"))
             BattleMenu.setAreWeInMiddleOfTurn(false);
         if (input.matches("select \\d+"))
@@ -469,7 +473,7 @@ public class Input {
 
     public static void handleCommandsInBattleMenu() {
         String input = scanner.nextLine();
-        if(!checkGenerals(input)){
+        if (!checkGenerals(input)) {
             return;
         }
         if (Account.getMainAccount() != null) {
