@@ -112,7 +112,7 @@ public class BattleMenu extends Menu {
         battleManager.assignManaToPlayers();
         battleManager.manaAdderItem();
         for (int theTurn : battleManager.getTurnsAppearingTheCollectibleFlags()) {
-            if(theTurn==battleManager.getTurn()){
+            if (theTurn == battleManager.getTurn()) {
                 Collections.shuffle(Shop.getAllCollectibles());
             }
             battleManager.putFlagOnMap(Shop.getAllCollectibles().get(0));
@@ -129,7 +129,7 @@ public class BattleMenu extends Menu {
         Collections.shuffle(battleManager.getPlayer1().getCurrentDeck().getCards());
         Collections.shuffle(battleManager.getPlayer2().getCurrentDeck().getCards());
         // battleManager.getPlayer1().generateDeckArrangement();
-      //  battleManager.getPlayer2().generateDeckArrangement();
+        //  battleManager.getPlayer2().generateDeckArrangement();
         battleManager.setCurrentPlayer(battleManager.getPlayer2());
         battleManager.applyItemFunctions(battleManager.getCurrentPlayer().getHero(), FunctionType.GameStart);
         battleManager.initialTheGame();
@@ -179,12 +179,8 @@ public class BattleMenu extends Menu {
             battleManager.getPlayer2().handleNumberOfTurnHavingFlagAtTheEndOfTurn();
         }
         battleManager.addTurn();
-        if(battleManager.getPlayer1().getHero().getCooldownSpell()>0)
-            battleManager.getPlayer1().getHero().decreaseCooldown();
-        if(battleManager.getPlayer2().getHero().getCooldownSpell()>0)
-            battleManager.getPlayer2().getHero().decreaseCooldown();
-
-
+        battleManager.getPlayer1().getHero().getHeroSpell().decrementCooldonwRemaining();
+        battleManager.getPlayer2().getHero().getHeroSpell().decrementCooldonwRemaining();
     }
 
 

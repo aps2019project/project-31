@@ -5,7 +5,7 @@ import constants.CardType;
 import java.util.ArrayList;
 
 public class HeroSpell extends Spell {
-    private int cooldown;
+    private final int cooldown;
     private int coolDownRemaining;
 
     public HeroSpell(int price, int manaCost, String cardText,
@@ -33,10 +33,6 @@ public class HeroSpell extends Spell {
             coolDownRemaining = 0;
     }
 
-    public void setCooldown(int cooldown) {
-        this.cooldown = cooldown;
-    }
-
     public void setCoolDownRemaining(int coolDownRemaining) {
         this.coolDownRemaining = coolDownRemaining;
     }
@@ -48,4 +44,5 @@ public class HeroSpell extends Spell {
     public int getCoolDownRemaining() {
         return coolDownRemaining;
     }
+
 }
