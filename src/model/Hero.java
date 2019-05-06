@@ -74,10 +74,10 @@ public class Hero extends Deployable {
         if (cell != null)
             return "Hero: \nName: " + name + "\nCost: " + heroSpell.manaCost + "\nDesc: " + cardText +
                     "\nCoordination: " + cell.getX1Coordinate() + " , " + cell.getX2Coordinate() +
-                    "\nunique card id: " + uniqueId + "\nHP: " + currentHealth + "\nAP: " + currentAttack;
+                    "\nunique card id: " + uniqueId + "\nHP: " + theActualHealth() + "\nAP: " + theActualDamage();
         else
             return "Hero: \nName: " + name + "\nCost: " + heroSpell.manaCost + "\nDesc: " + cardText +
-                    "\nHP: " + currentHealth + "\nAP: " + currentAttack;
+                    "\nHP: " + theActualHealth() + "\nAP: " + theActualDamage();
     }
 
 //    public Hero deepClone( ){
