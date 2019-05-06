@@ -22,7 +22,6 @@ public class BattleMenu extends Menu {
     }
 
     public static void showPlayerMinions(Player player) {
-        System.out.println(player.getHero().infoToString());
         for (Deployable deployable : player.getCardsOnBattleField()) {
             Output.print(deployable.infoToString());
             Output.print("=====================================");
@@ -105,8 +104,9 @@ public class BattleMenu extends Menu {
     }
 
     public static void doAllAtTheBeginningOfTurnThings() {
-        Map.putCardInCell(battleManager.getPlayer1().getHero(), 3, 1);
-        Map.putCardInCell(battleManager.getPlayer2().getHero(), 3, 9);
+        for (Deployable deployable : battleManager.getCurrentPlayer().getCardsOnBattleField()) {
+            deployable.setMoved(false);
+        }
         battleManager.assignManaToPlayers();
         battleManager.manaAdderItem();
 
@@ -117,6 +117,7 @@ public class BattleMenu extends Menu {
         battleManager.setCurrentPlayer(battleManager.getPlayer2());
         battleManager.applyItemFunctions(battleManager.getCurrentPlayer().getHero(), FunctionType.GameStart);
         BattleManager.initialTheGame();
+        initHeroes();
         while (true) {
             isPlayer1Turn = !isPlayer1Turn;
             battleManager.setCurrentPlayer(battleManager.getOtherPlayer());
@@ -140,6 +141,15 @@ public class BattleMenu extends Menu {
             doAllThingsInEndingOfTheTurns();
             Output.theTurnEnded();
         }
+    }
+
+    private static void initHeroes() {
+        Hero hero1 = battleManager.getPlayer1().getHero();
+        Hero hero2 = battleManager.getPlayer2().getHero();
+        hero1.getCell().setCardInCell(hero1);
+        hero2.getCell().setCardInCell(hero2);
+        battleManager.getPlayer1().addCardToBattlefield(hero1);
+        battleManager.getPlayer2().addCardToBattlefield(hero2);
     }
 
     private static void doAllThingsInEndingOfTheTurns() {
@@ -176,7 +186,8 @@ public class BattleMenu extends Menu {
     public static void attack(int uniqueCardId) {
         Card selectedCard = BattleMenu.getBattleManager().getCurrentPlayer().getSelectedCard();
         if (selectedCard != null && battleManager.getCurrentPlayer().isSelectedCardDeployed()) {
-            if (Map.findCellByCardId(uniqueCardId) != null)
+            if (Map.findCellByCardId(uniqueCardId) != null &&
+                    Map.findCellByCardId(uniqueCardId).getCardInCell() != null)
                 battleManager.attack((Deployable) selectedCard
                         , Map.findCellByCardId(uniqueCardId).getCardInCell());
             else

@@ -190,6 +190,12 @@ public class Player {
                 return true;
             }
         }
+        if (battle.getCurrentPlayer().getHero().getId() == cardId)
+        {
+            System.err.println("selected card successfully");
+            selectedCard = battle.getCurrentPlayer().getHero();
+            return true;
+        }
         return false;
     }
 

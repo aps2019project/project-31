@@ -46,9 +46,11 @@ public class Hero extends Deployable {
         } else {
             cell = Map.getCell(3, 9);
         }
-        return new Hero(this.price, this.manaCost, this.cardText, this.functions, account, name, id, type, true,
-                true, true, cell, attackRange, currentHealth, currentAttack, id, attackType,
-                isCombo, maxHealth, attack, health, heroSpell);
+        return new Hero(this.price, this.manaCost, this.cardText, this.functions,
+                account, name, id, type, true,
+                true, true, cell, attackRange, currentHealth,
+                currentAttack, id*100 + howFucked%2,
+                attackType, isCombo, maxHealth, attack, health, heroSpell);
     }
 
     @Override

@@ -136,6 +136,7 @@ public class Input {
             int cardId = Integer.parseInt(input.replace("replace card ", "").trim());
             BattleMenu.replaceCardInHand(cardId);
         }
+
         if (input.matches("\\s*end turn\\s*"))
             BattleMenu.setAreWeInMiddleOfTurn(false);
         if (input.matches("select \\d+"))
