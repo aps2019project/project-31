@@ -141,7 +141,7 @@ public class Input {
                     "show my minions\n" +
                     "show opponent minions\n" +
                     "show card info [card id]\n" +
-                    "use special power ([],[])\n" +
+                    "use special power (x,y)\n" +
                     "show hand\n" +
                     "show collectibles\n" +
                     "show info\n" +
