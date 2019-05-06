@@ -128,7 +128,6 @@ public class BattleMenu extends Menu {
                 areWeInMiddleOfTurn = true;
                 boolean sit = true;
                 while (sit == areWeInMiddleOfTurn) {
-                    System.err.println("we are doing stuff");
                     Input.handleCommandsInBattle(battleManager.getCurrentPlayer(),
                             battleManager.getCurrentPlayer().getSelectedCard() != null);
                     if (isGameFinished) {

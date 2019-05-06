@@ -84,6 +84,8 @@ public class BattleManager {
         currentPlayer.addCardToBattlefield(theMinion);
         currentPlayer.removeFromHand(minion);
         applyOnSpawnFunction(theMinion);
+        currentPlayer.decreaseMana(theMinion.manaCost);
+        currentPlayer.selectedCard = null;
         return true;
 
     }
@@ -760,6 +762,8 @@ public class BattleManager {
             if (function.getFunctionType() == FunctionType.OnSpawn)
                 compileFunction(function, x1, x2);
         }
+        currentPlayer.decreaseMana(spell.manaCost);
+        currentPlayer.selectedCard = null;
         return true;
     }
 
@@ -769,11 +773,17 @@ public class BattleManager {
         }
         if (item.id == 509)
             currentPlayer.increaseManaInTheTurn(turn + 2, 3);
+        currentPlayer.decreaseMana(item.manaCost);
+        currentPlayer.selectedCard=null;
         return true;
     }
 
 
     public void move(Deployable card, int x1, int x2) {
+        if (card.cell == null) {
+            System.err.println("the cell is null in the move method");
+            return;
+        }
         if (Map.getDistance(Map.getCell(x1, x2), card.cell) <= Map.getMaxMoveRange()) {
             if (Map.getCell(x1, x2).getCardInCell() == null && !card.isMoved && !card.isStunned()) {
                 if (!card.hasFlag && Map.getCell(x1, x2).doesHaveFlag()) {
@@ -782,6 +792,7 @@ public class BattleManager {
                     card.setHasFlag(true);
                     Map.getCell(x1, x2).setHasFlag(false);
                 }
+                card.cell.setCardInCell(null);
                 card.cell = Map.getCell(x1, x2);
                 card.setMoved(true);
                 Map.getCell(x1, x2).setCardInCell(card);
@@ -845,31 +856,40 @@ public class BattleManager {
     private boolean canAttack(Deployable card, Deployable enemy) {
         boolean sit = !card.isAttacked && !card.isStunned() && isAttackTypeValidForAttack(card, enemy);
         for (Function function : enemy.functions) {
-            if (function.getFunction().equals(FunctionStrings.INVULNERABLE))
+            if (function.getFunction().equals(FunctionStrings.INVULNERABLE)) {
+                System.err.println("attack nemikhore , invulnerable e");
                 return false;
+            }
             if (function.getFunction().equals(FunctionStrings.IGNORE_LESSER_ATTACK)) {
                 if (enemy.theActualDamage() > card.theActualDamage()) {
+                    System.err.println("ingore lesser attack e");
                     return false;
                 }
             }
         }
+        if (card.isAttacked)
+            System.err.println("card has attacked in this turn");
+        if (card.isStunned())
+            System.err.println("card is stunned this turn");
+        if (!isAttackTypeValidForAttack(card, enemy))
+            System.err.println("attack type isn't valid for this attack");
         return sit;
     }
 
     private void dealAttackDamageAndDoOtherStuff(Deployable card, Deployable enemy) {
-        if (!card.isAttacked && !card.isStunned() && isAttackTypeValidForAttack(card, enemy)) {
-            if (ignoreHolyBuff(card)) {
-                enemy.currentHealth -= card.theActualDamage();
-            } else
-                enemy.currentHealth -= enemy.theActualDamageReceived(card.theActualDamage());
-            if (enemy.currentHealth <= 0) {
-                killTheThing(enemy);
-            }
-            applyOnAttackFunction(card, enemy);
-            applyOnDefendFunction(enemy, card);
-            applyItemOnAttackDefendFunctions(card, FunctionType.OnAttack, currentPlayer);
-            applyItemOnAttackDefendFunctions(enemy, FunctionType.OnDefend, getOtherPlayer());
+        if (ignoreHolyBuff(card)) {
+            enemy.currentHealth -= card.theActualDamage();
+        } else
+            enemy.currentHealth -= enemy.theActualDamageReceived(card.theActualDamage());
+        if (enemy.currentHealth <= 0) {
+            killTheThing(enemy);
         }
+        applyOnAttackFunction(card, enemy);
+        applyOnDefendFunction(enemy, card);
+        applyItemOnAttackDefendFunctions(card, FunctionType.OnAttack, currentPlayer);
+        applyItemOnAttackDefendFunctions(enemy, FunctionType.OnDefend, getOtherPlayer());
+
+
     }
 
     private boolean ignoreHolyBuff(Card card) {
@@ -914,6 +934,10 @@ public class BattleManager {
     }
 
     public void applyItemOnAttackDefendFunctions(Deployable card, FunctionType functionType, Player player) {
+        if (player.currentDeck.getItem() == null) {
+            System.err.println("the player doesn't have item so on attack function in item doesn't work");
+            return;
+        }
         for (Function function : player.currentDeck.getItem().functions) {
             if (function.getFunctionType() == functionType)
                 compileFunction(function, card.cell.getX1Coordinate(), card.cell.getX2Coordinate());
@@ -944,18 +968,18 @@ public class BattleManager {
             System.err.println("cell ha null e");
             return false;
         }
-        return attacker.attackType.equals("melee") && isNear(attacker.cell, counterAttacker.cell) ||
-                (attacker.attackType.equals("ranged") &&
+        return (attacker.attackType == AttackType.melee && isNear(attacker.cell, counterAttacker.cell)) ||
+                (attacker.attackType == AttackType.ranged &&
                         Map.getDistance(attacker.cell, counterAttacker.cell) <= attacker.attackRange) ||
-                (attacker.attackType.equals("hybrid") &&
+                (attacker.attackType == AttackType.hybrid &&
                         Map.getDistance(attacker.cell, counterAttacker.cell) <= attacker.attackRange);
     }
 
     private boolean isAttackTypeValidForCounterAttack(Deployable attacker, Deployable counterAttacker) {
-        return counterAttacker.attackType.equals("melee") && isNear(attacker.cell, counterAttacker.cell) ||
-                (counterAttacker.attackType.equals("ranged") && !isNear(attacker.cell, counterAttacker.cell) &&
+        return counterAttacker.attackType == AttackType.melee && isNear(attacker.cell, counterAttacker.cell) ||
+                (counterAttacker.attackType == AttackType.ranged && !isNear(attacker.cell, counterAttacker.cell) &&
                         Map.getDistance(attacker.cell, counterAttacker.cell) <= counterAttacker.attackRange) ||
-                counterAttacker.attackType.equals("hybrid");
+                counterAttacker.attackType == AttackType.hybrid;
     }
 
 

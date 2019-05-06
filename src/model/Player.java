@@ -23,7 +23,7 @@ public class Player {
     protected Card cardInReplace;
     protected BattleManager battle;
     private boolean isAi;
-    protected int[] manaChangerInTurn = new int[40];
+    protected int[] manaChangerInTurn = new int[200];
     private static int howFuckedUpIAm = 0;
 
     public Player(Account account, boolean isAi) {
@@ -42,6 +42,10 @@ public class Player {
         }
         this.isAi = isAi;
 
+    }
+
+    public void decreaseMana(int manaCost) {
+        mana -= manaCost;
     }
 
     public void setCurrentDeck(Deck currentDeck) {
@@ -175,7 +179,6 @@ public class Player {
     }
 
     public boolean selectACard(int cardId) {
-        System.err.println("cardId: " + cardId);
         for (Card card : hand) {
             if (card != null && cardId == card.getId()) {
                 System.err.println("selected card successfully");
@@ -190,12 +193,12 @@ public class Player {
                 return true;
             }
         }
-        if (battle.getCurrentPlayer().getHero().getId() == cardId)
-        {
+        if (battle.getCurrentPlayer().getHero().getId() == cardId) {
             System.err.println("selected card successfully");
             selectedCard = battle.getCurrentPlayer().getHero();
             return true;
         }
+        System.err.println("card not selected");
         return false;
     }
 
