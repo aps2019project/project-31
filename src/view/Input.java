@@ -262,7 +262,8 @@ public class Input {
                     "-validate deck [deck name]\n" +
                     "-select deck [deck name]\n" +
                     "-show deck [deck name]\n" +
-                    "-show all decks\n"
+                    "-show all decks\n" +
+                    "-show all deck names"
             );
             return;
         }
@@ -337,6 +338,11 @@ public class Input {
         if (input.matches("show all decks")) {
             System.err.println("showing all decks");
             CollectionMenu.showAllDecks();
+            return;
+        }
+        if (input.matches("show all deck names")) {
+            System.err.println("showing all deck names");
+            CollectionMenu.showAllDecknames();
             return;
         }
     }
