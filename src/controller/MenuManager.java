@@ -69,21 +69,15 @@ public class MenuManager {
 
         multiPlayerMenu = new ParentMenu(Menu.Id.MULTI_PLAYER_MENU, "Multi Player Menu");
 
-        battleMenu.addSubMenu(singlePlayerMenu);
-        battleMenu.addSubMenu(multiPlayerMenu);
+        battleMenu.addSubMenu(singlePlayerMenu,multiPlayerMenu,battle);
 
-        battleMenu.addSubMenu(battle);
         collectionMenu.addSubMenu(shopMenu);
 
         shopMenu.addSubMenu(collectionMenu);
 
-        singlePlayerMenu.addSubMenu(singlePlayerCustomMenu);
-        singlePlayerMenu.addSubMenu(singlePlayerStoryMenu);
+        singlePlayerMenu.addSubMenu(singlePlayerCustomMenu, singlePlayerStoryMenu);
 
-        mainMenu.addSubMenu(loginMenu);
-        mainMenu.addSubMenu(battleMenu);
-        mainMenu.addSubMenu(collectionMenu);
-        mainMenu.addSubMenu(shopMenu);
+        mainMenu.addSubMenu(loginMenu, battleMenu, collectionMenu, shopMenu);
 
         Input.setMenuManager(new MenuManager());
 //        Input.getMenuManager().addOnMenuChangeListener(Input.getInstance()::showMenu);    //Add listeners - (Method reference)
