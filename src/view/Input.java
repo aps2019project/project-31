@@ -125,6 +125,8 @@ public class Input {
 
     public static void handleCommandsInBattle(Player player, boolean isThereSelectedCard) {
         String input = scanner.nextLine();
+        if(input.equalsIgnoreCase("help"))
+            Output.showBattleCommandsOptions();
         if (input.matches("replace card (\\d+)\\s*")) {
             int cardId = Integer.parseInt(input.replace("replace card ", "").trim());
             BattleMenu.replaceCardInHand(cardId);

@@ -210,10 +210,11 @@ public class BattleMenu extends Menu {
                 battleManager.playMinion((Minion) card, x1, x2);
             }
             if (card.getType() == CardType.spell) {
-
+                card.setAccount(battleManager.getCurrentPlayer().getAccount());
                 battleManager.playSpell((Spell) card, x1, x2);
             }
             if (card.getType() == CardType.item) {
+                card.setAccount(battleManager.getCurrentPlayer().getAccount());
                 battleManager.useItem((Item) card, x1, x2);
             }
             for (Function function : card.getFunctions()) {
