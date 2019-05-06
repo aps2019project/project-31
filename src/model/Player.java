@@ -262,7 +262,6 @@ public class Player {
                     card.currentHealth--;
                 }
             }
-
         }
     }
 

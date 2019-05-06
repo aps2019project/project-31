@@ -133,18 +133,17 @@ public class Input {
         if (input.equalsIgnoreCase("help")){
             System.err.println("showing user it's options");
             System.out.println("commands you can enter :\n" +
-                    "replace card (\\d+)\n" +
+                    "replace card [card id]\n" +
                     "end turn\n" +
-                    "select \\d+\n" +
+                    "select [card id]\n" +
                     "show mana\n" +
                     "game info\n" +
                     "show my minions\n" +
                     "show opponent minions\n" +
-                    "show card info \\d+\n" +
-                    "use special power \\((\\d+),(\\d+)\\\n" +
+                    "show card info [card id]\n" +
+                    "use special power (x,y)\n" +
                     "show hand\n" +
                     "show collectibles\n" +
-                    "select (\\d+)\n" +
                     "show info\n" +
                     "show next card\n" +
                     "enter graveyard"
@@ -160,8 +159,14 @@ public class Input {
 
         if (input.matches("\\s*end turn\\s*"))
             BattleMenu.setAreWeInMiddleOfTurn(false);
-        if (input.matches("select \\d+"))
-            player.selectACard(Integer.parseInt(input.replace("select ", "").trim()));
+        Pattern pattern = Pattern.compile("select (\\d+)\\s*");
+        Matcher matcher = pattern.matcher(input);
+        if (matcher.matches()){
+            if (input.matches("select \\d+")) {
+                player.selectACard(Integer.parseInt(input.replace("select ", "").trim()));
+                BattleMenu.selectCollectibleItem(Integer.parseInt(matcher.group(1)));
+            }
+        }
         if (isThereSelectedCard)
             moveAttackPlayCard(input);
         else
@@ -178,8 +183,8 @@ public class Input {
             String cardUniqueId = input.replace("show card info", "").trim();
             System.out.println(BattleManager.findCardByUniqueid(Integer.parseInt(cardUniqueId)).infoToString());
         }
-        Pattern pattern = Pattern.compile("use special power \\((\\d+),(\\d+)\\)");
-        Matcher matcher = pattern.matcher(input);
+        pattern = Pattern.compile("use special power \\((\\d+),(\\d+)\\)");
+        matcher = pattern.matcher(input);
         if (matcher.matches()) {
             int x1 = Integer.parseInt(matcher.group(1));
             int x2 = Integer.parseInt(matcher.group(2));
@@ -190,10 +195,7 @@ public class Input {
         else if (input.equalsIgnoreCase("show collectibles")) {
             BattleMenu.getBattleManager().getCurrentPlayer().showCollectibleItems();
         }
-        pattern = Pattern.compile("select (\\d+)\\s*");
-        matcher = pattern.matcher(input);
-        if (matcher.matches())
-            BattleMenu.selectCollectibleItem(Integer.parseInt(matcher.group(1)));
+
         if (input.equalsIgnoreCase("show info"))
             BattleMenu.showSelectedCardInfo();
         else if (input.equalsIgnoreCase("show next card")) {
@@ -206,6 +208,14 @@ public class Input {
     private static void enterGraveYard() {
         while (true) {
             String input = scanner.nextLine();
+            if(input.equalsIgnoreCase("help")){
+                System.err.println("showing user it's options");
+                System.out.println("commands you can enter :\n" +
+                        "-show cards\n" +
+                        "-show info [card id]\n" +
+                        "-exit"
+                );
+            }
             if (input.equalsIgnoreCase("show cards"))
                 showAllGraveyardCards();
             Pattern pattern = Pattern.compile("show info (\\d+)");
@@ -616,6 +626,10 @@ public class Input {
         Pattern pattern = Pattern.compile("create account (\\w+)\\s*");
         Matcher matcher = pattern.matcher(input);
         if (matcher.matches()) {
+            if(Account.getMainAccount() != null){
+                System.out.println("you are already logged in,log out to create account");
+                return;
+            }
             Output.print("enter your password:");
             String username = matcher.group(1).trim();
             String password = scanner.nextLine();
