@@ -25,6 +25,7 @@ public class BattleMenu extends Menu {
         System.out.println(player.getHero().infoToString());
         for (Deployable deployable : player.getCardsOnBattleField()) {
             Output.print(deployable.infoToString());
+            Output.print("=====================================");
         }
     }
 
