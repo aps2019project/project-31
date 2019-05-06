@@ -148,8 +148,8 @@ public class Input {
             moveAttackPlayCard(input);
         else
             handleSelectComboCards(input);
-        if (input.equalsIgnoreCase("show mana point"))
-            System.out.println("the mana is:  " + BattleMenu.getBattleManager().getCurrentPlayer().getMana());
+        if (input.equalsIgnoreCase("show mana"))
+            System.out.println("your mana is:  " + BattleMenu.getBattleManager().getCurrentPlayer().getMana());
         if (input.equalsIgnoreCase("game info"))
             BattleMenu.showGameInfo();
         else if (input.trim().equalsIgnoreCase("show my minions")) {
