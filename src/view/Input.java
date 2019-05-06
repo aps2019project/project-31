@@ -144,7 +144,6 @@ public class Input {
                     "use special power ([],[])\n" +
                     "show hand\n" +
                     "show collectibles\n" +
-                    "select [card id]\n" +
                     "show info\n" +
                     "show next card\n" +
                     "enter graveyard"
@@ -162,11 +161,11 @@ public class Input {
             BattleMenu.setAreWeInMiddleOfTurn(false);
         Pattern pattern = Pattern.compile("select (\\d+)\\s*");
         Matcher matcher = pattern.matcher(input);
-        if (matcher.matches())
-
+        if (matcher.matches()){
             if (input.matches("select \\d+")) {
-            player.selectACard(Integer.parseInt(input.replace("select ", "").trim()));
-            BattleMenu.selectCollectibleItem(Integer.parseInt(matcher.group(1)));
+                player.selectACard(Integer.parseInt(input.replace("select ", "").trim()));
+                BattleMenu.selectCollectibleItem(Integer.parseInt(matcher.group(1)));
+            }
         }
         if (isThereSelectedCard)
             moveAttackPlayCard(input);
