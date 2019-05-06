@@ -619,6 +619,7 @@ public class Input {
                     "-exit"
             );
         }
+
         if (input.equalsIgnoreCase("back")) {
             return;
         }
@@ -672,7 +673,8 @@ public class Input {
             return;
         }
         if (input.equalsIgnoreCase("save")) {
-            //masih!?
+            Account.saveAllAccounts();
+            System.out.println("Accounts saved!");
             return;
         }
         if (input.equalsIgnoreCase("show leaderBoard")) {

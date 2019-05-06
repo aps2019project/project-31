@@ -643,7 +643,7 @@ public class BattleManager {
                     return;
                 }
                 int turns = Integer.parseInt(matcher.group(1).replace("stun", ""));
-                Buff buff = new Buff(Buff.BuffType.Stun, turns, 0, 0, false);
+                Buff buff = new Buff(Buff.BuffType.Stun, turns * 2, 0, 0, false);
                 addBuffs(targetCards, buff);
             }
 
