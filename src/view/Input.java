@@ -233,6 +233,10 @@ public class Input {
         for (Deployable card : BattleMenu.getBattleManager().getPlayer1().getGraveYard()) {
             System.out.println(card.infoToString());
         }
+        System.out.println("Player 2 dead minions:\n");
+        for (Deployable card : BattleMenu.getBattleManager().getPlayer2().getGraveYard()) {
+            System.out.println(card.infoToString());
+        }
     }
 
     public static void handleCommandsInCollectionMenu() {
