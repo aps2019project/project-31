@@ -150,6 +150,9 @@ public class Input {
                     "enter graveyard"
             );
         }
+        if(input.equalsIgnoreCase("glimpse of map")){
+            BattleMenu.showGlimpseOfMap(BattleMenu.getBattleManager());
+        }
         if (input.matches("replace card (\\d+)\\s*")) {
             int cardId = Integer.parseInt(input.replace("replace card ", "").trim());
             BattleMenu.replaceCardInHand(cardId);
