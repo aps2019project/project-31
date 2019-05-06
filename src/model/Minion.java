@@ -66,11 +66,11 @@ public class Minion extends Deployable {
                 return "Minion: \nName: " + name + "\nDesc: " + cardText + "\nCoordination: " +
                         cell.getX1Coordinate() + " , " + cell.getX2Coordinate() + "\nunique card id: " + uniqueId + "\nHP: " +
                         currentHealth + "\nAP: " + currentAttack + "\nMP: " + manaCost + "\ntype: " + attackType + "\nRange: " + attackRange +
-                        "\nCombo ability: " + isCombo;
+                        "\nCombo ability: " + isCombo + "\nStunned: " + isStunned();
             else
                 return "Minion: \nName: " + name + "\nDesc: " + cardText + "\nCoordination: " + "\nHP: " +
                         maxHealth + "\nAP: " + attack + "\nMP: " + manaCost + "\ntype: " + attackType + "\nRange: " + attackRange +
-                        "\nCombo ability: " + isCombo;
+                        "\nCombo ability: " + isCombo + "\nStunned: " + isStunned();
         } catch (Exception e) {
             System.err.println(e.getMessage());
         }

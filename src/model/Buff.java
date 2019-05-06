@@ -22,6 +22,7 @@ public class Buff {
         this.effectOfWeaknessOrPowerOnHealth = effectOfWeaknessOrPowerOnHealth;
         this.isBeneficial = isBeneficial;
         this.isContinuous = false;
+        this.isActive = true;
     }
 
     public void setBleed(String[] damages) {

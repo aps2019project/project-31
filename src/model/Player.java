@@ -275,6 +275,7 @@ public class Player {
                 card.buffs.get(i).decreaseTurnsLeft();
                 if (!card.buffs.get(i).isContinuous() && card.buffs.get(i).getTurnsLeft() <= 0) {
                     card.buffs.remove(i);
+                    continue;
                 }
                 if (card.buffs.get(i).isContinuous()) {
                     card.buffs.get(i).setActive(true);

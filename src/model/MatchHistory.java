@@ -20,7 +20,7 @@ public class MatchHistory {
     private String figureTime() {
         Date now = new Date();
         if (now.getYear() - time.getYear() != 0) {
-            return (now.getYear() - time.getYear()) + " year ago";
+            return (now.getYear() - time.getYear()) + " years ago";
         } else if (now.getMonth() - time.getMonth() != 0) {
             return (now.getMonth() - time.getMonth()) + " months ago";
         } else if (now.getDay() - time.getDay() != 0) {
