@@ -60,9 +60,9 @@ public class Hero extends Deployable {
                 + " id : "
                 + this.id
                 + " - AP : "
-                + attack
+                + theActualDamage()
                 + " - HP : "
-                + health
+                + theActualHealth()
                 + " class : "
                 + attackType
                 + " Special power : "

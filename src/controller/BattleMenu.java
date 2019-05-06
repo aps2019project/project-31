@@ -8,6 +8,7 @@ import view.Output;
 
 import java.rmi.ServerError;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class BattleMenu extends Menu {
     private static BattleManager battleManager;
@@ -115,6 +116,10 @@ public class BattleMenu extends Menu {
 
     public static void runTheGame() {
         boolean isPlayer1Turn = false;
+        Collections.shuffle(battleManager.getPlayer1().getCurrentDeck().getCards());
+        Collections.shuffle(battleManager.getPlayer2().getCurrentDeck().getCards());
+        // battleManager.getPlayer1().generateDeckArrangement();
+      //  battleManager.getPlayer2().generateDeckArrangement();
         battleManager.setCurrentPlayer(battleManager.getPlayer2());
         battleManager.applyItemFunctions(battleManager.getCurrentPlayer().getHero(), FunctionType.GameStart);
         BattleManager.initialTheGame();
