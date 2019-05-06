@@ -770,12 +770,12 @@ public class BattleManager {
 
     public boolean playSpell(Spell spell, int x1, int x2) {
         for (Function function : spell.functions) {
-            if (function.getFunctionType() == FunctionType.OnSpawn)
                 compileFunction(function, x1, x2);
         }
         currentPlayer.decreaseMana(spell.manaCost);
         currentPlayer.selectedCard = null;
-        currentPlayer.hand.remove(spell);
+        if (!spell.equals(currentPlayer.getHero().heroSpell))
+            currentPlayer.hand.remove(spell);
         return true;
     }
 
@@ -1203,6 +1203,6 @@ public class BattleManager {
         if (Map.getCell(x1, x2).getCardInCell() != null)
             Map.getCell(x1, x2).getCardInCell().setItem(item);
         else
-            Map.getCell(x1,x2).setItem(item);
+            Map.getCell(x1, x2).setItem(item);
     }
 }
