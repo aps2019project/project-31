@@ -81,6 +81,10 @@ public class Shop extends Menu {
         }
     }
 
+    public static ArrayList<Item> getAllCollectibles() {
+        return allCollectibles;
+    }
+
     private static void loadMinions(YaGson yaGson, String path) {
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(path))) {
             String line = bufferedReader.readLine();

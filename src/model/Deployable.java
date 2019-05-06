@@ -111,6 +111,11 @@ public class Deployable extends Card {
         this.attackRange = attackRange;
     }
 
+    public void setItem(Item item) {
+        this.item = item;
+    }
+
+
     public void setBuffs(ArrayList<Buff> buffs) {
         this.buffs = buffs;
     }

@@ -162,10 +162,8 @@ public class Input {
         Pattern pattern = Pattern.compile("select (\\d+)\\s*");
         Matcher matcher = pattern.matcher(input);
         if (matcher.matches()) {
-            if (input.matches("select \\d+")) {
-                player.selectACard(Integer.parseInt(input.replace("select ", "").trim()));
+                player.selectACard(Integer.parseInt(matcher.group(1)));
                 BattleMenu.selectCollectibleItem(Integer.parseInt(matcher.group(1)));
-            }
         }
         if (isThereSelectedCard)
             moveAttackPlayCard(input);
@@ -189,6 +187,13 @@ public class Input {
             int x1 = Integer.parseInt(matcher.group(1));
             int x2 = Integer.parseInt(matcher.group(2));
             BattleMenu.getBattleManager().playSpell(player.getHero().getHeroSpell(), x1, x2);
+        }
+        if (input.equalsIgnoreCase("end game")) {
+            if (BattleMenu.getBattleManager().getCurrentPlayer() == BattleMenu.getBattleManager().getPlayer1())
+                BattleMenu.getBattleManager().player2Won();
+            else
+                BattleMenu.getBattleManager().player1Won();
+            return;
         }
         if (input.equalsIgnoreCase("show hand"))
             player.showHand();
@@ -480,12 +485,12 @@ public class Input {
             if (matcher.group(3).trim().equalsIgnoreCase("flag")) {
                 BattleMenu.setBattleManagerForMultiPlayer(Account.getMainAccount(), theAccount,
                         100, Integer.parseInt(matcher.group(4)), GameMode.Flag);
-                BattleMenu.runTheGame();
+                Initializer.getBattleMenu().runTheGame();
             }
             if (matcher.group(3).trim().equalsIgnoreCase("deathMatch")) {
                 BattleMenu.setBattleManagerForMultiPlayer(Account.getMainAccount(), theAccount,
                         100, 100, GameMode.DeathMatch);
-                BattleMenu.runTheGame();
+                Initializer.getBattleMenu().runTheGame();
             }
         }
     }
@@ -536,17 +541,17 @@ public class Input {
         if (input.equalsIgnoreCase("story 1")) {
             BattleMenu.setBattleManagerForSinglePLayer(BattleManagerMode.Story, Account.getMainAccount(), 100,
                     100, GameMode.DeathMatch, 1);
-            BattleMenu.runTheGame();
+            Initializer.getBattleMenu().runTheGame();
         }
         if (input.equalsIgnoreCase("story 2")) {
             BattleMenu.setBattleManagerForSinglePLayer(BattleManagerMode.Story, Account.getMainAccount(), 100,
                     100, GameMode.DeathMatch, 2);
-            BattleMenu.runTheGame();
+            Initializer.getBattleMenu().runTheGame();
         }
         if (input.equalsIgnoreCase("story 3")) {
             BattleMenu.setBattleManagerForSinglePLayer(BattleManagerMode.Story, Account.getMainAccount(), 100,
                     100, GameMode.DeathMatch, 3);
-            BattleMenu.runTheGame();
+            Initializer.getBattleMenu().runTheGame();
         }
     }
 
@@ -569,17 +574,17 @@ public class Input {
                 if (matcher.group(3).trim().equalsIgnoreCase("domination")) {
                     BattleMenu.setBattleManagerForSinglePLayer(BattleManagerMode.CustomGame, Account.getMainAccount(),
                             Integer.parseInt(matcher.group(4)), 100, GameMode.Domination, 1);
-                    BattleMenu.runTheGame();
+                    Initializer.getBattleMenu().runTheGame();
                 }
                 if (matcher.group(3).trim().equalsIgnoreCase("flag")) {
                     BattleMenu.setBattleManagerForSinglePLayer(BattleManagerMode.CustomGame, Account.getMainAccount(),
                             100, Integer.parseInt(matcher.group(4)), GameMode.Flag, 1);
-                    BattleMenu.runTheGame();
+                    Initializer.getBattleMenu().runTheGame();
                 }
                 if (matcher.group(3).trim().equalsIgnoreCase("deathMatch")) {
                     BattleMenu.setBattleManagerForSinglePLayer(BattleManagerMode.CustomGame, Account.getMainAccount(),
                             100, 100, GameMode.DeathMatch, 1);
-                    BattleMenu.runTheGame();
+                    Initializer.getBattleMenu().runTheGame();
                 }
             } catch (Exception e) {
                 System.err.println("custom game error probably for null pointer exception");

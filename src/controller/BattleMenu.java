@@ -111,10 +111,20 @@ public class BattleMenu extends Menu {
         }
         battleManager.assignManaToPlayers();
         battleManager.manaAdderItem();
+        for (int theTurn : battleManager.getTurnsAppearingTheCollectibleFlags()) {
+            if(theTurn==battleManager.getTurn()){
+                Collections.shuffle(Shop.getAllCollectibles());
+            }
+            battleManager.putFlagOnMap(Shop.getAllCollectibles().get(0));
+        }
 
     }
 
-    public static void runTheGame() {
+    public BattleMenu(int id, String title) {
+        super(id, title);
+    }
+
+    public void runTheGame() {
         boolean isPlayer1Turn = false;
         Collections.shuffle(battleManager.getPlayer1().getCurrentDeck().getCards());
         Collections.shuffle(battleManager.getPlayer2().getCurrentDeck().getCards());
@@ -122,7 +132,7 @@ public class BattleMenu extends Menu {
       //  battleManager.getPlayer2().generateDeckArrangement();
         battleManager.setCurrentPlayer(battleManager.getPlayer2());
         battleManager.applyItemFunctions(battleManager.getCurrentPlayer().getHero(), FunctionType.GameStart);
-        BattleManager.initialTheGame();
+        battleManager.initialTheGame();
         initHeroes();
         while (true) {
             isPlayer1Turn = !isPlayer1Turn;
@@ -317,13 +327,14 @@ public class BattleMenu extends Menu {
     public static void showGlimpseOfMap(BattleManager battleManager) {
         System.err.println("Player 1 minions are:\n");
         System.out.println(battleManager.getPlayer1().getHero().shortVersionString());
-        for (Deployable deployable:battleManager.getPlayer1().getCardsOnBattleField()) {
-            if(deployable!=null)
+        for (Deployable deployable : battleManager.getPlayer1().getCardsOnBattleField()) {
+            if (deployable != null)
                 System.out.println(deployable.shortVersionString());
-        } System.err.println("Player 2 minions are:\n");
+        }
+        System.err.println("Player 2 minions are:\n");
         System.out.println(battleManager.getPlayer2().getHero().shortVersionString());
-        for (Deployable deployable:battleManager.getPlayer2().getCardsOnBattleField()) {
-            if(deployable!=null)
+        for (Deployable deployable : battleManager.getPlayer2().getCardsOnBattleField()) {
+            if (deployable != null)
                 System.out.println(deployable.shortVersionString());
         }
     }

@@ -1,10 +1,18 @@
 package model;
 
+import controller.BattleMenu;
 import controller.Shop;
 import view.Input;
 
 public class Initializer {
+    private static BattleMenu battleMenu = new BattleMenu(1000, "Battle Menu");
+
+    public static BattleMenu getBattleMenu() {
+        return battleMenu;
+    }
+
     public static void main(String[] args) {
+
         System.err.println("Loading all accounts...");
         Account.loadAllAccounts();
         System.err.println("Initializing maps ...");

@@ -26,7 +26,12 @@ public class BattleManager {
     protected final int maxNumberOfFlags;
     protected final int maxTurnsOfHavingFlag;
     protected int turn = 1;
+    private int[] turnsAppearingTheCollectibleFlags = {2, 3, 5, 8, 11, 12, 15, 18, 20, 21, 24, 27, 31, 32, 36, 37,
+            40, 43, 46, 49};
 
+    public int getTurn() {
+        return turn;
+    }
 
     public BattleManager(Player player1, Player player2, int maxNumberOfFlags, int maxTurnsOfHavingFlag, GameMode gameMode) {
         this.maxNumberOfFlags = maxNumberOfFlags;
@@ -539,6 +544,10 @@ public class BattleManager {
         }
     }
 
+    public int[] getTurnsAppearingTheCollectibleFlags() {
+        return turnsAppearingTheCollectibleFlags;
+    }
+
     private void handleDispel(Function function, ArrayList<Card> targetCards) {
         if (function.getFunction().matches("(.*)" + FunctionStrings.DISPEL + "(.*)")) {
             for (Card card : targetCards) {
@@ -766,6 +775,7 @@ public class BattleManager {
         }
         currentPlayer.decreaseMana(spell.manaCost);
         currentPlayer.selectedCard = null;
+        currentPlayer.hand.remove(spell);
         return true;
     }
 
@@ -777,6 +787,12 @@ public class BattleManager {
             currentPlayer.increaseManaInTheTurn(turn + 2, 3);
         currentPlayer.decreaseMana(item.manaCost);
         currentPlayer.selectedCard = null;
+        for (Deployable deployable : currentPlayer.cardsOnBattleField) {
+            if (deployable != null && deployable.getItem() != null) {
+                if (deployable.getItem().getId() == item.id)
+                    deployable.setItem(null);
+            }
+        }
         return true;
     }
 
@@ -1060,22 +1076,23 @@ public class BattleManager {
             player2Won();
     }
 
-    public static void initialTheGame() {
+    public void initialTheGame() {
         player1.duplicateTheDeck();
         player2.duplicateTheDeck();
+
         //   Collections.shuffle(player1.currentDeck.getCards());
         //   Collections.shuffle(player2.currentDeck.getCards());
         initialTheHands();
         generateFlags();
     }
 
-    private static void generateFlags() {
+    private void generateFlags() {
         Random random = new Random();
         if (gameMode == GameMode.Flag) {
             Map.getCell(3, 5).setHasFlag(true);
         }
         if (gameMode == GameMode.Domination) {
-            for (int i = 0; i < 7; i++) {
+            for (int i = 0; i < maxNumberOfFlags; i++) {
                 int x1 = random.nextInt(5) + 1;
                 int x2 = random.nextInt(5) + 3;
                 Map.getCell(x1, x2).setHasFlag(true);
@@ -1177,5 +1194,15 @@ public class BattleManager {
                 deployable.setMoved(false);
             }
         }
+    }
+
+    public void putFlagOnMap(Item item) {
+        Random random = new Random();
+        int x1 = random.nextInt(5) + 1;
+        int x2 = random.nextInt(9) + 1;
+        if (Map.getCell(x1, x2).getCardInCell() != null)
+            Map.getCell(x1, x2).getCardInCell().setItem(item);
+        else
+            Map.getCell(x1,x2).setItem(item);
     }
 }
