@@ -130,8 +130,12 @@ public class Input {
 
     public static void handleCommandsInBattle(Player player, boolean isThereSelectedCard) {
         String input = scanner.nextLine();
-        if (input.equalsIgnoreCase("help"))
-            Output.showBattleCommandsOptions();
+        if (input.equalsIgnoreCase("help")){
+            System.err.println("showing user it's options");
+            System.out.println("commands you can enter :\n" +
+                    ""
+            );
+        }
         if (input.matches("replace card (\\d+)\\s*")) {
             int cardId = Integer.parseInt(input.replace("replace card ", "").trim());
             BattleMenu.replaceCardInHand(cardId);
@@ -165,7 +169,7 @@ public class Input {
         }
         if (input.equalsIgnoreCase("show hand"))
             player.showHand();
-        else if (input.equalsIgnoreCase("show collectables")) {
+        else if (input.equalsIgnoreCase("show collectibles")) {
             BattleMenu.getBattleManager().getCurrentPlayer().showCollectibleItems();
         }
         pattern = Pattern.compile("select (\\d+)\\s*");
