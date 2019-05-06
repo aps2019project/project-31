@@ -130,7 +130,7 @@ public class Input {
 
     public static void handleCommandsInBattle(Player player, boolean isThereSelectedCard) {
         String input = scanner.nextLine();
-        if (input.equalsIgnoreCase("help")){
+        if (input.equalsIgnoreCase("help")) {
             System.err.println("showing user it's options");
             System.out.println("commands you can enter :\n" +
                     "replace card [card id]\n" +
@@ -149,7 +149,7 @@ public class Input {
                     "enter graveyard"
             );
         }
-        if(input.equalsIgnoreCase("glimpse of map")){
+        if (input.equalsIgnoreCase("glimpse of map")) {
             BattleMenu.showGlimpseOfMap(BattleMenu.getBattleManager());
         }
         if (input.matches("replace card (\\d+)\\s*")) {
@@ -161,7 +161,7 @@ public class Input {
             BattleMenu.setAreWeInMiddleOfTurn(false);
         Pattern pattern = Pattern.compile("select (\\d+)\\s*");
         Matcher matcher = pattern.matcher(input);
-        if (matcher.matches()){
+        if (matcher.matches()) {
             if (input.matches("select \\d+")) {
                 player.selectACard(Integer.parseInt(input.replace("select ", "").trim()));
                 BattleMenu.selectCollectibleItem(Integer.parseInt(matcher.group(1)));
@@ -208,7 +208,7 @@ public class Input {
     private static void enterGraveYard() {
         while (true) {
             String input = scanner.nextLine();
-            if(input.equalsIgnoreCase("help")){
+            if (input.equalsIgnoreCase("help")) {
                 System.err.println("showing user it's options");
                 System.out.println("commands you can enter :\n" +
                         "-show cards\n" +
@@ -241,7 +241,7 @@ public class Input {
 
     public static void handleCommandsInCollectionMenu() {
         String input = scanner.nextLine();
-        if (input.equalsIgnoreCase("enter shop menu")) {
+        if (input.equalsIgnoreCase("enter shop menu") || input.equalsIgnoreCase("enter shop")) {
             setCurrentMenu(MenuManager.getShopMenu());
             return;
         }
@@ -343,11 +343,11 @@ public class Input {
 
     public static void handleCommandsInMainMenu() {
         String input = scanner.nextLine();
-        if (input.equalsIgnoreCase("enter login menu")) {
+        if (input.equalsIgnoreCase("enter login menu") || input.equalsIgnoreCase("enter login")) {
             setCurrentMenu(MenuManager.getLoginMenu());
             return;
         }
-        if (input.equalsIgnoreCase("enter battle menu")) {
+        if (input.equalsIgnoreCase("enter battle menu") || input.equalsIgnoreCase("enter battle")) {
             if (Account.getMainAccount().getTheMainDeck() != null) {
                 if (Account.getMainAccount().getTheMainDeck().checkIfValid()) {
                     setCurrentMenu(MenuManager.getBattleMenu());
@@ -360,11 +360,11 @@ public class Input {
             }
             return;
         }
-        if (input.equalsIgnoreCase("enter collection menu")) {
+        if (input.equalsIgnoreCase("enter collection menu") || input.equalsIgnoreCase("enter collection")) {
             setCurrentMenu(MenuManager.getCollectionMenu());
             return;
         }
-        if (input.equalsIgnoreCase("enter shop menu")) {
+        if (input.equalsIgnoreCase("enter shop menu") || input.equalsIgnoreCase("enter shop")) {
             setCurrentMenu(MenuManager.getShopMenu());
             return;
         }
@@ -376,7 +376,7 @@ public class Input {
 
     public static void handleCommandsInShop() {
         String input = scanner.nextLine();
-        if (input.equalsIgnoreCase("enter collection menu")) {
+        if (input.equalsIgnoreCase("enter collection menu") || input.equalsIgnoreCase("enter collection")) {
             setCurrentMenu(MenuManager.getCollectionMenu());
             return;
         }
@@ -486,7 +486,7 @@ public class Input {
 
     private static void handleCommandsInSinglePlayerMenu() {
         String input = scanner.nextLine();
-        if (input.equalsIgnoreCase("enter single player story menu") || input.equalsIgnoreCase("enter story menu")) {
+        if (input.equalsIgnoreCase("enter single player story menu") || input.equalsIgnoreCase("enter story menu") || input.equalsIgnoreCase("enter story")) {
             System.err.println("showing user it's options");
             System.out.println("commands you can enter :\n" +
                     "-enter 'story 1' :: Hero : White Div mode: DeathMatch\n" +
@@ -496,7 +496,7 @@ public class Input {
             setCurrentMenu(MenuManager.getSinglePlayerStoryMenu());
             return;
         }
-        if (input.equalsIgnoreCase("enter custom menu") || input.equalsIgnoreCase("enter single player custom menu")) {
+        if (input.equalsIgnoreCase("enter custom menu") || input.equalsIgnoreCase("enter single player custom menu") || input.equalsIgnoreCase("enter custom")) {
             setCurrentMenu(MenuManager.getSinglePlayerCustomMenu());
             return;
         }
@@ -584,11 +584,11 @@ public class Input {
 
     public static void handleCommandsInBattleMenu() {
         String input = scanner.nextLine();
-        if (input.equalsIgnoreCase("enter single player menu")) {
+        if (input.equalsIgnoreCase("enter single player menu") || input.equalsIgnoreCase("enter single player") || input.equalsIgnoreCase("enter single")) {
             setCurrentMenu(MenuManager.getSinglePlayerMenu());
             return;
         }
-        if (input.equalsIgnoreCase("enter multi player menu")) {
+        if (input.equalsIgnoreCase("enter multi player menu") || input.equalsIgnoreCase("enter multi player") || input.equalsIgnoreCase("enter multi")) {
             setCurrentMenu(MenuManager.getMultiPlayerMenu());
             return;
         }
@@ -600,7 +600,7 @@ public class Input {
 
     public static void handleCommandsInLoginMenu() {
         String input = scanner.nextLine();
-        if (input.equalsIgnoreCase("enter main menu")) {
+        if (input.equalsIgnoreCase("enter main menu") || input.equalsIgnoreCase("enter main")) {
             if (Account.getMainAccount() == null) {
                 System.err.println("user have not logged in yet");
                 return;
@@ -629,7 +629,7 @@ public class Input {
         Pattern pattern = Pattern.compile("create account (\\w+)\\s*");
         Matcher matcher = pattern.matcher(input);
         if (matcher.matches()) {
-            if(Account.getMainAccount() != null){
+            if (Account.getMainAccount() != null) {
                 System.out.println("you are already logged in,log out to create account");
                 return;
             }
