@@ -238,7 +238,7 @@ public class BattleManager {
             }
 
             if (target.matches("(.*)" + TargetStrings.ALLIED_HERO + "(.*)")) {
-                targetCards.add(getOtherPlayer().getHero());
+                targetCards.add(getCurrentPlayer().getHero());
             }
 
             if (target.matches("(.*)" + TargetStrings.ENEMY + "(.*)")) {
