@@ -9,18 +9,63 @@ public class MenuManager {
     private ParentMenu currentMenu;
 
     private static ParentMenu mainMenu;
+
     private static ParentMenu loginMenu;
+
     private static ParentMenu battleMenu;
+
     private static ParentMenu shopMenu;
+
     private static ParentMenu collectionMenu;
+
     private static ParentMenu singlePlayerMenu;
+
     private static ParentMenu singlePlayerCustomMenu;
+
     private static ParentMenu singlePlayerStoryMenu;
+
     private static ParentMenu multiPlayerMenu;
+
     private static ParentMenu battle;
 
     public static ParentMenu getMainMenu() {
         return mainMenu;
+    }
+
+    public static ParentMenu getLoginMenu() {
+        return loginMenu;
+    }
+
+    public static ParentMenu getBattleMenu() {
+        return battleMenu;
+    }
+
+    public static ParentMenu getShopMenu() {
+        return shopMenu;
+    }
+
+    public static ParentMenu getCollectionMenu() {
+        return collectionMenu;
+    }
+
+    public static ParentMenu getSinglePlayerMenu() {
+        return singlePlayerMenu;
+    }
+
+    public static ParentMenu getSinglePlayerCustomMenu() {
+        return singlePlayerCustomMenu;
+    }
+
+    public static ParentMenu getSinglePlayerStoryMenu() {
+        return singlePlayerStoryMenu;
+    }
+
+    public static ParentMenu getMultiPlayerMenu() {
+        return multiPlayerMenu;
+    }
+
+    public static ParentMenu getBattle() {
+        return battle;
     }
 
     private List<OnMenuItemClickListener> clickListeners = new ArrayList<>();
@@ -79,10 +124,13 @@ public class MenuManager {
 
         mainMenu.addSubMenu(loginMenu, battleMenu, collectionMenu, shopMenu);
 
+        loginMenu.addSubMenu(mainMenu);
+        loginMenu.setParent(loginMenu);
+
         Input.setMenuManager(new MenuManager());
 //        Input.getMenuManager().addOnMenuChangeListener(Input.getInstance()::showMenu);    //Add listeners - (Method reference)
-        Input.getMenuManager().addOnClickListener(Input.getInstance()::onItemClicked);
-        Input.getMenuManager().setCurrentMenu(mainMenu);
+//        Input.getMenuManager().addOnClickListener(Input.getInstance()::onItemClicked);
+        Input.setCurrentMenu(loginMenu);
     }
 
     public void performClickOnMenu(int index) {

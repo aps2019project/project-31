@@ -110,7 +110,6 @@ public class Deck {
         if (cards.size() != 18)
             return false;
         return numberOfItemsInDeck() <= 1;
-
     }
 
 }

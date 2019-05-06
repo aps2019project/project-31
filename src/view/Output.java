@@ -3,6 +3,7 @@ package view;
 import constants.CardType;
 import model.Account;
 import model.Card;
+import model.Deck;
 import model.Deployable;
 
 public class Output {
@@ -70,19 +71,19 @@ public class Output {
         System.out.println("the turn ended");
     }
 
-    public static void thereIsntDeck() {
-        System.out.println("there isn't deck with this name");
+    public static void thereIsntDeck(String deckName) {
+        System.out.println("there isn't deck with name " + deckName);
     }
 
     public static void notInDeck() {
         System.out.println("there isn't card with this name");
     }
 
-    public static void showValidationOfDeck(boolean isValid) {
+    public static void showValidationOfDeck(boolean isValid, Deck deck) {
         if (isValid)
-            System.out.println("the deck is valid");
+            System.out.println("the deck " + deck.getDeckName() + " is valid");
         else
-            System.out.println("the deck isn't valid");
+            System.out.println("the deck " + deck.getDeckName() + " isn't valid");
     }
 
     public static void showCardIdAndStuff(Card card) {

@@ -5,6 +5,8 @@ import constants.GameMode;
 import controller.*;
 import model.*;
 
+import java.security.PublicKey;
+import java.util.Collections;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -31,6 +33,10 @@ public class Input {
 
     public static void setMenuManager(MenuManager menuManager) {
         Input.menuManager = menuManager;
+    }
+
+    public static void setCurrentMenu(ParentMenu currentMenu) {
+        menuManager.setCurrentMenu(currentMenu);
     }
 
     public static String giveMeInput() {
@@ -90,7 +96,6 @@ public class Input {
                 case Menu.Id.SHOP_MENU:
                     handleCommandsInShop();
                     break;
-
                 case Menu.Id.SINGLE_PLAYER_MENU:
                     handleCommandsInSinglePlayerMenu();
                     break;
@@ -194,15 +199,13 @@ public class Input {
 
     public static void handleCommandsInCollectionMenu() {
         String input = scanner.nextLine();
-        checkGenerals(input);
-        if (input.equalsIgnoreCase("show")) {
-            System.err.println("showing all card in collection");
-            CollectionMenu.showAllMyCards();
+//        checkGenerals(input);
+        if (input.equalsIgnoreCase("enter shop menu")) {
+            setCurrentMenu(MenuManager.getShopMenu());
             return;
         }
-        if (input.equalsIgnoreCase("save")) {
-            System.err.println("saving ...");
-            CollectionMenu.saveAndGoBack();
+        if (input.equalsIgnoreCase("back")) {
+            menuManager.back();
             return;
         }
         if (input.equalsIgnoreCase("help")) {
@@ -220,6 +223,16 @@ public class Input {
                     "-show deck [deck name]\n" +
                     "-show all decks\n"
             );
+            return;
+        }
+        if (input.equalsIgnoreCase("show")) {
+            System.err.println("showing all card in collection");
+            CollectionMenu.showAllMyCards();
+            return;
+        }
+        if (input.equalsIgnoreCase("save")) {
+            System.err.println("saving ...");
+            CollectionMenu.saveAndGoBack();
             return;
         }
         Pattern pattern = Pattern.compile("search (.+,*+)\\s*");
@@ -289,12 +302,49 @@ public class Input {
 
     public static void handleCommandsInMainMenu() {
         String input = scanner.nextLine();
-        checkGenerals(input);
+        //checkGenerals();
+        if (input.equalsIgnoreCase("enter login menu")) {
+            setCurrentMenu(MenuManager.getLoginMenu());
+            return;
+        }
+        if (input.equalsIgnoreCase("enter battle menu")) {
+            if (Account.getMainAccount().getTheMainDeck() != null) {
+                if (Account.getMainAccount().getTheMainDeck().checkIfValid()) {
+                    setCurrentMenu(MenuManager.getBattleMenu());
+                } else {
+                    System.out.println("selected deck is invalid");
+                }
+            } else {
+                System.err.println("no deck!");
+                System.out.println("no deck!");
+            }
+            return;
+        }
+        if (input.equalsIgnoreCase("enter collection menu")) {
+            setCurrentMenu(MenuManager.getCollectionMenu());
+            return;
+        }
+        if (input.equalsIgnoreCase("enter shop menu")) {
+            setCurrentMenu(MenuManager.getShopMenu());
+            return;
+        }
+        if (input.equalsIgnoreCase("exit") || input.equalsIgnoreCase("back")) {
+            MenuManager.exitGame();
+            return;
+        }
     }
 
     public static void handleCommandsInShop() {
         String input = scanner.nextLine();
-        checkGenerals(input);
+//        checkGenerals(input);
+        if (input.equalsIgnoreCase("enter collection menu")) {
+            setCurrentMenu(MenuManager.getCollectionMenu());
+            return;
+        }
+        if (input.equalsIgnoreCase("back")) {
+            menuManager.back();
+            return;
+        }
         if (input.equalsIgnoreCase("help")) {
             System.err.println("showing user it's options");
             System.out.println("commands you can enter :\n" +
@@ -348,7 +398,11 @@ public class Input {
 
     private static void handleCommandsInMultiPlayerMenu() {
         String input = scanner.nextLine();
-        checkGenerals(input);
+//        checkGenerals(input);
+        if (input.equalsIgnoreCase("back")) {
+            menuManager.back();
+            return;
+        }
         if (input.equalsIgnoreCase("help")) {
             System.err.println("showing user it's options");
             System.out.println("commands you can enter :\n" +
@@ -361,18 +415,19 @@ public class Input {
         if (matcher.matches()) {
             Account theAccount = Account.findAccount(matcher.group(1));
             if (theAccount == null) {
-                System.err.println("the user do not exist!");
+                System.err.println("the user does not exist!");
                 return;
             }
             Deck thePlayer2Deck = theAccount.findDeckByName(matcher.group(2));
             if (thePlayer2Deck == null) {
-                System.err.println("the fuckin deck isn't ther u asshole");
+                System.err.println("the deck" +
+                        matcher.group(2) +
+                        "wasn't found");
                 return;
             }
             Account.getMainAccount().checkValidationOfDeck(thePlayer2Deck.getDeckName());
             if (thePlayer2Deck.checkIfValid())
                 theAccount.setTheMainDeck(thePlayer2Deck);
-            System.err.println("heeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeere");
             if (matcher.group(3).trim().equalsIgnoreCase("domination")) {
                 BattleMenu.setBattleManagerForMultiPlayer(Account.getMainAccount(), theAccount,
                         Integer.parseInt(matcher.group(4)), 100, GameMode.Domination);
@@ -386,16 +441,26 @@ public class Input {
             if (matcher.group(3).trim().equalsIgnoreCase("deathMatch")) {
                 BattleMenu.setBattleManagerForMultiPlayer(Account.getMainAccount(), theAccount,
                         100, 100, GameMode.DeathMatch);
-                System.err.println("this nigaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa gay!!!!!!!!!!!!!!!!!");
                 BattleMenu.runTheGame();
             }
-
         }
     }
 
     private static void handleCommandsInSinglePlayerMenu() {
         String input = scanner.nextLine();
-        checkGenerals(input);
+//        checkGenerals(input);
+        if (input.equalsIgnoreCase("enter story menu")) {
+            setCurrentMenu(MenuManager.getSinglePlayerStoryMenu());
+            return;
+        }
+        if (input.equalsIgnoreCase("enter custom menu")) {
+            setCurrentMenu(MenuManager.getSinglePlayerCustomMenu());
+            return;
+        }
+        if (input.equalsIgnoreCase("back")) {
+            menuManager.back();
+            return;
+        }
         if (input.equalsIgnoreCase("help")) {
             System.err.println("showing user it's options");
             System.out.println("commands you can enter :\n" +
@@ -406,7 +471,11 @@ public class Input {
 
     public static void handleCommandsInSinglePlayerStoryMenu() {
         String input = scanner.nextLine();
-        checkGenerals(input);
+//        checkGenerals(input);
+        if (input.equalsIgnoreCase("back")) {
+            menuManager.back();
+            return;
+        }
         if (input.equalsIgnoreCase("help")) {
             System.err.println("showing user it's options");
             System.out.println("commands you can enter :\n" +
@@ -435,6 +504,11 @@ public class Input {
 
     public static void handleCommandsInSinglePlayerCustomMenu() {
         String input = scanner.nextLine();
+//        checkGenerals(input);
+        if (input.equalsIgnoreCase("back")) {
+            menuManager.back();
+            return;
+        }
         if (input.equalsIgnoreCase("help")) {
             System.err.println("showing user it's options");
             System.out.println("commands you can enter :\n" +
@@ -469,30 +543,32 @@ public class Input {
 
     public static void handleCommandsInBattleMenu() {
         String input = scanner.nextLine();
-        if(!checkGenerals(input)){
+//        checkGenerals(input);
+        if (input.equalsIgnoreCase("enter single player menu")) {
+            setCurrentMenu(MenuManager.getSinglePlayerMenu());
             return;
         }
-        if (Account.getMainAccount() != null) {
-            if (Account.getMainAccount().getTheMainDeck() != null) {
-                if (!Account.getMainAccount().getTheMainDeck().checkIfValid()) {
-                    System.err.println("selected deck is invalid");
-                    Input.getMenuManager().back();
-                }
-            } else {
-                System.out.println("No deck!");
-                System.err.println("No deck!");
-                Input.getMenuManager().back();
-            }
-        } else {
-            System.out.println("No account!");
-            System.err.println("No account!");
-            Input.getMenuManager().back();
+        if (input.equalsIgnoreCase("enter multi player menu")) {
+            setCurrentMenu(MenuManager.getMultiPlayerMenu());
+            return;
         }
+        if (input.equalsIgnoreCase("back")) {
+            menuManager.back();
+            return;
+        }
+
     }
 
     public static void handleCommandsInLoginMenu() {
         String input = scanner.nextLine();
-        checkGenerals(input);
+        if (input.equalsIgnoreCase("enter main menu")) {
+            if (Account.getMainAccount() == null) {
+                System.err.println("user have not logged in yet");
+                return;
+            }
+            setCurrentMenu(MenuManager.getMainMenu());
+            return;
+        }
         if (input.equalsIgnoreCase("help")) {
             System.err.println("showing user it's options");
             System.out.println("commands you can enter :\n" +
@@ -500,8 +576,16 @@ public class Input {
                     "-login [username]\n" +
                     "-logout\n" +
                     "-save\n" +
-                    "-show leaderBoard"
+                    "-show leaderBoard\n" +
+                    "-exit"
             );
+        }
+        if (input.equalsIgnoreCase("back")) {
+            return;
+        }
+        if (input.equalsIgnoreCase("exit")) {
+            MenuManager.exitGame();
+            return;
         }
         Pattern pattern = Pattern.compile("create account (\\w+)\\s*");
         Matcher matcher = pattern.matcher(input);
@@ -571,4 +655,3 @@ public class Input {
         System.out.println("--enter 'back' to go back");
     }
 }
-//hero item 18 chiz dige

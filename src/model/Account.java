@@ -20,9 +20,12 @@ public class Account {
     private String password;
     private ArrayList<MatchHistory> matchHistories = new ArrayList<>();
     private int[] winLoseDraw = new int[3];
-
     public String getPassword() {
         return password;
+    }
+
+    public Deck getTheMAinDeck(){
+        return theMainDeck;
     }
 
     public void setPassword(String password) {
@@ -213,12 +216,12 @@ public class Account {
         selectDeck(deckName);
         if (editingDeck == null)
             return;
-        Output.showValidationOfDeck(editingDeck.checkIfValid());
+        Output.showValidationOfDeck(editingDeck.checkIfValid(), editingDeck);
     }
 
     public void selectDeck(String deckName) {
         if (findDeckByName(deckName) == null) {
-            Output.thereIsntDeck();
+            Output.thereIsntDeck(deckName);
             return;
         }
         editingDeck = findDeckByName(deckName);
@@ -234,7 +237,7 @@ public class Account {
 
     public void deleteDeck(String deckName) {
         if (findDeckByName(deckName) == null) {
-            Output.thereIsntDeck();
+            Output.thereIsntDeck(deckName);
             return;
         }
         getDecks().remove(findDeckByName(deckName));
