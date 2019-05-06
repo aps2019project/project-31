@@ -133,18 +133,18 @@ public class Input {
         if (input.equalsIgnoreCase("help")){
             System.err.println("showing user it's options");
             System.out.println("commands you can enter :\n" +
-                    "replace card (\\d+)\n" +
+                    "replace card [card id]\n" +
                     "end turn\n" +
-                    "select \\d+\n" +
+                    "select [card id]\n" +
                     "show mana\n" +
                     "game info\n" +
                     "show my minions\n" +
                     "show opponent minions\n" +
-                    "show card info \\d+\n" +
-                    "use special power \\((\\d+),(\\d+)\\\n" +
+                    "show card info [card id]\n" +
+                    "use special power ([],[])\n" +
                     "show hand\n" +
                     "show collectibles\n" +
-                    "select (\\d+)\n" +
+                    "select [card id]\n" +
                     "show info\n" +
                     "show next card\n" +
                     "enter graveyard"
