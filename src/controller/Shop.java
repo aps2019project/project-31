@@ -45,6 +45,7 @@ public class Shop extends Menu {
         System.err.println("loading usables...");
         path = System.getProperty("user.dir") + "/Sources/Cards/Usable_Items.txt";
         loadItems(yaGson, path, allUsables);
+        allCards.addAll(allUsables);
     }
 
     private static void loadHeroes(YaGson yaGson, String path) {
@@ -205,9 +206,6 @@ public class Shop extends Menu {
             for (Card card : allCards) {
                 if (card.getType() == cardType)
                     card.show();
-            }
-            for (Item item: allUsables){
-                item.show();
             }
         }
     }
