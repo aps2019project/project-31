@@ -133,7 +133,21 @@ public class Input {
         if (input.equalsIgnoreCase("help")){
             System.err.println("showing user it's options");
             System.out.println("commands you can enter :\n" +
-                    ""
+                    "replace card (\\d+)\n" +
+                    "end turn\n" +
+                    "select \\d+\n" +
+                    "show mana\n" +
+                    "game info\n" +
+                    "show my minions\n" +
+                    "show opponent minions\n" +
+                    "show card info \\d+\n" +
+                    "use special power \\((\\d+),(\\d+)\\\n" +
+                    "show hand\n" +
+                    "show collectibles\n" +
+                    "select (\\d+)\n" +
+                    "show info\n" +
+                    "show next card\n" +
+                    "enter graveyard"
             );
         }
         if (input.matches("replace card (\\d+)\\s*")) {
@@ -454,11 +468,17 @@ public class Input {
 
     private static void handleCommandsInSinglePlayerMenu() {
         String input = scanner.nextLine();
-        if (input.equalsIgnoreCase("enter story menu")) {
+        if (input.equalsIgnoreCase("enter single player story menu") || input.equalsIgnoreCase("enter story menu")) {
+            System.err.println("showing user it's options");
+            System.out.println("commands you can enter :\n" +
+                    "-enter 'story 1' :: Hero : White Div mode: DeathMatch\n" +
+                    "-enter 'story 2' :: Hero : Zah'aak   mode: Flag\n" +
+                    "-enter 'story 3' :: Hero : Arash     mode: Domination"
+            );
             setCurrentMenu(MenuManager.getSinglePlayerStoryMenu());
             return;
         }
-        if (input.equalsIgnoreCase("enter custom menu")) {
+        if (input.equalsIgnoreCase("enter custom menu") || input.equalsIgnoreCase("enter single player custom menu")) {
             setCurrentMenu(MenuManager.getSinglePlayerCustomMenu());
             return;
         }
@@ -483,23 +503,23 @@ public class Input {
         if (input.equalsIgnoreCase("help")) {
             System.err.println("showing user it's options");
             System.out.println("commands you can enter :\n" +
-                    "-story_1\n" +
-                    "-story_2\n" +
-                    "-story_3"
+                    "-enter 'story 1' :: Hero : White Div mode: DeathMatch\n" +
+                    "-enter 'story 2' :: Hero : Zah'aak   mode: Flag\n" +
+                    "-enter 'story 3' :: Hero : Arash     mode: Domination"
             );
         }
 
-        if (input.equalsIgnoreCase("story_1")) {
+        if (input.equalsIgnoreCase("story 1")) {
             BattleMenu.setBattleManagerForSinglePLayer(BattleManagerMode.Story, Account.getMainAccount(), 100,
                     100, GameMode.DeathMatch, 1);
             BattleMenu.runTheGame();
         }
-        if (input.equalsIgnoreCase("story_2")) {
+        if (input.equalsIgnoreCase("story 2")) {
             BattleMenu.setBattleManagerForSinglePLayer(BattleManagerMode.Story, Account.getMainAccount(), 100,
                     100, GameMode.DeathMatch, 2);
             BattleMenu.runTheGame();
         }
-        if (input.equalsIgnoreCase("story_3")) {
+        if (input.equalsIgnoreCase("story 3")) {
             BattleMenu.setBattleManagerForSinglePLayer(BattleManagerMode.Story, Account.getMainAccount(), 100,
                     100, GameMode.DeathMatch, 3);
             BattleMenu.runTheGame();
