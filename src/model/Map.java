@@ -15,8 +15,8 @@ public class Map {
 
     public static void createTheMap() {
         map = new Cell[MAP_X1_LENGTH + 1][MAP_X2_LENGTH + 1];
-        for (int i = 1; i <= 5; i++) {
-            for (int j = 1; j <= 9; j++) {
+        for (int i = 0; i <= 5; i++) {
+            for (int j = 0; j <= 9; j++) {
                 map[i][j] = new Cell(i, j, null);
             }
         }
@@ -48,10 +48,10 @@ public class Map {
     public static Cell findCellByCardId(int uniqueCardId) {
         for (Cell[] cells : map) {
             for (Cell cell : cells) {
-                if (cell.getCardInCell() == null) continue;
-                if (cell.getCardInCell().uniqueId == uniqueCardId) {
-                    return cell;
-                }
+                if (cell.getCardInCell() != null)
+                    if (cell.getCardInCell().uniqueId == uniqueCardId) {
+                        return cell;
+                    }
             }
         }
         return null;

@@ -936,6 +936,15 @@ public class BattleManager {
     }
 
     public static boolean isAttackTypeValidForAttack(Deployable attacker, Deployable counterAttacker) {
+        if(attacker.attackType==null || counterAttacker.attackType==null){
+            System.err.println("attack type null e");
+            return false;
+        }
+        if(attacker.cell==null || counterAttacker.cell==null)
+        {
+            System.err.println("cell ha null e");
+            return false;
+        }
         return attacker.attackType.equals("melee") && isNear(attacker.cell, counterAttacker.cell) ||
                 (attacker.attackType.equals("ranged") &&
                         Map.getDistance(attacker.cell, counterAttacker.cell) <= attacker.attackRange) ||
