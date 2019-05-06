@@ -208,6 +208,14 @@ public class Input {
     private static void enterGraveYard() {
         while (true) {
             String input = scanner.nextLine();
+            if(input.equalsIgnoreCase("help")){
+                System.err.println("showing user it's options");
+                System.out.println("commands you can enter :\n" +
+                        "-show cards\n" +
+                        "-show info [card id]\n" +
+                        "-exit"
+                );
+            }
             if (input.equalsIgnoreCase("show cards"))
                 showAllGraveyardCards();
             Pattern pattern = Pattern.compile("show info (\\d+)");
@@ -617,6 +625,10 @@ public class Input {
         Pattern pattern = Pattern.compile("create account (\\w+)\\s*");
         Matcher matcher = pattern.matcher(input);
         if (matcher.matches()) {
+            if(Account.getMainAccount() != null){
+                System.out.println("you are already logged in,log out to create account");
+                return;
+            }
             Output.print("enter your password:");
             String username = matcher.group(1).trim();
             String password = scanner.nextLine();
