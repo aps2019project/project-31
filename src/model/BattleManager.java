@@ -936,12 +936,11 @@ public class BattleManager {
     }
 
     public static boolean isAttackTypeValidForAttack(Deployable attacker, Deployable counterAttacker) {
-        if(attacker.attackType==null || counterAttacker.attackType==null){
+        if (attacker.attackType == null || counterAttacker.attackType == null) {
             System.err.println("attack type null e");
             return false;
         }
-        if(attacker.cell==null || counterAttacker.cell==null)
-        {
+        if (attacker.cell == null || counterAttacker.cell == null) {
             System.err.println("cell ha null e");
             return false;
         }
@@ -1133,15 +1132,16 @@ public class BattleManager {
         }
 
     }
-    public void makeIsMovedAndStunnedAndStuffFalse(){
-        for (Deployable deployable:player1.getCardsOnBattleField()) {
-            if(deployable!=null ){
+
+    public void makeIsMovedAndStunnedAndStuffFalse() {
+        for (Deployable deployable : player1.getCardsOnBattleField()) {
+            if (deployable != null) {
                 deployable.setAttacked(false);
                 deployable.setMoved(false);
             }
         }
-        for (Deployable deployable:player2.getCardsOnBattleField()) {
-            if(deployable!=null ){
+        for (Deployable deployable : player2.getCardsOnBattleField()) {
+            if (deployable != null) {
                 deployable.setAttacked(false);
                 deployable.setMoved(false);
             }
