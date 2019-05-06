@@ -228,5 +228,10 @@ public class Deployable extends Card {
         return " ";
     }
 
+    public String shortVersionString() {
+        return "Name: " + name + "  Desc: " + cardText +
+                "  Coordination: " + cell.getX1Coordinate() + " , " + cell.getX2Coordinate() +
+                "  unique card id: " + uniqueId + "  HP: " + currentHealth + "  AP: " + currentAttack;
+    }
 
 }

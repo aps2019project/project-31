@@ -6,6 +6,7 @@ import model.*;
 import view.Input;
 import view.Output;
 
+import java.rmi.ServerError;
 import java.util.ArrayList;
 
 public class BattleMenu extends Menu {
@@ -306,6 +307,20 @@ public class BattleMenu extends Menu {
             }
         }
         System.err.println("you don't have this card in your hand.");
+    }
+
+    public static void showGlimpseOfMap(BattleManager battleManager) {
+        System.err.println("Player 1 minions are:\n");
+        System.out.println(battleManager.getPlayer1().getHero().shortVersionString());
+        for (Deployable deployable:battleManager.getPlayer1().getCardsOnBattleField()) {
+            if(deployable!=null)
+                System.out.println(deployable.shortVersionString());
+        } System.err.println("Player 2 minions are:\n");
+        System.out.println(battleManager.getPlayer2().getHero().shortVersionString());
+        for (Deployable deployable:battleManager.getPlayer2().getCardsOnBattleField()) {
+            if(deployable!=null)
+                System.out.println(deployable.shortVersionString());
+        }
     }
 }
 
