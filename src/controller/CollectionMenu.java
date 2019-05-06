@@ -10,14 +10,6 @@ import view.Output;
 import java.util.ArrayList;
 
 public class CollectionMenu extends Menu {
-
-
-
-
-
-
-
-
     public static void showAllDecks() {
         try {
             Account.getMainAccount().getTheMainDeck().show();
@@ -30,11 +22,9 @@ public class CollectionMenu extends Menu {
         }
     }
 
-
-
     public static Card findCardByIdInCollection(int cardId) {
         for (Card card : Account.getMainAccount().getCollection()) {
-            if (cardId == card.getId())
+            if (card != null && cardId == card.getId())
                 return card;
         }
         return null;
@@ -43,17 +33,11 @@ public class CollectionMenu extends Menu {
     public static void showCardsByNames(String[] names) {
         for (Card card : Account.getMainAccount().getCollection()) {
             for (String name : names) {
-                if (card.getName().equals(name))
+                if (card != null && card.getName().equals(name))
                     card.show();
             }
         }
     }
-
-
-
-
-
-
 
     public static void showAllMyCards() {
         for (Card card : Account.getMainAccount().getCollection()) {

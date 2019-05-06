@@ -53,7 +53,7 @@ public class Input {
         if (input.matches("\\s*end turn\\s*"))
             BattleMenu.setAreWeInMiddleOfTurn(false);
         if (input.matches("attack\\s+\\d+")) {
-            BattleMenu.attack(Integer.parseInt(input.replace("attack", "").trim()));
+            BattleMenu.attack(Integer.parseInt(input.replace("attack ", "").trim()));
         }
         Pattern pattern = Pattern.compile("move to \\((\\d),(\\d)\\)\\s*");
         Matcher matcher = pattern.matcher(input);

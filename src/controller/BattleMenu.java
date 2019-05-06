@@ -270,11 +270,11 @@ public class BattleMenu extends Menu {
 
     public static Deployable findDeadMinion(int uniqueId) {
         for (Deployable deployable : battleManager.getPlayer1().getGraveYard()) {
-            if (deployable.getUniqueId() == uniqueId)
+            if (deployable != null && deployable.getUniqueId() == uniqueId)
                 return deployable;
         }
         for (Deployable deployable : battleManager.getPlayer2().getGraveYard()) {
-            if (deployable.getUniqueId() == uniqueId)
+            if (deployable != null && deployable.getUniqueId() == uniqueId)
                 return deployable;
         }
         return null;
