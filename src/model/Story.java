@@ -18,7 +18,7 @@ public class Story extends SinglePlayer {
 
     public static void loadStoryDecks(){
         YaGson yaGson = new YaGsonBuilder().create();
-        String path = System.getProperty("user.dir") + "/Sources/Story Decks/storyDecks.txt";
+        String path = System.getProperty("user.dir") + "/Sources/StoryDecks/storyDecks.txt";
         try(BufferedReader bufferedReader = new BufferedReader(new FileReader(path))){
             String line = bufferedReader.readLine();
             firstBattleManagerDeck = yaGson.fromJson(line, Deck.class);

@@ -152,9 +152,9 @@ public class deckAssembler {
             num = scanner.nextInt();
         }
         YaGson yaGson = new YaGsonBuilder().create();
-        String path = System.getProperty("user.dir") + "/Sources/Story Decks/storyDecks.txt";
+        String path = System.getProperty("user.dir") + "/Sources/StoryDecks/storyDecks.txt";
         try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(path,true))){
-            bufferedWriter.write(yaGson.toJson(newDeck));
+            bufferedWriter.write(yaGson.toJson(newDeck) + "\n");
         }catch (IOException e){
 
         }
