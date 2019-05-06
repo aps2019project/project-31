@@ -783,6 +783,7 @@ public class BattleManager {
                     Map.getCell(x1, x2).setHasFlag(false);
                 }
                 card.cell = Map.getCell(x1, x2);
+                card.setMoved(true);
                 Map.getCell(x1, x2).setCardInCell(card);
                 Output.movedSuccessfully(card);
             } else {
