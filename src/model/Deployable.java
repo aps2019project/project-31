@@ -229,7 +229,7 @@ public class Deployable extends Card {
     }
 
     public String shortVersionString() {
-        return "Name: " + name + "  Desc: " + cardText +
+        return "Name: " + name + "  attackType: " + attackType +
                 "  Coordination: " + cell.getX1Coordinate() + " , " + cell.getX2Coordinate() +
                 "  unique card id: " + uniqueId + "  HP: " + currentHealth + "  AP: " + currentAttack;
     }

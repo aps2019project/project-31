@@ -774,7 +774,7 @@ public class BattleManager {
         if (item.id == 509)
             currentPlayer.increaseManaInTheTurn(turn + 2, 3);
         currentPlayer.decreaseMana(item.manaCost);
-        currentPlayer.selectedCard=null;
+        currentPlayer.selectedCard = null;
         return true;
     }
 
@@ -956,6 +956,8 @@ public class BattleManager {
     private void counterAttack(Deployable attacker, Deployable counterAttacker) {
         if (!counterAttacker.isDisarmed() && isAttackTypeValidForCounterAttack(attacker, counterAttacker)) {
             attacker.currentHealth -= attacker.theActualDamageReceived(counterAttacker.theActualDamage());
+            if (attacker.currentHealth <= 0)
+                killTheThing(attacker);
         }
     }
 

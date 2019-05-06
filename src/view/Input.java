@@ -160,8 +160,14 @@ public class Input {
 
         if (input.matches("\\s*end turn\\s*"))
             BattleMenu.setAreWeInMiddleOfTurn(false);
-        if (input.matches("select \\d+"))
+        Pattern pattern = Pattern.compile("select (\\d+)\\s*");
+        Matcher matcher = pattern.matcher(input);
+        if (matcher.matches())
+
+            if (input.matches("select \\d+")) {
             player.selectACard(Integer.parseInt(input.replace("select ", "").trim()));
+            BattleMenu.selectCollectibleItem(Integer.parseInt(matcher.group(1)));
+        }
         if (isThereSelectedCard)
             moveAttackPlayCard(input);
         else
@@ -178,8 +184,8 @@ public class Input {
             String cardUniqueId = input.replace("show card info", "").trim();
             System.out.println(BattleManager.findCardByUniqueid(Integer.parseInt(cardUniqueId)).infoToString());
         }
-        Pattern pattern = Pattern.compile("use special power \\((\\d+),(\\d+)\\)");
-        Matcher matcher = pattern.matcher(input);
+        pattern = Pattern.compile("use special power \\((\\d+),(\\d+)\\)");
+        matcher = pattern.matcher(input);
         if (matcher.matches()) {
             int x1 = Integer.parseInt(matcher.group(1));
             int x2 = Integer.parseInt(matcher.group(2));
@@ -190,10 +196,7 @@ public class Input {
         else if (input.equalsIgnoreCase("show collectibles")) {
             BattleMenu.getBattleManager().getCurrentPlayer().showCollectibleItems();
         }
-        pattern = Pattern.compile("select (\\d+)\\s*");
-        matcher = pattern.matcher(input);
-        if (matcher.matches())
-            BattleMenu.selectCollectibleItem(Integer.parseInt(matcher.group(1)));
+
         if (input.equalsIgnoreCase("show info"))
             BattleMenu.showSelectedCardInfo();
         else if (input.equalsIgnoreCase("show next card")) {
