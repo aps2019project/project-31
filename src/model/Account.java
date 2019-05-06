@@ -1,9 +1,12 @@
 package model;
 
+import com.gilecode.yagson.YaGson;
+import com.gilecode.yagson.YaGsonBuilder;
 import constants.CardType;
 import controller.CollectionMenu;
 import view.Output;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -20,11 +23,26 @@ public class Account {
     private String password;
     private ArrayList<MatchHistory> matchHistories = new ArrayList<>();
     private int[] winLoseDraw = new int[3];
+
+    public static void loadAllAccounts() {
+        YaGson yaGson = new YaGsonBuilder().create();
+        String path = System.getProperty("user.dir") + "/Sources/Accounts/Accounts.txt";
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(path))) {
+            String line = bufferedReader.readLine();
+            while (line != null) {
+                allAccounts.add(yaGson.fromJson(line, Account.class));
+                line = bufferedReader.readLine();
+            }
+        } catch (IOException e) {
+            System.err.println("File Exception");
+        }
+    }
+
     public String getPassword() {
         return password;
     }
 
-    public Deck getTheMAinDeck(){
+    public Deck getTheMAinDeck() {
         return theMainDeck;
     }
 
@@ -38,6 +56,18 @@ public class Account {
 
     public static void setMainAccount(Account mainAccount) {
         Account.mainAccount = mainAccount;
+    }
+
+    public static void saveAllAccounts() {
+        YaGson yaGson = new YaGsonBuilder().create();
+        String path = System.getProperty("user.dir") + "/Sources/Accounts/Accounts.txt";
+        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(path))) {
+            for (Account account : allAccounts) {
+                bufferedWriter.write(yaGson.toJson(account) + "\n");
+            }
+        } catch (IOException e) {
+
+        }
     }
 
     public Account(String username, String password, int daric) {

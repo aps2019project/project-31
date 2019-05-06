@@ -13,6 +13,8 @@ public class Initializer {
 
     public static void main(String[] args) {
 
+        System.err.println("Loading all accounts...");
+        Account.loadAllAccounts();
         System.err.println("Initializing maps ...");
         Map.createTheMap();
         System.err.println("maps initialized");

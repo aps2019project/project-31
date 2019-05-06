@@ -5,8 +5,10 @@ import constants.CardType;
 import constants.FunctionType;
 import constants.GameMode;
 import controller.BattleMenu;
+import view.Input;
 import view.Output;
 
+import javax.print.DocFlavor;
 import java.util.*;
 
 import java.util.ArrayList;
@@ -650,7 +652,7 @@ public class BattleManager {
                     return;
                 }
                 int turns = Integer.parseInt(matcher.group(1).replace("stun", ""));
-                Buff buff = new Buff(Buff.BuffType.Stun, turns, 0, 0, false);
+                Buff buff = new Buff(Buff.BuffType.Stun, turns * 2, 0, 0, false);
                 addBuffs(targetCards, buff);
             }
 
@@ -1013,6 +1015,7 @@ public class BattleManager {
         matchHistory = new MatchHistory(player1.getAccount().getUsername(), "lose");
         player2.getAccount().addMatchHistories(matchHistory);
         BattleMenu.setGameFinished(true);
+        Output.print(player1.getAccount().getUsername() + " won");
     }
 
     public void player2Won() {
@@ -1021,6 +1024,7 @@ public class BattleManager {
         matchHistory = new MatchHistory(player1.getAccount().getUsername(), "win");
         player2.getAccount().addMatchHistories(matchHistory);
         BattleMenu.setGameFinished(true);
+        Output.print(player2.getAccount().getUsername() + " won");
     }
 
     public void draw() {
@@ -1028,6 +1032,7 @@ public class BattleManager {
         player1.getAccount().addMatchHistories(matchHistory);
         matchHistory = new MatchHistory(player1.getAccount().getUsername(), "draw");
         player2.getAccount().addMatchHistories(matchHistory);
+        Output.print("draw");
         BattleMenu.setGameFinished(true);
     }
 

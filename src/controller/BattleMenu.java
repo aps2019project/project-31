@@ -126,6 +126,10 @@ public class BattleMenu extends Menu {
 
     public void runTheGame() {
         boolean isPlayer1Turn = false;
+        Collections.shuffle(battleManager.getPlayer1().getCurrentDeck().getCards());
+        Collections.shuffle(battleManager.getPlayer2().getCurrentDeck().getCards());
+        // battleManager.getPlayer1().generateDeckArrangement();
+      //  battleManager.getPlayer2().generateDeckArrangement();
         battleManager.setCurrentPlayer(battleManager.getPlayer2());
         battleManager.applyItemFunctions(battleManager.getCurrentPlayer().getHero(), FunctionType.GameStart);
         battleManager.initialTheGame();

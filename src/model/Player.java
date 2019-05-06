@@ -206,8 +206,10 @@ public class Player {
         if (hand.size() < 6) {
             hand.add(nextCard);
             //    Collections.shuffle(currentDeck.getCards());
-            nextCard = currentDeck.getCards().get(0);
-            currentDeck.getCards().remove(0);
+            if (currentDeck.getCards().size() > 0) {
+                currentDeck.getCards().remove(0);
+                nextCard = currentDeck.getCards().get(0);
+            }
         }
     }
 

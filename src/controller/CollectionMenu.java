@@ -18,6 +18,12 @@ public class CollectionMenu extends Menu {
         }
     }
 
+    public static void showAllDecknames() {
+        for (Deck deck : Account.getMainAccount().getDecks()) {
+            Output.print(deck.getDeckName());
+        }
+    }
+
     public static Card findCardByIdInCollection(int cardId) {
         for (Card card : Account.getMainAccount().getCollection()) {
             if (card != null && cardId == card.getId())
