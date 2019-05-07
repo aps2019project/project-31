@@ -246,7 +246,8 @@ public class BattleManager {
             }
 
             if (target.matches("(.*)" + TargetStrings.ENEMY + "(.*)")) {
-                if (Map.getCardInCell(x1, x2).getAccount().equals(currentPlayer.getAccount())) {
+                if (Map.getCardInCell(x1, x2) != null &&
+                        Map.getCardInCell(x1, x2).getAccount().equals(currentPlayer.getAccount())) {
                     //wrong target
                     System.err.println("Invalid target");
                     return false;
@@ -287,7 +288,8 @@ public class BattleManager {
                 targetCards.addAll(getOtherPlayer().getCardsOnBattleField());
             } else if (target.matches("(.*)" + TargetStrings.ALL_ENEMIES_IN_COLUMN + "(.*)")) {
                 for (int i = 1; i <= Map.MAP_X2_LENGTH; i++) {
-                    if (!Map.getCardInCell(i, x2).getAccount().equals(currentPlayer.getAccount())) {
+                    if (Map.getCardInCell(x1, x2) != null &&
+                            !Map.getCardInCell(i, x2).getAccount().equals(currentPlayer.getAccount())) {
                         targetCards.add(Map.getCardInCell(i, x2));
                     }
                 }
@@ -335,7 +337,8 @@ public class BattleManager {
             if (target.matches("(.*)" + TargetStrings.SURROUNDING_ALLIED_MINIONS + "(.*)")) {
                 for (int i = x1 - 1; i < x1 + 2; i++) {
                     for (int j = x2 - 1; j < x2 + 2; j++) {
-                        if (Map.getCardInCell(x1, x2).getAccount().equals(currentPlayer.getAccount())) {
+                        if (Map.getCardInCell(x1, x2) != null &&
+                                Map.getCardInCell(x1, x2).getAccount().equals(currentPlayer.getAccount())) {
                             targetCards.add(Map.getCardInCell(x1, x2));
                         }
                     }
@@ -378,7 +381,8 @@ public class BattleManager {
 
     private void addEnemiesInRow(ArrayList<Card> targetCards, int rowNum) {
         for (int i = 1; i <= Map.MAP_X1_LENGTH; i++) {
-            if (!Map.getCardInCell(rowNum, i).getAccount().equals(currentPlayer.getAccount())) {
+            if (Map.getCardInCell(rowNum, i) != null &&
+                    !Map.getCardInCell(rowNum, i).getAccount().equals(currentPlayer.getAccount())) {
                 targetCards.add(Map.getCardInCell(rowNum, i));
             }
         }
@@ -387,7 +391,8 @@ public class BattleManager {
     private void addSurroundingCards(ArrayList<Card> list, int x1, int x2) {
         for (int i = x1 - 1; i < x1 + 2; i++) {
             for (int j = x2 - 1; j < x2 + 2; j++) {
-                if (!Map.getCardInCell(x1, x2).getAccount().equals(currentPlayer.getAccount())) {
+                if (Map.getCardInCell(x1, x2) != null &&
+                        !Map.getCardInCell(x1, x2).getAccount().equals(currentPlayer.getAccount())) {
                     list.add(Map.getCardInCell(x1, x2));
                 }
             }
