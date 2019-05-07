@@ -226,6 +226,10 @@ public class BattleMenu extends Menu {
     }
 
     public static boolean insert(Card card, int x1, int x2) {
+        if(card==null){
+            System.err.println("wtf masih was right ");
+            return false;
+        }
         if (battleManager.cardInHandByCardId(card.getId()) != null) {
             if (!battleManager.checkCoordinates(x1, x2)) {
                 Output.invalidInsertionTarget();

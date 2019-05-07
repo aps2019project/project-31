@@ -23,6 +23,8 @@ public class Map {
     }
 
     public static int getDistance(Cell cell1, Cell cell2) {
+        if (cell1 == null || cell2 == null)
+            return 100000;
         return Math.abs(cell1.getX1Coordinate() - cell2.getX1Coordinate()) +
                 Math.abs(cell1.getX2Coordinate() - cell2.getX2Coordinate());
     }
@@ -58,7 +60,9 @@ public class Map {
     }
 
     public static Card getCardInCell(int x1, int x2) {
-        return getCell(x1, x2).getCardInCell();
+        if (getCell(x1, x2) != null)
+            return getCell(x1, x2).getCardInCell();
+        return null;
     }
 
     public static void putCardInCell(Deployable card, int x1, int x2) {
