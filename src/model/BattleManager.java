@@ -223,6 +223,10 @@ public class BattleManager {
 
             if (target.matches("(.*)" + TargetStrings.ALLIED_MINION + "(.*)")) {
                 Card card = Map.getCardInCell(x1, x2);
+                if (card == null || card.getAccount() == null) {
+                    System.err.println("null mikhorim to allied_minion");
+                    return false;
+                }
                 if (card.getAccount().equals(currentPlayer.getAccount()) &&
                         card.getType() == CardType.minion) {
                     targetCards.add(card);
@@ -242,7 +246,8 @@ public class BattleManager {
             }
 
             if (target.matches("(.*)" + TargetStrings.ENEMY + "(.*)")) {
-                if (Map.getCardInCell(x1, x2).getAccount().equals(currentPlayer.getAccount())) {
+                if (Map.getCardInCell(x1, x2) != null &&
+                        Map.getCardInCell(x1, x2).getAccount().equals(currentPlayer.getAccount())) {
                     //wrong target
                     System.err.println("Invalid target");
                     return false;
@@ -283,7 +288,8 @@ public class BattleManager {
                 targetCards.addAll(getOtherPlayer().getCardsOnBattleField());
             } else if (target.matches("(.*)" + TargetStrings.ALL_ENEMIES_IN_COLUMN + "(.*)")) {
                 for (int i = 1; i <= Map.MAP_X2_LENGTH; i++) {
-                    if (!Map.getCardInCell(i, x2).getAccount().equals(currentPlayer.getAccount())) {
+                    if (Map.getCardInCell(x1, x2) != null &&
+                            !Map.getCardInCell(i, x2).getAccount().equals(currentPlayer.getAccount())) {
                         targetCards.add(Map.getCardInCell(i, x2));
                     }
                 }
@@ -331,7 +337,8 @@ public class BattleManager {
             if (target.matches("(.*)" + TargetStrings.SURROUNDING_ALLIED_MINIONS + "(.*)")) {
                 for (int i = x1 - 1; i < x1 + 2; i++) {
                     for (int j = x2 - 1; j < x2 + 2; j++) {
-                        if (Map.getCardInCell(x1, x2).getAccount().equals(currentPlayer.getAccount())) {
+                        if (Map.getCardInCell(x1, x2) != null &&
+                                Map.getCardInCell(x1, x2).getAccount().equals(currentPlayer.getAccount())) {
                             targetCards.add(Map.getCardInCell(x1, x2));
                         }
                     }
@@ -374,7 +381,8 @@ public class BattleManager {
 
     private void addEnemiesInRow(ArrayList<Card> targetCards, int rowNum) {
         for (int i = 1; i <= Map.MAP_X1_LENGTH; i++) {
-            if (!Map.getCardInCell(rowNum, i).getAccount().equals(currentPlayer.getAccount())) {
+            if (Map.getCardInCell(rowNum, i) != null &&
+                    !Map.getCardInCell(rowNum, i).getAccount().equals(currentPlayer.getAccount())) {
                 targetCards.add(Map.getCardInCell(rowNum, i));
             }
         }
@@ -383,7 +391,8 @@ public class BattleManager {
     private void addSurroundingCards(ArrayList<Card> list, int x1, int x2) {
         for (int i = x1 - 1; i < x1 + 2; i++) {
             for (int j = x2 - 1; j < x2 + 2; j++) {
-                if (!Map.getCardInCell(x1, x2).getAccount().equals(currentPlayer.getAccount())) {
+                if (Map.getCardInCell(x1, x2) != null &&
+                        !Map.getCardInCell(x1, x2).getAccount().equals(currentPlayer.getAccount())) {
                     list.add(Map.getCardInCell(x1, x2));
                 }
             }
@@ -718,7 +727,8 @@ public class BattleManager {
 
     private void addBuffs(ArrayList<Card> targetCards, Buff buff) {
         for (Card card : targetCards) {
-            ((Deployable) card).addBuff(buff);
+            if (card != null)
+                ((Deployable) card).addBuff(buff);
         }
     }
 
@@ -770,7 +780,7 @@ public class BattleManager {
 
     public boolean playSpell(Spell spell, int x1, int x2) {
         for (Function function : spell.functions) {
-                compileFunction(function, x1, x2);
+            compileFunction(function, x1, x2);
         }
         currentPlayer.decreaseMana(spell.manaCost);
         currentPlayer.selectedCard = null;
@@ -1083,6 +1093,8 @@ public class BattleManager {
         Collections.shuffle(player1.currentDeck.getCards());
         Collections.shuffle(player2.currentDeck.getCards());
         initialTheHands();
+        player1.getHero().setAccount(player1.account);
+        player2.getHero().setAccount(player2.account);
         generateFlags();
     }
 

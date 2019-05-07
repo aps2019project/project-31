@@ -4,7 +4,7 @@ import controller.BattleMenu;
 
 public class Ai extends Player {
     public Ai(Account account) {
-        super(account,true);
+        super(account, true);
     }
 
     public void play() {
@@ -18,13 +18,11 @@ public class Ai extends Player {
             battle.move(deployable, deployable.getCell().getX1Coordinate() + x1Moves,
                     deployable.getCell().getX2Coordinate() + x2Moves);
         }
-        outerLoop:
-        for (Card card : hand) {
-            for (int i = 1; i <= Map.MAP_X1_LENGTH; i++) {
+
+        for (int i = 0; i < hand.size(); i++) {
+            for (int k = 1; k <= Map.MAP_X1_LENGTH; k++) {
                 for (int j = 1; j < Map.MAP_X2_LENGTH; j++) {
-                    if(BattleMenu.insert(card,i,j)) {
-                        continue outerLoop;
-                    }
+                    BattleMenu.insert(hand.get(i), k, j);
                     //needs to be fixed
                 }
             }
@@ -43,6 +41,9 @@ public class Ai extends Player {
     }
 
     public int coefficient(int a) {
-        return a / Math.abs(a);
+        if (a != 0)
+            return a / Math.abs(a);
+        else
+            return 0;
     }
 }
