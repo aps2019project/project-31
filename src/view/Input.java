@@ -5,8 +5,6 @@ import constants.GameMode;
 import controller.*;
 import model.*;
 
-import java.security.PublicKey;
-import java.util.Collections;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -352,7 +350,7 @@ public class Input {
         }
         if (input.matches("show all deck names")) {
             System.err.println("showing all deck names");
-            CollectionMenu.showAllDecknames();
+            CollectionMenu.showAllDeckNames();
             return;
         }
     }

@@ -155,8 +155,7 @@ public class Shop extends Menu {
         }
         Account.getMainAccount().decreaseDaric(card.getPrice());
         Account.getMainAccount().getCollection().add(card);
-        Output.print("bought successfully");
-
+        Output.print("card :" + card.getName() + " bought successfully");
     }
 
     private static void sellCard(Card card) {
