@@ -512,6 +512,12 @@ public class Input {
         }
         if (input.equalsIgnoreCase("enter custom menu") || input.equalsIgnoreCase("enter single player custom menu") || input.equalsIgnoreCase("enter custom")) {
             setCurrentMenu(MenuManager.getSinglePlayerCustomMenu());
+            System.err.println("showing all decks");
+            CollectionMenu.showAllDecks();
+            System.out.println("game modes:\n" +
+                    "-deathMatch\n" +
+                    "-domination\n" +
+                    "-flag");
             return;
         }
         if (input.equalsIgnoreCase("back")) {
@@ -567,26 +573,28 @@ public class Input {
         if (input.equalsIgnoreCase("help")) {
             System.err.println("showing user it's options");
             System.out.println("commands you can enter :\n" +
-                    "Start game [mode] [number of flags]"
+                    "Start game [deck name] [mode] [number of flags]\n" +
+                    ""
             );
         }
-        Pattern pattern = Pattern.compile("start game (\\w+)\\s*(\\d+)*");
+        Pattern pattern = Pattern.compile("start game (\\w+)\\s+(\\w+)\\s*(\\d+)*");
         Matcher matcher = pattern.matcher(input);
         if (matcher.matches()) {
             try {
-                if (matcher.group(3).trim().equalsIgnoreCase("domination")) {
-                    BattleMenu.setBattleManagerForSinglePLayer(BattleManagerMode.CustomGame, Account.getMainAccount(),
-                            Integer.parseInt(matcher.group(4)), 100, GameMode.Domination, 1);
-                    Initializer.getBattleMenu().runTheGame();
-                }
-                if (matcher.group(3).trim().equalsIgnoreCase("flag")) {
-                    BattleMenu.setBattleManagerForSinglePLayer(BattleManagerMode.CustomGame, Account.getMainAccount(),
-                            100, Integer.parseInt(matcher.group(4)), GameMode.Flag, 1);
-                    Initializer.getBattleMenu().runTheGame();
-                }
-                if (matcher.group(3).trim().equalsIgnoreCase("deathMatch")) {
+                Account.getMainAccount().selectDeck(matcher.group(1));
+                if (matcher.group(2).trim().equalsIgnoreCase("deathMatch")) {
                     BattleMenu.setBattleManagerForSinglePLayer(BattleManagerMode.CustomGame, Account.getMainAccount(),
                             100, 100, GameMode.DeathMatch, 1);
+                    Initializer.getBattleMenu().runTheGame();
+                }
+                if (matcher.group(2).trim().equalsIgnoreCase("domination")) {
+                    BattleMenu.setBattleManagerForSinglePLayer(BattleManagerMode.CustomGame, Account.getMainAccount(),
+                            Integer.parseInt(matcher.group(3)), 100, GameMode.Domination, 1);
+                    Initializer.getBattleMenu().runTheGame();
+                }
+                if (matcher.group(2).trim().equalsIgnoreCase("flag")) {
+                    BattleMenu.setBattleManagerForSinglePLayer(BattleManagerMode.CustomGame, Account.getMainAccount(),
+                            100, Integer.parseInt(matcher.group(3)), GameMode.Flag, 1);
                     Initializer.getBattleMenu().runTheGame();
                 }
             } catch (Exception e) {
