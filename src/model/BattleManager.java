@@ -223,6 +223,10 @@ public class BattleManager {
 
             if (target.matches("(.*)" + TargetStrings.ALLIED_MINION + "(.*)")) {
                 Card card = Map.getCardInCell(x1, x2);
+                if (card == null || card.getAccount() == null) {
+                    System.err.println("null mikhorim to allied_minion");
+                    return false;
+                }
                 if (card.getAccount().equals(currentPlayer.getAccount()) &&
                         card.getType() == CardType.minion) {
                     targetCards.add(card);
@@ -770,7 +774,7 @@ public class BattleManager {
 
     public boolean playSpell(Spell spell, int x1, int x2) {
         for (Function function : spell.functions) {
-                compileFunction(function, x1, x2);
+            compileFunction(function, x1, x2);
         }
         currentPlayer.decreaseMana(spell.manaCost);
         currentPlayer.selectedCard = null;
@@ -1083,6 +1087,8 @@ public class BattleManager {
         Collections.shuffle(player1.currentDeck.getCards());
         Collections.shuffle(player2.currentDeck.getCards());
         initialTheHands();
+        player1.getHero().setAccount(player1.account);
+        player2.getHero().setAccount(player2.account);
         generateFlags();
     }
 
