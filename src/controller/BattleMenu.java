@@ -80,7 +80,7 @@ public class BattleMenu extends Menu {
                 makeInstanceOfBattleManager(player1, SinglePlayer.getAiPlayer(), numberOfFlags, maxNumberOfHavingFlag, gameMode);
                 break;
             case CustomGame:
-                // theAiDeck=Story.getCustomGameDeck;
+                 theAiDeck = SinglePlayer.getCustomGameDeck();
                 if (theAiDeck == null) {
                     System.err.println("story number invalid");
                     return;
