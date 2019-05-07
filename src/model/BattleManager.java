@@ -727,7 +727,8 @@ public class BattleManager {
 
     private void addBuffs(ArrayList<Card> targetCards, Buff buff) {
         for (Card card : targetCards) {
-            ((Deployable) card).addBuff(buff);
+            if (card != null)
+                ((Deployable) card).addBuff(buff);
         }
     }
 
