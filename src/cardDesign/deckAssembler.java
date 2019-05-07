@@ -106,33 +106,32 @@ public class deckAssembler {
             System.err.println("File error");
         }
     }
+
     public static void main(String[] args) {
         loadAllCards();
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter deck name");
         String name = scanner.nextLine();
-        for (Item item: allUsables){
+        for (Item item : allUsables) {
             System.out.println(item.getId() + ": " + item.getName());
         }
         System.out.println("Enter item ID:");
         int itemNum = scanner.nextInt();
         Item item = null;
-        for (Item item1: allUsables){
-            if (item1.getId() == itemNum)
-            {
+        for (Item item1 : allUsables) {
+            if (item1.getId() == itemNum) {
                 item = item1;
                 System.out.println("okay");
             }
         }
-        for (Hero hero: allHeroes){
+        for (Hero hero : allHeroes) {
             System.out.println(hero.getId() + ": " + hero.getName());
         }
         System.out.println("Enter hero ID:");
         int heroNum = scanner.nextInt();
         Hero hero = null;
-        for (Hero hero1: allHeroes){
-            if (hero1.getId() == heroNum)
-            {
+        for (Hero hero1 : allHeroes) {
+            if (hero1.getId() == heroNum) {
                 hero = hero1;
                 System.out.println("okay");
             }
@@ -141,9 +140,9 @@ public class deckAssembler {
         Deck newDeck = new Deck(name, hero, item);
         System.out.println("Enter card ID and then -1 to exit:");
         int num = scanner.nextInt();
-        while (num != -1){
-            for (Card card: allCards){
-                if (card.getId() == num){
+        while (num != -1) {
+            for (Card card : allCards) {
+                if (card.getId() == num) {
                     newDeck.addCard(card);
                     System.out.println(card.getId() + " " + card.getName() + "added");
                 }
@@ -152,10 +151,17 @@ public class deckAssembler {
             num = scanner.nextInt();
         }
         YaGson yaGson = new YaGsonBuilder().create();
-        String path = System.getProperty("user.dir") + "/Sources/StoryDecks/storyDecks.txt";
-        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(path,true))){
+        System.out.println("Enter 1 for story or 2 for custom:");
+        int hey = scanner.nextInt();
+        String path;
+        if (hey==1) {
+            path = System.getProperty("user.dir") + "/Sources/StoryDecks/storyDecks.txt";
+        }else {
+            path = System.getProperty("user.dir") + "/Sources/CustomDecks/CustomDecks.txt";
+        }
+        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(path, true))) {
             bufferedWriter.write(yaGson.toJson(newDeck) + "\n");
-        }catch (IOException e){
+        } catch (IOException e) {
 
         }
 

@@ -15,6 +15,8 @@ public class Initializer {
 
         System.err.println("Loading all accounts...");
         Account.loadAllAccounts();
+        System.err.println("Loading custom decks...");
+        SinglePlayer.loadCustomDecks();
         System.err.println("Loading story decks...");
         Story.loadStoryDecks();
         System.err.println("Initializing maps ...");

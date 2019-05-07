@@ -5,8 +5,6 @@ import constants.GameMode;
 import controller.*;
 import model.*;
 
-import java.security.PublicKey;
-import java.util.Collections;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -352,7 +350,7 @@ public class Input {
         }
         if (input.matches("show all deck names")) {
             System.err.println("showing all deck names");
-            CollectionMenu.showAllDecknames();
+            CollectionMenu.showAllDeckNames();
             return;
         }
     }
@@ -619,6 +617,7 @@ public class Input {
         if (input.equalsIgnoreCase("enter main menu") || input.equalsIgnoreCase("enter main")) {
             if (Account.getMainAccount() == null) {
                 System.err.println("user have not logged in yet");
+                System.out.println("login first");
                 return;
             }
             setCurrentMenu(MenuManager.getMainMenu());
@@ -650,31 +649,31 @@ public class Input {
                 System.out.println("you are already logged in,log out to create account");
                 return;
             }
-            Output.print("enter your password:");
             String username = matcher.group(1).trim();
-            String password = scanner.nextLine();
             System.err.println("checking..");
             if (Account.findAccount(username) != null) {
                 System.out.println("this username is already taken");
                 return;
             }
+            Output.print("enter your password:");
+            String password = scanner.nextLine();
             Account account = Account.createAccount(username, password.trim());
             Account.setMainAccount(account);
-            System.err.println("account created");
+            System.err.println("account " + account.getUsername() + " created");
             menuManager.back();
             return;
         }
         pattern = Pattern.compile("login (\\w+)\\s*");
         matcher = pattern.matcher(input);
         if (matcher.matches()) {
-            System.out.println("enter password");
-            String password = scanner.nextLine();
             String username = matcher.group(1).trim();
             Account account = Account.findAccount(username);
             if (account == null) {
                 System.out.println("account does not exist!");
                 return;
             }
+            System.out.println("enter password");
+            String password = scanner.nextLine();
             if (account.getPassword().equals(password)) {
                 System.out.println("login successful");
                 Account.setMainAccount(account);
