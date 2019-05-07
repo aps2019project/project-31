@@ -53,7 +53,8 @@ public class BattleMenu extends Menu {
                                                        int numberOfFlags, int maxNumberOfHavingFlag,
                                                        GameMode gameMode, int storyNumber) {
         Player player1 = new Player(account, false);
-        Story.loadStoryDecks();
+
+
         Deck theAiDeck = null;
         switch (battleManagerMode) {
             case Story:
@@ -72,7 +73,10 @@ public class BattleMenu extends Menu {
                     System.err.println("story number invalid");
                     return;
                 }
-                SinglePlayer.getAiPlayer().getAccount().setTheMainDeck(theAiDeck);
+                SinglePlayer.makeAIAccount(theAiDeck);
+
+                System.out.println(theAiDeck.getDeckName());
+                System.out.println(theAiDeck.getCards().get(0).toString());
                 makeInstanceOfBattleManager(player1, SinglePlayer.getAiPlayer(), numberOfFlags, maxNumberOfHavingFlag, gameMode);
                 break;
             case CustomGame:
@@ -81,7 +85,9 @@ public class BattleMenu extends Menu {
                     System.err.println("story number invalid");
                     return;
                 }
-                SinglePlayer.getAiPlayer().getAccount().setTheMainDeck(theAiDeck);
+
+                SinglePlayer.makeAIAccount(theAiDeck);
+
                 makeInstanceOfBattleManager(player1, SinglePlayer.getAiPlayer(), numberOfFlags, maxNumberOfHavingFlag, gameMode);
                 break;
         }
@@ -126,13 +132,14 @@ public class BattleMenu extends Menu {
 
     public void runTheGame() {
         boolean isPlayer1Turn = false;
-        Collections.shuffle(battleManager.getPlayer1().getCurrentDeck().getCards());
-        Collections.shuffle(battleManager.getPlayer2().getCurrentDeck().getCards());
+
         // battleManager.getPlayer1().generateDeckArrangement();
         //  battleManager.getPlayer2().generateDeckArrangement();
+
         battleManager.setCurrentPlayer(battleManager.getPlayer2());
-        battleManager.applyItemFunctions(battleManager.getCurrentPlayer().getHero(), FunctionType.GameStart);
         battleManager.initialTheGame();
+        battleManager.applyItemFunctions(battleManager.getCurrentPlayer().getHero(), FunctionType.GameStart);
+
         initHeroes();
         while (true) {
             isPlayer1Turn = !isPlayer1Turn;

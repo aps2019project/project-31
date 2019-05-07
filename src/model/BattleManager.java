@@ -1080,8 +1080,8 @@ public class BattleManager {
         player1.duplicateTheDeck();
         player2.duplicateTheDeck();
 
-        //   Collections.shuffle(player1.currentDeck.getCards());
-        //   Collections.shuffle(player2.currentDeck.getCards());
+        Collections.shuffle(player1.currentDeck.getCards());
+        Collections.shuffle(player2.currentDeck.getCards());
         initialTheHands();
         generateFlags();
     }
