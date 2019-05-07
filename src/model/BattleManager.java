@@ -667,7 +667,7 @@ public class BattleManager {
 
             if (matcher.group(1).matches("pwhealth\\d+for(\\d+|continuous)")) {
                 int amount = Integer.parseInt(matcher.group(1).replaceFirst("pwhealth", "")
-                        .replaceFirst("for\\d+", ""));
+                        .replaceFirst("for(.*)", ""));
                 if (matcher.group(1).replaceFirst("pwhealth\\d+for", "").matches(CONTINUOUS)) {
                     Buff buff = new Buff(Buff.BuffType.Power, PERMANENT, amount, 0, true);
                     buff.makeContinuous();
@@ -681,7 +681,7 @@ public class BattleManager {
 
             if (matcher.group(1).matches("pwattack\\d+for(\\d+|continuous)")) {
                 int amount = Integer.parseInt(matcher.group(1).replaceFirst("pwattack", "")
-                        .replaceFirst("for\\d+", ""));
+                        .replaceFirst("for(.*)", ""));
                 if (matcher.group(1).replaceFirst("pwattack\\d+for", "").matches(CONTINUOUS)) {
                     Buff buff = new Buff(Buff.BuffType.Power, PERMANENT, 0, amount, true);
                     buff.makeContinuous();
@@ -695,7 +695,7 @@ public class BattleManager {
 
             if (matcher.group(1).matches("wkhealth\\d+for(\\d+|continuous)")) {
                 int amount = Integer.parseInt(matcher.group(1).replaceFirst("wkhealth", "")
-                        .replaceFirst("for\\d+", ""));
+                        .replaceFirst("for(.*)", ""));
                 if (matcher.group(1).replaceFirst("wkhealth\\d+for", "").matches(CONTINUOUS)) {
                     Buff buff = new Buff(Buff.BuffType.Weakness, PERMANENT, amount, 0, false);
                     buff.makeContinuous();
@@ -709,7 +709,7 @@ public class BattleManager {
 
             if (matcher.group(1).matches("wkattack\\d+for(\\d+|continuous)+")) {
                 int amount = Integer.parseInt(matcher.group(1).replaceFirst("wkattack", "")
-                        .replaceFirst("for\\d+", ""));
+                        .replaceFirst("for(.*)", ""));
                 if (matcher.group(1).replaceFirst("wkattack\\d+for", "").matches(CONTINUOUS)) {
                     Buff buff = new Buff(Buff.BuffType.Weakness, PERMANENT, 0, amount, false);
                     buff.makeContinuous();
