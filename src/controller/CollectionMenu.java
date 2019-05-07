@@ -18,7 +18,7 @@ public class CollectionMenu extends Menu {
         }
     }
 
-    public static void showAllDecknames() {
+    public static void showAllDeckNames() {
         for (Deck deck : Account.getMainAccount().getDecks()) {
             Output.print(deck.getDeckName());
         }

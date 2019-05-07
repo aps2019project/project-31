@@ -79,20 +79,21 @@ public class Deck {
     }
 
     public void show() {
-        Output.print("Heroes:\n");
+        Output.print("deck " + deckName + "'s hero and cards :");
+        Output.print("Heroes:");
         if (hero != null)
             Output.print(hero.toString());
-        Output.print("Items:\n");
+        Output.print("Items:");
         for (Card card : cards) {
             if (card.type == CardType.item)
                 Output.print(card.toString());
         }
-        Output.print("Cards:\n");
+        Output.print("Cards:");
         for (Card card : cards) {
             if (card.type != CardType.item && card.type != CardType.hero)
                 Output.print(card.toString());
         }
-
+        Output.print("---------------");
     }
 
     public void shuffle() {
