@@ -203,7 +203,7 @@ public class Player {
     }
 
     public void placeNextCardToHand() {
-        if (hand.size() < 6) {
+        if (nextCard!=null && hand.size() < 6) {
             hand.add(nextCard);
             //    Collections.shuffle(currentDeck.getCards());
             if (currentDeck.getCards().size() > 0) {

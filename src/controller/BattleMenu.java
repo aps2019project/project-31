@@ -73,11 +73,11 @@ public class BattleMenu extends Menu {
                     System.err.println("story number invalid");
                     return;
                 }
-                SinglePlayer.makeAIAccount(theAiDeck);
+
 
                 System.out.println(theAiDeck.getDeckName());
                 System.out.println(theAiDeck.getCards().get(0).toString());
-                makeInstanceOfBattleManager(player1, SinglePlayer.getAiPlayer(), numberOfFlags, maxNumberOfHavingFlag, gameMode);
+
                 break;
             case CustomGame:
                 theAiDeck = SinglePlayer.getCustomGameDeck();
@@ -85,12 +85,10 @@ public class BattleMenu extends Menu {
                     System.err.println("story number invalid");
                     return;
                 }
-
-                SinglePlayer.makeAIAccount(theAiDeck);
-
-                makeInstanceOfBattleManager(player1, SinglePlayer.getAiPlayer(), numberOfFlags, maxNumberOfHavingFlag, gameMode);
                 break;
         }
+        SinglePlayer.makeAIAccount(theAiDeck);
+        makeInstanceOfBattleManager(player1, SinglePlayer.getAiPlayer(), numberOfFlags, maxNumberOfHavingFlag, gameMode);
     }
 
     private static void makeInstanceOfBattleManager(Player player1, Player player2, int numberOfFlags,
@@ -155,11 +153,10 @@ public class BattleMenu extends Menu {
                 while (sit == areWeInMiddleOfTurn) {
                     Input.handleCommandsInBattle(battleManager.getCurrentPlayer(),
                             battleManager.getCurrentPlayer().getSelectedCard() != null);
-                    if (isGameFinished) {
-                        battleManager = null;
-                        return;
-                    }
-
+                }
+                if (isGameFinished) {
+                    battleManager = null;
+                    return;
                 }
             }
             doAllThingsInEndingOfTheTurns();

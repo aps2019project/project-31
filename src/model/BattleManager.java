@@ -327,8 +327,7 @@ public class BattleManager {
                 for (int i = x1; i < Integer.parseInt(matcher.group(1)); i++) {
                     for (int j = x2; j < Integer.parseInt(matcher.group(1)); j++) {
                         targetCells.add(Map.getCell(i, j));
-                        if (Map.getCardInCell(i, j) != null)
-                            targetCards.add(Map.getCardInCell(i, j));
+                        targetCards.add(Map.getCardInCell(i, j));
                     }
                 }
             }

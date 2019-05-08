@@ -13,10 +13,13 @@ public class Ai extends Player {
 
     public void considerAllMoves() {
         for (Deployable deployable : getCardsOnBattleField()) {
-            int x2Moves = coefficient(deployable.cell.getX2Coordinate() - getOtherPlayer().getHero().cell.getX2Coordinate()),
-                    x1Moves = deployable.cell.getX1Coordinate() - getOtherPlayer().getHero().cell.getX1Coordinate();
+            int x2Moves = coefficient(deployable.cell.getX2Coordinate() - getOtherPlayer().getHero().cell.getX2Coordinate());
+            int x1Moves = coefficient(deployable.cell.getX1Coordinate() - getOtherPlayer().getHero().cell.getX1Coordinate());
             battle.move(deployable, deployable.getCell().getX1Coordinate() - x1Moves,
                     deployable.getCell().getX2Coordinate() - x2Moves);
+            System.out.println("the minion :(" + deployable.cell.getX1Coordinate() + "," + deployable.cell.getX2Coordinate() + "" +
+                    ") goes to   " + (deployable.getCell().getX1Coordinate() - x1Moves) + " , " +
+                    (deployable.getCell().getX2Coordinate() - x2Moves));
         }
         outerLoop:
         for (int i = 0; i < hand.size(); i++) {
@@ -30,10 +33,9 @@ public class Ai extends Player {
                 }
             }
         }
-        for (int i = 0; i < cardsOnBattleField.size(); i++)  {
-            for (int j = 0; j <getOtherPlayer().cardsOnBattleField.size() ; j++) {
-                if(BattleManager.isNear(cardsOnBattleField.get(i).cell,getOtherPlayer().cardsOnBattleField.get(j).cell))
-                    battle.attack(cardsOnBattleField.get(i),getOtherPlayer().cardsOnBattleField.get(j));
+        for (int i = 0; i < cardsOnBattleField.size(); i++) {
+            for (int j = 0; j < getOtherPlayer().cardsOnBattleField.size(); j++) {
+                battle.attack(cardsOnBattleField.get(i), getOtherPlayer().cardsOnBattleField.get(j));
             }
         }
     }
