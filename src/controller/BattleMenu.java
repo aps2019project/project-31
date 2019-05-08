@@ -336,15 +336,13 @@ public class BattleMenu extends Menu {
     }
 
     public static void showGlimpseOfMap(BattleManager battleManager) {
-        System.err.println("Player 1 minions are:\n");
-        System.out.println(battleManager.getPlayer1().getHero().shortVersionString());
-        for (Deployable deployable : battleManager.getPlayer1().getCardsOnBattleField()) {
+        System.err.println("current Player minions are:\n");
+        for (Deployable deployable : battleManager.getCurrentPlayer().getCardsOnBattleField()) {
             if (deployable != null)
                 System.out.println(deployable.shortVersionString());
         }
-        System.err.println("Player 2 minions are:\n");
-        System.out.println(battleManager.getPlayer2().getHero().shortVersionString());
-        for (Deployable deployable : battleManager.getPlayer2().getCardsOnBattleField()) {
+        System.err.println("Other Player 2 minions are:\n");
+        for (Deployable deployable : battleManager.getOtherPlayer().getCardsOnBattleField()) {
             if (deployable != null)
                 System.out.println(deployable.shortVersionString());
         }
