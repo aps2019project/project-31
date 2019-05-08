@@ -1188,15 +1188,14 @@ public class BattleManager {
         }
         if (player2.currentDeck.getItem().id == 601) {
             for (int i = 1; i < 3; i++) {
-                player1.increaseManaInTheTurn(i * 2, 1);
+                player2.increaseManaInTheTurn(i * 2, 1);
             }
         }
         if (player2.currentDeck.getItem().id == 606) {
             for (int i = 1; i <= 19; i++) {
-                player1.increaseManaInTheTurn(i * 2, 1);
+                player2.increaseManaInTheTurn(i * 2, 1);
             }
         }
-
     }
 
     public void makeIsMovedAndStunnedAndStuffFalse() {
