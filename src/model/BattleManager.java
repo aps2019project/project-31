@@ -594,7 +594,8 @@ public class BattleManager {
         if (matcher.matches()) {
             int amount = Integer.parseInt(matcher.group(1));
             for (Card card : targetCards) {
-                ((Deployable) card).takeDamage(amount);
+                if (card!=null)
+                    ((Deployable) card).takeDamage(amount);
             }
         }
     }
@@ -993,6 +994,8 @@ public class BattleManager {
     public static boolean isAttackTypeValidForAttack(Deployable attacker, Deployable counterAttacker) {
         if (attacker.attackType == null || counterAttacker.attackType == null) {
             System.err.println("attack type null e");
+            System.err.println(attacker.name + " " + attacker.attackType);
+            System.err.println(counterAttacker.name + " " + counterAttacker.attackType);
             return false;
         }
         if (attacker.cell == null || counterAttacker.cell == null) {
