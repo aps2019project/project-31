@@ -205,11 +205,11 @@ public class Player {
     public void placeNextCardToHand() {
         if (nextCard!=null && hand.size() < 6) {
             hand.add(nextCard);
-            //    Collections.shuffle(currentDeck.getCards());
-            if (currentDeck.getCards().size() > 0) {
-                currentDeck.getCards().remove(0);
-                nextCard = currentDeck.getCards().get(0);
-            }
+        }
+        Collections.shuffle(currentDeck.getCards());
+        if (currentDeck.getCards().size() > 0) {
+            currentDeck.getCards().remove(0);
+            nextCard = currentDeck.getCards().get(0);
         }
     }
 

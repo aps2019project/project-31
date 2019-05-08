@@ -13,6 +13,8 @@ import java.util.Collections;
 public class BattleMenu extends Menu {
     private static BattleManager battleManager;
     private static boolean areWeInMiddleOfTurn = true;
+
+
     protected static boolean isGameFinished = false;
 
     public static boolean isGameFinished() {
@@ -29,7 +31,6 @@ public class BattleMenu extends Menu {
             Output.print("=====================================");
         }
     }
-
     public static boolean isAreWeInMiddleOfTurn() {
         return areWeInMiddleOfTurn;
     }
@@ -226,7 +227,6 @@ public class BattleMenu extends Menu {
 
     public static boolean insert(Card card, int x1, int x2) {
         if (card == null) {
-            System.err.println("wtf masih was right ");
             return false;
         }
         if (battleManager.cardInHandByCardId(card.getId()) != null) {
@@ -336,13 +336,14 @@ public class BattleMenu extends Menu {
     }
 
     public static void showGlimpseOfMap(BattleManager battleManager) {
-        System.err.println("current Player minions are:\n");
-        for (Deployable deployable : battleManager.getCurrentPlayer().getCardsOnBattleField()) {
+        System.out.println("Player 1 minions are:\n");
+        for (Deployable deployable : battleManager.getPlayer1().getCardsOnBattleField()) {
             if (deployable != null)
                 System.out.println(deployable.shortVersionString());
         }
-        System.err.println("Other Player 2 minions are:\n");
-        for (Deployable deployable : battleManager.getOtherPlayer().getCardsOnBattleField()) {
+
+        System.out.println("Player 2 minions are:\n");
+        for (Deployable deployable : battleManager.getPlayer2().getCardsOnBattleField()) {
             if (deployable != null)
                 System.out.println(deployable.shortVersionString());
         }

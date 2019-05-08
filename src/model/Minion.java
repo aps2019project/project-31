@@ -24,6 +24,7 @@ public class Minion extends Deployable {
     }
 
     public Minion duplicateDeployed(Cell cell,Account account) {
+
         return new Minion(price, manaCost, cardText, new ArrayList<Function>(functions), account, name,
                 id, type, true, true, true, cell,
                 attackRange, health, attack, BattleManager.generateUniqueId(this.id),

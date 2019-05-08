@@ -1031,6 +1031,7 @@ public class BattleManager {
         player2.getAccount().addMatchHistories(matchHistory);
         BattleMenu.setGameFinished(true);
         Output.print(player1.getAccount().getUsername() + " won");
+
     }
 
     public void player2Won() {
@@ -1089,6 +1090,7 @@ public class BattleManager {
             player1Won();
         if (2 * player1.getNumberOfFlags() > maxNumberOfFlags)
             player2Won();
+
     }
 
     public void initialTheGame() {
@@ -1171,6 +1173,7 @@ public class BattleManager {
     }
 
     public void manaAdderItem() {
+
         if (player1.currentDeck.getItem() == null || player2.currentDeck.getItem() == null) {
             System.err.println("midunm item nadarim");
             return;
@@ -1187,15 +1190,14 @@ public class BattleManager {
         }
         if (player2.currentDeck.getItem().id == 601) {
             for (int i = 1; i < 3; i++) {
-                player1.increaseManaInTheTurn(i * 2, 1);
+                player2.increaseManaInTheTurn(i * 2, 1);
             }
         }
         if (player2.currentDeck.getItem().id == 606) {
             for (int i = 1; i <= 19; i++) {
-                player1.increaseManaInTheTurn(i * 2, 1);
+                player2.increaseManaInTheTurn(i * 2, 1);
             }
         }
-
     }
 
     public void makeIsMovedAndStunnedAndStuffFalse() {
