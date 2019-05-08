@@ -208,8 +208,8 @@ public class Player {
         }
         Collections.shuffle(currentDeck.getCards());
         if (currentDeck.getCards().size() > 0) {
-            currentDeck.getCards().remove(0);
             nextCard = currentDeck.getCards().get(0);
+            currentDeck.getCards().remove(0);
         }
     }
 

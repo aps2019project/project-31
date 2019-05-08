@@ -31,6 +31,7 @@ public class BattleMenu extends Menu {
             Output.print("=====================================");
         }
     }
+
     public static boolean isAreWeInMiddleOfTurn() {
         return areWeInMiddleOfTurn;
     }
@@ -114,8 +115,9 @@ public class BattleMenu extends Menu {
         for (Deployable deployable : battleManager.getCurrentPlayer().getCardsOnBattleField()) {
             deployable.setMoved(false);
         }
+
         battleManager.assignManaToPlayers();
-        battleManager.manaAdderItem();
+
         for (int theTurn : battleManager.getTurnsAppearingTheCollectibleFlags()) {
             if (theTurn == battleManager.getTurn()) {
                 Collections.shuffle(Shop.getAllCollectibles());

@@ -554,12 +554,12 @@ public class Input {
         }
         if (input.equalsIgnoreCase("story 2")) {
             BattleMenu.setBattleManagerForSinglePLayer(BattleManagerMode.Story, Account.getMainAccount(), 100,
-                    100, GameMode.DeathMatch, 2);
+                    100, GameMode.Flag, 2);
             Initializer.getBattleMenu().runTheGame();
         }
         if (input.equalsIgnoreCase("story 3")) {
             BattleMenu.setBattleManagerForSinglePLayer(BattleManagerMode.Story, Account.getMainAccount(), 100,
-                    100, GameMode.DeathMatch, 3);
+                    100, GameMode.Domination, 3);
             Initializer.getBattleMenu().runTheGame();
         }
     }

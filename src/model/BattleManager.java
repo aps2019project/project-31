@@ -1096,13 +1096,13 @@ public class BattleManager {
     public void initialTheGame() {
         player1.duplicateTheDeck();
         player2.duplicateTheDeck();
-
         Collections.shuffle(player1.currentDeck.getCards());
         Collections.shuffle(player2.currentDeck.getCards());
         initialTheHands();
         player1.getHero().setAccount(player1.account);
         player2.getHero().setAccount(player2.account);
         generateFlags();
+        manaAdderItem();
     }
 
     private void generateFlags() {
@@ -1184,7 +1184,7 @@ public class BattleManager {
             }
         }
         if (player1.currentDeck.getItem().id == 606) {
-            for (int i = 0; i < 19; i++) {
+            for (int i = 0; i < 90; i++) {
                 player1.increaseManaInTheTurn(i * 2 + 1, 1);
             }
         }
@@ -1194,7 +1194,7 @@ public class BattleManager {
             }
         }
         if (player2.currentDeck.getItem().id == 606) {
-            for (int i = 1; i <= 19; i++) {
+            for (int i = 1; i <= 90; i++) {
                 player2.increaseManaInTheTurn(i * 2, 1);
             }
         }
