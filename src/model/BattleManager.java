@@ -1171,6 +1171,7 @@ public class BattleManager {
     }
 
     public void manaAdderItem() {
+
         if (player1.currentDeck.getItem() == null || player2.currentDeck.getItem() == null) {
             System.err.println("midunm item nadarim");
             return;
