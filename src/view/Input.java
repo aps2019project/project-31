@@ -573,7 +573,7 @@ public class Input {
         if (input.equalsIgnoreCase("help")) {
             System.err.println("showing user it's options");
             System.out.println("commands you can enter :\n" +
-                    "Start game [deck name] [mode] [number of flags]\n" +
+                    "start game [deck name] [mode] [number of flags]\n" +
                     ""
             );
         }
@@ -581,7 +581,7 @@ public class Input {
         Matcher matcher = pattern.matcher(input);
         if (matcher.matches()) {
             try {
-                Account.getMainAccount().selectDeck(matcher.group(1));
+                SinglePlayer.setCustomGameDeck(Account.getMainAccount().findDeckByName(matcher.group(1)));
                 if (matcher.group(2).trim().equalsIgnoreCase("deathMatch")) {
                     BattleMenu.setBattleManagerForSinglePLayer(BattleManagerMode.CustomGame, Account.getMainAccount(),
                             100, 100, GameMode.DeathMatch, 1);
@@ -589,7 +589,7 @@ public class Input {
                 }
                 if (matcher.group(2).trim().equalsIgnoreCase("domination")) {
                     BattleMenu.setBattleManagerForSinglePLayer(BattleManagerMode.CustomGame, Account.getMainAccount(),
-                            Integer.parseInt(matcher.group(3)), 100, GameMode.Domination, 1);
+                            100, 100, GameMode.Domination, 1);
                     Initializer.getBattleMenu().runTheGame();
                 }
                 if (matcher.group(2).trim().equalsIgnoreCase("flag")) {
@@ -598,7 +598,8 @@ public class Input {
                     Initializer.getBattleMenu().runTheGame();
                 }
             } catch (Exception e) {
-                System.err.println("custom game error probably for null pointer exception");
+                System.err.println("custom game exception");
+                System.err.println(e.getMessage());
             }
 
         }

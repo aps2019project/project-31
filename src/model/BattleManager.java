@@ -77,7 +77,6 @@ public class BattleManager {
     }
 
     public boolean playMinion(Minion minion, int x1, int x2) {
-
         Minion theMinion = minion.duplicateDeployed(Map.getCell(x1, x2), currentPlayer.account);
         Map.putCardInCell(theMinion, x1, x2);
         if (Map.getCell(x1, x2).doesHaveFlag()) {
@@ -213,12 +212,11 @@ public class BattleManager {
                     targetCards.add(currentPlayer.getHero());
 
             }
-
             if (target.matches("(.*)" + TargetStrings.ENEMY_GENERAL_RANGED_HYBRID + "(.*)")) {
                 if (getOtherPlayer().getHero().getAttackType() == AttackType.ranged ||
-                        getOtherPlayer().getHero().getAttackType() == AttackType.hybrid)
+                        getOtherPlayer().getHero().getAttackType() == AttackType.hybrid) {
                     targetCards.add(getOtherPlayer().getHero());
-
+                }
             }
 
             if (target.matches("(.*)" + TargetStrings.ALLIED_MINION + "(.*)")) {
@@ -543,12 +541,13 @@ public class BattleManager {
     }
 
     private void handleAttackIncrease(Function function, ArrayList<Card> targetCards) {
-        Pattern pattern = Pattern.compile(FunctionStrings.INCREASE_ATTACK + "(\\d+)");
+        Pattern pattern = Pattern.compile(FunctionStrings.INCREASE_ATTACK + "([-+]?\\d+)");
         Matcher matcher = pattern.matcher(function.getFunction());
         if (matcher.matches()) {
             int amount = Integer.parseInt(matcher.group(1));
             for (Card card : targetCards) {
-                ((Deployable) card).increaseAttack(amount);
+                if (card != null)
+                    ((Deployable) card).increaseAttack(amount);
             }
         }
     }
@@ -950,8 +949,9 @@ public class BattleManager {
             player1.currentDeck.getItem().setAccount(player1.account);
             player2.currentDeck.getItem().setAccount(player2.account);
             for (Function function : player1.currentDeck.getItem().functions) {
-                if (function.getFunctionType() == functionType)
+                if (function.getFunctionType() == functionType){
                     compileFunction(function, card.cell.getX1Coordinate(), card.cell.getX2Coordinate());
+                }
             }
             for (Function function : player2.currentDeck.getItem().functions) {
                 if (function.getFunctionType() == functionType)
@@ -959,6 +959,8 @@ public class BattleManager {
             }
         } catch (Exception e) {
             System.err.println("there isn't usable item in your deck");
+            System.err.println(e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -993,6 +995,8 @@ public class BattleManager {
     public static boolean isAttackTypeValidForAttack(Deployable attacker, Deployable counterAttacker) {
         if (attacker.attackType == null || counterAttacker.attackType == null) {
             System.err.println("attack type null e");
+            System.err.println(attacker.name + " " + attacker.attackType);
+            System.err.println(counterAttacker.name + " " + counterAttacker.attackType);
             return false;
         }
         if (attacker.cell == null || counterAttacker.cell == null) {

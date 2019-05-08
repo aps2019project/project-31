@@ -80,7 +80,7 @@ public class BattleMenu extends Menu {
 
                 break;
             case CustomGame:
-                // theAiDeck=Story.getCustomGameDeck;
+                theAiDeck = SinglePlayer.getCustomGameDeck();
                 if (theAiDeck == null) {
                     System.err.println("story number invalid");
                     return;
@@ -137,7 +137,9 @@ public class BattleMenu extends Menu {
         battleManager.setCurrentPlayer(battleManager.getPlayer2());
         battleManager.initialTheGame();
         battleManager.applyItemFunctions(battleManager.getCurrentPlayer().getHero(), FunctionType.GameStart);
-
+        battleManager.setCurrentPlayer(battleManager.getPlayer1());
+        battleManager.applyItemFunctions(battleManager.getCurrentPlayer().getHero(), FunctionType.GameStart);
+        battleManager.setCurrentPlayer(battleManager.getPlayer2());
         initHeroes();
         while (true) {
             isPlayer1Turn = !isPlayer1Turn;

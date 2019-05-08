@@ -16,22 +16,18 @@ public class Story extends SinglePlayer {
         super(player1, player2, maxNumberOfFlags, maxTurnsOfHavingFlag, gameMode);
     }
 
-    public static void loadStoryDecks(){
+    public static void loadStoryDecks() {
         YaGson yaGson = new YaGsonBuilder().create();
         String path = System.getProperty("user.dir") + "/Sources/StoryDecks/storyDecks.txt";
-        try(BufferedReader bufferedReader = new BufferedReader(new FileReader(path))){
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(path))) {
             String line = bufferedReader.readLine();
             firstBattleManagerDeck = yaGson.fromJson(line, Deck.class);
             secondBattleManagerDeck = yaGson.fromJson(bufferedReader.readLine(), Deck.class);
             thirdBattleManagerDeck = yaGson.fromJson(bufferedReader.readLine(), Deck.class);
-        }catch (IOException e){
+        } catch (IOException e) {
 
         }
     }
-
-
-
-
 
     public static Deck getFirstBattleManagerDeck() {
         return firstBattleManagerDeck;
@@ -44,12 +40,6 @@ public class Story extends SinglePlayer {
     public static Deck getThirdBattleManagerDeck() {
         return thirdBattleManagerDeck;
     }
-
-
-
-
-
-
 
 
 }
