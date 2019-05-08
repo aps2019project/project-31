@@ -80,7 +80,7 @@ public class BattleMenu extends Menu {
                 makeInstanceOfBattleManager(player1, SinglePlayer.getAiPlayer(), numberOfFlags, maxNumberOfHavingFlag, gameMode);
                 break;
             case CustomGame:
-                 theAiDeck = SinglePlayer.getCustomGameDeck();
+                theAiDeck = SinglePlayer.getCustomGameDeck();
                 if (theAiDeck == null) {
                     System.err.println("story number invalid");
                     return;
@@ -139,7 +139,9 @@ public class BattleMenu extends Menu {
         battleManager.setCurrentPlayer(battleManager.getPlayer2());
         battleManager.initialTheGame();
         battleManager.applyItemFunctions(battleManager.getCurrentPlayer().getHero(), FunctionType.GameStart);
-
+        battleManager.setCurrentPlayer(battleManager.getPlayer1());
+        battleManager.applyItemFunctions(battleManager.getCurrentPlayer().getHero(), FunctionType.GameStart);
+        battleManager.setCurrentPlayer(battleManager.getPlayer2());
         initHeroes();
         while (true) {
             isPlayer1Turn = !isPlayer1Turn;
@@ -226,7 +228,7 @@ public class BattleMenu extends Menu {
     }
 
     public static boolean insert(Card card, int x1, int x2) {
-        if(card==null){
+        if (card == null) {
             System.err.println("wtf masih was right ");
             return false;
         }

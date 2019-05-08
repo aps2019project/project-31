@@ -182,6 +182,11 @@ public class Account {
             System.err.println("editing deck is null");
             return;
         }
+        if (card.getType() == CardType.item && editingDeck.getItem() == null) {
+            editingDeck.setItem((Item) card);
+            System.err.println("Item added");
+            return;
+        }
         if (editingDeck.getCards().size() <= 17 && editingDeck.numberOfCardInDeck(card) < 3) {
             editingDeck.addCard(card);
             System.err.println("The card with id: " + card.getId() + " added");
@@ -190,6 +195,7 @@ public class Account {
             editingDeck.setHero((Hero) card);
             System.err.println("Hero added");
         }
+
     }
 
     public void addCardsToDeck(String[] numbers, String deckName) {

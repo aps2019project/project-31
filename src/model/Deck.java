@@ -13,6 +13,10 @@ public class Deck {
     private Hero hero;
     private Item item;
 
+    public void setItem(Item item) {
+        this.item = item;
+    }
+
     public Item getItem() {
         return item;
     }
