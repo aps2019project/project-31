@@ -16,7 +16,6 @@ public class Initializer extends Application {
     }
 
     public static void main(String[] args) {
-
         System.err.println("Loading all accounts...");
         Account.loadAllAccounts();
         System.err.println("Loading custom decks...");
