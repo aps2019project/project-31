@@ -109,6 +109,7 @@ public class Player {
         return account;
     }
 
+
     public Deck getCurrentDeck() {
         return currentDeck;
     }

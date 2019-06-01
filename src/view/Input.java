@@ -47,7 +47,7 @@ public class Input {
         Matcher matcher = pattern.matcher(input);
         if (matcher.matches()) {
             int opponentCardId = Integer.parseInt(matcher.group(1));
-            String[] strNumbers = matcher.group(2).split(",");
+            String[] strNumbers = matcher.group(2).split(" ");
             BattleMenu.prepareComboAttack(strNumbers, opponentCardId);
         }
 

@@ -111,6 +111,7 @@ public class BattleMenu extends Menu {
 
     }
 
+
     public static void doAllAtTheBeginningOfTurnThings() {
         for (Deployable deployable : battleManager.getCurrentPlayer().getCardsOnBattleField()) {
             deployable.setMoved(false);
@@ -145,6 +146,7 @@ public class BattleMenu extends Menu {
         battleManager.setCurrentPlayer(battleManager.getPlayer2());
         initHeroes();
         while (true) {
+
             isPlayer1Turn = !isPlayer1Turn;
             battleManager.setCurrentPlayer(battleManager.getOtherPlayer());
             doAllAtTheBeginningOfTurnThings();
@@ -232,12 +234,7 @@ public class BattleMenu extends Menu {
             return false;
         }
         if (battleManager.cardInHandByCardId(card.getId()) != null) {
-            if (!battleManager.checkCoordinates(x1, x2)) {
-                Output.invalidInsertionTarget();
-                System.err.println("Invalid Coordinates");
-                return false;
 
-            }
 
             if (card.getManaCost() > battleManager.getCurrentPlayer().getMana()) {
                 Output.notHaveEnoughMana();
@@ -348,6 +345,13 @@ public class BattleMenu extends Menu {
         for (Deployable deployable : battleManager.getPlayer2().getCardsOnBattleField()) {
             if (deployable != null)
                 System.out.println(deployable.shortVersionString());
+        }
+        for (Cell[] cells : Map.getMap()) {
+            for (Cell cell : cells) {
+                if (cell.getItem() != null) {
+                    System.out.println(cell.getItem().toString() + " coordination:  " + cell.getX1Coordinate()+"," + cell.getX2Coordinate());
+                }
+            }
         }
     }
 }

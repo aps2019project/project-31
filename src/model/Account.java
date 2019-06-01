@@ -38,6 +38,17 @@ public class Account {
         }
     }
 
+    public void incrementWins(){
+        winLoseDraw[0]++;
+    }
+
+    public void incrementLosses(){
+        winLoseDraw[1]++;
+    }
+    public void incrementDraw(){
+        winLoseDraw[2]++;
+    }
+
     public String getPassword() {
         return password;
     }
