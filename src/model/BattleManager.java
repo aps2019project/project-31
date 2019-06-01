@@ -77,6 +77,12 @@ public class BattleManager {
     }
 
     public boolean playMinion(Minion minion, int x1, int x2) {
+        if (!checkCoordinates(x1, x2)) {
+            Output.invalidInsertionTarget();
+            System.err.println("Invalid Coordinates");
+            return false;
+
+        }
         Minion theMinion = minion.duplicateDeployed(Map.getCell(x1, x2), currentPlayer.account);
         Map.putCardInCell(theMinion, x1, x2);
         if (Map.getCell(x1, x2).doesHaveFlag()) {
@@ -1029,6 +1035,8 @@ public class BattleManager {
         player1.getAccount().addMatchHistories(matchHistory);
         //player1.account.addDaric();
         matchHistory = new MatchHistory(player1.getAccount().getUsername(), "lose");
+        player1.getAccount().incrementWins();
+        player2.getAccount().incrementLosses();
         player2.getAccount().addMatchHistories(matchHistory);
         BattleMenu.setGameFinished(true);
         Output.print(player1.getAccount().getUsername() + " won");
@@ -1040,6 +1048,8 @@ public class BattleManager {
         player1.getAccount().addMatchHistories(matchHistory);
         matchHistory = new MatchHistory(player1.getAccount().getUsername(), "win");
         player2.getAccount().addMatchHistories(matchHistory);
+        player1.getAccount().incrementLosses();
+        player2.getAccount().incrementWins();
         BattleMenu.setGameFinished(true);
         Output.print(player2.getAccount().getUsername() + " won");
     }
@@ -1049,6 +1059,8 @@ public class BattleManager {
         player1.getAccount().addMatchHistories(matchHistory);
         matchHistory = new MatchHistory(player1.getAccount().getUsername(), "draw");
         player2.getAccount().addMatchHistories(matchHistory);
+        player1.getAccount().incrementDraw();
+        player2.getAccount().incrementDraw();
         Output.print("draw");
         BattleMenu.setGameFinished(true);
     }
@@ -1097,8 +1109,8 @@ public class BattleManager {
     public void initialTheGame() {
         player1.duplicateTheDeck();
         player2.duplicateTheDeck();
-        Collections.shuffle(player1.currentDeck.getCards());
-        Collections.shuffle(player2.currentDeck.getCards());
+       // Collections.shuffle(player1.currentDeck.getCards());
+        //Collections.shuffle(player2.currentDeck.getCards());
         initialTheHands();
         player1.getHero().setAccount(player1.account);
         player2.getHero().setAccount(player2.account);
