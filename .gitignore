@@ -9,6 +9,7 @@
 # BlueJ files
 *.ctxt
 
+
 #java fx lib
 Javafx
 
@@ -50,6 +51,9 @@ hs_err_pid*
 .idea/**/dynamic.xml
 .idea/**/uiDesigner.xml
 .idea/**/dbnavigator.xml
+
+#assets folder
+src/resources/assets
 
 # Gradle
 .idea/**/gradle.xml

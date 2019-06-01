@@ -829,6 +829,7 @@ public class BattleManager {
                 card.cell.setCardInCell(null);
                 card.cell = Map.getCell(x1, x2);
                 card.setMoved(true);
+                if(card.cell.getItem()!=null && card.item!=null)
                 Map.getCell(x1, x2).setCardInCell(card);
                 Output.movedSuccessfully(card);
             } else {

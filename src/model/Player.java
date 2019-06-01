@@ -3,6 +3,7 @@ package model;
 import constants.FunctionType;
 import view.Output;
 
+import java.io.BufferedInputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.ConcurrentModificationException;
@@ -243,7 +244,6 @@ public class Player {
     }
 
     public void endOfTurnBuffsAndFunctions() {
-
         applyPassiveAndPoisonBuffs();
         buffsChangesAtTheEndOfTurn();
 
