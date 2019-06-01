@@ -9,8 +9,8 @@
 # BlueJ files
 *.ctxt
 
-# java fx library
-JavaFX-lib
+#java fx lib
+Javafx
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/

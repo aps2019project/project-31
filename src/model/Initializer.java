@@ -36,4 +36,9 @@ public class Initializer extends Application {
     public void start(Stage stage) throws Exception {
 
     }
+
+    @Override
+    public void start(Stage stage) throws Exception {
+
+    }
 }
