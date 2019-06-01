@@ -1,0 +1,17 @@
+@font-face {
+    font-family: 'Trump';
+}
+
+.text {
+    -fx-font-family: Trump;
+    -fx-stroke-width: 0;
+    -fx-font-size: 20;
+    -fx-stroke: white;
+
+
+}
+
+.button{
+    -fx-background-image: url('../assets/ui/button_secondary.png');
+    -fx-background-color: rgba(0,0,0,0);
+}
