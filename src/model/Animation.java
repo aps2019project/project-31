@@ -15,14 +15,14 @@ public class Animation extends Transition {
 
     private Image[] sequence;
 
-    private Animation() {
+    public Animation() {
     }
 
     public Animation( Image[] sequence, double durationMs) {
         init( sequence, durationMs);
     }
 
-    private void init( Image[] sequence, double durationMs) {
+    public void init( Image[] sequence, double durationMs) {
         this.imageView = new ImageView(sequence[0]);
         this.sequence = sequence;
         this.count = sequence.length;
