@@ -1,23 +1,22 @@
 package controller;
 
-import javafx.animation.Animation;
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import model.Account;
 import model.Initializer;
-import view.Output;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -47,40 +46,112 @@ public class LoginPageController implements Initializable {
     private Button infoButton;
     @FXML
     private VBox infoVBox;
+    @FXML
+    private StackPane infoPane;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         exitButton.setOnAction(actionEvent -> {
             Initializer.getPrimaryStage().close();
         });
-        loginButton.setOnAction(actionEvent -> {
+        loginButton.setOnAction(actionEvent -> login());
+
+
+        infoButton.setOnAction(actionEvent -> {
+            Image image = new Image(getClass().getResource("/images/Credits.jpg").toExternalForm());
+            ImageView imageView = new ImageView(image);
+            infoPane.getChildren().add(imageView);
+            imageView.setFitHeight(720);
+            imageView.setFitWidth(360);
+            imageView.setOpacity(0);
+            AnimationTimer animationTimer = new AnimationTimer() {
+                long time = 0;
+
+                @Override
+                public void handle(long l) {
+                    if (time == 0) {
+                        time = l;
+                    }
+                    if (l - time > 1000000) {
+                        time = l;
+                        imageView.setOpacity(imageView.getOpacity() + 0.01);
+                    }
+                    if (imageView.getOpacity() >= 1)
+                        this.stop();
+                }
+            };
+            animationTimer.start();
+            imageView.setOnMouseClicked(mouseEvent -> {
+                animationTimer.stop();
+                AnimationTimer removeAnimationTimer = new AnimationTimer() {
+                    long time = 0;
+
+                    @Override
+                    public void handle(long l) {
+                        if (time == 0) {
+                            time = l;
+                        }
+                        if (l - time > 10000000) {
+                            time = l;
+                            imageView.setOpacity(imageView.getOpacity() - 0.01);
+                        }
+                        if (imageView.getOpacity() <= 0) {
+                            infoPane.getChildren().remove(imageView);
+                        }
+                    }
+                };
+                removeAnimationTimer.start();
+            });
         });
         signupButton.setOnAction(actionEvent -> createAccount());
+    }
+
+    public void login() {
+        String username = usernameTF.getText();
+        Account account = Account.findAccount(username);
+        if (account == null) {
+            displayMessage("Incorrect Username!", 17, 2, infoVBox);
+            return;
+        }
+        String password = passwordField.getText();
+        if (account.getPassword().equals(password)) {
+            Account.setMainAccount(account);
+            displayMessage("Login Successful! Entering game...", 17, 2, infoVBox);
+            //handle entering the next scene
+            return;
+        } else {
+            displayMessage("Incorrect Password!", 17, 2, infoVBox);
+            return;
+        }
     }
 
     public void createAccount() {
         String username = signupUsername.getText();
         System.err.println("checking..");
+        if (signupUsername.getText().isEmpty() || signupPassword.getText().isEmpty()) {
+            displayMessage("Enter account info!", 17, 2, infoVBox);
+            return;
+        }
         if (Account.findAccount(username) != null) {
-            displayLabel("Username already taken!", 17, 2, infoVBox);
+            displayMessage("Username already taken!", 17, 2, infoVBox);
             return;
         }
         String password = signupPassword.getText();
         String passRepeat = repassword.getText();
         if (!passRepeat.equals(password)) {
-            displayLabel("Passwords must match!", 17, 2, infoVBox);
+            displayMessage("Passwords must match!", 17, 2, infoVBox);
             return;
         }
         Account account = Account.createAccount(username, password.trim());
         signupUsername.clear();
         signupPassword.clear();
         repassword.clear();
-        displayLabel("Account created! Sign in!", 17, 2, infoVBox);
+        displayMessage("Account created! Sign in!", 17, 2, infoVBox);
     }
 
 
-    public void displayLabel(String text, int fontSize ,long delayTime, Pane pane) {
-        Label label = makeMainLabel(text,fontSize);
+    public void displayMessage(String text, int fontSize, long delayTime, Pane pane) {
+        Label label = makeMainLabel(text, fontSize);
         pane.getChildren().add(label);
         AnimationTimer animationTimer = new AnimationTimer() {
             long before = 0;
@@ -104,6 +175,9 @@ public class LoginPageController implements Initializable {
             }
         };
         animationTimer.start();
+        if (pane.getChildren().size() > 3) {
+            pane.getChildren().remove(0);
+        }
         return;
     }
 
