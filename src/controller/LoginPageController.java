@@ -5,12 +5,14 @@ import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import model.Account;
@@ -57,29 +59,29 @@ public class LoginPageController implements Initializable {
     }
 
     public void createAccount() {
-        String username = usernameTF.getText();
+        String username = signupUsername.getText();
         System.err.println("checking..");
         if (Account.findAccount(username) != null) {
-            System.out.println("this username is already taken");
+            displayLabel("Username already taken!", 17, 2, infoVBox);
             return;
         }
-        String password = passwordField.getText();
+        String password = signupPassword.getText();
         String passRepeat = repassword.getText();
         if (!passRepeat.equals(password)) {
-            Label label = makeMainLabel("Passwords must match!", 17);
-            displayLabel(label, 2);
+            displayLabel("Passwords must match!", 17, 2, infoVBox);
             return;
         }
         Account account = Account.createAccount(username, password.trim());
-        usernameTF.clear();
-        passwordField.clear();
+        signupUsername.clear();
+        signupPassword.clear();
         repassword.clear();
-        Account.setMainAccount(account);
-        System.err.println("account " + account.getUsername() + " created");
+        displayLabel("Account created! Sign in!", 17, 2, infoVBox);
     }
 
-    private void displayLabel(Label label, long delayTime) {
-        infoVBox.getChildren().add(label);
+
+    public void displayLabel(String text, int fontSize ,long delayTime, Pane pane) {
+        Label label = makeMainLabel(text,fontSize);
+        pane.getChildren().add(label);
         AnimationTimer animationTimer = new AnimationTimer() {
             long before = 0;
             long secondBefore = 0;
@@ -89,15 +91,15 @@ public class LoginPageController implements Initializable {
                 if (before == 0) {
                     before = l;
                 }
-                if (l - before > delayTime*1000*1000*1000 && secondBefore == 0) {
+                if (l - before > delayTime * 1000 * 1000 * 1000 && secondBefore == 0) {
                     secondBefore = l;
                 }
                 if (l - secondBefore > 2000 && secondBefore != 0) {
                     secondBefore = l;
                     label.setOpacity(label.getOpacity() - 0.002);
                 }
-                if (label.getOpacity() <= 0){
-                    infoVBox.getChildren().remove(label);
+                if (label.getOpacity() <= 0) {
+                    pane.getChildren().remove(label);
                 }
             }
         };

@@ -11,10 +11,28 @@ import javafx.stage.Stage;
 import view.Input;
 
 public class Initializer extends Application {
+    private static Stage primaryStage;
+    private static Scene currentScene;
     private static BattleMenu battleMenu = new BattleMenu(1000, "Battle Menu");
 
     public static BattleMenu getBattleMenu() {
         return battleMenu;
+    }
+
+    public static void setPrimaryStage(Stage primaryStage) {
+        Initializer.primaryStage = primaryStage;
+    }
+
+    public static void setCurrentScene(Scene scene){
+        currentScene = scene;
+        primaryStage.setScene(scene);
+    }
+    public static Stage getPrimaryStage() {
+        return primaryStage;
+    }
+
+    public static Scene getCurrentScene() {
+        return currentScene;
     }
 
     public static void main(String[] args) {
@@ -41,6 +59,7 @@ public class Initializer extends Application {
         Scene loginPageScene = new Scene(loginPage,1080,720);
         primaryStage.setScene(loginPageScene);
         primaryStage.show();
+        setPrimaryStage(primaryStage);
     }
 
 }
