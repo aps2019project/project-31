@@ -1,17 +1,34 @@
-@font-face {
-    font-family: 'Trump';
-}
-
-.text {
-    -fx-font-family: Trump;
-    -fx-stroke-width: 0;
-    -fx-font-size: 20;
-    -fx-stroke: white;
 
 
-}
-
-.button{
+#firstButton{
     -fx-background-image: url('../assets/ui/button_secondary.png');
     -fx-background-color: rgba(0,0,0,0);
+    -fx-pref-width: 170;
+    -fx-pref-height: 55;
+    -fx-font-size: 20;
+    -fx-text-fill: white;
 }
+
+#firstButton:hover{
+    -fx-background-image: url('../assets/ui/button_secondary_glow.png');
+    -fx-background-color: rgba(0,0,0,0);
+    -fx-scale-x: 1.04;
+    -fx-scale-y: 1.04;
+}
+
+#secondButton{
+    -fx-background-image: url('../assets/ui/button_confirm.png');
+    -fx-background-color: rgba(0,0,0,0);
+    -fx-pref-width: 170;
+    -fx-pref-height: 55;
+    -fx-font-size: 20;
+    -fx-text-fill: white;
+}
+
+#secondButton:hover{
+    -fx-background-image: url('../assets/ui/button_confirm_glow.png');
+    -fx-background-color: rgba(0,0,0,0);
+    -fx-scale-x: 1.04;
+    -fx-scale-y: 1.04;
+}
+

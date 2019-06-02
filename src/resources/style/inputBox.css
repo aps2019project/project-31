@@ -1,5 +1,5 @@
 .text-field {
-    -fx-font-size: 18;
+    -fx-font-size: 10;
     -fx-padding: 1, 1, 1, 1;
     -fx-border-color: grey;
     -fx-border-width: 2;
@@ -9,4 +9,5 @@
     -fx-background-radius: 20;
     -fx-text-fill: rgb(0, 0, 0);
     -fx-alignment: center;
+
 }
