@@ -6,7 +6,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
 
-public class Animation extends Transition {
+public class CustomAnimation extends Transition {
 
     private ImageView imageView;
     private int count;
@@ -15,10 +15,10 @@ public class Animation extends Transition {
 
     private Image[] sequence;
 
-    public Animation() {
+    public CustomAnimation() {
     }
 
-    public Animation( Image[] sequence, double durationMs) {
+    public CustomAnimation(Image[] sequence, double durationMs) {
         init( sequence, durationMs);
     }
 

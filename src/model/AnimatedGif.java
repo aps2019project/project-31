@@ -6,7 +6,7 @@ import javafx.scene.image.WritableImage;
 
 import java.awt.image.BufferedImage;
 
-public class AnimatedGif extends Animation {
+public class AnimatedGif extends CustomAnimation {
 
     public AnimatedGif( String filename, double durationMs) {
 
