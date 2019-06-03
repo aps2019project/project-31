@@ -19,6 +19,7 @@ import javafx.scene.text.Font;
 import model.Account;
 import model.Initializer;
 
+import java.awt.*;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -52,10 +53,19 @@ public class LoginPageController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+        Double screenWidth = screen.getWidth();
+        double scaleX = screenWidth / mainContainer.getPrefWidth() * 3 / 5;
+        mainContainer.setScaleX(scaleX);
+        mainContainer.setScaleY(scaleX);
+
+
         exitButton.setOnAction(actionEvent -> {
             Initializer.getPrimaryStage().close();
         });
         loginButton.setOnAction(actionEvent -> login());
+
 
         infoButton.setOnAction(actionEvent -> {
             Image image = new Image(getClass().getResource("/images/Credits.jpg").toExternalForm());

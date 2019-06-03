@@ -10,6 +10,8 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import view.Input;
 
+import java.awt.*;
+
 public class Initializer extends Application {
     private static Stage primaryStage;
     private static Scene currentScene;
@@ -23,10 +25,11 @@ public class Initializer extends Application {
         Initializer.primaryStage = primaryStage;
     }
 
-    public static void setCurrentScene(Scene scene){
+    public static void setCurrentScene(Scene scene) {
         currentScene = scene;
         primaryStage.setScene(scene);
     }
+
     public static Stage getPrimaryStage() {
         return primaryStage;
     }
@@ -56,7 +59,9 @@ public class Initializer extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         Parent loginPage = FXMLLoader.load(getClass().getResource("/LoginPage.fxml"));
-        Scene loginPageScene = new Scene(loginPage,1080,720);
+        Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+        Double screenWidth = screen.getWidth();
+        Scene loginPageScene = new Scene(loginPage, screenWidth * 3 / 5, screenWidth * 2 / 5 );
         primaryStage.setScene(loginPageScene);
         primaryStage.show();
         setPrimaryStage(primaryStage);
