@@ -2,3 +2,7 @@
     -fx-background-image: url('images/modified_background.jpg');
     -fx-background-size: 1080,720;
 }
+
+#setLowOpacity{
+    -fx-background-color: rgba(40, 10, 100, 0.1);
+}
