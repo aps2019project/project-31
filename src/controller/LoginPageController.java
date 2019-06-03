@@ -162,7 +162,8 @@ public class LoginPageController implements Initializable {
             displayMessage("Login Successful! Entering game...", 17, 2, infoVBox);
             //handle entering the next scene
             MainMenuController.getInstance().setAsScene();
-
+            usernameTF.clear();
+            passwordField.clear();
 
             return;
         } else {
