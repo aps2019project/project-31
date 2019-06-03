@@ -1,0 +1,4 @@
+#backgroundOne{
+    -fx-background-image: url('../assets/codex/modified_background.jpg');
+    -fx-background-size: 1080,720;
+}
