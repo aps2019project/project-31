@@ -1,6 +1,8 @@
 package model;
 
 import controller.BattleMenu;
+import controller.LoginPageController;
+import controller.MainMenuController;
 import controller.Shop;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -58,13 +60,9 @@ public class Initializer extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent loginPage = FXMLLoader.load(getClass().getResource("/LoginPage.fxml"));
-        Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-        Double screenWidth = screen.getWidth();
-        Scene loginPageScene = new Scene(loginPage, screenWidth * 3 / 5, screenWidth * 2 / 5 );
-        primaryStage.setScene(loginPageScene);
-        primaryStage.show();
         setPrimaryStage(primaryStage);
+        MainMenuController.getInstance().setAsScene();
+        primaryStage.show();
     }
 
 }

@@ -159,7 +159,6 @@ public class Account {
         return "UserName : " + username + " - Wins : " + winLoseDraw[0] + "\n";
     }
 
-
     public static void sortAllAccounts() {
         for (int i = 0; i < allAccounts.size(); i++) {
             int indexOfBest = i;
