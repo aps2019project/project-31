@@ -69,6 +69,9 @@ public class MainMenuController implements Initializable {
             LoginPageController.getInstance().setAsScene();
             Account.setMainAccount(null);
         });
-
+        Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+        Double screenWidth = screen.getWidth();
+        backgroundImage.setScaleX(screenWidth / backgroundImage.getFitWidth() * 2 / 3);
+        backgroundImage.setScaleY(screenWidth / backgroundImage.getFitWidth() * 2 / 3);
     }
 }
