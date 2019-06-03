@@ -7,151 +7,163 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<HBox fx:id="mainContainer" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginPageController">
+
+<AnchorPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginPageController">
    <children>
-      <StackPane fx:id="signUpPane" prefHeight="720.0" prefWidth="360.0">
+      <StackPane layoutX="1.125" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <ImageView fitHeight="720.0" fitWidth="360.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@assets/codex/chapter1_preview@2x.jpg" />
-               </image>
-            </ImageView>
-            <VBox fx:id="loginVBox1" alignment="BOTTOM_CENTER" prefHeight="676.0" prefWidth="360.0" spacing="10.0" StackPane.alignment="BOTTOM_CENTER">
+            <HBox fx:id="mainContainer" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0">
                <children>
-                  <HBox alignment="CENTER" prefHeight="58.0" prefWidth="360.0" spacing="20.0">
+                  <StackPane fx:id="signUpPane" prefHeight="720.0" prefWidth="360.0">
                      <children>
-                        <Text fill="WHITE" stroke="#3a81ba" strokeType="OUTSIDE" strokeWidth="2.0" text="Username">
-                           <font>
-                              <Font name="System Bold" size="14.0" />
-                           </font>
-                        </Text>
-                        <TextField fx:id="signupUsername" prefHeight="35.0" prefWidth="201.0" stylesheets="@style/inputBox.css" />
-                     </children>
-                     <padding>
-                        <Insets left="10.0" right="10.0" />
-                     </padding>
-                  </HBox>
-                  <HBox alignment="CENTER" layoutX="10.0" layoutY="578.0" prefHeight="58.0" prefWidth="360.0" spacing="25.0">
-                     <children>
-                        <Text fill="WHITE" stroke="#3a81ba" strokeType="OUTSIDE" strokeWidth="2.0" text="Password">
-                           <font>
-                              <Font name="System Bold" size="14.0" />
-                           </font>
-                        </Text>
-                        <PasswordField fx:id="signupPassword" prefHeight="35.0" prefWidth="201.0" stylesheets="@style/inputBox.css">
+                        <ImageView fitHeight="720.0" fitWidth="360.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@assets/codex/chapter1_preview@2x.jpg" />
+                           </image>
+                        </ImageView>
+                        <VBox fx:id="loginVBox1" alignment="BOTTOM_CENTER" prefHeight="676.0" prefWidth="360.0" spacing="10.0" StackPane.alignment="BOTTOM_CENTER">
+                           <children>
+                              <HBox alignment="CENTER" prefHeight="58.0" prefWidth="360.0" spacing="20.0">
+                                 <children>
+                                    <Text fill="WHITE" stroke="#3a81ba" strokeType="OUTSIDE" strokeWidth="2.0" text="Username">
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font>
+                                    </Text>
+                                    <TextField fx:id="signupUsername" prefHeight="35.0" prefWidth="201.0" stylesheets="@style/inputBox.css" />
+                                 </children>
+                                 <padding>
+                                    <Insets left="10.0" right="10.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox alignment="CENTER" layoutX="10.0" layoutY="578.0" prefHeight="58.0" prefWidth="360.0" spacing="25.0">
+                                 <children>
+                                    <Text fill="WHITE" stroke="#3a81ba" strokeType="OUTSIDE" strokeWidth="2.0" text="Password">
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font>
+                                    </Text>
+                                    <PasswordField fx:id="signupPassword" prefHeight="35.0" prefWidth="201.0" stylesheets="@style/inputBox.css">
+                                       <padding>
+                                          <Insets left="50.0" right="50.0" />
+                                       </padding>
+                                    </PasswordField>
+                                 </children>
+                                 <padding>
+                                    <Insets left="10.0" right="10.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" prefHeight="58.0" prefWidth="360.0" spacing="5.0">
+                                 <children>
+                                    <Text fill="WHITE" stroke="#3a81ba" strokeType="OUTSIDE" strokeWidth="2.0" text="Repeat Password">
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font>
+                                    </Text>
+                                    <PasswordField fx:id="repassword" prefHeight="35.0" prefWidth="201.0" stylesheets="@style/inputBox.css">
+                                       <padding>
+                                          <Insets left="50.0" right="50.0" />
+                                       </padding>
+                                    </PasswordField>
+                                 </children>
+                              </HBox>
+                              <Button id="firstButton" fx:id="signupButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="55.0" prefWidth="175.0" stylesheets="@style/buttonOne.css" text="Sign Up" textFill="#f5f0f0" />
+                           </children>
                            <padding>
-                              <Insets left="50.0" right="50.0" />
+                              <Insets bottom="25.0" />
                            </padding>
-                        </PasswordField>
+                        </VBox>
                      </children>
-                     <padding>
-                        <Insets left="10.0" right="10.0" />
-                     </padding>
-                  </HBox>
-                  <HBox alignment="CENTER_LEFT" prefHeight="58.0" prefWidth="360.0" spacing="5.0">
+                  </StackPane>
+                  <StackPane fx:id="infoPane" prefHeight="720.0" prefWidth="360.0">
                      <children>
-                        <Text fill="WHITE" stroke="#3a81ba" strokeType="OUTSIDE" strokeWidth="2.0" text="Repeat Password">
-                           <font>
-                              <Font name="System Bold" size="14.0" />
-                           </font>
-                        </Text>
-                        <PasswordField fx:id="repassword" prefHeight="35.0" prefWidth="201.0" stylesheets="@style/inputBox.css">
+                        <ImageView fx:id="middlePicture" fitHeight="720.0" fitWidth="360.0">
+                           <image>
+                              <Image url="@assets/challenges/gate_001@2x.jpg" />
+                           </image>
+                        </ImageView>
+                        <VBox alignment="BOTTOM_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="77.0">
+                           <children>
+                              <VBox alignment="CENTER" prefHeight="84.0" prefWidth="360.0" stylesheets="@style/mainLabel.css">
+                                 <children>
+                                    <Label id="mainLabel" stylesheets="@style/mainLabel.css" text="Duelyst" textFill="#eeeeee">
+                                       <font>
+                                          <Font size="50.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                              <VBox fx:id="infoVBox" alignment="CENTER" prefHeight="96.0" prefWidth="360.0" />
+                              <VBox alignment="CENTER" prefHeight="120.0" prefWidth="360.0">
+                                 <children>
+                                    <Button id="secondButton" fx:id="infoButton" mnemonicParsing="false" prefHeight="56.0" prefWidth="176.0" styleClass="text" stylesheets="@style/buttonOne.css" text="Info" />
+                                 </children>
+                              </VBox>
+                              <Button id="firstButton" fx:id="exitButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="55.0" prefWidth="175.0" stylesheets="@style/buttonOne.css" text="Exit" textFill="#f5f0f0" />
+                           </children>
                            <padding>
-                              <Insets left="50.0" right="50.0" />
+                              <Insets bottom="25.0" />
                            </padding>
-                        </PasswordField>
+                        </VBox>
                      </children>
-                  </HBox>
-                  <Button id="firstButton" fx:id="signupButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="55.0" prefWidth="175.0" stylesheets="@style/buttonOne.css" text="Sign Up" textFill="#f5f0f0" />
-               </children>
-               <padding>
-                  <Insets bottom="25.0" />
-               </padding>
-            </VBox>
-         </children>
-      </StackPane>
-      <StackPane fx:id="infoPane" prefHeight="720.0" prefWidth="360.0">
-         <children>
-            <ImageView fx:id="middlePicture" fitHeight="720.0" fitWidth="360.0">
-               <image>
-                  <Image url="@assets/challenges/gate_001@2x.jpg" />
-               </image>
-            </ImageView>
-            <VBox alignment="BOTTOM_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="77.0">
-               <children>
-                  <VBox alignment="CENTER" prefHeight="84.0" prefWidth="360.0" stylesheets="@style/mainLabel.css">
+                  </StackPane>
+                  <StackPane fx:id="loginPane" prefHeight="720.0" prefWidth="360.0">
                      <children>
-                        <Label id="mainLabel" stylesheets="@style/mainLabel.css" text="Duelyst" textFill="#eeeeee">
-                           <font>
-                              <Font size="50.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </VBox>
-                  <VBox fx:id="infoVBox" alignment="CENTER" prefHeight="96.0" prefWidth="360.0" />
-                  <VBox alignment="CENTER" prefHeight="120.0" prefWidth="360.0">
-                     <children>
-                        <Button id="secondButton" fx:id="infoButton" mnemonicParsing="false" prefHeight="56.0" prefWidth="176.0" styleClass="text" stylesheets="@style/buttonOne.css" text="Info" />
-                     </children></VBox>
-                  <Button id="firstButton" fx:id="exitButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="55.0" prefWidth="175.0" stylesheets="@style/buttonOne.css" text="Exit" textFill="#f5f0f0" />
-               </children>
-               <padding>
-                  <Insets bottom="25.0" />
-               </padding></VBox>
-         </children>
-      </StackPane>
-      <StackPane fx:id="loginPane" prefHeight="720.0" prefWidth="360.0">
-         <children>
-            <ImageView fitHeight="720.0" fitWidth="360.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@assets/codex/chapter2_right_size@2x.jpg" />
-               </image>
-            </ImageView>
-            <VBox fx:id="loginVBox" alignment="BOTTOM_CENTER" prefHeight="676.0" prefWidth="360.0" spacing="10.0" StackPane.alignment="BOTTOM_CENTER">
-               <children>
-                  <HBox alignment="CENTER" prefHeight="58.0" prefWidth="360.0" spacing="20.0">
-                     <children>
-                        <Text fill="WHITE" stroke="#3a81ba" strokeType="OUTSIDE" strokeWidth="2.0" text="Username">
-                           <font>
-                              <Font name="System Bold" size="14.0" />
-                           </font>
-                        </Text>
-                        <TextField fx:id="usernameTF" prefHeight="35.0" prefWidth="201.0" stylesheets="@style/inputBox.css" />
-                     </children>
-                     <padding>
-                        <Insets left="10.0" right="10.0" />
-                     </padding>
-                  </HBox>
-                  <HBox alignment="CENTER" prefHeight="58.0" prefWidth="360.0" spacing="23.0">
-                     <children>
-                        <Text fill="WHITE" stroke="#3a81ba" strokeType="OUTSIDE" strokeWidth="2.0" text="Password">
-                           <font>
-                              <Font name="System Bold" size="14.0" />
-                           </font>
-                        </Text>
-                        <PasswordField fx:id="passwordField" prefHeight="35.0" prefWidth="201.0" stylesheets="@style/inputBox.css">
+                        <ImageView fitHeight="720.0" fitWidth="360.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@assets/codex/chapter2_right_size@2x.jpg" />
+                           </image>
+                        </ImageView>
+                        <VBox fx:id="loginVBox" alignment="BOTTOM_CENTER" prefHeight="676.0" prefWidth="360.0" spacing="10.0" StackPane.alignment="BOTTOM_CENTER">
+                           <children>
+                              <HBox alignment="CENTER" prefHeight="58.0" prefWidth="360.0" spacing="20.0">
+                                 <children>
+                                    <Text fill="WHITE" stroke="#3a81ba" strokeType="OUTSIDE" strokeWidth="2.0" text="Username">
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font>
+                                    </Text>
+                                    <TextField fx:id="usernameTF" prefHeight="35.0" prefWidth="201.0" stylesheets="@style/inputBox.css" />
+                                 </children>
+                                 <padding>
+                                    <Insets left="10.0" right="10.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox alignment="CENTER" prefHeight="58.0" prefWidth="360.0" spacing="23.0">
+                                 <children>
+                                    <Text fill="WHITE" stroke="#3a81ba" strokeType="OUTSIDE" strokeWidth="2.0" text="Password">
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font>
+                                    </Text>
+                                    <PasswordField fx:id="passwordField" prefHeight="35.0" prefWidth="201.0" stylesheets="@style/inputBox.css">
+                                       <padding>
+                                          <Insets left="50.0" right="50.0" />
+                                       </padding>
+                                    </PasswordField>
+                                 </children>
+                                 <padding>
+                                    <Insets left="10.0" right="10.0" />
+                                 </padding>
+                              </HBox>
+                              <Button id="firstButton" fx:id="loginButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="55.0" prefWidth="175.0" stylesheets="@style/buttonOne.css" text="Login" textFill="#f5f0f0" />
+                           </children>
                            <padding>
-                              <Insets left="50.0" right="50.0" />
+                              <Insets bottom="25.0" />
                            </padding>
-                        </PasswordField>
+                        </VBox>
                      </children>
-                     <padding>
-                        <Insets left="10.0" right="10.0" />
-                     </padding>
-                  </HBox>
-                  <Button id="firstButton" fx:id="loginButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="55.0" prefWidth="175.0" stylesheets="@style/buttonOne.css" text="Login" textFill="#f5f0f0" />
+                  </StackPane>
                </children>
-               <padding>
-                  <Insets bottom="25.0" />
-               </padding>
-            </VBox>
+            </HBox>
          </children>
       </StackPane>
    </children>
-</HBox>
+</AnchorPane>

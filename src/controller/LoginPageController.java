@@ -1,5 +1,6 @@
 package controller;
 
+import javafx.animation.Animation;
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -55,7 +56,6 @@ public class LoginPageController implements Initializable {
             Initializer.getPrimaryStage().close();
         });
         loginButton.setOnAction(actionEvent -> login());
-
 
         infoButton.setOnAction(actionEvent -> {
             Image image = new Image(getClass().getResource("/images/Credits.jpg").toExternalForm());
