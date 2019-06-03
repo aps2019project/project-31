@@ -3,8 +3,11 @@ package controller;
 import javafx.animation.Animation;
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -20,10 +23,14 @@ import model.Account;
 import model.Initializer;
 
 import java.awt.*;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class LoginPageController implements Initializable {
+    public static Scene scene = null;
+    private static LoginPageController loginPage;
+
     @FXML
     public HBox mainContainer;
     @FXML
@@ -51,9 +58,35 @@ public class LoginPageController implements Initializable {
     @FXML
     private StackPane infoPane;
 
+    public LoginPageController() {
+    }
+
+    public static LoginPageController getInstance() {
+        if (loginPage == null) {
+            loginPage = new LoginPageController();
+        }
+        return loginPage;
+    }
+
+    public void setAsScene() {
+        if (scene == null) {
+            try {
+                Parent root = FXMLLoader.load(getClass().getResource("/LoginPage.fxml"));
+                Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+                Double screenWidth = screen.getWidth();
+                scene = new Scene(root, screenWidth * 3 / 5, screenWidth * 2 / 5);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        Initializer.setCurrentScene(scene);
+    }
+
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+        Font.loadFont(getClass().getResource("/assets/fonts/Lato-Regular.ttf").toExternalForm(), 10);
         Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
         Double screenWidth = screen.getWidth();
         double scaleX = screenWidth / mainContainer.getPrefWidth() * 3 / 5;
@@ -128,6 +161,10 @@ public class LoginPageController implements Initializable {
             Account.setMainAccount(account);
             displayMessage("Login Successful! Entering game...", 17, 2, infoVBox);
             //handle entering the next scene
+            MainMenuController.getInstance().setAsScene();
+            usernameTF.clear();
+            passwordField.clear();
+
             return;
         } else {
             displayMessage("Incorrect Password!", 17, 2, infoVBox);
