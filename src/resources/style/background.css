@@ -1,0 +1,16 @@
+#backgroundOne{
+    -fx-background-image: url('images/modified_background.jpg');
+    -fx-background-size: 1080,720;
+}
+
+
+#leaderBoardRootPane{
+    /*-fx-background-color: red;*/
+    -fx-background-image: url("../assets/scenes/frostfire/LeaderBoardBackground.jpg");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: cover;
+}
+#setLowOpacity{
+    -fx-color: rgba(0, 0, 100, 1);
+    -fx-background-color: rgba(0, 0, 100, 0.1);
+}

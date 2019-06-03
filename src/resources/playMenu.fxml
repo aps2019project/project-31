@@ -9,7 +9,7 @@
    <children>
       <StackPane fx:id="mainContainer" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0">
          <children>
-            <BorderPane id="backgroundOne" prefHeight="200.0" prefWidth="200.0" stylesheets="@style/backgroud.css" />
+            <BorderPane id="backgroundOne" prefHeight="200.0" prefWidth="200.0" stylesheets="@resources/style/background.css" />
          </children>
       </StackPane>
    </children>
