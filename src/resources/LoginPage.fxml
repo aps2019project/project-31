@@ -114,7 +114,7 @@
                               <VBox fx:id="infoVBox" alignment="CENTER" prefHeight="96.0" prefWidth="360.0" />
                               <VBox alignment="CENTER" prefHeight="120.0" prefWidth="360.0">
                                  <children>
-                                    <Button id="secondButton" fx:id="infoButton" mnemonicParsing="false" prefHeight="56.0" prefWidth="176.0" styleClass="text" stylesheets="@style/buttonOne.css" text="Info" />
+                                    <Button id="secondButton" fx:id="infoButton" mnemonicParsing="false" prefHeight="56.0" prefWidth="176.0" styleClass="text" stylesheets="@style/buttonOne.css" text="Credits" />
                                  </children>
                               </VBox>
                               <Button id="firstButton" fx:id="exitButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="55.0" prefWidth="175.0" stylesheets="@style/buttonOne.css" text="Exit" textFill="#f5f0f0" />
