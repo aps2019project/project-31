@@ -18,9 +18,28 @@
     -fx-background-color: rgba(0,0,0,0);
     -fx-scale-x: 1.04;
     -fx-scale-y: 1.04;
+    -fx-cursor: hand;
 }
 
 #logoutButton{
+    -fx-background-color: rgba(0,0,0,0);
+    -fx-background-image: url('../assets/ui/button_icon_left.png');
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+    -fx-background-insets: 0;
+    -fx-pref-height: 50;
+    -fx-font-size: 15;
+    -fx-font-family: "Times New Roman";
+    -fx-text-fill: white;
+}
+#logoutButton:hover{
+    -fx-background-image: url('../assets/ui/button_icon_left_glow.png');
+    -fx-background-color: rgba(0,0,0,0);
+    -fx-scale-x: 1.04;
+    -fx-scale-y: 1.04;
+    -fx-cursor: hand;
+}
+#backButton{
     -fx-background-color: rgba(0,0,0,0);
     -fx-background-image: url('../assets/ui/button_icon_left.png');
     -fx-background-size: cover;
@@ -30,13 +49,14 @@
     -fx-font-family: "Times New Roman";
     -fx-text-fill: white;
 }
-
-#logoutButton:hover{
+#backButton:hover{
     -fx-background-image: url('../assets/ui/button_icon_left_glow.png');
     -fx-background-color: rgba(0,0,0,0);
     -fx-scale-x: 1.04;
     -fx-scale-y: 1.04;
+    -fx-cursor: hand;
 }
+
 
 #leaderBoardHeader{
     -fx-background-image: url('../assets/arena/gauntlet_control_bar_bg.png');
@@ -63,6 +83,7 @@
     -fx-background-color: rgba(0,0,0,0);
     -fx-scale-x: 1.04;
     -fx-scale-y: 1.04;
+    -fx-cursor: hand;
 }
 
 #secondButton{
@@ -80,5 +101,6 @@
     -fx-background-color: rgba(0,0,0,0);
     -fx-scale-x: 1.04;
     -fx-scale-y: 1.04;
+    -fx-cursor: hand;
 }
 
