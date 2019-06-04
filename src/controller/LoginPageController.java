@@ -20,6 +20,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import model.Account;
+import model.DisplayableCard;
 import model.Initializer;
 
 import java.awt.*;

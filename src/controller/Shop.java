@@ -48,6 +48,10 @@ public class Shop extends Menu {
         allCards.addAll(allUsables);
     }
 
+    public static ArrayList<Spell> getAllSpells() {
+        return allSpells;
+    }
+
     private static void loadHeroes(YaGson yaGson, String path) {
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(path))) {
             String line = bufferedReader.readLine();
