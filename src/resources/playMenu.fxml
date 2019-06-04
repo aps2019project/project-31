@@ -1,39 +1,70 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane fx:id="mainContainer" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.PlayMenuController">
    <children>
-      <StackPane fx:id="mainContainer" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0">
+      <ImageView fitHeight="720.0" fitWidth="1080.0" pickOnBounds="true">
+         <image>
+            <Image url="@assets/codex/chapter12_background@2x.jpg" />
+         </image>
+      </ImageView>
+      <HBox fx:id="mainHBox" alignment="CENTER" prefHeight="616.0" prefWidth="1080.0">
          <children>
-            <BorderPane id="backgroundOne" prefHeight="720.0" prefWidth="1080.0" stylesheets="@style/backgroud.css">
-               <center>
-                  <HBox prefHeight="381.0" prefWidth="597.0" BorderPane.alignment="CENTER">
-                     <children>
-                        <StackPane prefHeight="494.0" prefWidth="240.0" />
-                        <StackPane prefHeight="150.0" prefWidth="240.0" />
-                        <StackPane prefHeight="150.0" prefWidth="240.0" />
-                     </children>
-                  </HBox>
-               </center>
-               <left>
-                  <VBox prefHeight="520.0" prefWidth="180.0" BorderPane.alignment="CENTER" />
-               </left>
-               <top>
-                  <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
-               </top>
-               <bottom>
-                  <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
-               </bottom>
-               <right>
-                  <VBox prefHeight="520.0" prefWidth="180.0" BorderPane.alignment="CENTER" />
-               </right>
-            </BorderPane>
+            <StackPane prefHeight="150.0" prefWidth="240.0" stylesheets="@style/buttonOne.css">
+               <children>
+                  <ImageView id="playMenuButton" fx:id="customButton" fitHeight="500.0" fitWidth="225.0" pickOnBounds="true">
+                     <image>
+                        <Image url="@assets/codex/chapter14_preview@2x.jpg" />
+                     </image>
+                  </ImageView>
+                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="59.0" prefWidth="123.0" stylesheets="@style/mainLabel.css" text="Custom" textFill="WHITE" translateY="210.0">
+                     <font>
+                        <Font name="Kalapi" size="28.0" />
+                     </font>
+                  </Label>
+               </children>
+            </StackPane>
+            <StackPane layoutX="10.0" layoutY="10.0" prefHeight="567.0" prefWidth="240.0" stylesheets="@style/buttonOne.css">
+               <children>
+                  <ImageView id="playMenuButton" fx:id="multiplayerButton" fitHeight="500.0" fitWidth="225.0" pickOnBounds="true">
+                     <image>
+                        <Image url="@assets/codex/chapter8_preview@2x.jpg" />
+                     </image>
+                  </ImageView>
+                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="59.0" prefWidth="169.0" stylesheets="@style/mainLabel.css" text="Multiplayer" textFill="WHITE" translateY="210.0">
+                     <font>
+                        <Font name="Kalapi" size="28.0" />
+                     </font>
+                  </Label>
+               </children>
+            </StackPane>
+            <StackPane layoutX="10.0" layoutY="10.0" prefHeight="150.0" prefWidth="240.0" stylesheets="@style/buttonOne.css">
+               <children>
+                  <ImageView id="playMenuButton" fx:id="storyButton" fitHeight="500.0" fitWidth="225.0" pickOnBounds="true">
+                     <image>
+                        <Image url="@assets/codex/chapter6_preview@2x.jpg" />
+                     </image>
+                  </ImageView>
+                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="39.0" prefWidth="100.0" stylesheets="@style/mainLabel.css" text="Story" textFill="WHITE" translateY="210.0">
+                     <font>
+                        <Font name="Kalapi" size="28.0" />
+                     </font>
+                  </Label>
+               </children>
+            </StackPane>
          </children>
-      </StackPane>
+         <StackPane.margin>
+            <Insets bottom="110.0" top="110.0" />
+         </StackPane.margin>
+      </HBox>
+      <Button id="firstButton" fx:id="backButton" mnemonicParsing="false" stylesheets="@style/buttonOne.css" text="Back" translateY="320.0" />
    </children>
-</AnchorPane>
+</StackPane>

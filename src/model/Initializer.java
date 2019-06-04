@@ -1,9 +1,6 @@
 package model;
 
-import controller.BattleMenu;
-import controller.LoginPageController;
-import controller.MainMenuController;
-import controller.Shop;
+import controller.*;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
@@ -61,7 +58,7 @@ public class Initializer extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         setPrimaryStage(primaryStage);
-        MainMenuController.getInstance().setAsScene();
+        PlayMenuController.getInstance().setAsScene();
         primaryStage.show();
     }
 
