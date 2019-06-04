@@ -14,3 +14,6 @@
     -fx-color: rgba(0, 0, 100, 1);
     -fx-background-color: rgba(0, 0, 100, 0.1);
 }
+#labelBackground{
+    -fx-background-color: rgba(0, 0, 100, 0.5);
+}
