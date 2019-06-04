@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 <?import java.net.URL?>
-<StackPane fx:id="leaderBoardRootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+<StackPane fx:id="leaderBoardRootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" fx:controller="controller.LeaderBoardController"
            minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/8"
            xmlns:fx="http://javafx.com/fxml/1">
     <children>
@@ -36,8 +36,8 @@
                                   stylesheets="@style/listView.css"/>
                     </content>
                 </ScrollPane>
-                <Button id="logoutButton" fx:id="leaderBoardBackButton" alignment="CENTER_RIGHT" contentDisplay="CENTER"
-                        layoutX="981.0" layoutY="539.0" mnemonicParsing="false" prefHeight="91.0" prefWidth="110.0"
+                <Button id="backButton" fx:id="leaderBoardBackButton" alignment="CENTER_RIGHT" contentDisplay="CENTER"
+                        layoutX="985.0" layoutY="550.0" mnemonicParsing="false" prefHeight="80.0" prefWidth="106.0"
                         stylesheets="@style/buttonOne.css" text="back">
                     <font>
                         <Font size="30.0"/>
