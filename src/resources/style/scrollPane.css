@@ -1,0 +1,11 @@
+.scroll-pane {
+    -fx-background-color: rgba(0, 0, 100, 0.5);
+}
+
+.scroll-pane .scroll-bar:vertical {
+    -fx-background-color: rgba(0, 0, 100, 0.8);
+}
+
+.scroll-pane > .viewport {
+    -fx-background-color: rgba(0, 0, 100, 0.5);
+}

@@ -1,26 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.image.*?>
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Font?>
 
-<StackPane id="leaderBoardRootPane" fx:id="leaderBoardRootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@style/background.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane fx:id="leaderBoardRootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <BorderPane prefHeight="200.0" prefWidth="200.0">
-         <top>
-            <Pane id="leaderBoardRootPane" prefHeight="200.0" prefWidth="200.0" stylesheets="@style/background.css" BorderPane.alignment="CENTER">
-               <children>
-                  <ScrollPane id="setLowOpacity" layoutY="31.0" prefHeight="312.0" prefWidth="214.0" stylesheets="@style/background.css">
-                     <content>
-                        <VBox id="setLowOpacity" prefHeight="321.0" prefWidth="196.0" stylesheets="@style/background.css" />
-                     </content>
-                  </ScrollPane>
-               </children>
-            </Pane>
-         </top>
-      </BorderPane>
+      <Pane prefHeight="416.0" prefWidth="634.0" stylesheets="@style/scrollPane.css">
+         <children>
+            <ImageView fitHeight="721.0" fitWidth="1087.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@assets/scenes/frostfire/LeaderBoardBackground.jpg" />
+               </image>
+            </ImageView>
+            <Label id="labelBackground" alignment="CENTER" prefHeight="80.0" prefWidth="234.0" stylesheets="@style/background.css" textFill="#669cd2">
+               <opaqueInsets>
+                  <Insets top="20.0" />
+               </opaqueInsets>
+               <font>
+                  <Font name="Arshia" size="27.0" />
+               </font>
+            </Label>
+            <ScrollPane fx:id="LeaderBoardScrollPane" hbarPolicy="NEVER" layoutX="1.0" layoutY="100.0" opacity="0.56" prefHeight="623.0" prefWidth="344.0" stylesheets="@style/scrollPane.css" vbarPolicy="ALWAYS">
+               <content>
+                  <ListView fx:id="LeaderBoardList" prefHeight="914.0" prefWidth="330.0" stylesheets="@style/listView.css" />
+               </content>
+            </ScrollPane>
+            <Button id="logoutButton" fx:id="leaderBoardBackButton" alignment="CENTER" contentDisplay="CENTER" layoutX="955.0" layoutY="526.0" mnemonicParsing="false" prefHeight="104.0" prefWidth="136.0" stylesheets="@style/buttonOne.css" text="back">
+               <font>
+                  <Font size="30.0" />
+               </font>
+            </Button>
+            <Label id="leaderBoardHeader" alignment="CENTER" layoutX="-5.0" prefHeight="98.0" prefWidth="347.0" text="LEADERBOARD" textFill="#669cd2">
+               <opaqueInsets>
+                  <Insets top="20.0" />
+               </opaqueInsets>
+               <font>
+                  <Font name="Arshia" size="27.0" />
+               </font>
+               <stylesheets>
+                  <URL value="@style/background" />
+                  <URL value="@style/buttonOne.css" />
+               </stylesheets>
+            </Label>
+         </children>
+      </Pane>
    </children>
 </StackPane>

@@ -23,10 +23,11 @@
 #logoutButton{
     -fx-background-color: rgba(0,0,0,0);
     -fx-background-image: url('../assets/ui/button_icon_left.png');
-
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
     -fx-background-insets: 0;
-    -fx-pref-height: 50;
-    -fx-font-size: 15;
+    /*-fx-pref-height: 50;*/
+    -fx-font-size: 30;
     -fx-font-family: "Times New Roman";
     -fx-text-fill: white;
 }
@@ -36,6 +37,11 @@
     -fx-background-color: rgba(0,0,0,0);
     -fx-scale-x: 1.04;
     -fx-scale-y: 1.04;
+}
+
+#leaderBoardHeader{
+    -fx-background-image: url('../assets/arena/gauntlet_control_bar_bg.png');
+    -fx-background-size: cover;
 }
 
 @font-face {
