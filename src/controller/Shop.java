@@ -52,6 +52,22 @@ public class Shop extends Menu {
         return allSpells;
     }
 
+    public static ArrayList<Card> getAllCards() {
+        return allCards;
+    }
+
+    public static ArrayList<Minion> getAllMinions() {
+        return allMinions;
+    }
+
+    public static ArrayList<Hero> getAllHeroes() {
+        return allHeroes;
+    }
+
+    public static ArrayList<Item> getAllUsables() {
+        return allUsables;
+    }
+
     private static void loadHeroes(YaGson yaGson, String path) {
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(path))) {
             String line = bufferedReader.readLine();
