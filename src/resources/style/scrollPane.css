@@ -13,3 +13,16 @@
 .scroll-pane > .viewport {
     -fx-background-color: rgba(0, 0, 100, 0.5);
 }
+
+#scrollPaneOne {
+    -fx-background-color: rgba(0, 255, 255, 0.2);
+}
+
+#scrollPaneOne .scroll-bar:vertical {
+    -fx-background-color: rgba(0, 255, 255, 0.4);
+
+}
+
+#scrollPaneOne > .viewport {
+    -fx-background-color: rgba(0, 255, 255, 0.2);
+}
