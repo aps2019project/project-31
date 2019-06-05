@@ -55,7 +55,7 @@ public class LeaderBoardController implements Initializable {
         String ret = "\n";
         Account.sortAllAccounts();
         for (int i = 0; i < Integer.min(Account.getAllAccounts().size(), 10); i++) {
-            ret += "     " + (i + 1) + ".    " + Account.getAllAccounts().get(i).toString() + "";
+            ret += "       " + (i + 1) + ".    " + Account.getAllAccounts().get(i).toString() + "";
         }
         return ret;
     }

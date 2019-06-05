@@ -5,6 +5,9 @@
 .scroll-bar :hover{
     -fx-color: rgba(70, 30, 120, 0.8);
 }
+.scroll-bar :selected{
+    -fx-color: rgba(70, 30, 120, 0.8);
+}
 
 .scroll-pane .scroll-bar:vertical {
     -fx-background-color: rgba(0, 0, 100, 0.8);
