@@ -8,11 +8,13 @@ import javafx.scene.control.ListView;
 import javafx.scene.layout.VBox;
 import model.Card;
 import model.DisplayableCard;
+import model.Hero;
 import model.Initializer;
 
 import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class ShopController implements Initializable {
@@ -21,7 +23,7 @@ public class ShopController implements Initializable {
     public ListView<VBox> heroesList;
     public ListView<VBox> minionsList;
     public ListView<VBox> spellsList;
-    public ListView<VBox> usableItemsList;
+    public ListView usablesList;
 
     public static ShopController getInstance() {
         if (shop == null) {
@@ -45,29 +47,37 @@ public class ShopController implements Initializable {
         Initializer.setCurrentScene(scene);
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    public void initializeShopItems(ArrayList cards, ListView<VBox> listView) {
         boolean first = true;
-        DisplayableCard displayableCard = null;
+        DisplayableCard displayableCard1 = null;
+        DisplayableCard displayableCard2 = null;
         VBox vBox = new VBox();
-        for(Card card : Shop.getAllMinions()){
-            displayableCard = new DisplayableCard(card, "");
-            if(first){
-                if(vBox.getChildren().size() != 0){
-                    minionsList.getItems().add(vBox);
-                    vBox = new VBox();
-                }
-                vBox = new VBox(displayableCard);
+        for (Object card : cards) {
+            if (first) {
+                displayableCard1 = new DisplayableCard((Card) card, "");
+                displayableCard1.setMaxHeight(50);
                 first = false;
-            }
-            else{
-                vBox.getChildren().add(displayableCard);
+            } else {
+                displayableCard2 = new DisplayableCard((Card) card, "");
+                displayableCard2.setMaxHeight(50);
+                vBox = new VBox(displayableCard1, displayableCard2);
+                vBox.setMaxHeight(7200);
+                listView.getItems().add(vBox);
+                displayableCard1 = null;
+                displayableCard2 = null;
                 first = true;
             }
         }
-        if (vBox.getChildren().size() != 0){
-            minionsList.getItems().add(vBox);
-            vBox = new VBox();
+        if (displayableCard1 != null) {
+            listView.getItems().add(new VBox(displayableCard1));
         }
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        initializeShopItems(Shop.getAllHeroes(), heroesList);
+        initializeShopItems(Shop.getAllMinions(), minionsList);
+        initializeShopItems(Shop.getAllSpells(), spellsList);
+        initializeShopItems(Shop.getAllUsables(), usablesList);
     }
 }

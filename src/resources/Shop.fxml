@@ -28,54 +28,22 @@
               <tabs>
                 <Tab fx:id="heroesTab" text="heroes">
                      <content>
-                        <ScrollPane fx:id="heroesScrollPane" hbarPolicy="ALWAYS" opacity="0.41" prefHeight="618.0" prefWidth="725.0" vbarPolicy="NEVER">
-                           <content>
-                              <Pane prefHeight="690.0" prefWidth="1246.0">
-                                 <children>
-                                    <ListView fx:id="heroesList" layoutY="323.20001220703125" prefHeight="1664.0" prefWidth="323.0" rotate="-90.0" />
-                                 </children>
-                              </Pane>
-                           </content>
-                        </ScrollPane>
+                        <ListView fx:id="heroesList" orientation="HORIZONTAL" prefHeight="681.0" prefWidth="882.0" />
                      </content>
                   </Tab>
-                  <Tab fx:id="minionsTab" text="minions">
+                  <Tab fx:id="heroesTab1" text="minions">
                      <content>
-                        <ScrollPane fx:id="minionsScrollPane" hbarPolicy="ALWAYS" opacity="0.41" prefHeight="618.0" prefWidth="725.0" vbarPolicy="NEVER">
-                           <content>
-                              <Pane prefHeight="690.0" prefWidth="1246.0">
-                                 <children>
-                                    <ListView fx:id="minionsList" layoutY="323.20001220703125" prefHeight="1664.0" prefWidth="323.0" rotate="-90.0" />
-                                 </children>
-                              </Pane>
-                           </content>
-                        </ScrollPane>
+                        <ListView fx:id="minionsList" orientation="HORIZONTAL" prefHeight="667.0" prefWidth="1614.0" />
                      </content>
                   </Tab>
-                  <Tab fx:id="spellsTab" text="spells">
+                  <Tab fx:id="heroesTab2" text="spells">
                      <content>
-                        <ScrollPane fx:id="spellsScrollPane" hbarPolicy="ALWAYS" opacity="0.41" prefHeight="618.0" prefWidth="725.0" vbarPolicy="NEVER">
-                           <content>
-                              <Pane prefHeight="690.0" prefWidth="1246.0">
-                                 <children>
-                                    <ListView fx:id="spellsList" layoutY="323.20001220703125" prefHeight="1664.0" prefWidth="323.0" rotate="-90.0" />
-                                 </children>
-                              </Pane>
-                           </content>
-                        </ScrollPane>
+                        <ListView fx:id="spellsList" orientation="HORIZONTAL" prefHeight="666.0" prefWidth="1612.0" />
                      </content>
                   </Tab>
-                  <Tab fx:id="usableItemsTab" text="usable items">
+                  <Tab fx:id="heroesTab3" text="usables">
                      <content>
-                        <ScrollPane fx:id="usableItemsScrollPane" hbarPolicy="ALWAYS" opacity="0.41" prefHeight="618.0" prefWidth="725.0" vbarPolicy="NEVER">
-                           <content>
-                              <Pane prefHeight="690.0" prefWidth="1246.0">
-                                 <children>
-                                    <ListView fx:id="usableItemsList" layoutY="323.20001220703125" prefHeight="1664.0" prefWidth="323.0" rotate="-90.0" />
-                                 </children>
-                              </Pane>
-                           </content>
-                        </ScrollPane>
+                        <ListView fx:id="usablesList" orientation="HORIZONTAL" prefHeight="663.0" prefWidth="1610.0" />
                      </content>
                   </Tab>
               </tabs>
