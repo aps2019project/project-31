@@ -156,7 +156,7 @@ public class Account {
 
     @Override
     public String toString() {
-        return "UserName : " + username + " - Wins : " + winLoseDraw[0] + "\n";
+        return username + " - Wins : " + winLoseDraw[0] + "\n";
     }
 
     public static void sortAllAccounts() {

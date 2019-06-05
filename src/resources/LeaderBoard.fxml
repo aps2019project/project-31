@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.Image?>
@@ -8,51 +14,50 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 <?import java.net.URL?>
-<StackPane fx:id="leaderBoardRootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" fx:controller="controller.LeaderBoardController"
-           minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/8"
-           xmlns:fx="http://javafx.com/fxml/1">
+
+<StackPane fx:id="leaderBoardRootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LeaderBoardController">
     <children>
         <Pane prefHeight="416.0" prefWidth="634.0" stylesheets="@style/scrollPane.css">
             <children>
                 <ImageView fitHeight="721.0" fitWidth="1087.0" pickOnBounds="true" preserveRatio="true">
                     <image>
-                        <Image url="@assets/scenes/frostfire/LeaderBoardBackground.jpg"/>
+                        <Image url="@assets/scenes/frostfire/LeaderBoardBackground.jpg" />
                     </image>
                 </ImageView>
-                <Label id="labelBackground" alignment="CENTER" prefHeight="80.0" prefWidth="234.0"
-                       stylesheets="@style/background.css" textFill="#669cd2">
+                <Label id="labelBackground" alignment="CENTER" prefHeight="80.0" prefWidth="234.0" stylesheets="@style/background.css" textFill="#669cd2">
                     <opaqueInsets>
-                        <Insets top="20.0"/>
+                        <Insets top="20.0" />
                     </opaqueInsets>
                     <font>
-                        <Font name="Arshia" size="27.0"/>
+                        <Font name="Arshia" size="27.0" />
                     </font>
                 </Label>
-                <ScrollPane fx:id="LeaderBoardScrollPane" hbarPolicy="NEVER" layoutX="1.0" layoutY="100.0"
-                            opacity="0.56" prefHeight="623.0" prefWidth="344.0" stylesheets="@style/scrollPane.css"
-                            vbarPolicy="ALWAYS">
-                    <content>
-                        <ListView fx:id="LeaderBoardList" prefHeight="914.0" prefWidth="330.0"
-                                  stylesheets="@style/listView.css"/>
-                    </content>
-                </ScrollPane>
-                <Button id="backButton" fx:id="leaderBoardBackButton" alignment="CENTER_RIGHT" contentDisplay="CENTER"
-                        layoutX="985.0" layoutY="550.0" mnemonicParsing="false" prefHeight="80.0" prefWidth="106.0"
-                        stylesheets="@style/buttonOne.css" text="back">
+            <ScrollPane fx:id="LeaderBoardScrollPane" hbarPolicy="NEVER" layoutX="-3.0" layoutY="89.0" opacity="0.83" prefHeight="642.0" prefWidth="344.0" stylesheets="@style/scrollPane.css" vbarPolicy="ALWAYS">
+               <content>
+                  <Label fx:id="label" alignment="TOP_LEFT" prefHeight="889.0" prefWidth="321.0" stylesheets="@style/LeaderBoard.css" text="\\nefdawefweafd" textFill="WHITE">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </Label>
+               </content>
+            </ScrollPane>
+                <Button id="backButton" fx:id="leaderBoardBackButton" alignment="CENTER_RIGHT" contentDisplay="CENTER" layoutX="985.0" layoutY="550.0" mnemonicParsing="false" prefHeight="80.0" prefWidth="106.0" stylesheets="@style/buttonOne.css" text="back">
                     <font>
-                        <Font size="30.0"/>
+                        <Font size="30.0" />
                     </font>
                 </Button>
-                <Label id="leaderBoardHeader" alignment="CENTER" layoutX="-5.0" prefHeight="98.0" prefWidth="347.0"
-                       text="LEADERBOARD" textFill="#669cd2">
+                <Label id="leaderBoardHeader" alignment="CENTER" layoutX="-5.0" prefHeight="102.0" prefWidth="347.0" text="LEADERBOARD" textFill="#669cd2">
                     <opaqueInsets>
-                        <Insets top="20.0"/>
+                        <Insets top="20.0" />
                     </opaqueInsets>
                     <font>
-                        <Font name="Arshia" size="27.0"/>
+                        <Font name="Arshia" size="27.0" />
                     </font>
                     <stylesheets>
-                        <URL value="@style/buttonOne.css"/>
+                        <URL value="@style/buttonOne.css" />
                     </stylesheets>
                 </Label>
             </children>
