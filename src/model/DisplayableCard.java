@@ -9,6 +9,8 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
+import java.util.Random;
+
 public class DisplayableCard extends StackPane {
     private Card card;
     private String imagePath;
@@ -72,6 +74,7 @@ public class DisplayableCard extends StackPane {
                 mainIcon.setScaleX(2);
                 mainIcon.setScaleY(2);
                 getChildren().addAll(mainIcon);
+
             }
         }
 
@@ -81,6 +84,20 @@ public class DisplayableCard extends StackPane {
             ImageView imageView = new ImageView(image);
             imageView.resize(400, 600);
             this.getChildren().add(imageView);
+            if (imagePath.equals("")) {
+                if (!((Item) card).isCollectible)
+                    imagePath = getClass().
+                            getResource("/gifs/Items/" + card.getName() + "/actionbar.gif")
+                            .toExternalForm();
+                else imagePath = getClass().
+                        getResource("/gifs/Items/Collectibles/" + (new Random().nextInt(3) + 1) + ".gif")
+                        .toExternalForm();
+                mainIcon = new ImageView(new Image(imagePath));
+                mainIcon.setTranslateY(-50);
+                mainIcon.setScaleX(2);
+                mainIcon.setScaleY(2);
+                getChildren().addAll(mainIcon);
+            }
         }
 
         Label cardName = new Label(card.getName());
