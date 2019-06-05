@@ -69,7 +69,10 @@ public class MainMenuController implements Initializable {
             LoginPageController.getInstance().setAsScene();
             Account.setMainAccount(null);
         });
-        leaderboardButton.setOnAction(event -> LeaderBoardController.getInstance().setAsScene());
+        leaderboardButton.setOnAction(event -> {
+            LeaderBoardController.getInstance().updateLeaderBoard();
+            LeaderBoardController.getInstance().setAsScene();
+        });
         Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
         Double screenWidth = screen.getWidth();
         backgroundImage.setScaleX(screenWidth / backgroundImage.getFitWidth() * 2 / 3);

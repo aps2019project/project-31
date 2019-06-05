@@ -1,0 +1,5 @@
+.label{
+    -fx-background-image: url(../assets/ui/backleaderboradLeft.jpg);
+    -fx-background-size: cover;
+    -fx-font: 1;
+}

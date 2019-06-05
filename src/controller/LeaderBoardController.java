@@ -6,7 +6,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.StackPane;
 import model.Account;
@@ -22,9 +22,9 @@ public class LeaderBoardController implements Initializable {
     private static LeaderBoardController leaderBoard;
     @FXML
     public StackPane leaderBoardRootPane;
-    public ScrollPane LeaderBoardScrollPane;
-    public ListView LeaderBoardList;
     public Button leaderBoardBackButton;
+    public ScrollPane LeaderBoardScrollPane;
+    public Label label;
 
     public LeaderBoardController() {
     }
@@ -51,9 +51,19 @@ public class LeaderBoardController implements Initializable {
         Initializer.setCurrentScene(scene);
     }
 
+    public String updateLeaderBoard() {
+        String ret = "\n";
+        Account.sortAllAccounts();
+        for (int i = 0; i < Integer.min(Account.getAllAccounts().size(), 10); i++) {
+            ret += "       " + (i + 1) + ".    " + Account.getAllAccounts().get(i).toString() + "";
+        }
+        return ret;
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
         leaderBoardBackButton.setOnAction(event -> MainMenuController.getInstance().setAsScene());
+        label.setText(updateLeaderBoard());
+        System.err.println(updateLeaderBoard());
     }
 }
