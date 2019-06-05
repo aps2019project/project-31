@@ -192,7 +192,7 @@ public class LoginPageController implements Initializable {
             displayMessage("Passwords must match!", 17, 2, infoVBox);
             return;
         }
-        Account account = Account.createAccount(username, password.trim());
+        Account.createAccount(username, password.trim());
         signupUsername.clear();
         signupPassword.clear();
         repassword.clear();

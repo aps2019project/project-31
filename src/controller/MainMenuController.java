@@ -73,6 +73,7 @@ public class MainMenuController implements Initializable {
             LeaderBoardController.getInstance().updateLeaderBoard();
             LeaderBoardController.getInstance().setAsScene();
         });
+        playButton.setOnAction(event -> PlayMenuController.getInstance().setAsScene());
         shopButton.setOnAction(event -> ShopController.getInstance().setAsScene());
         Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
         Double screenWidth = screen.getWidth();

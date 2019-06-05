@@ -45,7 +45,7 @@ public class PlayMenuController implements Initializable {
         double scaleX = screenWidth / mainContainer.getPrefWidth() * 2 / 3;
         mainContainer.setScaleX(scaleX);
         mainContainer.setScaleY(scaleX);
-
+        backButton.setOnAction(event -> MainMenuController.getInstance().setAsScene());
     }
 
     public PlayMenuController() {
