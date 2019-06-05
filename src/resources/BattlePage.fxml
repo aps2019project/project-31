@@ -6,21 +6,50 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<StackPane fx:controller="controller.BattlePageController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.BattlePageController">
    <children>
       <ImageView fitHeight="720.0" fitWidth="1080.0">
          <image>
-            <Image url="@../../../../../Presentation1/Untitled.png" />
+            <Image url="@assets/maps/battlemap5_background@2x.jpg" />
          </image>
       </ImageView>
-      <Pane prefHeight="200.0" prefWidth="200.0" />
+      <ImageView fitHeight="720.0" fitWidth="1080.0">
+         <image>
+            <Image url="@images/aaaaaaaaa.png" />
+         </image>
+      </ImageView>
+      <Pane prefHeight="200.0" prefWidth="200.0">
+         <children>
+            <GridPane layoutX="-433.0" layoutY="-63.0" prefHeight="393.0" prefWidth="706.0" translateX="600.0" translateY="280.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="10.0" prefWidth="62.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="104.0" minWidth="0.0" prefWidth="83.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="130.0" minWidth="0.0" prefWidth="72.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="163.0" minWidth="10.0" prefWidth="73.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="150.0" minWidth="10.0" prefWidth="88.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="148.0" minWidth="10.0" prefWidth="94.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="143.0" minWidth="10.0" prefWidth="82.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="111.0" minWidth="10.0" prefWidth="81.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="104.0" minWidth="10.0" prefWidth="76.0" />
+              </columnConstraints>
+              <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+            </GridPane>
+         </children></Pane>
       <VBox prefHeight="200.0" prefWidth="100.0">
          <children>
             <StackPane prefHeight="324.0" prefWidth="1080.0">
@@ -44,57 +73,60 @@
                                     <Image url="@assets/ui/icon_general_hp@2x.png" />
                                  </image>
                               </ImageView>
-                              <Label id="player1Health" text="25" textFill="WHITE" translateX="80.0" translateY="10.0" StackPane.alignment="CENTER_LEFT" />
-                              <Label text="Player1" textFill="WHITE" translateX="170.0" translateY="20.0" StackPane.alignment="TOP_LEFT">
+                              <Label fx:id="player1Health" text="25" textFill="WHITE" translateX="75.0" translateY="10.0" StackPane.alignment="CENTER_LEFT">
+                                 <font>
+                                    <Font size="24.0" />
+                                 </font></Label>
+                              <Label fx:id="player1Username" rotate="-3.0" text="Player1" textFill="WHITE" translateX="170.0" translateY="20.0" StackPane.alignment="TOP_LEFT">
                                  <font>
                                     <Font size="36.0" />
                                  </font>
                               </Label>
                               <StackPane prefHeight="321.0" prefWidth="688.0" scaleX="0.8" scaleY="0.8" translateX="120.0" translateY="40.0">
                                  <children>
-                                    <HBox prefHeight="100.0" prefWidth="200.0">
+                                    <HBox prefHeight="100.0" prefWidth="200.0" rotate="-3.0">
                                        <children>
-                                          <ImageView id="mana1">
+                                          <ImageView fx:id="mana1">
                                              <image>
                                                 <Image url="@assets/ui/icon_mana_inactive.png" />
                                              </image>
                                           </ImageView>
-                                          <ImageView id="mana2">
+                                          <ImageView fx:id="mana2">
                                              <image>
                                                 <Image url="@assets/ui/icon_mana_inactive.png" />
                                              </image>
                                           </ImageView>
-                                          <ImageView id="mana3">
+                                          <ImageView fx:id="mana3">
                                              <image>
                                                 <Image url="@assets/ui/icon_mana_inactive.png" />
                                              </image>
                                           </ImageView>
-                                          <ImageView id="mana4">
+                                          <ImageView fx:id="mana4">
                                              <image>
                                                 <Image url="@assets/ui/icon_mana_inactive.png" />
                                              </image>
                                           </ImageView>
-                                          <ImageView id="mana5">
+                                          <ImageView fx:id="mana5">
                                              <image>
                                                 <Image url="@assets/ui/icon_mana_inactive.png" />
                                              </image>
                                           </ImageView>
-                                          <ImageView id="mana6">
+                                          <ImageView fx:id="mana6">
                                              <image>
                                                 <Image url="@assets/ui/icon_mana_inactive.png" />
                                              </image>
                                           </ImageView>
-                                          <ImageView id="mana7">
+                                          <ImageView fx:id="mana7">
                                              <image>
                                                 <Image url="@assets/ui/icon_mana_inactive.png" />
                                              </image>
                                           </ImageView>
-                                          <ImageView id="mana8">
+                                          <ImageView fx:id="mana8">
                                              <image>
                                                 <Image url="@assets/ui/icon_mana_inactive.png" />
                                              </image>
                                           </ImageView>
-                                          <ImageView id="mana9">
+                                          <ImageView fx:id="mana9">
                                              <image>
                                                 <Image url="@assets/ui/icon_mana_inactive.png" />
                                              </image>
@@ -103,6 +135,21 @@
                                     </HBox>
                                  </children>
                               </StackPane>
+                              <ImageView scaleX="0.7" scaleY="0.7" translateX="-96.0" translateY="-4.0" StackPane.alignment="CENTER">
+                                 <image>
+                                    <Image url="@assets/ui/icon_cooldown_counter.png" />
+                                 </image>
+                              </ImageView>
+                              <Label fx:id="player1GeneralCoolDown" text="2" translateX="193.0" translateY="-5.0" StackPane.alignment="CENTER_LEFT">
+                                 <font>
+                                    <Font size="24.0" />
+                                 </font>
+                              </Label>
+                              <ImageView scaleX="0.8" scaleY="0.8" translateX="175.0" translateY="87.0" StackPane.alignment="CENTER_LEFT">
+                                 <image>
+                                    <Image url="@images/blackMana.png" />
+                                 </image>
+                              </ImageView>
                            </children>
                         </StackPane>
                         <StackPane prefHeight="321.0" prefWidth="566.0">
@@ -112,7 +159,7 @@
                                     <Image url="@assets/generals/general_portrait_border@2x.png" />
                                  </image>
                               </ImageView>
-                              <ImageView fitHeight="200.0" fitWidth="200.0" scaleX="0.5" scaleY="0.5" translateX="40.0" translateY="40.0">
+                              <ImageView fitHeight="200.0" fitWidth="200.0" scaleX="0.5" scaleY="0.5" translateX="40.0" translateY="50.0">
                                  <image>
                                     <Image url="@assets/ui/dialogue_border@2x.png" />
                                  </image>
@@ -122,27 +169,45 @@
                                     <Image url="@assets/ui/icon_general_hp@2x.png" />
                                  </image>
                               </ImageView>
-                              <Label id="player2Health" text="25" textFill="WHITE" translateX="152.0" translateY="14.0" />
-                              <Label text="Player2" textFill="WHITE" translateX="20.0" translateY="20.0" StackPane.alignment="TOP_CENTER">
+                              <Label fx:id="player2Health" text="25" textFill="WHITE" translateX="152.0" translateY="14.0">
+                                 <font>
+                                    <Font size="24.0" />
+                                 </font></Label>
+                              <Label fx:id="player2Username" rotate="3.0" text="Player2" textFill="WHITE" translateX="20.0" translateY="20.0" StackPane.alignment="TOP_CENTER">
                                  <font>
                                     <Font size="36.0" />
                                  </font>
                               </Label>
-                              <Label id="OpponentHand" alignment="CENTER" prefHeight="53.0" prefWidth="161.0" stylesheets="@style/buttonOne.css" text="Hand: 6/6" textFill="WHITE" translateX="-10.0" translateY="65.0" StackPane.alignment="TOP_CENTER">
+                              <Label id="OpponentHand" fx:id="OpponentHand" alignment="CENTER" prefHeight="53.0" prefWidth="161.0" rotate="3.0" stylesheets="@style/buttonOne.css" text="Hand: 6/6" textFill="WHITE" translateX="-10.0" translateY="65.0" StackPane.alignment="TOP_CENTER">
                                  <font>
                                     <Font size="18.0" />
                                  </font>
                               </Label>
-                              <ImageView scaleX="0.5" scaleY="0.5" translateX="-20.0" translateY="84.0" StackPane.alignment="TOP_CENTER">
+                              <ImageView rotate="3.0" scaleX="0.5" scaleY="0.5" translateX="-30.0" translateY="84.0" StackPane.alignment="TOP_CENTER">
                                  <image>
                                     <Image url="@assets/ui/icon_mana@2x.png" />
                                  </image>
                               </ImageView>
-                              <Label id="opponentMana" alignment="CENTER" prefHeight="50.0" prefWidth="80.0" stylesheets="@style/buttonOne.css" text="9 / 9" textFill="WHITE" translateX="-90.0" translateY="-14.0" StackPane.alignment="CENTER">
+                              <Label id="opponentMana" fx:id="opponentMana" alignment="CENTER" prefHeight="50.0" prefWidth="80.0" rotate="3.0" stylesheets="@style/buttonOne.css" text="9 / 9" textFill="WHITE" translateX="-100.0" translateY="-14.0" StackPane.alignment="CENTER">
                                  <font>
                                     <Font size="24.0" />
                                  </font>
                               </Label>
+                              <ImageView scaleX="0.7" scaleY="0.7" translateX="42.0" translateY="2.0">
+                                 <image>
+                                    <Image url="@assets/ui/icon_cooldown_counter.png" />
+                                 </image>
+                              </ImageView>
+                              <Label fx:id="player2GeneralCoolDown" text="2" translateX="42.0" translateY="2.0">
+                                 <font>
+                                    <Font size="24.0" />
+                                 </font>
+                              </Label>
+                              <ImageView scaleX="0.8" scaleY="0.8" translateX="42.0" translateY="95.0">
+                                 <image>
+                                    <Image url="@images/blackMana.png" />
+                                 </image>
+                              </ImageView>
                            </children>
                         </StackPane>
                      </children>
@@ -171,68 +236,162 @@
                                  </image>
                               </ImageView>
                               <Button id="replaceButton" mnemonicParsing="false" prefHeight="194.0" prefWidth="239.0" stylesheets="@style/buttonOne.css" text="Replace" translateY="100.0" StackPane.alignment="CENTER" />
-                              <Label id="DeckSize" alignment="CENTER" prefHeight="51.0" prefWidth="174.0" stylesheets="@style/buttonOne.css" text="Deck:  20/20" textFill="WHITE" translateX="14.0" StackPane.alignment="BOTTOM_LEFT">
+                              <Label id="DeckSize" fx:id="DeckSize" alignment="CENTER" prefHeight="51.0" prefWidth="174.0" stylesheets="@style/buttonOne.css" text="Deck:  20/20" textFill="WHITE" translateX="14.0" StackPane.alignment="BOTTOM_LEFT">
                                  <font>
                                     <Font size="18.0" />
+                                 </font>
+                              </Label>
+                              <ImageView fx:id="nextCardField" translateY="-80.0" StackPane.alignment="CENTER">
+                                 <image>
+                                    <Image url="@assets/tutorial/lesson_ring.png" />
+                                 </image>
+                              </ImageView>
+                              <Label text="Next Card" textFill="WHITE" translateX="50.0" translateY="150.0" StackPane.alignment="TOP_LEFT">
+                                 <font>
+                                    <Font size="24.0" />
                                  </font>
                               </Label>
                            </children>
                         </StackPane>
                         <StackPane alignment="BOTTOM_CENTER" prefHeight="399.0" prefWidth="140.0">
                            <children>
-                              <ImageView translateY="-17.0">
-                                 <image>
-                                    <Image url="@../../../../../turin%20horse/duelyst/asdasd.png" />
-                                 </image>
-                              </ImageView>
+                              <StackPane prefHeight="150.0" prefWidth="200.0" StackPane.alignment="BOTTOM_CENTER">
+                                 <children>
+                                    <ImageView fx:id="hand11" translateY="-15.0" StackPane.alignment="BOTTOM_CENTER">
+                                       <image>
+                                          <Image url="@images/circle.png" />
+                                       </image>
+                                    </ImageView>
+                                    <ImageView scaleX="0.8" scaleY="0.8" StackPane.alignment="BOTTOM_CENTER">
+                                       <image>
+                                          <Image url="@images/blackMana.png" />
+                                       </image>
+                                    </ImageView>
+                                    <Label fx:id="manaCost1" text="0" textFill="WHITE" translateY="-12.0" StackPane.alignment="BOTTOM_CENTER">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </StackPane>
                            </children>
                         </StackPane>
                         <StackPane alignment="BOTTOM_CENTER" prefHeight="399.0" prefWidth="139.0">
                            <children>
-                              <ImageView translateY="-17.0">
-                                 <image>
-                                    <Image url="@../../../../../turin%20horse/duelyst/asdasd.png" />
-                                 </image>
-                              </ImageView>
+                              <StackPane prefHeight="150.0" prefWidth="200.0">
+                                 <children>
+                                    <ImageView fx:id="hand1" translateY="-15.0" StackPane.alignment="BOTTOM_CENTER">
+                                       <image>
+                                          <Image url="@images/circle.png" />
+                                       </image>
+                                    </ImageView>
+                                    <ImageView scaleX="0.8" scaleY="0.8" StackPane.alignment="BOTTOM_CENTER">
+                                       <image>
+                                          <Image url="@images/blackMana.png" />
+                                       </image>
+                                    </ImageView>
+                                    <Label fx:id="manaCost2" text="0" textFill="WHITE" translateY="-12.0" StackPane.alignment="BOTTOM_CENTER">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </StackPane>
                            </children>
                         </StackPane>
                         <StackPane alignment="BOTTOM_CENTER" prefHeight="399.0" prefWidth="141.0">
                            <children>
-                              <ImageView translateY="-17.0">
-                                 <image>
-                                    <Image url="@../../../../../turin%20horse/duelyst/asdasd.png" />
-                                 </image>
-                              </ImageView>
+                              <StackPane prefHeight="150.0" prefWidth="200.0">
+                                 <children>
+                                    <ImageView fx:id="hand12" translateY="-15.0" StackPane.alignment="BOTTOM_CENTER">
+                                       <image>
+                                          <Image url="@images/circle.png" />
+                                       </image>
+                                    </ImageView>
+                                    <ImageView scaleX="0.8" scaleY="0.8" StackPane.alignment="BOTTOM_CENTER">
+                                       <image>
+                                          <Image url="@images/blackMana.png" />
+                                       </image>
+                                    </ImageView>
+                                    <Label fx:id="manaCost3" text="0" textFill="WHITE" translateY="-12.0" StackPane.alignment="BOTTOM_CENTER">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </StackPane>
                            </children>
                         </StackPane>
                         <StackPane alignment="BOTTOM_CENTER" prefHeight="399.0" prefWidth="139.0">
                            <children>
-                              <ImageView translateY="-17.0">
-                                 <image>
-                                    <Image url="@../../../../../turin%20horse/duelyst/asdasd.png" />
-                                 </image>
-                              </ImageView>
+                              <StackPane prefHeight="150.0" prefWidth="200.0" StackPane.alignment="BOTTOM_CENTER">
+                                 <children>
+                                    <ImageView fx:id="hand13" translateY="-15.0" StackPane.alignment="BOTTOM_CENTER">
+                                       <image>
+                                          <Image url="@images/circle.png" />
+                                       </image>
+                                    </ImageView>
+                                    <ImageView scaleX="0.8" scaleY="0.8" StackPane.alignment="BOTTOM_CENTER">
+                                       <image>
+                                          <Image url="@images/blackMana.png" />
+                                       </image>
+                                    </ImageView>
+                                    <Label fx:id="manaCost4" text="0" textFill="WHITE" translateY="-12.0" StackPane.alignment="BOTTOM_CENTER">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </StackPane>
                            </children>
                         </StackPane>
                         <StackPane alignment="BOTTOM_CENTER" prefHeight="399.0" prefWidth="140.0">
                            <children>
-                              <ImageView translateY="-17.0">
-                                 <image>
-                                    <Image url="@../../../../../turin%20horse/duelyst/asdasd.png" />
-                                 </image>
-                              </ImageView>
+                              <StackPane prefHeight="150.0" prefWidth="200.0">
+                                 <children>
+                                    <ImageView fx:id="hand14" translateY="-15.0" StackPane.alignment="BOTTOM_CENTER">
+                                       <image>
+                                          <Image url="@images/circle.png" />
+                                       </image>
+                                    </ImageView>
+                                    <ImageView scaleX="0.8" scaleY="0.8" StackPane.alignment="BOTTOM_CENTER">
+                                       <image>
+                                          <Image url="@images/blackMana.png" />
+                                       </image>
+                                    </ImageView>
+                                    <Label fx:id="manaCost5" text="0" textFill="WHITE" translateY="-12.0" StackPane.alignment="BOTTOM_CENTER">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </StackPane>
                            </children>
                         </StackPane>
                         <StackPane prefHeight="399.0" prefWidth="140.0">
                            <children>
-                              <ImageView translateY="-17.0" StackPane.alignment="BOTTOM_CENTER">
-                                 <image>
-                                    <Image url="@../../../../../turin%20horse/duelyst/asdasd.png" />
-                                 </image>
-                              </ImageView>
+                              <StackPane prefHeight="150.0" prefWidth="200.0" StackPane.alignment="BOTTOM_CENTER">
+                                 <children>
+                                    <ImageView fx:id="hand15" translateY="-15.0" StackPane.alignment="BOTTOM_CENTER">
+                                       <image>
+                                          <Image url="@images/circle.png" />
+                                       </image>
+                                    </ImageView>
+                                    <ImageView scaleX="0.8" scaleY="0.8" StackPane.alignment="BOTTOM_CENTER">
+                                       <image>
+                                          <Image url="@images/blackMana.png" />
+                                       </image>
+                                    </ImageView>
+                                    <Label fx:id="manaCost6" text="0" textFill="WHITE" translateY="-12.0" StackPane.alignment="BOTTOM_CENTER">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </StackPane>
                            </children>
                         </StackPane>
-                        <StackPane alignment="BOTTOM_CENTER" prefHeight="399.0" prefWidth="284.0">
+                        <StackPane alignment="BOTTOM_CENTER" prefHeight="399.0" prefWidth="278.0">
                            <children>
                               <Button id="settingButton" mnemonicParsing="false" prefHeight="52.0" prefWidth="132.0" stylesheets="@style/buttonOne.css" text="Setting" translateX="-70.0" translateY="-20.0" />
                               <Button id="endTurnButton" mnemonicParsing="false" prefHeight="76.0" prefWidth="233.0" stylesheets="@style/buttonOne.css" text="End Turn" translateY="90.0" StackPane.alignment="CENTER">
