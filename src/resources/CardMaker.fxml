@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<StackPane fx:id="mainContainer" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CardMakerController">
+   <children>
+      <ImageView fitHeight="720.0" fitWidth="1080.0" pickOnBounds="true">
+         <image>
+            <Image url="@assets/codex/chapter21_background@2x.jpg" />
+         </image>
+      </ImageView>
+      <HBox alignment="CENTER" nodeOrientation="LEFT_TO_RIGHT" prefHeight="100.0" prefWidth="200.0">
+         <children>
+            <VBox fx:id="displayVBox" alignment="CENTER" prefHeight="720.0" prefWidth="382.0" />
+            <VBox fx:id="centerVBox" alignment="CENTER" prefHeight="720.0" prefWidth="519.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <Label fx:id="messageLabel" alignment="CENTER" prefHeight="99.0" prefWidth="519.0" stylesheets="@style/mainLabel.css" text="Select Card Type!">
+                     <font>
+                        <Font size="26.0" />
+                     </font>
+                  </Label>
+                  <ScrollPane id="scrollPaneOne" fx:id="selectionPane" prefHeight="720.0" prefWidth="519.0" stylesheets="@style/scrollPane.css">
+                     <content>
+                        <VBox fx:id="selectionVBox" alignment="CENTER" prefHeight="463.0" prefWidth="517.0" />
+                     </content>
+                  </ScrollPane>
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" prefHeight="720.0" prefWidth="175.0" spacing="27.0">
+               <children>
+                  <Button id="firstButton" fx:id="minionButton" mnemonicParsing="false" stylesheets="@style/buttonOne.css" text="Minion" />
+                  <Button id="firstButton" fx:id="heroButton" layoutX="13.0" layoutY="343.0" mnemonicParsing="false" stylesheets="@style/buttonOne.css" text="Hero" />
+                  <Button id="firstButton" fx:id="spellButton" layoutX="13.0" layoutY="370.0" mnemonicParsing="false" stylesheets="@style/buttonOne.css" text="Spell" />
+                  <Button id="firstButton" fx:id="itemButton" layoutX="13.0" layoutY="398.0" mnemonicParsing="false" stylesheets="@style/buttonOne.css" text="Item" />
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+   </children>
+</StackPane>
