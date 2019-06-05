@@ -7,7 +7,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.StackPane;
 import model.Account;
@@ -51,7 +50,8 @@ public class LeaderBoardController implements Initializable {
         }
         Initializer.setCurrentScene(scene);
     }
-    public String updateLeaderBoard(){
+
+    public String updateLeaderBoard() {
         String ret = "\n";
         Account.sortAllAccounts();
         for (int i = 0; i < Integer.min(Account.getAllAccounts().size(), 10); i++) {

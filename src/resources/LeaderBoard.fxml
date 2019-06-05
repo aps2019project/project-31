@@ -24,7 +24,7 @@
                         <Image url="@assets/scenes/frostfire/LeaderBoardBackground.jpg" />
                     </image>
                 </ImageView>
-                <Label id="labelBackground" alignment="CENTER" prefHeight="80.0" prefWidth="234.0" stylesheets="@style/background.css" textFill="#669cd2">
+                <Label id="labelBackground" alignment="CENTER" prefHeight="90.0" prefWidth="389.0" stylesheets="@style/background.css" textFill="#669cd2">
                     <opaqueInsets>
                         <Insets top="20.0" />
                     </opaqueInsets>
@@ -32,9 +32,9 @@
                         <Font name="Arshia" size="27.0" />
                     </font>
                 </Label>
-            <ScrollPane fx:id="LeaderBoardScrollPane" hbarPolicy="NEVER" layoutX="-3.0" layoutY="89.0" opacity="0.83" prefHeight="642.0" prefWidth="344.0" stylesheets="@style/scrollPane.css" vbarPolicy="ALWAYS">
+            <ScrollPane fx:id="LeaderBoardScrollPane" hbarPolicy="NEVER" layoutX="-3.0" layoutY="89.0" opacity="0.83" prefHeight="642.0" prefWidth="392.0" stylesheets="@style/scrollPane.css" vbarPolicy="ALWAYS">
                <content>
-                  <Label fx:id="label" alignment="TOP_LEFT" prefHeight="889.0" prefWidth="321.0" stylesheets="@style/LeaderBoard.css" text="\\nefdawefweafd" textFill="WHITE">
+                  <Label fx:id="label" alignment="TOP_LEFT" prefHeight="889.0" prefWidth="372.0" stylesheets="@style/LeaderBoard.css" text="\\nefdawefweafd" textFill="WHITE">
                      <font>
                         <Font size="17.0" />
                      </font>
@@ -49,7 +49,7 @@
                         <Font size="30.0" />
                     </font>
                 </Button>
-                <Label id="leaderBoardHeader" alignment="CENTER" layoutX="-5.0" prefHeight="102.0" prefWidth="347.0" text="LEADERBOARD" textFill="#669cd2">
+                <Label id="leaderBoardHeader" alignment="CENTER" layoutX="-5.0" prefHeight="104.0" prefWidth="389.0" text="LEADERBOARD" textFill="#669cd2">
                     <opaqueInsets>
                         <Insets top="20.0" />
                     </opaqueInsets>
