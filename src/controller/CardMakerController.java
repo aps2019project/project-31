@@ -10,8 +10,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.*;
 import model.Initializer;
 
 import java.awt.*;
@@ -36,16 +36,20 @@ public class CardMakerController implements Initializable {
     private Button spellButton;
     @FXML
     private Button itemButton;
-    @FXML
-    private StackPane mainContainer;
+
     @FXML
     private VBox centerVBox;
+    @FXML
+    private ImageView backgroundImage;
+
 
     private static Scene cardMakerScene;
     private static CardMakerController cardMaker;
 
     private CardType currentCardType;
     private String currentCardName;
+    @FXML
+    private StackPane mainContainer;
 
     public static CardMakerController getInstance() {
         if (cardMaker == null) {
@@ -75,6 +79,7 @@ public class CardMakerController implements Initializable {
         double scaleX = screenWidth / mainContainer.getPrefWidth() * 3 / 5;
         mainContainer.setScaleX(scaleX);
         mainContainer.setScaleY(scaleX);
+        centerVBox.setScaleY(0.87);
 
 
         minionButton.setOnAction(actionEvent -> makeMinion());

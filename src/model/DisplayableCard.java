@@ -11,6 +11,7 @@ import javafx.scene.text.Font;
 public class DisplayableCard extends StackPane {
     private Card card;
     private String imagePath;
+    private AnimatedGif mainIcon;
 
 
     public DisplayableCard(Card card, String imagePath) {
@@ -25,6 +26,15 @@ public class DisplayableCard extends StackPane {
             ImageView imageView = new ImageView(image);
             this.getChildren().add(imageView);
             addManaGem(card);
+            if (imagePath.equals("")){
+                imagePath = getClass().
+                        getResource("/gifs/Spells/" + card.getName() +"/actionbar.gif")
+                        .toExternalForm();
+                System.out.println(imagePath);
+
+                mainIcon = new AnimatedGif(imagePath,2);
+            }
+
         }
 
         if (card instanceof Minion | card instanceof Hero) {
