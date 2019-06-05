@@ -12,7 +12,7 @@ public class AnimatedGif extends CustomAnimation {
 
         GifDecoder d = new GifDecoder();
         d.read( filename);
-
+        System.out.println(filename);
         Image[] sequence = new Image[ d.getFrameCount()];
         for( int i=0; i < d.getFrameCount(); i++) {
 

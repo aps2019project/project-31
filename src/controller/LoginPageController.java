@@ -94,7 +94,7 @@ public class LoginPageController implements Initializable {
         mainContainer.setScaleX(scaleX);
         mainContainer.setScaleY(scaleX);
 
-        infoVBox.getChildren().add(new DisplayableCard(Shop.getAllSpells().get(18),""));
+        infoVBox.getChildren().add(new DisplayableCard(Shop.getAllSpells().get(8),""));
 
         exitButton.setOnAction(actionEvent -> {
             Initializer.getPrimaryStage().close();
