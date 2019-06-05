@@ -171,3 +171,30 @@
     -fx-font-size: 20;
     -fx-cursor: hand;
 }
+#DeckSize{
+    -fx-font-family: "Times New Roman";
+    -fx-background-image: url('../assets/ui/button_end_turn_enemy@2x.png');
+    -fx-background-size: 180 55;
+    -fx-background-color: rgba(0,0,0,0);
+    -fx-font-size: 20;
+    -fx-text-fill: white;
+}
+#OpponentHand{
+    -fx-font-family: "Times New Roman";
+    -fx-background-image: url('../assets/ui/gold_main_menu_container@2x.png');
+    -fx-background-size: 160 50;
+
+    -fx-background-color: rgba(0,0,0,0);
+    -fx-font-size: 20;
+    -fx-text-fill: white;
+}
+#opponentMana{
+
+    -fx-font-family: "Times New Roman";
+    -fx-background-image: url('../assets/ui/button_primary_middle@2.png');
+    -fx-background-size: 80 50;
+
+    -fx-background-color: rgba(0,0,0,0);
+    -fx-font-size: 23;
+    -fx-text-fill: white;
+}

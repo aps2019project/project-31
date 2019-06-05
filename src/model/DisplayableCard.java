@@ -33,6 +33,7 @@ public class DisplayableCard extends StackPane {
                 System.out.println(imagePath);
 
                 mainIcon = new AnimatedGif(imagePath,2);
+                mainIcon.play();
             }
 
         }
