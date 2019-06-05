@@ -191,7 +191,7 @@
 #opponentMana{
 
     -fx-font-family: "Times New Roman";
-    -fx-background-image: url('../assets/ui/button_primary_middle@2.png');
+    -fx-background-image: url('../images/button_primary_middle@2.png');
     -fx-background-size: 80 50;
 
     -fx-background-color: rgba(0,0,0,0);
