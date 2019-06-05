@@ -1,5 +1,6 @@
 package model;
 
+import javafx.animation.AnimationTimer;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -11,7 +12,7 @@ import javafx.scene.text.Font;
 public class DisplayableCard extends StackPane {
     private Card card;
     private String imagePath;
-    private AnimatedGif mainIcon;
+    private ImageView mainIcon;
 
 
     public DisplayableCard(Card card, String imagePath) {
@@ -26,13 +27,15 @@ public class DisplayableCard extends StackPane {
             ImageView imageView = new ImageView(image);
             this.getChildren().add(imageView);
             addManaGem(card);
-            if (imagePath.equals("")){
+            if (imagePath.equals("")) {
                 imagePath = getClass().
-                        getResource("/gifs/Spells/" + card.getName() +"/actionbar.gif")
+                        getResource("/gifs/Spells/" + card.getName() + "/actionbar.gif")
                         .toExternalForm();
-                System.out.println(imagePath);
-
-                mainIcon = new AnimatedGif(imagePath,2);
+                mainIcon = new ImageView(new Image(imagePath));
+                mainIcon.setTranslateY(-50);
+                mainIcon.setScaleX(2);
+                mainIcon.setScaleY(2);
+                getChildren().addAll(mainIcon);
             }
 
         }
@@ -50,11 +53,26 @@ public class DisplayableCard extends StackPane {
             health.setFont(Font.font(17));
             attack.setTextFill(Color.WHITE);
             health.setTextFill(Color.WHITE);
-            getChildren().addAll(attack,health);
+            getChildren().addAll(attack, health);
             attack.setTranslateX(-60);
             attack.setTranslateY(30);
             health.setTranslateY(30);
             health.setTranslateX(60);
+            if (imagePath.equals("")) {
+                if (card instanceof Minion)
+                    imagePath = getClass().
+                            getResource("/gifs/Minion/" + card.getName() + "/breathing.gif")
+                            .toExternalForm();
+                else
+                    imagePath = getClass().
+                            getResource("/gifs/Hero/" + card.getName() + "/breathing.gif")
+                            .toExternalForm();
+                mainIcon = new ImageView(new Image(imagePath));
+                mainIcon.setTranslateY(-100);
+                mainIcon.setScaleX(2);
+                mainIcon.setScaleY(2);
+                getChildren().addAll(mainIcon);
+            }
         }
 
         if (card instanceof Item) {
