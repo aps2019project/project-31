@@ -58,7 +58,7 @@ public class Initializer extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         setPrimaryStage(primaryStage);
-        ShopController.getInstance().setAsScene();
+        MainMenuController.getInstance().setAsScene();
         primaryStage.show();
     }
 

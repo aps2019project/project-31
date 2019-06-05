@@ -47,7 +47,7 @@
     -fx-background-insets: 0;
     -fx-font-size: 26;
     -fx-font-family: "Times New Roman";
-    -fx-text-fill: white;
+    -fx-text-fill: cyan;
 }
 #backButton:hover{
     -fx-background-image: url('../assets/ui/button_icon_left_glow.png');
@@ -197,4 +197,20 @@
     -fx-background-color: rgba(0,0,0,0);
     -fx-font-size: 23;
     -fx-text-fill: white;
+}
+#enterCollectionButton{
+    -fx-font-family: "Times New Roman";
+    -fx-background-image: url('../assets/ui/button_primary@2x.png');
+    -fx-background-size: cover;
+    -fx-text-fill: cyan;
+    -fx-font-size: 25;
+    -fx-background-color: rgba(0, 0, 0, 0);
+}
+#enterCollectionButton :hover{
+    -fx-background-image: url('../assets/ui/button_primary_glow@2x.png');
+    -fx-background-color: rgba(0,0,0,0);
+    -fx-background-size: 130 50;
+    -fx-scale-x: 1.04;
+    -fx-scale-y: 1.04;
+    -fx-cursor: hand;
 }

@@ -14,6 +14,11 @@ import java.util.Random;
 public class DisplayableCard extends StackPane {
     private Card card;
     private String imagePath;
+
+    public ImageView getMainIcon() {
+        return mainIcon;
+    }
+
     private ImageView mainIcon;
 
 

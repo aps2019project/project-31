@@ -58,7 +58,7 @@
                <children>
                   <ScrollPane fx:id="LeaderBoardScrollPane" hbarPolicy="NEVER" layoutX="-6.0" layoutY="56.0" opacity="0.83" prefHeight="620.0" prefWidth="409.0" stylesheets="@style/scrollPane.css" vbarPolicy="ALWAYS">
                      <content>
-                        <Label fx:id="label" alignment="TOP_LEFT" prefHeight="1115.0" prefWidth="408.0" stylesheets="@style/LeaderBoard.css" text="\\nefdawefweafd" textFill="WHITE">
+                        <Label fx:id="label" alignment="TOP_LEFT" prefHeight="1115.0" prefWidth="408.0" stylesheets="@style/LeaderBoard.css" textFill="WHITE">
                            <font>
                               <Font size="17.0" />
                            </font>
