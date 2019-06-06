@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.BattlePageController">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.BattlePageController">
    <children>
       <ImageView fitHeight="720.0" fitWidth="1080.0">
          <image>
@@ -73,11 +73,11 @@
                                     <Image url="@assets/ui/icon_general_hp@2x.png" />
                                  </image>
                               </ImageView>
-                              <Label fx:id="player1Health" text="25" textFill="WHITE" translateX="75.0" translateY="10.0" StackPane.alignment="CENTER_LEFT">
+                              <Label fx:id="Health" text="25" textFill="WHITE" translateX="75.0" translateY="10.0" StackPane.alignment="CENTER_LEFT">
                                  <font>
                                     <Font size="24.0" />
                                  </font></Label>
-                              <Label fx:id="player1Username" rotate="-3.0" text="Player1" textFill="WHITE" translateX="170.0" translateY="20.0" StackPane.alignment="TOP_LEFT">
+                              <Label fx:id="Username" rotate="-3.0" text="Player1" textFill="WHITE" translateX="170.0" translateY="20.0" StackPane.alignment="TOP_LEFT">
                                  <font>
                                     <Font size="36.0" />
                                  </font>
@@ -140,7 +140,7 @@
                                     <Image url="@assets/ui/icon_cooldown_counter.png" />
                                  </image>
                               </ImageView>
-                              <Label fx:id="player1GeneralCoolDown" text="2" translateX="193.0" translateY="-5.0" StackPane.alignment="CENTER_LEFT">
+                              <Label fx:id="GeneralCoolDown" text="2" translateX="193.0" translateY="-5.0" StackPane.alignment="CENTER_LEFT">
                                  <font>
                                     <Font size="24.0" />
                                  </font>
@@ -150,6 +150,11 @@
                                     <Image url="@images/blackMana.png" />
                                  </image>
                               </ImageView>
+                              <Label fx:id="generalSpellManaCost" text="2" textFill="WHITE" translateX="197.0" translateY="87.0" StackPane.alignment="CENTER_LEFT">
+                                 <font>
+                                    <Font size="22.0" />
+                                 </font>
+                              </Label>
                            </children>
                         </StackPane>
                         <StackPane prefHeight="321.0" prefWidth="566.0">
@@ -169,11 +174,11 @@
                                     <Image url="@assets/ui/icon_general_hp@2x.png" />
                                  </image>
                               </ImageView>
-                              <Label fx:id="player2Health" text="25" textFill="WHITE" translateX="152.0" translateY="14.0">
+                              <Label fx:id="opponentHealth" text="25" textFill="WHITE" translateX="152.0" translateY="14.0">
                                  <font>
                                     <Font size="24.0" />
                                  </font></Label>
-                              <Label fx:id="player2Username" rotate="3.0" text="Player2" textFill="WHITE" translateX="20.0" translateY="20.0" StackPane.alignment="TOP_CENTER">
+                              <Label fx:id="opponentUsername" rotate="3.0" text="Player2" textFill="WHITE" translateX="20.0" translateY="20.0" StackPane.alignment="TOP_CENTER">
                                  <font>
                                     <Font size="36.0" />
                                  </font>
@@ -198,7 +203,7 @@
                                     <Image url="@assets/ui/icon_cooldown_counter.png" />
                                  </image>
                               </ImageView>
-                              <Label fx:id="player2GeneralCoolDown" text="2" translateX="42.0" translateY="2.0">
+                              <Label fx:id="opponentGeneralCooldown" text="2" translateX="42.0" translateY="2.0">
                                  <font>
                                     <Font size="24.0" />
                                  </font>
@@ -208,6 +213,11 @@
                                     <Image url="@images/blackMana.png" />
                                  </image>
                               </ImageView>
+                              <Label fx:id="opponentGeneralSpellManaCost" text="2" textFill="WHITE" translateX="43.0" translateY="95.0" StackPane.alignment="CENTER">
+                                 <font>
+                                    <Font size="22.0" />
+                                 </font>
+                              </Label>
                            </children>
                         </StackPane>
                      </children>
@@ -235,7 +245,7 @@
                                     <Image url="@assets/ui/replace_outer_ring_smoke@2x.png" />
                                  </image>
                               </ImageView>
-                              <Button id="replaceButton" mnemonicParsing="false" prefHeight="194.0" prefWidth="239.0" stylesheets="@style/buttonOne.css" text="Replace" translateY="100.0" StackPane.alignment="CENTER" />
+                              <Button id="replaceButton" fx:id="replace" mnemonicParsing="false" prefHeight="194.0" prefWidth="239.0" stylesheets="@style/buttonOne.css" text="Replace" translateY="100.0" StackPane.alignment="CENTER" />
                               <Label id="DeckSize" fx:id="DeckSize" alignment="CENTER" prefHeight="51.0" prefWidth="174.0" stylesheets="@style/buttonOne.css" text="Deck:  20/20" textFill="WHITE" translateX="14.0" StackPane.alignment="BOTTOM_LEFT">
                                  <font>
                                     <Font size="18.0" />
@@ -251,14 +261,14 @@
                                     <Font size="24.0" />
                                  </font>
                               </Label>
-                              <Button id="graveYard" mnemonicParsing="false" prefHeight="61.0" prefWidth="149.0" stylesheets="@style/buttonOne.css" text="Grave Yard" translateY="-10.0" StackPane.alignment="TOP_CENTER" />
+                              <Button id="graveYard" fx:id="graveYard" mnemonicParsing="false" prefHeight="61.0" prefWidth="149.0" stylesheets="@style/buttonOne.css" text="Grave Yard" translateY="-10.0" StackPane.alignment="TOP_CENTER" />
                            </children>
                         </StackPane>
                         <StackPane alignment="BOTTOM_CENTER" prefHeight="399.0" prefWidth="140.0">
                            <children>
-                              <StackPane prefHeight="150.0" prefWidth="200.0" StackPane.alignment="BOTTOM_CENTER">
+                              <StackPane fx:id="column1" prefHeight="150.0" prefWidth="200.0" StackPane.alignment="BOTTOM_CENTER">
                                  <children>
-                                    <ImageView fx:id="hand11" translateY="-15.0" StackPane.alignment="BOTTOM_CENTER">
+                                    <ImageView fx:id="hand1" translateY="-15.0" StackPane.alignment="BOTTOM_CENTER">
                                        <image>
                                           <Image url="@images/circle.png" />
                                        </image>
@@ -279,9 +289,9 @@
                         </StackPane>
                         <StackPane alignment="BOTTOM_CENTER" prefHeight="399.0" prefWidth="139.0">
                            <children>
-                              <StackPane prefHeight="150.0" prefWidth="200.0">
+                              <StackPane fx:id="column2" prefHeight="150.0" prefWidth="200.0">
                                  <children>
-                                    <ImageView fx:id="hand1" translateY="-15.0" StackPane.alignment="BOTTOM_CENTER">
+                                    <ImageView fx:id="hand2" translateY="-15.0" StackPane.alignment="BOTTOM_CENTER">
                                        <image>
                                           <Image url="@images/circle.png" />
                                        </image>
@@ -302,9 +312,9 @@
                         </StackPane>
                         <StackPane alignment="BOTTOM_CENTER" prefHeight="399.0" prefWidth="141.0">
                            <children>
-                              <StackPane prefHeight="150.0" prefWidth="200.0">
+                              <StackPane fx:id="column3" prefHeight="150.0" prefWidth="200.0">
                                  <children>
-                                    <ImageView fx:id="hand12" translateY="-15.0" StackPane.alignment="BOTTOM_CENTER">
+                                    <ImageView fx:id="hand3" translateY="-15.0" StackPane.alignment="BOTTOM_CENTER">
                                        <image>
                                           <Image url="@images/circle.png" />
                                        </image>
@@ -325,9 +335,9 @@
                         </StackPane>
                         <StackPane alignment="BOTTOM_CENTER" prefHeight="399.0" prefWidth="139.0">
                            <children>
-                              <StackPane prefHeight="150.0" prefWidth="200.0" StackPane.alignment="BOTTOM_CENTER">
+                              <StackPane fx:id="column4" prefHeight="150.0" prefWidth="200.0" StackPane.alignment="BOTTOM_CENTER">
                                  <children>
-                                    <ImageView fx:id="hand13" translateY="-15.0" StackPane.alignment="BOTTOM_CENTER">
+                                    <ImageView fx:id="hand4" translateY="-15.0" StackPane.alignment="BOTTOM_CENTER">
                                        <image>
                                           <Image url="@images/circle.png" />
                                        </image>
@@ -348,9 +358,9 @@
                         </StackPane>
                         <StackPane alignment="BOTTOM_CENTER" prefHeight="399.0" prefWidth="140.0">
                            <children>
-                              <StackPane prefHeight="150.0" prefWidth="200.0">
+                              <StackPane fx:id="column5" prefHeight="150.0" prefWidth="200.0">
                                  <children>
-                                    <ImageView fx:id="hand14" translateY="-15.0" StackPane.alignment="BOTTOM_CENTER">
+                                    <ImageView fx:id="hand5" translateY="-15.0" StackPane.alignment="BOTTOM_CENTER">
                                        <image>
                                           <Image url="@images/circle.png" />
                                        </image>
@@ -371,9 +381,9 @@
                         </StackPane>
                         <StackPane prefHeight="399.0" prefWidth="140.0">
                            <children>
-                              <StackPane prefHeight="150.0" prefWidth="200.0" StackPane.alignment="BOTTOM_CENTER">
+                              <StackPane fx:id="column6" prefHeight="150.0" prefWidth="200.0" StackPane.alignment="BOTTOM_CENTER">
                                  <children>
-                                    <ImageView fx:id="hand15" translateY="-15.0" StackPane.alignment="BOTTOM_CENTER">
+                                    <ImageView fx:id="hand6" translateY="-15.0" StackPane.alignment="BOTTOM_CENTER">
                                        <image>
                                           <Image url="@images/circle.png" />
                                        </image>
@@ -394,8 +404,8 @@
                         </StackPane>
                         <StackPane alignment="BOTTOM_CENTER" prefHeight="399.0" prefWidth="278.0">
                            <children>
-                              <Button id="settingButton" mnemonicParsing="false" prefHeight="52.0" prefWidth="132.0" stylesheets="@style/buttonOne.css" text="Setting" translateX="-70.0" translateY="-20.0" />
-                              <Button id="endTurnButton" mnemonicParsing="false" prefHeight="76.0" prefWidth="233.0" stylesheets="@style/buttonOne.css" text="End Turn" translateY="90.0" StackPane.alignment="CENTER">
+                              <Button id="settingButton" fx:id="setting" mnemonicParsing="false" prefHeight="52.0" prefWidth="132.0" stylesheets="@style/buttonOne.css" text="Setting" translateX="-70.0" translateY="-20.0" />
+                              <Button id="endTurnButton" fx:id="endTurn" mnemonicParsing="false" prefHeight="76.0" prefWidth="233.0" stylesheets="@style/buttonOne.css" text="End Turn" translateY="90.0" StackPane.alignment="CENTER">
                                  <opaqueInsets>
                                     <Insets />
                                  </opaqueInsets>
@@ -412,5 +422,6 @@
             </StackPane>
          </children>
       </VBox>
+      <StackPane fx:id="lastStackPane" prefHeight="150.0" prefWidth="200.0" />
    </children>
 </StackPane>
