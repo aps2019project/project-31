@@ -144,7 +144,7 @@ public class ShopController implements Initializable {
         }
     }
 
-    public static void sellCardsByName(String[] cardNames) {
+    public void sellCardsByName(String[] cardNames) {
         for (Card card : Shop.getAllCards()) {
             for (String name : cardNames) {
                 if (name.equals(card.getName()))
@@ -153,13 +153,21 @@ public class ShopController implements Initializable {
         }
     }
 
-    public static void searchCardsByNames(String[] cardNames) {
+    public void searchCardsByNames(String[] cardNames) {
         for (Card card : Shop.getAllCards()) {
             for (String name : cardNames) {
                 if (name.equals(card.getName()))
                     Output.showCardIdAndStuff(card);
             }
         }
+    }
+
+    public Card searchCardByName(String cardName) {
+        for (Card card : Shop.getAllCards()) {
+            if (cardName.equalsIgnoreCase(card.getName()))
+                return card;
+        }
+        return null;
     }
 
     @Override
@@ -178,6 +186,32 @@ public class ShopController implements Initializable {
             }
             if (displayableCard != null) {
                 buyCard(displayableCard.getCard());
+            }
+        });
+        findButton.setOnAction(event -> {
+            String input = searchText.getText();
+            Card card = searchCardByName(input);
+            if (card == null) {
+                System.out.println("card not found!!");
+                System.out.flush();
+            } else {
+                switch (card.getType()) {
+                    case hero:
+                        tabPane.getSelectionModel().select(tabPane.getTabs().get(0));
+                        break;
+                    case minion:
+                        tabPane.getSelectionModel().select(tabPane.getTabs().get(1));
+                        break;
+                    case spell:
+                        tabPane.getSelectionModel().select(tabPane.getTabs().get(2));
+                        break;
+                    case item:
+                        tabPane.getSelectionModel().select(tabPane.getTabs().get(3));
+                        break;
+                }
+                Tab tab = tabPane.getSelectionModel().getSelectedItem();
+                ListView listView = (ListView) tab.getContent();
+                listView.scrollTo(new DisplayableCard(card, ""));
             }
         });
     }

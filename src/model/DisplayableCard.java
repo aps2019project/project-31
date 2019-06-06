@@ -143,5 +143,13 @@ public class DisplayableCard extends StackPane {
     public Card getCard() {
         return card;
     }
+
+
+    public boolean equals(Object displayableCard){
+        if(!(displayableCard instanceof DisplayableCard))
+            return false;
+        return card.equals(((DisplayableCard)displayableCard).getCard());
+    }
 }
+
 
