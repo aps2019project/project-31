@@ -1,21 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ShopController">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ShopController">
    <children>
       <ImageView fitHeight="720.0" fitWidth="1080.0" pickOnBounds="true" smooth="false">
          <image>
@@ -24,7 +23,7 @@
       </ImageView>
       <HBox>
          <children>
-            <TabPane prefHeight="720.0" prefWidth="743.0" tabClosingPolicy="UNAVAILABLE">
+            <TabPane prefHeight="640.0" prefWidth="741.0" stylesheets="@style/tabPane.css" tabClosingPolicy="UNAVAILABLE" tabMaxHeight="50.0" tabMaxWidth="70.0" tabMinHeight="50.0" tabMinWidth="70.0">
               <tabs>
                 <Tab fx:id="heroesTab" text="heroes">
                      <content>
@@ -52,16 +51,20 @@
                <children>
                   <Pane prefHeight="581.0" prefWidth="338.0">
                      <children>
-                        <TextField fx:id="searchText" prefHeight="40.0" prefWidth="338.0" promptText="search" />
-                        <Button fx:id="findButton" layoutX="269.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="69.0" text="find" />
-                        <AnchorPane layoutY="41.0" prefHeight="391.0" prefWidth="338.0" />
+                        <TextField id="searchText" fx:id="searchText" layoutX="3.0" prefHeight="56.0" prefWidth="267.0" promptText="search">
+                           <stylesheets>
+                              <URL value="@style/inputBox.css" />
+                              <URL value="@style/Shop.css" />
+                           </stylesheets></TextField>
+                        <Button id="findButton" fx:id="findButton" layoutX="271.0" layoutY="5.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="68.0" stylesheets="@style/Shop.css" text="find" />
+                        <AnchorPane layoutY="58.0" prefHeight="385.0" prefWidth="338.0" />
                      </children>
                   </Pane>
-                  <Pane prefHeight="423.0" prefWidth="338.0">
+                  <Pane prefHeight="423.0" prefWidth="291.0">
                      <children>
-                        <Button id="backButton" fx:id="shopBackButton" alignment="CENTER_RIGHT" layoutX="233.0" layoutY="188.0" mnemonicParsing="false" prefHeight="62.0" prefWidth="91.0" stylesheets="@style/buttonOne.css" text="back" />
-                        <Button fx:id="buyButton" layoutY="201.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="60.0" text="buy" />
-                        <Button id="enterCollectionButton" mnemonicParsing="false" prefHeight="69.0" prefWidth="246.0" stylesheets="@style/buttonOne.css" text="collection" />
+                        <Button id="backButton" fx:id="shopBackButton" alignment="CENTER_RIGHT" layoutX="216.0" layoutY="216.0" mnemonicParsing="false" prefHeight="53.0" prefWidth="75.0" stylesheets="@style/buttonOne.css" text="back" />
+                        <Button id="findButton" fx:id="buyButton" layoutX="12.0" layoutY="178.0" mnemonicParsing="false" prefHeight="55.0" prefWidth="77.0" stylesheets="@style/Shop.css" text="buy" />
+                        <Button id="enterCollectionButton" layoutX="68.0" layoutY="194.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="167.0" stylesheets="@style/Shop.css" text="collection" />
                      </children>
                   </Pane>
                </children></VBox>

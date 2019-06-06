@@ -1,0 +1,46 @@
+#findButton{
+    -fx-background-image: url('../assets/ui/button_icon_right@2x.png');
+    -fx-font-family: "Times New Roman";
+    -fx-background-size: cover;
+    -fx-background-color: rgba(0, 0, 0, 0);
+    -fx-text-fill: white;
+    -fx-font-size: 18;
+}
+#findButton:hover{
+    -fx-background-image: url('../assets/ui/button_icon_right_glow@2x.png');
+    -fx-background-size: cover;
+    -fx-background-color: rgba(0, 0, 0, 0);
+    -fx-text-fill: white;
+    -fx-scale-x: 1.04;
+    -fx-scale-y: 1.04;
+    -fx-cursor: hand;
+}
+#searchText {
+    -fx-font-size: 10;
+    -fx-padding: 1, 1, 1, 1;
+    -fx-border-color: cyan;
+    -fx-border-width: 2;
+    -fx-border-radius: 20;
+    -fx-background-color: rgba(224, 255, 255, 0.7);
+    -fx-background-radius: 20;
+    -fx-text-fill: rgb(0, 0, 0);
+    -fx-alignment: center;
+}
+
+#enterCollectionButton{
+    -fx-font-family: "Times New Roman";
+    -fx-background-image: url('../assets/ui/button_primary.png');
+    -fx-background-size: cover;
+    -fx-text-fill: white;
+    -fx-font-size: 22;
+    -fx-background-color: rgba(0, 0, 0, 0);
+}
+#enterCollectionButton:hover{
+    -fx-background-image: url('../assets/ui/button_primary_glow.png');
+    -fx-background-color: rgba(0,0,0,0);
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: cover;
+    -fx-scale-x: 1.04;
+    -fx-scale-y: 1.04;
+    -fx-cursor: hand;
+}

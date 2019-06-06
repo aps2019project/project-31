@@ -139,5 +139,9 @@ public class DisplayableCard extends StackPane {
         manaCost.setTranslateX(-100);
         manaCost.setTranslateY(-120);
     }
+
+    public Card getCard() {
+        return card;
+    }
 }
 

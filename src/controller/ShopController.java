@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.Background;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import model.Card;
@@ -55,18 +56,19 @@ public class ShopController implements Initializable {
         boolean first = true;
         DisplayableCard displayableCard1 = null;
         DisplayableCard displayableCard2 = null;
-        VBox vBox = new VBox();
+        VBox vBox = null;
         for (Object card : cards) {
             if (first) {
                 displayableCard1 = new DisplayableCard((Card) card, "");
                 displayableCard1.setBackground(Background.EMPTY);
-                displayableCard1.setMaxHeight(50);
+                displayableCard1.setMaxHeight(0);
                 first = false;
             } else {
                 displayableCard2 = new DisplayableCard((Card) card, "");
-                displayableCard2.setMaxHeight(50);
+                displayableCard2.setMaxHeight(0);
                 vBox = new VBox(displayableCard1, displayableCard2);
-                vBox.setMaxHeight(7200);
+                vBox.setMaxHeight(200);
+                vBox.setMaxWidth(80);
                 vBox.setBackground(Background.EMPTY);
                 listView.getItems().add(vBox);
                 displayableCard1 = null;
@@ -75,7 +77,9 @@ public class ShopController implements Initializable {
             }
         }
         if (displayableCard1 != null) {
-            listView.getItems().add(new VBox(displayableCard1));
+            vBox = new VBox(displayableCard1);
+            vBox.setBackground(Background.EMPTY);
+            listView.getItems().add(vBox);
         }
     }
 
@@ -86,5 +90,6 @@ public class ShopController implements Initializable {
         initializeShopItems(Shop.getAllSpells(), spellsList);
         initializeShopItems(Shop.getAllUsables(), usablesList);
         shopBackButton.setOnAction(event -> MainMenuController.getInstance().setAsScene());
+
     }
 }
