@@ -198,6 +198,7 @@
     -fx-font-size: 23;
     -fx-text-fill: white;
 }
+
 #graveYard{
     -fx-font-family: "Times New Roman";
     -fx-background-image: url('../assets/ui/button_cancel@2x.png');

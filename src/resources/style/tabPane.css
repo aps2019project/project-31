@@ -1,0 +1,39 @@
+.tab-pane .tab-header-background {
+    -fx-background-color: rgba(224, 255, 255, 0.7);
+    -fx-border-color: cyan;
+    -fx-border-width: 2;
+    -fx-text-fill: white;
+}
+
+.tab-pane .tab {
+    -fx-background-image: url('../assets/ui/button_icon_middle@2x.png');
+    -fx-background-color: rgba(0, 0, 0, 0);
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+    -fx-text-fill: white;
+    -fx-font-size: 12;
+}
+
+.tab-pane .tab:hover {
+    -fx-background-image: url('../assets/ui/button_icon_middle_glow@2x.png');
+    -fx-background-color: rgba(0, 0, 0, 0);
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+    -fx-text-fill: white;
+    -fx-scale-x: 1.04;
+    -fx-scale-y: 1.04;
+    -fx-cursor: hand;
+}
+
+.tab-pane .tab:selected {
+    -fx-background-image: url('../assets/ui/button_icon_middle_glow@2x.png');
+    -fx-background-color: rgba(0, 0, 0, 0);
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+    -fx-border-color: rgba(0, 0, 0, 0);
+    -fx-border-width: 0;
+    -fx-text-fill: white;
+    -fx-scale-x: 1.04;
+    -fx-scale-y: 1.04;
+    -fx-cursor: hand;
+}

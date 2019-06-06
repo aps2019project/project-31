@@ -5,13 +5,21 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
+import java.util.Random;
+
 public class DisplayableCard extends StackPane {
     private Card card;
     private String imagePath;
+
+    public ImageView getMainIcon() {
+        return mainIcon;
+    }
+
     private ImageView mainIcon;
 
 
@@ -20,7 +28,6 @@ public class DisplayableCard extends StackPane {
         this.setAlignment(Pos.CENTER);
         this.card = card;
         this.imagePath = imagePath;
-
         if (card instanceof Spell) {
             Image image = new Image(getClass().
                     getResource("/assets/card_backgrounds/neutral_prismatic_spell.png").toExternalForm());
@@ -72,6 +79,7 @@ public class DisplayableCard extends StackPane {
                 mainIcon.setScaleX(2);
                 mainIcon.setScaleY(2);
                 getChildren().addAll(mainIcon);
+
             }
         }
 
@@ -81,6 +89,20 @@ public class DisplayableCard extends StackPane {
             ImageView imageView = new ImageView(image);
             imageView.resize(400, 600);
             this.getChildren().add(imageView);
+            if (imagePath.equals("")) {
+                if (!((Item) card).isCollectible)
+                    imagePath = getClass().
+                            getResource("/gifs/Items/" + card.getName() + "/actionbar.gif")
+                            .toExternalForm();
+                else imagePath = getClass().
+                        getResource("/gifs/Items/Collectibles/" + (new Random().nextInt(3) + 1) + ".gif")
+                        .toExternalForm();
+                mainIcon = new ImageView(new Image(imagePath));
+                mainIcon.setTranslateY(-50);
+                mainIcon.setScaleX(2);
+                mainIcon.setScaleY(2);
+                getChildren().addAll(mainIcon);
+            }
         }
 
         Label cardName = new Label(card.getName());
@@ -117,5 +139,17 @@ public class DisplayableCard extends StackPane {
         manaCost.setTranslateX(-100);
         manaCost.setTranslateY(-120);
     }
+
+    public Card getCard() {
+        return card;
+    }
+
+
+    public boolean equals(Object displayableCard){
+        if(!(displayableCard instanceof DisplayableCard))
+            return false;
+        return card.equals(((DisplayableCard)displayableCard).getCard());
+    }
 }
+
 
