@@ -251,6 +251,7 @@
                                     <Font size="24.0" />
                                  </font>
                               </Label>
+                              <Button id="graveYard" mnemonicParsing="false" prefHeight="61.0" prefWidth="149.0" stylesheets="@style/buttonOne.css" text="Grave Yard" translateY="-10.0" StackPane.alignment="TOP_CENTER" />
                            </children>
                         </StackPane>
                         <StackPane alignment="BOTTOM_CENTER" prefHeight="399.0" prefWidth="140.0">

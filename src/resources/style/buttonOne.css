@@ -198,3 +198,21 @@
     -fx-font-size: 23;
     -fx-text-fill: white;
 }
+#graveYard{
+    -fx-font-family: "Times New Roman";
+    -fx-background-image: url('../assets/ui/button_cancel@2x.png');
+    -fx-background-size: 150 60;
+    -fx-background-color: rgba(0,0,0,0);
+    -fx-font-size: 20;
+    -fx-text-fill: white;
+}
+#graveYard:hover{
+    -fx-font-family: "Times New Roman";
+    -fx-background-image: url('../assets/ui/button_cancel_glow@2x.png');
+    -fx-background-size: 150 60;
+    -fx-scale-x: 1.04;
+    -fx-scale-y: 1.04;
+    -fx-background-color: rgba(0,0,0,0);
+    -fx-font-size: 20;
+    -fx-cursor: hand;
+}
