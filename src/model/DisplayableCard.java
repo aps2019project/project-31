@@ -5,6 +5,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -27,7 +28,6 @@ public class DisplayableCard extends StackPane {
         this.setAlignment(Pos.CENTER);
         this.card = card;
         this.imagePath = imagePath;
-
         if (card instanceof Spell) {
             Image image = new Image(getClass().
                     getResource("/assets/card_backgrounds/neutral_prismatic_spell.png").toExternalForm());
