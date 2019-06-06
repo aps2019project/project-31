@@ -73,11 +73,11 @@
                                     <Image url="@assets/ui/icon_general_hp@2x.png" />
                                  </image>
                               </ImageView>
-                              <Label fx:id="Health" text="25" textFill="WHITE" translateX="75.0" translateY="10.0" StackPane.alignment="CENTER_LEFT">
+                              <Label fx:id="health" text="25" textFill="WHITE" translateX="75.0" translateY="10.0" StackPane.alignment="CENTER_LEFT">
                                  <font>
                                     <Font size="24.0" />
                                  </font></Label>
-                              <Label fx:id="Username" rotate="-3.0" text="Player1" textFill="WHITE" translateX="170.0" translateY="20.0" StackPane.alignment="TOP_LEFT">
+                              <Label fx:id="username" rotate="-3.0" text="Player1" textFill="WHITE" translateX="170.0" translateY="20.0" StackPane.alignment="TOP_LEFT">
                                  <font>
                                     <Font size="36.0" />
                                  </font>
@@ -140,7 +140,7 @@
                                     <Image url="@assets/ui/icon_cooldown_counter.png" />
                                  </image>
                               </ImageView>
-                              <Label fx:id="GeneralCoolDown" text="2" translateX="193.0" translateY="-5.0" StackPane.alignment="CENTER_LEFT">
+                              <Label fx:id="generalCoolDown" text="2" translateX="193.0" translateY="-5.0" StackPane.alignment="CENTER_LEFT">
                                  <font>
                                     <Font size="24.0" />
                                  </font>
@@ -183,7 +183,7 @@
                                     <Font size="36.0" />
                                  </font>
                               </Label>
-                              <Label id="OpponentHand" fx:id="OpponentHand" alignment="CENTER" prefHeight="53.0" prefWidth="161.0" rotate="3.0" stylesheets="@style/buttonOne.css" text="Hand: 6/6" textFill="WHITE" translateX="-10.0" translateY="65.0" StackPane.alignment="TOP_CENTER">
+                              <Label id="OpponentHand" fx:id="opponentHand" alignment="CENTER" prefHeight="53.0" prefWidth="161.0" rotate="3.0" stylesheets="@style/buttonOne.css" text="Hand: 6/6" textFill="WHITE" translateX="-10.0" translateY="65.0" StackPane.alignment="TOP_CENTER">
                                  <font>
                                     <Font size="18.0" />
                                  </font>
@@ -246,7 +246,7 @@
                                  </image>
                               </ImageView>
                               <Button id="replaceButton" fx:id="replace" mnemonicParsing="false" prefHeight="194.0" prefWidth="239.0" stylesheets="@style/buttonOne.css" text="Replace" translateY="100.0" StackPane.alignment="CENTER" />
-                              <Label id="DeckSize" fx:id="DeckSize" alignment="CENTER" prefHeight="51.0" prefWidth="174.0" stylesheets="@style/buttonOne.css" text="Deck:  20/20" textFill="WHITE" translateX="14.0" StackPane.alignment="BOTTOM_LEFT">
+                              <Label id="DeckSize" fx:id="deckSize" alignment="CENTER" prefHeight="51.0" prefWidth="174.0" stylesheets="@style/buttonOne.css" text="Deck:  20/20" textFill="WHITE" translateX="14.0" StackPane.alignment="BOTTOM_LEFT">
                                  <font>
                                     <Font size="18.0" />
                                  </font>
@@ -422,6 +422,6 @@
             </StackPane>
          </children>
       </VBox>
-      <StackPane fx:id="lastStackPane" prefHeight="150.0" prefWidth="200.0" />
+      <StackPane fx:id="lastStackPane" prefHeight="462.0" prefWidth="1080.0" scaleX="0.01" scaleY="0.01" />
    </children>
 </StackPane>

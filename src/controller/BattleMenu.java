@@ -125,6 +125,7 @@ public class BattleMenu extends Menu {
             }
             battleManager.putFlagOnMap(Shop.getAllCollectibles().get(0));
         }
+        battleManager.refreshTheStatusOfMap();
 
     }
 
@@ -192,6 +193,7 @@ public class BattleMenu extends Menu {
         battleManager.addTurn();
         battleManager.getPlayer1().getHero().getHeroSpell().decrementCooldonwRemaining();
         battleManager.getPlayer2().getHero().getHeroSpell().decrementCooldonwRemaining();
+        battleManager.refreshTheStatusOfMap();
     }
 
 

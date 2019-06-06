@@ -5,10 +5,15 @@ import constants.CardType;
 import constants.FunctionType;
 import constants.GameMode;
 import controller.BattleMenu;
+import controller.BattlePageController;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import view.Input;
 import view.Output;
 
 import javax.print.DocFlavor;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.*;
 
 import java.util.ArrayList;
@@ -98,6 +103,7 @@ public class BattleManager {
         applyOnSpawnFunction(theMinion);
         currentPlayer.decreaseMana(theMinion.manaCost);
         currentPlayer.selectedCard = null;
+        refreshTheStatusOfMap();
         return true;
 
     }
@@ -792,6 +798,7 @@ public class BattleManager {
         currentPlayer.selectedCard = null;
         if (!spell.equals(currentPlayer.getHero().heroSpell))
             currentPlayer.hand.remove(spell);
+        refreshTheStatusOfMap();
         return true;
     }
 
@@ -809,11 +816,13 @@ public class BattleManager {
                     deployable.setItem(null);
             }
         }
+        refreshTheStatusOfMap();
         return true;
     }
 
 
     public void move(Deployable card, int x1, int x2) {
+        refreshTheStatusOfMap();
         if (card.cell == null) {
             System.err.println("the cell is null in the move method");
             return;
@@ -829,8 +838,8 @@ public class BattleManager {
                 card.cell.setCardInCell(null);
                 card.cell = Map.getCell(x1, x2);
                 card.setMoved(true);
-                if(card.cell.getItem()!=null && card.item!=null)
-                Map.getCell(x1, x2).setCardInCell(card);
+                if (card.cell.getItem() != null && card.item != null)
+                    Map.getCell(x1, x2).setCardInCell(card);
                 Output.movedSuccessfully(card);
             } else {
                 Output.invalidTargetForMove();
@@ -871,6 +880,7 @@ public class BattleManager {
         for (int i = 1; i < comboAttackers.size(); i++) {
             dealAttackDamageAndDoOtherStuff(comboAttackers.get(i), enemy);
         }
+        refreshTheStatusOfMap();
 
     }
 
@@ -886,6 +896,7 @@ public class BattleManager {
             if (isAttackTypeValidForAttack(card, enemy))
                 Output.enemyNotThere();
         }
+        refreshTheStatusOfMap();
     }
 
     private boolean canAttack(Deployable card, Deployable enemy) {
@@ -941,6 +952,7 @@ public class BattleManager {
                 compileFunction(function, card.cell.getX1Coordinate(), card.cell.getX2Coordinate(), enemy);
             }
         }
+        refreshTheStatusOfMap();
     }
 
     private void applyOnSpawnFunction(Deployable card) {
@@ -949,6 +961,7 @@ public class BattleManager {
                 compileFunction(function, card.cell.getX1Coordinate(), card.cell.getX2Coordinate());
             }
         }
+        refreshTheStatusOfMap();
     }
 
     public void applyItemFunctions(Deployable card, FunctionType functionType) {
@@ -956,7 +969,7 @@ public class BattleManager {
             player1.currentDeck.getItem().setAccount(player1.account);
             player2.currentDeck.getItem().setAccount(player2.account);
             for (Function function : player1.currentDeck.getItem().functions) {
-                if (function.getFunctionType() == functionType){
+                if (function.getFunctionType() == functionType) {
                     compileFunction(function, card.cell.getX1Coordinate(), card.cell.getX2Coordinate());
                 }
             }
@@ -969,6 +982,7 @@ public class BattleManager {
             System.err.println(e.getMessage());
             e.printStackTrace();
         }
+        refreshTheStatusOfMap();
     }
 
     public void applyItemOnAttackDefendFunctions(Deployable card, FunctionType functionType, Player player) {
@@ -980,6 +994,7 @@ public class BattleManager {
             if (function.getFunctionType() == functionType)
                 compileFunction(function, card.cell.getX1Coordinate(), card.cell.getX2Coordinate());
         }
+        refreshTheStatusOfMap();
     }
 
     private void applyOnDefendFunction(Deployable enemy, Deployable card) {
@@ -989,6 +1004,7 @@ public class BattleManager {
             }
 
         }
+        refreshTheStatusOfMap();
     }
 
     private void counterAttack(Deployable attacker, Deployable counterAttacker) {
@@ -997,6 +1013,8 @@ public class BattleManager {
             if (attacker.currentHealth <= 0)
                 killTheThing(attacker);
         }
+        refreshTheStatusOfMap();
+
     }
 
     public static boolean isAttackTypeValidForAttack(Deployable attacker, Deployable counterAttacker) {
@@ -1109,8 +1127,8 @@ public class BattleManager {
     public void initialTheGame() {
         player1.duplicateTheDeck();
         player2.duplicateTheDeck();
-       // Collections.shuffle(player1.currentDeck.getCards());
-        //Collections.shuffle(player2.currentDeck.getCards());
+         Collections.shuffle(player1.currentDeck.getCards());
+        Collections.shuffle(player2.currentDeck.getCards());
         initialTheHands();
         player1.getHero().setAccount(player1.account);
         player2.getHero().setAccount(player2.account);
@@ -1236,5 +1254,44 @@ public class BattleManager {
             Map.getCell(x1, x2).getCardInCell().setItem(item);
         else
             Map.getCell(x1, x2).setItem(item);
+        refreshTheStatusOfMap();
+    }
+
+    public void refreshTheStatusOfMap()  {
+        BattlePageController battleController = BattlePageController.getBattlePageController();
+        battleController.health.setText("" + battleController.getMe().getHero().theActualHealth());
+        battleController.opponentHealth.setText("" + battleController.getOpponent().getHero().theActualHealth());
+        battleController.opponentHand.setText("Hand: " + battleController.getOpponent().handSize() + " / 6");
+        try {
+            if (battleController.getMe() == currentPlayer) {
+                for (int i = 0; i < currentPlayer.getMana(); i++) {
+                    battleController.getManas().get(i).setImage
+                            (new Image(new FileInputStream("@assets/ui/icon_mana@2x.png")));
+                }
+            } else {
+                for (ImageView imageView : battleController.getManas()) {
+                    imageView.setImage(new Image(new FileInputStream("@assets/ui/icon_mana_inactive.png")));
+                }
+            }
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
+        }
+        int usualMana;
+        if (turn <= 14) {
+            usualMana = (turn - 1) / 2 + 2;
+        } else {
+            usualMana = 9;
+        }
+        if (battleController.getOpponent() == currentPlayer)
+            battleController.opponentMana.setText("" + usualMana + player1.manaChangerInTurn[turn] + " / " + usualMana);
+        else {
+            battleController.opponentMana.setText("0 / 0");
+        }
+        battleController.generalCoolDown.setText("" + battleController.getMe().getHero().getHeroSpell().getCoolDownRemaining());
+        battleController.opponentGeneralCooldown.setText("" + battleController.getOpponent().getHero().getHeroSpell().getCoolDownRemaining());
+        battleController.deckSize.setText("Deck: " + battleController.getMe().deckSize() + "/20");
+
+        // next card , cards in hand , all deployedCard in battle with their attack and health should be refreshed too
+
     }
 }

@@ -15,11 +15,14 @@ import model.Player;
 import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class BattlePageController implements Initializable {
     private static Scene scene;
     private static BattlePageController battlePageController;
+
+
     public Button graveYard;
     public StackPane column1;
     public StackPane column2;
@@ -37,15 +40,20 @@ public class BattlePageController implements Initializable {
     public Button endTurn;
     public Button replace;
     public StackPane lastStackPane; // it's scaled to (0.01,0.01) ...
-    private StackPane showingGraveYard; // for showing it: lastStackPane = showingGraveYard;
+    public Label opponentHand;
+    public Label deckSize;
+    public Label health;
+    public Label username;
+    public Label generalCoolDown;
+    private StackPane showingGraveYard; // for showing it: lastStackPane = showingGraveYard; showingGraveYard is a designed scene
 
     private Player me;
     private Player opponent;
 
-    public Label OpponentHand;
+
     public Label opponentMana;
 
-    public Label DeckSize;
+
     public ImageView nextCardField;
     public ImageView mana1;
     public ImageView mana2;
@@ -62,14 +70,15 @@ public class BattlePageController implements Initializable {
     public Label manaCost4;
     public Label manaCost5;
     public Label manaCost6;
-    public Label Health;
-    public Label Username;
-    public Label GeneralCoolDown;
+
+
     public Label opponentHealth;
     public Label opponentUsername;
     public Label opponentGeneralCooldown;
     public Label generalSpellManaCost;
     public Label opponentGeneralSpellManaCost;
+    private ArrayList<ImageView> manas;
+
 
     public void setAsScene() {
         if (scene == null) {
@@ -92,26 +101,50 @@ public class BattlePageController implements Initializable {
         return battlePageController;
     }
 
-    private void initPlayers(){
-        if(BattleMenu.getBattleManager().getPlayer1().getAccount().getUsername().equals(Account.getMainAccount())){
+    private void initPlayers() {
+        if (BattleMenu.getBattleManager().getPlayer1().getAccount().getUsername().equals(Account.getMainAccount())) {
             me = BattleMenu.getBattleManager().getPlayer1();
-            opponent =BattleMenu.getBattleManager().getPlayer2();
-        }
-        else{
+            opponent = BattleMenu.getBattleManager().getPlayer2();
+        } else {
             me = BattleMenu.getBattleManager().getPlayer2();
-            opponent =BattleMenu.getBattleManager().getPlayer1();
+            opponent = BattleMenu.getBattleManager().getPlayer1();
         }
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        manas.add(mana1);
+        manas.add(mana2);
+        manas.add(mana3);
+        manas.add(mana4);
+        manas.add(mana5);
+        manas.add(mana6);
+        manas.add(mana7);
+        manas.add(mana8);
+        manas.add(mana9);
         initPlayers();
-        Username.setText(me.getAccount().getUsername());
+        username.setText(me.getAccount().getUsername());
         opponentUsername.setText(opponent.getAccount().getUsername());
-        generalSpellManaCost.setText(""+ me.getHero().getHeroSpell().getManaCost());
-        opponentGeneralSpellManaCost.setText(""+ opponent.getHero().getHeroSpell().getManaCost());
-        GeneralCoolDown.setText(""+me.getHero().getHeroSpell().getManaCost());
-        opponentGeneralCooldown.setText(""+ opponent.getHero().getHeroSpell().getManaCost());
+        generalSpellManaCost.setText("" + me.getHero().getHeroSpell().getManaCost());
+        opponentGeneralSpellManaCost.setText("" + opponent.getHero().getHeroSpell().getManaCost());
+        generalCoolDown.setText("" + me.getHero().getHeroSpell().getManaCost());
+        opponentGeneralCooldown.setText("" + opponent.getHero().getHeroSpell().getManaCost());
 
+    }
+
+    public static BattlePageController getBattlePageController() {
+        return battlePageController;
+    }
+
+    public Player getMe() {
+        return me;
+    }
+
+    public Player getOpponent() {
+        return opponent;
+    }
+
+    public ArrayList<ImageView> getManas() {
+        return manas;
     }
 }

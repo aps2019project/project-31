@@ -45,6 +45,24 @@ public class Player {
 
     }
 
+    public int handSize() {
+        int i = 0;
+        for (Card card : hand) {
+            if (card != null)
+                i++;
+        }
+        return i;
+    }
+
+    public int deckSize() {
+        int i = 0;
+        for (Card card : getCurrentDeck().getCards()) {
+            if (card != null)
+                i++;
+        }
+        return i;
+    }
+
     public void decreaseMana(int manaCost) {
         mana -= manaCost;
     }
@@ -205,7 +223,7 @@ public class Player {
     }
 
     public void placeNextCardToHand() {
-        if (nextCard!=null && hand.size() < 6) {
+        if (nextCard != null && hand.size() < 6) {
             hand.add(nextCard);
         }
         Collections.shuffle(currentDeck.getCards());
