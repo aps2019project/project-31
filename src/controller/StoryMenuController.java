@@ -1,11 +1,15 @@
 package controller;
 
+import constants.BattleManagerMode;
+import constants.GameMode;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.StackPane;
+import model.Account;
 import model.Initializer;
 
 import java.awt.*;
@@ -21,12 +25,30 @@ public class StoryMenuController implements Initializable {
     public ImageView story2;
     public Button backButton;
     public ImageView story3;
+    public StackPane mainContainer;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
         backButton.setOnAction(event -> PlayMenuController.getInstance().setAsScene());
-
+        story1.setOnMouseClicked(event -> {
+            BattlePageController.getInstance().setAsScene();
+          /*  BattleMenu.setBattleManagerForSinglePLayer(BattleManagerMode.Story, Account.getMainAccount(), 100,
+                    100, GameMode.DeathMatch, 1);
+            Initializer.getBattleMenu().runTheGame();*/
+        });
+        story2.setOnMouseClicked(event -> {
+            BattlePageController.getInstance().setAsScene();
+            /*BattleMenu.setBattleManagerForSinglePLayer(BattleManagerMode.Story, Account.getMainAccount(), 100,
+                    100, GameMode.Flag, 2);
+            Initializer.getBattleMenu().runTheGame();*/
+        });
+        story3.setOnMouseClicked(event -> {
+            BattlePageController.getInstance().setAsScene();
+           /* BattleMenu.setBattleManagerForSinglePLayer(BattleManagerMode.Story, Account.getMainAccount(), 100,
+                    100, GameMode.Domination, 3);
+            Initializer.getBattleMenu().runTheGame();*/
+        });
     }
 
     public static StoryMenuController getInstance() {

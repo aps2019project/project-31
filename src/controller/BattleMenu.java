@@ -135,9 +135,8 @@ public class BattleMenu extends Menu {
 
     public void runTheGame() {
         boolean isPlayer1Turn = false;
-
-        // battleManager.getPlayer1().generateDeckArrangement();
-        //  battleManager.getPlayer2().generateDeckArrangement();
+        battleManager.getPlayer1().generateDeckArrangement();
+        battleManager.getPlayer2().generateDeckArrangement();
 
         battleManager.setCurrentPlayer(battleManager.getPlayer2());
         battleManager.initialTheGame();

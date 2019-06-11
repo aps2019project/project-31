@@ -113,7 +113,7 @@ public class BattlePageController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        manas.add(mana1);
+        /*manas.add(mana1);
         manas.add(mana2);
         manas.add(mana3);
         manas.add(mana4);
@@ -128,7 +128,7 @@ public class BattlePageController implements Initializable {
         generalSpellManaCost.setText("" + me.getHero().getHeroSpell().getManaCost());
         opponentGeneralSpellManaCost.setText("" + opponent.getHero().getHeroSpell().getManaCost());
         generalCoolDown.setText("" + me.getHero().getHeroSpell().getManaCost());
-        opponentGeneralCooldown.setText("" + opponent.getHero().getHeroSpell().getManaCost());
+        opponentGeneralCooldown.setText("" + opponent.getHero().getHeroSpell().getManaCost());*/
 
     }
 
