@@ -138,7 +138,7 @@ public class DisplayableDeployable extends StackPane {
     }
 
 
-    private void updateStats() {
+    public void updateStats() {
         attackLabel.setText(deployable.getCurrentAttack() + "");
         if (deployable.getCurrentHealth() < deployable.maxHealth) {
             healthLabel.setTextFill(Color.RED);

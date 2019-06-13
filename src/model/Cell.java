@@ -1,5 +1,7 @@
 package model;
 
+import javafx.scene.shape.Polygon;
+
 public class Cell {
     private int x1Coordinate;
     private int x2Coordinate;
@@ -9,6 +11,15 @@ public class Cell {
     private int isHolyTurns;
     private boolean hasFlag;
     private Item item;
+    private Polygon polygon;
+
+    public Polygon getPolygon() {
+        return polygon;
+    }
+
+    public void setPolygon(Polygon polygon) {
+        this.polygon = polygon;
+    }
 
     public Item getItem() {
         return item;
@@ -26,7 +37,7 @@ public class Cell {
         this.hasFlag = hasFlag;
     }
 
-    public Cell(int x1Coordinate, int x2Coordinate, Deployable cardInCell) {
+    public Cell(int x1Coordinate, int x2Coordinate, Deployable cardInCell, Polygon polygon) {
         this.x1Coordinate = x1Coordinate;
         this.x2Coordinate = x2Coordinate;
         this.cardInCell = cardInCell;
@@ -34,15 +45,7 @@ public class Cell {
         onPoisonTurns = 0;
         hasFlag = false;
         item = null;
-
-    }
-
-    public Cell(int x1Coordinate, int x2Coordinate) {
-        this.x1Coordinate = x1Coordinate;
-        this.x2Coordinate = x2Coordinate;
-        this.cardInCell = Map.getCell(x1Coordinate, x2Coordinate).cardInCell;
-        this.onFireTurns = Map.getCell(x1Coordinate, x2Coordinate).onFireTurns;
-        this.onPoisonTurns = Map.getCell(x1Coordinate, x2Coordinate).onPoisonTurns;
+        this.polygon = polygon;
     }
 
     public void setIsHolyTurns(int isHolyTurns) {

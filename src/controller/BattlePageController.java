@@ -11,9 +11,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
-import model.Account;
-import model.Initializer;
-import model.Player;
+import model.*;
 
 import java.awt.*;
 import java.io.IOException;
@@ -117,6 +115,7 @@ public class BattlePageController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        System.err.println("Initializing maps ...");
         Polygon[][] polygons = new Polygon[5][9];
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 9; j++) {
@@ -125,6 +124,13 @@ public class BattlePageController implements Initializable {
                 polygons[i][j].setFill(Color.RED);
             }
         }
+        Map.createTheMap();
+        for (int i = 0; i <= 5; i++) {
+            for (int j = 0; j <= 9; j++) {
+                //      Map.getMap()[i][j] = new Cell(i, j, null);
+            }
+        }
+
         /*manas.add(mana1);
         manas.add(mana2);
         manas.add(mana3);
@@ -158,5 +164,19 @@ public class BattlePageController implements Initializable {
 
     public ArrayList<ImageView> getManas() {
         return manas;
+    }
+
+    public Double[] calculateCenter(Double[] points) {
+        Double[] coordinates = new Double[2];
+        double x = 0, y = 0;
+        for (int i = 0; i < points.length; i += 2) {
+            x += points[i];
+        }
+        for (int i = 1; i < points.length; i += 2) {
+            y += points[i];
+        }
+        coordinates[0] = x / 4;
+        coordinates[1] = y / 4;
+        return coordinates;
     }
 }

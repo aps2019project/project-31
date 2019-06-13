@@ -6,6 +6,7 @@ import constants.CardType;
 import java.util.ArrayList;
 
 public class Deployable extends Card {
+    protected DisplayableDeployable face;
     protected boolean isMoved;
     protected boolean isAttacked;
     protected Cell cell;
@@ -37,6 +38,14 @@ public class Deployable extends Card {
         this.attackType = attackType;
         this.isCombo = isCombo;
         this.maxHealth = maxHealth;
+    }
+
+    public DisplayableDeployable getFace() {
+        return face;
+    }
+
+    public void setFace(DisplayableDeployable face) {
+        this.face = face;
     }
 
     public Item getItem() {

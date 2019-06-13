@@ -19,7 +19,7 @@ public class Player {
     protected ArrayList<Card> hand;
     protected Card nextCard;
     protected ArrayList<Deployable> cardsOnBattleField;
-    protected ArrayList<Deployable> graveYard;
+    protected ArrayList<DisplayableDeployable> graveYard;
     protected Card selectedCard;
     protected Card cardInReplace;
     protected BattleManager battle;
@@ -118,7 +118,7 @@ public class Player {
         cardsOnBattleField.remove(card);
     }
 
-    public void addCardToGraveYard(Deployable card) {
+    public void addCardToGraveYard(DisplayableDeployable card) {
 
         graveYard.add(card);
     }
@@ -168,7 +168,7 @@ public class Player {
         return cardsOnBattleField;
     }
 
-    public ArrayList<Deployable> getGraveYard() {
+    public ArrayList<DisplayableDeployable> getGraveYard() {
         return graveYard;
     }
 

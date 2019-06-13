@@ -44,9 +44,6 @@ public class Initializer extends Application {
         SinglePlayer.loadCustomDecks();
         System.err.println("Loading story decks...");
         Story.loadStoryDecks();
-        System.err.println("Initializing maps ...");
-        Map.createTheMap();
-        System.err.println("maps initialized");
         System.err.println("Loading cards ...");
         Shop.loadAllCards();
         System.err.println("cards loaded");

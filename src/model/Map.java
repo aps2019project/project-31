@@ -15,11 +15,6 @@ public class Map {
 
     public static void createTheMap() {
         map = new Cell[MAP_X1_LENGTH + 1][MAP_X2_LENGTH + 1];
-        for (int i = 0; i <= 5; i++) {
-            for (int j = 0; j <= 9; j++) {
-                map[i][j] = new Cell(i, j, null);
-            }
-        }
     }
 
     public static int getDistance(Cell cell1, Cell cell2) {
