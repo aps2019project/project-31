@@ -95,7 +95,7 @@ public class LoginPageController implements Initializable {
         System.out.println(Shop.getAllCollectibles().get(3).isCollectible());
 
 
-        infoVBox.getChildren().add(new DisplayableDeployable(Shop.getAllMinions().get(5)));
+        infoVBox.getChildren().add(new DisplayableDeployable(Shop.getAllMinions().get(25)));
         exitButton.setOnAction(actionEvent -> {
             Initializer.getPrimaryStage().close();
         });
