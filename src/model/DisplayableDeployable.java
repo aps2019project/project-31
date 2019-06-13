@@ -148,6 +148,11 @@ public class DisplayableDeployable extends StackPane {
             healthLabel.setTextFill(Color.WHITE);
         }
         healthLabel.setText(deployable.getCurrentHealth() + "");
+        for (Buff buff: deployable.getBuffs()){
+            Label label = new Label(buff.buffType + "");
+            label.setFont(Font.font(12));
+            label.setTextFill(Color.CYAN);
+        }
     }
 
 }

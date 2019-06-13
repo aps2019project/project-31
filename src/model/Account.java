@@ -24,6 +24,8 @@ public class Account {
     private ArrayList<MatchHistory> matchHistories = new ArrayList<>();
     private int[] winLoseDraw = new int[3];
 
+
+
     public static void loadAllAccounts() {
         YaGson yaGson = new YaGsonBuilder().create();
         String path = System.getProperty("user.dir") + "/Sources/Accounts/Accounts.txt";
