@@ -4,9 +4,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Polygon;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import model.Account;
 import model.Initializer;
@@ -45,6 +48,7 @@ public class BattlePageController implements Initializable {
     public Label health;
     public Label username;
     public Label generalCoolDown;
+    public Pane motherFuckinPane;
     private StackPane showingGraveYard; // for showing it: lastStackPane = showingGraveYard; showingGraveYard is a designed scene
 
     private Player me;
@@ -113,6 +117,14 @@ public class BattlePageController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        Polygon[][] polygons = new Polygon[5][9];
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 9; j++) {
+                polygons[i][j] = new Polygon();
+                polygons[i][j].getPoints().addAll(0.0, 0.0, 600.0, 0.0, 0.0, 600.0, 600.0, 600.0);
+                polygons[i][j].setFill(Color.RED);
+            }
+        }
         /*manas.add(mana1);
         manas.add(mana2);
         manas.add(mana3);
