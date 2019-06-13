@@ -19,9 +19,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
-import model.Account;
-import model.DisplayableCard;
-import model.Initializer;
+import model.*;
 
 import java.awt.*;
 import java.io.IOException;
@@ -96,7 +94,8 @@ public class LoginPageController implements Initializable {
 
         System.out.println(Shop.getAllCollectibles().get(3).isCollectible());
 
-        infoVBox.getChildren().add(new DisplayableCard(Shop.getAllUsables().get(5),""));
+
+        infoVBox.getChildren().add(new DisplayableDeployable(Shop.getAllMinions().get(5)));
         exitButton.setOnAction(actionEvent -> {
             Initializer.getPrimaryStage().close();
         });
