@@ -1078,6 +1078,7 @@ public class BattleManager {
         matchHistory = new MatchHistory(player1.getAccount().getUsername(), "draw");
         player2.getAccount().addMatchHistories(matchHistory);
         //player1.getAccount().incrementDraw();
+
         //player2.getAccount().incrementDraw();
         Output.print("draw");
         BattleMenu.setGameFinished(true);
