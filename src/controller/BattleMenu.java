@@ -2,6 +2,7 @@ package controller;
 
 import constants.*;
 import constants.GameMode;
+import javafx.application.Platform;
 import model.*;
 import view.Input;
 import view.Output;
@@ -122,8 +123,9 @@ public class BattleMenu extends Menu {
         for (int theTurn : battleManager.getTurnsAppearingTheCollectibleFlags()) {
             if (theTurn == battleManager.getTurn()) {
                 Collections.shuffle(Shop.getAllCollectibles());
+                battleManager.putFlagOnMap(Shop.getAllCollectibles().get(0));
             }
-            battleManager.putFlagOnMap(Shop.getAllCollectibles().get(0));
+
         }
         battleManager.refreshTheStatusOfMap();
 
@@ -181,8 +183,13 @@ public class BattleMenu extends Menu {
         DisplayableDeployable faceHero2 = new DisplayableDeployable(hero2);
         hero1.setFace(faceHero1);
         hero2.setFace(faceHero2);
-        if (BattlePageController.getInstance().motherFuckinPane != null)
-            BattlePageController.getInstance().motherFuckinPane.getChildren().addAll(faceHero1, faceHero2);
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                BattlePageController.getInstance().motherFuckinPane.getChildren().addAll(faceHero1, faceHero2);
+            }
+        });
+
     }
 
     private static void doAllThingsInEndingOfTheTurns() {
