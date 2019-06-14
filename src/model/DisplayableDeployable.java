@@ -13,6 +13,10 @@ import javafx.scene.text.Font;
 
 
 public class DisplayableDeployable extends StackPane {
+    public Deployable getDeployable() {
+        return deployable;
+    }
+
     Deployable deployable;
     ImageView idle;
     ImageView run;
