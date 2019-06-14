@@ -99,6 +99,8 @@ public class BattleManager {
         Output.insertionSuccessful(theMinion, x1, x2);
         applyItemFunctions(theMinion, FunctionType.OnSpawn);
         currentPlayer.addCardToBattlefield(theMinion);
+        DisplayableDeployable face = new DisplayableDeployable(theMinion);
+        theMinion.setFace(face);
         currentPlayer.removeFromHand(minion);
         applyOnSpawnFunction(theMinion);
         currentPlayer.decreaseMana(theMinion.manaCost);
@@ -870,7 +872,7 @@ public class BattleManager {
 
         enemy.cell.setCardInCell(null);
 
-        player.addCardToGraveYard(enemy);
+        player.addCardToGraveYard(new DisplayableDeployable(enemy));
         player.getCardsOnBattleField().remove(enemy);
 
     }
@@ -1128,7 +1130,7 @@ public class BattleManager {
     public void initialTheGame() {
         player1.duplicateTheDeck();
         player2.duplicateTheDeck();
-         Collections.shuffle(player1.currentDeck.getCards());
+        Collections.shuffle(player1.currentDeck.getCards());
         Collections.shuffle(player2.currentDeck.getCards());
         initialTheHands();
         player1.getHero().setAccount(player1.account);
@@ -1258,7 +1260,13 @@ public class BattleManager {
         refreshTheStatusOfMap();
     }
 
-    public void refreshTheStatusOfMap()  {
+    public void refreshTheStatusOfMap() {
+        for (Deployable card : player1.cardsOnBattleField) {
+            card.getFace().updateStats();
+        }
+        for (Deployable card : player2.cardsOnBattleField) {
+            card.getFace().updateStats();
+        }
         BattlePageController battleController = BattlePageController.getBattlePageController();
         battleController.health.setText("" + battleController.getMe().getHero().theActualHealth());
         battleController.opponentHealth.setText("" + battleController.getOpponent().getHero().theActualHealth());
@@ -1274,7 +1282,7 @@ public class BattleManager {
                     imageView.setImage(new Image(new FileInputStream("@assets/ui/icon_mana_inactive.png")));
                 }
             }
-        }catch (FileNotFoundException e){
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
         int usualMana;

@@ -176,6 +176,8 @@ public class BattleMenu extends Menu {
         hero2.getCell().setCardInCell(hero2);
         battleManager.getPlayer1().addCardToBattlefield(hero1);
         battleManager.getPlayer2().addCardToBattlefield(hero2);
+        hero1.setFace(new DisplayableDeployable(hero1));
+        hero2.setFace(new DisplayableDeployable(hero2));
     }
 
     private static void doAllThingsInEndingOfTheTurns() {
@@ -306,7 +308,7 @@ public class BattleMenu extends Menu {
             System.out.println("Card not in hand");
     }
 
-    public static Deployable findDeadMinion(int uniqueId) {
+  /*  public static Deployable findDeadMinion(int uniqueId) {
         for (Deployable deployable : battleManager.getPlayer1().getGraveYard()) {
             if (deployable != null && deployable.getUniqueId() == uniqueId)
                 return deployable;
@@ -317,7 +319,7 @@ public class BattleMenu extends Menu {
         }
         return null;
 
-    }
+    }*/
 
     public static void replaceCardInHand(int cardId) {
         for (Card card : battleManager.getCurrentPlayer().getHand()) {

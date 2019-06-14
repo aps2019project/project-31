@@ -13,6 +13,10 @@ import javafx.scene.text.Font;
 
 
 public class DisplayableDeployable extends StackPane {
+    public Deployable getDeployable() {
+        return deployable;
+    }
+
     Deployable deployable;
     ImageView idle;
     ImageView run;
@@ -138,7 +142,7 @@ public class DisplayableDeployable extends StackPane {
     }
 
 
-    private void updateStats() {
+    public void updateStats() {
         attackLabel.setText(deployable.getCurrentAttack() + "");
         if (deployable.getCurrentHealth() < deployable.maxHealth) {
             healthLabel.setTextFill(Color.RED);
