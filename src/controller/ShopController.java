@@ -48,6 +48,7 @@ public class ShopController implements Initializable {
     public ListView<DisplayableCard> spellsList1;
     public ListView<DisplayableCard> usablesList1;
     public TabPane collectionTabPane;
+    public Label daricView;
 
     public static ShopController getInstance() {
         if (shop == null) {
@@ -119,6 +120,9 @@ public class ShopController implements Initializable {
         updateCollectionOf(CardType.spell, spellsList1);
         updateCollectionOf(CardType.item, usablesList1);
     }
+    public void updateDaricView(){
+        daricView.setText(Integer.toString(Account.getMainAccount().getDaric()));
+    }
 
     public void updateCollectionOf(CardType cardType, ListView<DisplayableCard> listView){
         ArrayList<Card> cards = Account.getMainAccount().getSpecificCards(cardType);
@@ -148,6 +152,7 @@ public class ShopController implements Initializable {
         Account.getMainAccount().decreaseDaric(card.getPrice());
         Account.getMainAccount().getCollection().add(card);
         updateCollection();
+        updateDaricView();
         displayMessage("" + card.getName() + " bought successfully");
     }
 
@@ -178,6 +183,7 @@ public class ShopController implements Initializable {
         Account.getMainAccount().addDaric(card.getPrice());
         Account.getMainAccount().getCollection().remove(theCard);
         updateCollection();
+        updateDaricView();
         displayMessage("" + card.getName() + " sold successfully");
     }
 

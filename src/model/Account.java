@@ -16,7 +16,7 @@ public class Account {
     private static Account mainAccount;
 
     private ArrayList<Card> collection = new ArrayList<>();
-    private int daric;
+    private int daric = 0;
     private ArrayList<Deck> decks = new ArrayList<>();
     private Deck theMainDeck;
     private String username;
