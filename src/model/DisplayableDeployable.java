@@ -2,6 +2,7 @@ package model;
 
 import javafx.animation.Animation;
 import javafx.animation.AnimationTimer;
+import javafx.beans.property.DoubleProperty;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -152,10 +153,16 @@ public class DisplayableDeployable extends StackPane {
             healthLabel.setTextFill(Color.WHITE);
         }
         healthLabel.setText(deployable.getCurrentHealth() + "");
-        for (Buff buff: deployable.getBuffs()){
+        for (Buff buff : deployable.getBuffs()) {
             Label label = new Label(buff.buffType + "");
             label.setFont(Font.font(12));
             label.setTextFill(Color.CYAN);
+        }
+        if (deployable.getCell() != null && deployable.getCell().getPolygon() != null){
+            currentStance.setTranslateX(deployable.getCell().calculateCenter()[0]);
+            currentStance.setTranslateY(deployable.getCell().calculateCenter()[1]);
+
+
         }
     }
 
