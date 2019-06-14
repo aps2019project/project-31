@@ -2,6 +2,7 @@
 
 <?import java.net.URL?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
@@ -29,6 +30,7 @@
                             <children>
                                 <Pane prefHeight="453.0" prefWidth="808.0">
                                     <children>
+                              <Label alignment="CENTER" layoutX="335.0" prefHeight="56.0" prefWidth="475.0" text="Shop" />
                                         <TabPane fx:id="tabPane" layoutX="-1.0" prefHeight="452.0" prefWidth="810.0" stylesheets="@style/tabPane.css" tabClosingPolicy="UNAVAILABLE" tabMaxHeight="50.0" tabMaxWidth="70.0" tabMinHeight="50.0" tabMinWidth="70.0">
                                             <tabs>
                                                 <Tab fx:id="heroesTab" text="heroes">
@@ -68,7 +70,8 @@
                                 </HBox>
                                 <Pane prefHeight="215.0" prefWidth="808.0">
                                     <children>
-                                        <TabPane fx:id="tabPane1" layoutX="-1.0" layoutY="4.0" prefHeight="223.0" prefWidth="810.0" stylesheets="@style/tabPane.css" tabClosingPolicy="UNAVAILABLE" tabMaxHeight="30.0" tabMaxWidth="50.0" tabMinHeight="30.0" tabMinWidth="50.0">
+                              <Label alignment="CENTER" layoutX="233.0" prefHeight="47.0" prefWidth="577.0" text="Your Cards" />
+                                        <TabPane fx:id="collectionTabPane" layoutX="-1.0" layoutY="4.0" prefHeight="223.0" prefWidth="810.0" stylesheets="@style/tabPane.css" tabClosingPolicy="UNAVAILABLE" tabMaxHeight="35.0" tabMaxWidth="45.0" tabMinHeight="35.0" tabMinWidth="45.0">
                                             <tabs>
                                                 <Tab fx:id="heroesTab1" text="heroes">
                                                     <content>
@@ -101,14 +104,14 @@
                                 <Pane fx:id="shopLogPane" prefHeight="504.0" prefWidth="276.0">
                                     <children>
                               <VBox fx:id="logVBox" prefHeight="404.0" prefWidth="276.0" />
-                                        <Button id="findButton" fx:id="buyButton" layoutX="-5.0" layoutY="412.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="71.0" stylesheets="@style/Shop.css" text="buy" />
+                                        <Button id="findButton" fx:id="buyButton" layoutX="-5.0" layoutY="405.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="71.0" stylesheets="@style/Shop.css" text="buy" />
                                         <Button id="enterCollectionButton" fx:id="collectionButton" layoutX="48.0" layoutY="406.0" mnemonicParsing="false" prefHeight="65.0" prefWidth="207.0" stylesheets="@style/Shop.css" text="collection" />
                                     </children>
                                 </Pane>
                                 <Pane fx:id="playerLogPane" prefHeight="221.0" prefWidth="276.0">
                                     <children>
-                                        <Button id="findButton" fx:id="selButton" layoutX="-1.0" layoutY="151.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="78.0" stylesheets="@style/Shop.css" text="sell" />
-                                        <Button id="backButton" fx:id="shopBackButton" alignment="CENTER_RIGHT" layoutX="179.0" layoutY="143.0" mnemonicParsing="false" prefHeight="63.0" prefWidth="91.0" stylesheets="@style/buttonOne.css" text="back" />
+                                        <Button id="findButton" fx:id="sellButton" layoutX="-5.0" layoutY="164.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="70.0" stylesheets="@style/Shop.css" text="sell" />
+                                        <Button id="backButton" fx:id="shopBackButton" alignment="CENTER_RIGHT" layoutX="181.0" layoutY="156.0" mnemonicParsing="false" prefHeight="63.0" prefWidth="91.0" stylesheets="@style/buttonOne.css" text="back" />
                                         <Text fx:id="myCardsLog" layoutX="5.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="260.049987792969" />
                                     </children>
                                 </Pane>

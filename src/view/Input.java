@@ -229,7 +229,7 @@ public class Input {
             Pattern pattern = Pattern.compile("show info (\\d+)");
             Matcher matcher = pattern.matcher(input);
             if (matcher.matches()) {
-        //        System.out.println(BattleMenu.findDeadMinion(Integer.parseInt(matcher.group(1))).infoToString());
+//                System.out.println(BattleMenu.findDeadMinion(Integer.parseInt(matcher.group(1))).infoToString());
             }
             if (input.equalsIgnoreCase("exit"))
                 return;

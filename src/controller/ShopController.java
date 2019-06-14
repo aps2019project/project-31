@@ -1,7 +1,9 @@
 package controller;
 
+import constants.CardType;
 import javafx.animation.AnimationTimer;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
@@ -16,6 +18,7 @@ import javafx.scene.paint.Color;
 import model.*;
 import view.Output;
 
+import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
@@ -38,6 +41,13 @@ public class ShopController implements Initializable {
     public Pane playerLogPane;
     public Button collectionButton;
     public VBox logVBox;
+    public Button sellButton;
+    public Tab heroesTab1;
+    public ListView<DisplayableCard> heroesList1;
+    public ListView<DisplayableCard> minionsList1;
+    public ListView<DisplayableCard> spellsList1;
+    public ListView<DisplayableCard> usablesList1;
+    public TabPane collectionTabPane;
 
     public static ShopController getInstance() {
         if (shop == null) {
@@ -103,6 +113,19 @@ public class ShopController implements Initializable {
         }*/
     }
 
+    public void updateCollection(){
+        updateCollectionOf(CardType.hero, heroesList1);
+        updateCollectionOf(CardType.minion, minionsList1);
+        updateCollectionOf(CardType.spell, spellsList1);
+        updateCollectionOf(CardType.item, usablesList1);
+    }
+
+    public void updateCollectionOf(CardType cardType, ListView<DisplayableCard> listView){
+        ArrayList<Card> cards = Account.getMainAccount().getSpecificCards(cardType);
+        listView.getItems().clear();
+        initializeShopItems(cards, listView);
+    }
+
     public void displayMessage(String massage) {
         LoginPageController.getInstance().displayMessage(massage, 17, 2, logVBox);
     }
@@ -124,10 +147,11 @@ public class ShopController implements Initializable {
         }
         Account.getMainAccount().decreaseDaric(card.getPrice());
         Account.getMainAccount().getCollection().add(card);
+        updateCollection();
         displayMessage("" + card.getName() + " bought successfully");
     }
 
-    private void sellCard(Card card) {
+    public Card findCardInCollection(Card card) {
         Card theCard = null;
         for (Card c : Account.getMainAccount().getCollection()) {
             if (c.getName().equalsIgnoreCase(card.getName())) {
@@ -135,8 +159,12 @@ public class ShopController implements Initializable {
                 break;
             }
         }
-        if (theCard == null) {
+        return theCard;
+    }
 
+    private void sellCard(Card card) {
+        Card theCard = findCardInCollection(card);
+        if (theCard == null) {
             displayMessage("card not in collection");
             return;
         }
@@ -144,12 +172,13 @@ public class ShopController implements Initializable {
             try {
                 deck.getCards().remove(theCard);
             } catch (Exception e) {
-
+                e.printStackTrace();
             }
         }
         Account.getMainAccount().addDaric(card.getPrice());
         Account.getMainAccount().getCollection().remove(theCard);
-        displayMessage("sold successfully");
+        updateCollection();
+        displayMessage("" + card.getName() + " sold successfully");
     }
 
     public void buyCardsByName(String[] cardNames) {
@@ -190,28 +219,62 @@ public class ShopController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         initializeShopItems(Shop.getAllHeroes(), heroesList);
-        System.err.println("fff");
         initializeShopItems(Shop.getAllMinions(), minionsList);
         initializeShopItems(Shop.getAllSpells(), spellsList);
         initializeShopItems(Shop.getAllUsables(), usablesList);
         shopBackButton.setOnAction(event -> MainMenuController.getInstance().setAsScene());
         buyButton.setOnAction(event -> {
-            if(Account.getMainAccount() == null){
+            if (Account.getMainAccount() == null) {
                 displayMessage("you are not Logged in!");
                 return;
             }
             Tab tab = tabPane.getSelectionModel().getSelectedItem();
             ListView listView = (ListView) tab.getContent();
             DisplayableCard displayableCard = null;
+            Card card = null;
+            if (listView != null) {
+                displayableCard = (DisplayableCard) listView.getSelectionModel().getSelectedItem();
+                card = displayableCard.getCard();
+            }
+            if (displayableCard != null) {
+                buyCard(displayableCard.getCard());
+                selectTab(collectionTabPane, card);
+            }
+        });
+        sellButton.setOnAction(event -> {
+            if (Account.getMainAccount() == null) {
+                displayMessage("you are not Logged in!");
+                return;
+            }
+            Tab tab = collectionTabPane.getSelectionModel().getSelectedItem();
+            ListView listView = (ListView) tab.getContent();
+            DisplayableCard displayableCard = null;
             if (listView != null) {
                 displayableCard = (DisplayableCard) listView.getSelectionModel().getSelectedItem();
             }
             if (displayableCard != null) {
-                buyCard(displayableCard.getCard());
+                sellCard(displayableCard.getCard());
             }
         });
         findButton.setOnAction(event -> search());
         searchText.setOnAction(event -> search());
+    }
+
+    private void selectTab(TabPane tabPane, Card card){
+        switch (card.getType()) {
+            case hero:
+                tabPane.getSelectionModel().select(tabPane.getTabs().get(0));
+                break;
+            case minion:
+                tabPane.getSelectionModel().select(tabPane.getTabs().get(1));
+                break;
+            case spell:
+                tabPane.getSelectionModel().select(tabPane.getTabs().get(2));
+                break;
+            case item:
+                tabPane.getSelectionModel().select(tabPane.getTabs().get(3));
+                break;
+        }
     }
 
     private void search() {
@@ -220,20 +283,7 @@ public class ShopController implements Initializable {
         if (card == null) {
             displayMessage("card not found!!");
         } else {
-            switch (card.getType()) {
-                case hero:
-                    tabPane.getSelectionModel().select(tabPane.getTabs().get(0));
-                    break;
-                case minion:
-                    tabPane.getSelectionModel().select(tabPane.getTabs().get(1));
-                    break;
-                case spell:
-                    tabPane.getSelectionModel().select(tabPane.getTabs().get(2));
-                    break;
-                case item:
-                    tabPane.getSelectionModel().select(tabPane.getTabs().get(3));
-                    break;
-            }
+            selectTab(tabPane, card);
             Tab tab = tabPane.getSelectionModel().getSelectedItem();
             ListView listView = (ListView) tab.getContent();
             listView.scrollTo(new DisplayableCard(card, ""));
