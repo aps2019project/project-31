@@ -161,8 +161,6 @@ public class DisplayableDeployable extends StackPane {
         if (deployable.getCell() != null && deployable.getCell().getPolygon() != null){
             currentStance.setTranslateX(deployable.getCell().calculateCenter()[0]);
             currentStance.setTranslateY(deployable.getCell().calculateCenter()[1]);
-
-
         }
     }
 

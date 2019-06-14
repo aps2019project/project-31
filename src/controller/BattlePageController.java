@@ -124,7 +124,7 @@ public class BattlePageController implements Initializable {
     public Label opponentGeneralCooldown;
     public Label generalSpellManaCost;
     public Label opponentGeneralSpellManaCost;
-    private ArrayList<ImageView> manas;
+    private ArrayList<ImageView> manas = new ArrayList<>();
 
 
     public void setAsScene() {
@@ -158,9 +158,52 @@ public class BattlePageController implements Initializable {
         }
     }
 
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+
+
+        manas.add(mana1);
+        manas.add(mana2);
+        manas.add(mana3);
+        manas.add(mana4);
+        manas.add(mana5);
+        manas.add(mana6);
+        manas.add(mana7);
+        manas.add(mana8);
+        manas.add(mana9);
+        initPlayers();
+        username.setText(me.getAccount().getUsername());
+        opponentUsername.setText(opponent.getAccount().getUsername());
+        generalSpellManaCost.setText("" + me.getHero().getHeroSpell().getManaCost());
+        opponentGeneralSpellManaCost.setText("" + opponent.getHero().getHeroSpell().getManaCost());
+        generalCoolDown.setText("" + me.getHero().getHeroSpell().getManaCost());
+        opponentGeneralCooldown.setText("" + opponent.getHero().getHeroSpell().getManaCost());
+
+    }
+
+    public static BattlePageController getBattlePageController() {
+        return battlePageController;
+    }
+
+    public Player getMe() {
+        return me;
+    }
+
+    public Player getOpponent() {
+        return opponent;
+    }
+
+    public ArrayList<ImageView> getManas() {
+        return manas;
+    }
+
+
     public void initTheMapCells() {
         System.err.println("Initializing maps ...");
         Map.createTheMap();
+        for (int i = 0; i <= 9; i++) {
+            Map.getMap()[0][i] = new Cell(0, i, null, null);
+        }
         Map.getMap()[1][1] = new Cell(1, 1, null, place11);
         Map.getMap()[1][2] = new Cell(1, 2, null, place12);
         Map.getMap()[1][3] = new Cell(1, 3, null, place13);
@@ -207,46 +250,5 @@ public class BattlePageController implements Initializable {
         Map.getMap()[5][8] = new Cell(5, 8, null, place58);
         Map.getMap()[5][9] = new Cell(5, 9, null, place59);
     }
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        initTheMapCells();
-
-
-        /*manas.add(mana1);
-        manas.add(mana2);
-        manas.add(mana3);
-        manas.add(mana4);
-        manas.add(mana5);
-        manas.add(mana6);
-        manas.add(mana7);
-        manas.add(mana8);
-        manas.add(mana9);
-        initPlayers();
-        username.setText(me.getAccount().getUsername());
-        opponentUsername.setText(opponent.getAccount().getUsername());
-        generalSpellManaCost.setText("" + me.getHero().getHeroSpell().getManaCost());
-        opponentGeneralSpellManaCost.setText("" + opponent.getHero().getHeroSpell().getManaCost());
-        generalCoolDown.setText("" + me.getHero().getHeroSpell().getManaCost());
-        opponentGeneralCooldown.setText("" + opponent.getHero().getHeroSpell().getManaCost());*/
-
-    }
-
-    public static BattlePageController getBattlePageController() {
-        return battlePageController;
-    }
-
-    public Player getMe() {
-        return me;
-    }
-
-    public Player getOpponent() {
-        return opponent;
-    }
-
-    public ArrayList<ImageView> getManas() {
-        return manas;
-    }
-
 
 }
