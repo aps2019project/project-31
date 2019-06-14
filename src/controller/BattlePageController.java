@@ -166,17 +166,5 @@ public class BattlePageController implements Initializable {
         return manas;
     }
 
-    public Double[] calculateCenter(Double[] points) {
-        Double[] coordinates = new Double[2];
-        double x = 0, y = 0;
-        for (int i = 0; i < points.length; i += 2) {
-            x += points[i];
-        }
-        for (int i = 1; i < points.length; i += 2) {
-            y += points[i];
-        }
-        coordinates[0] = x / 4;
-        coordinates[1] = y / 4;
-        return coordinates;
-    }
+
 }

@@ -229,7 +229,7 @@ public class Input {
             Pattern pattern = Pattern.compile("show info (\\d+)");
             Matcher matcher = pattern.matcher(input);
             if (matcher.matches()) {
-                System.out.println(BattleMenu.findDeadMinion(Integer.parseInt(matcher.group(1))).infoToString());
+         //       System.out.println(BattleMenu.findDeadMinion(Integer.parseInt(matcher.group(1))).infoToString());
             }
             if (input.equalsIgnoreCase("exit"))
                 return;
@@ -238,13 +238,13 @@ public class Input {
 
     public static void showAllGraveyardCards() {
         System.out.println("Player 1 dead minions:\n");
-        for (Deployable card : BattleMenu.getBattleManager().getPlayer1().getGraveYard()) {
+    /*    for (Deployable card : BattleMenu.getBattleManager().getPlayer1().getGraveYard()) {
             System.out.println(card.infoToString());
         }
         System.out.println("Player 2 dead minions:\n");
         for (Deployable card : BattleMenu.getBattleManager().getPlayer2().getGraveYard()) {
             System.out.println(card.infoToString());
-        }
+        }*/
     }
 
     public static void handleCommandsInCollectionMenu() {

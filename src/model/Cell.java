@@ -111,4 +111,18 @@ public class Cell {
         return onPoisonTurns >= 1;
     }
 
+    public Double[] calculateCenter() {
+        Double[] coordinates = new Double[2];
+        double x = 0, y = 0;
+        for (int i = 0; i < polygon.getPoints().size(); i += 2) {
+            x += polygon.getPoints().get(i);
+        }
+        for (int i = 1; i < polygon.getPoints().size(); i += 2) {
+            y += polygon.getPoints().get(i);
+        }
+        coordinates[0] = x / 4;
+        coordinates[1] = y / 4;
+        return coordinates;
+    }
+
 }
