@@ -1,5 +1,6 @@
 package model;
 
+import controller.BattlePageController;
 import constants.AttackType;
 import constants.CardType;
 import constants.FunctionType;
@@ -101,6 +102,8 @@ public class BattleManager {
         currentPlayer.addCardToBattlefield(theMinion);
         DisplayableDeployable face = new DisplayableDeployable(theMinion);
         theMinion.setFace(face);
+        if (BattlePageController.getInstance() != null)
+            BattlePageController.getInstance().motherFuckinPane.getChildren().add(face);
         currentPlayer.removeFromHand(minion);
         applyOnSpawnFunction(theMinion);
         currentPlayer.decreaseMana(theMinion.manaCost);
@@ -871,6 +874,7 @@ public class BattleManager {
         }
 
         enemy.cell.setCardInCell(null);
+        BattlePageController.getInstance().motherFuckinPane.getChildren().remove(enemy.getFace());
 
         player.addCardToGraveYard(new DisplayableDeployable(enemy));
         player.getCardsOnBattleField().remove(enemy);

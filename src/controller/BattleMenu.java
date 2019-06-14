@@ -176,8 +176,12 @@ public class BattleMenu extends Menu {
         hero2.getCell().setCardInCell(hero2);
         battleManager.getPlayer1().addCardToBattlefield(hero1);
         battleManager.getPlayer2().addCardToBattlefield(hero2);
-        hero1.setFace(new DisplayableDeployable(hero1));
-        hero2.setFace(new DisplayableDeployable(hero2));
+        DisplayableDeployable faceHero1 = new DisplayableDeployable(hero1);
+        DisplayableDeployable faceHero2 = new DisplayableDeployable(hero2);
+        hero1.setFace(faceHero1);
+        hero2.setFace(faceHero2);
+        if (BattlePageController.getInstance() != null)
+            BattlePageController.getInstance().motherFuckinPane.getChildren().addAll(faceHero1,faceHero2);
     }
 
     private static void doAllThingsInEndingOfTheTurns() {
@@ -352,7 +356,7 @@ public class BattleMenu extends Menu {
         for (Cell[] cells : Map.getMap()) {
             for (Cell cell : cells) {
                 if (cell.getItem() != null) {
-                    System.out.println(cell.getItem().toString() + " coordination:  " + cell.getX1Coordinate()+"," + cell.getX2Coordinate());
+                    System.out.println(cell.getItem().toString() + " coordination:  " + cell.getX1Coordinate() + "," + cell.getX2Coordinate());
                 }
             }
         }
