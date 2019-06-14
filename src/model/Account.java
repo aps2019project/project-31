@@ -25,7 +25,6 @@ public class Account {
     private int[] winLoseDraw = new int[3];
 
 
-
     public static void loadAllAccounts() {
         YaGson yaGson = new YaGsonBuilder().create();
         String path = System.getProperty("user.dir") + "/Sources/Accounts/Accounts.txt";
@@ -40,14 +39,15 @@ public class Account {
         }
     }
 
-    public void incrementWins(){
+    public void incrementWins() {
         winLoseDraw[0]++;
     }
 
-    public void incrementLosses(){
+    public void incrementLosses() {
         winLoseDraw[1]++;
     }
-    public void incrementDraw(){
+
+    public void incrementDraw() {
         winLoseDraw[2]++;
     }
 
@@ -96,6 +96,15 @@ public class Account {
 
     public ArrayList<Card> getCollection() {
         return collection;
+    }
+
+    public ArrayList<Card> getSpecificCards(CardType cardType) {
+        ArrayList<Card> specifics = new ArrayList<>();
+        for (Card card : collection){
+            if(card.getType().equals(cardType))
+                specifics.add(card);
+        }
+        return specifics;
     }
 
     public int getDaric() {

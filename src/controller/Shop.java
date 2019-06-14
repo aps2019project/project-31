@@ -179,13 +179,7 @@ public class Shop extends Menu {
     }
 
     private static void sellCard(Card card) {
-        Card theCard = null;
-        for (Card c : Account.getMainAccount().getCollection()) {
-            if (c.getName().equalsIgnoreCase(card.getName())) {
-                theCard = c;
-                break;
-            }
-        }
+        Card theCard = ShopController.getInstance().findCardInCollection(card);
         if (theCard == null) {
             Output.print("card not in collection");
             return;
