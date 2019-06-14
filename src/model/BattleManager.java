@@ -972,16 +972,20 @@ public class BattleManager {
 
     public void applyItemFunctions(Deployable card, FunctionType functionType) {
         try {
-            player1.currentDeck.getItem().setAccount(player1.account);
-            player2.currentDeck.getItem().setAccount(player2.account);
-            for (Function function : player1.currentDeck.getItem().functions) {
-                if (function.getFunctionType() == functionType) {
-                    compileFunction(function, card.cell.getX1Coordinate(), card.cell.getX2Coordinate());
+            if (player1.currentDeck.getItem() != null) {
+                player1.currentDeck.getItem().setAccount(player1.account);
+                for (Function function : player1.currentDeck.getItem().functions) {
+                    if (function.getFunctionType() == functionType) {
+                        compileFunction(function, card.cell.getX1Coordinate(), card.cell.getX2Coordinate());
+                    }
                 }
             }
-            for (Function function : player2.currentDeck.getItem().functions) {
-                if (function.getFunctionType() == functionType)
-                    compileFunction(function, card.cell.getX1Coordinate(), card.cell.getX2Coordinate());
+            if (player2.currentDeck.getItem() != null) {
+                player2.currentDeck.getItem().setAccount(player2.account);
+                for (Function function : player2.currentDeck.getItem().functions) {
+                    if (function.getFunctionType() == functionType)
+                        compileFunction(function, card.cell.getX1Coordinate(), card.cell.getX2Coordinate());
+                }
             }
         } catch (Exception e) {
             System.err.println("there isn't usable item in your deck");
@@ -1272,9 +1276,13 @@ public class BattleManager {
             card.getFace().updateStats();
         }
         BattlePageController battleController = BattlePageController.getBattlePageController();
-        battleController.health.setText("" + battleController.getMe().getHero().theActualHealth());
-        battleController.opponentHealth.setText("" + battleController.getOpponent().getHero().theActualHealth());
-        battleController.opponentHand.setText("Hand: " + battleController.getOpponent().handSize() + " / 6");
+        try {
+            battleController.health.setText("" + battleController.getMe().getHero().theActualHealth());
+            battleController.opponentHealth.setText("" + battleController.getOpponent().getHero().theActualHealth());
+            battleController.opponentHand.setText("Hand: " + battleController.getOpponent().handSize() + " / 6");
+        } catch (NullPointerException e) {
+            System.out.println("mohem nis :)");
+        }
         try {
             if (battleController.getMe() == currentPlayer) {
                 for (int i = 0; i < currentPlayer.getMana(); i++) {
@@ -1289,21 +1297,25 @@ public class BattleManager {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        int usualMana;
-        if (turn <= 14) {
-            usualMana = (turn - 1) / 2 + 2;
-        } else {
-            usualMana = 9;
-        }
-        if (battleController.getOpponent() == currentPlayer)
-            battleController.opponentMana.setText("" + usualMana + player1.manaChangerInTurn[turn] + " / " + usualMana);
-        else {
-            battleController.opponentMana.setText("0 / 0");
-        }
-        battleController.generalCoolDown.setText("" + battleController.getMe().getHero().getHeroSpell().getCoolDownRemaining());
-        battleController.opponentGeneralCooldown.setText("" + battleController.getOpponent().getHero().getHeroSpell().getCoolDownRemaining());
-        battleController.deckSize.setText("Deck: " + battleController.getMe().deckSize() + "/20");
+        try {
 
+            int usualMana;
+            if (turn <= 14) {
+                usualMana = (turn - 1) / 2 + 2;
+            } else {
+                usualMana = 9;
+            }
+            if (battleController.getOpponent() == currentPlayer)
+                battleController.opponentMana.setText("" + usualMana + player1.manaChangerInTurn[turn] + " / " + usualMana);
+            else {
+                battleController.opponentMana.setText("0 / 0");
+            }
+            battleController.generalCoolDown.setText("" + battleController.getMe().getHero().getHeroSpell().getCoolDownRemaining());
+            battleController.opponentGeneralCooldown.setText("" + battleController.getOpponent().getHero().getHeroSpell().getCoolDownRemaining());
+            battleController.deckSize.setText("Deck: " + battleController.getMe().deckSize() + "/20");
+        } catch (NullPointerException e) {
+            System.out.println("migam ke mohem nis");
+        }
         // next card , cards in hand , all deployedCard in battle with their attack and health should be refreshed too
 
     }

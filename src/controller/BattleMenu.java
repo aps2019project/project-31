@@ -134,12 +134,13 @@ public class BattleMenu extends Menu {
     }
 
     public void runTheGame() {
+        battleManager.initialTheGame();
         boolean isPlayer1Turn = false;
         battleManager.getPlayer1().generateDeckArrangement();
         battleManager.getPlayer2().generateDeckArrangement();
 
         battleManager.setCurrentPlayer(battleManager.getPlayer2());
-        battleManager.initialTheGame();
+
         battleManager.applyItemFunctions(battleManager.getCurrentPlayer().getHero(), FunctionType.GameStart);
         battleManager.setCurrentPlayer(battleManager.getPlayer1());
         battleManager.applyItemFunctions(battleManager.getCurrentPlayer().getHero(), FunctionType.GameStart);
@@ -180,8 +181,8 @@ public class BattleMenu extends Menu {
         DisplayableDeployable faceHero2 = new DisplayableDeployable(hero2);
         hero1.setFace(faceHero1);
         hero2.setFace(faceHero2);
-        if (BattlePageController.getInstance() != null)
-            BattlePageController.getInstance().motherFuckinPane.getChildren().addAll(faceHero1,faceHero2);
+        if (BattlePageController.getInstance().motherFuckinPane != null)
+            BattlePageController.getInstance().motherFuckinPane.getChildren().addAll(faceHero1, faceHero2);
     }
 
     private static void doAllThingsInEndingOfTheTurns() {
@@ -355,7 +356,7 @@ public class BattleMenu extends Menu {
         }
         for (Cell[] cells : Map.getMap()) {
             for (Cell cell : cells) {
-                if (cell.getItem() != null) {
+                if (cell != null && cell.getItem() != null) {
                     System.out.println(cell.getItem().toString() + " coordination:  " + cell.getX1Coordinate() + "," + cell.getX2Coordinate());
                 }
             }
