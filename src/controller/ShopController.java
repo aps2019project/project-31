@@ -1,9 +1,6 @@
 package controller;
 
 import constants.CardType;
-import javafx.animation.AnimationTimer;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
@@ -12,13 +9,10 @@ import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import model.*;
 import view.Output;
 
-import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
@@ -72,15 +66,15 @@ public class ShopController implements Initializable {
         Initializer.setCurrentScene(scene);
     }
 
-    public void initializeShopItems(ArrayList cards, ListView<DisplayableCard> listView) {
+    public void initializeShopItems(ArrayList cards, ListView<DisplayableCard> listView, double scale) {
         boolean first = true;
         DisplayableCard displayableCard1 = null;
         DisplayableCard displayableCard2 = null;
         VBox vBox = null;
         for (Object card : cards) {
             displayableCard1 = new DisplayableCard((Card) card, "");
-            displayableCard1.setScaleX(0.5);
-            displayableCard1.setScaleY(0.5);
+            displayableCard1.setScaleX(scale);
+            displayableCard1.setScaleY(scale);
             displayableCard1.setTranslateY(-200);
             displayableCard1.setMaxWidth(100);
             listView.setMaxSize(800, 400);
@@ -127,7 +121,7 @@ public class ShopController implements Initializable {
     public void updateCollectionOf(CardType cardType, ListView<DisplayableCard> listView){
         ArrayList<Card> cards = Account.getMainAccount().getSpecificCards(cardType);
         listView.getItems().clear();
-        initializeShopItems(cards, listView);
+        initializeShopItems(cards, listView, 0.3);
     }
 
     public void displayMessage(String massage) {
@@ -224,10 +218,11 @@ public class ShopController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        initializeShopItems(Shop.getAllHeroes(), heroesList);
-        initializeShopItems(Shop.getAllMinions(), minionsList);
-        initializeShopItems(Shop.getAllSpells(), spellsList);
-        initializeShopItems(Shop.getAllUsables(), usablesList);
+        initializeShopItems(Shop.getAllHeroes(), heroesList, 0.5);
+        initializeShopItems(Shop.getAllMinions(), minionsList, 0.5);
+        initializeShopItems(Shop.getAllSpells(), spellsList, 0.5);
+        initializeShopItems(Shop.getAllUsables(), usablesList, 0.5);
+        updateCollection();
         updateDaricView();
         shopBackButton.setOnAction(event -> MainMenuController.getInstance().setAsScene());
         buyButton.setOnAction(event -> {
