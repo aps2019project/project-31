@@ -2,6 +2,7 @@ package controller;
 
 import constants.*;
 import constants.GameMode;
+import javafx.application.Platform;
 import model.*;
 import view.Input;
 import view.Output;
@@ -13,7 +14,6 @@ import java.util.Collections;
 public class BattleMenu extends Menu {
     private static BattleManager battleManager;
     private static boolean areWeInMiddleOfTurn = true;
-
 
     protected static boolean isGameFinished = false;
 
@@ -122,8 +122,9 @@ public class BattleMenu extends Menu {
         for (int theTurn : battleManager.getTurnsAppearingTheCollectibleFlags()) {
             if (theTurn == battleManager.getTurn()) {
                 Collections.shuffle(Shop.getAllCollectibles());
+                battleManager.putFlagOnMap(Shop.getAllCollectibles().get(0));
             }
-            battleManager.putFlagOnMap(Shop.getAllCollectibles().get(0));
+
         }
         battleManager.refreshTheStatusOfMap();
 
@@ -134,12 +135,13 @@ public class BattleMenu extends Menu {
     }
 
     public void runTheGame() {
+        battleManager.initialTheGame();
         boolean isPlayer1Turn = false;
         battleManager.getPlayer1().generateDeckArrangement();
         battleManager.getPlayer2().generateDeckArrangement();
 
         battleManager.setCurrentPlayer(battleManager.getPlayer2());
-        battleManager.initialTheGame();
+
         battleManager.applyItemFunctions(battleManager.getCurrentPlayer().getHero(), FunctionType.GameStart);
         battleManager.setCurrentPlayer(battleManager.getPlayer1());
         battleManager.applyItemFunctions(battleManager.getCurrentPlayer().getHero(), FunctionType.GameStart);
@@ -169,18 +171,24 @@ public class BattleMenu extends Menu {
         }
     }
 
-    private static void initHeroes() {
+    public static void initHeroes() {
         Hero hero1 = battleManager.getPlayer1().getHero();
         Hero hero2 = battleManager.getPlayer2().getHero();
         hero1.getCell().setCardInCell(hero1);
         hero2.getCell().setCardInCell(hero2);
         battleManager.getPlayer1().addCardToBattlefield(hero1);
         battleManager.getPlayer2().addCardToBattlefield(hero2);
-        hero1.setFace(new DisplayableDeployable(hero1));
-        hero2.setFace(new DisplayableDeployable(hero2));
+        DisplayableDeployable faceHero1 = new DisplayableDeployable(hero1);
+        DisplayableDeployable faceHero2 = new DisplayableDeployable(hero2);
+        hero1.setFace(faceHero1);
+        hero2.setFace(faceHero2);
+
+        BattlePageController.getInstance().motherFuckinPane.getChildren().addAll(faceHero1, faceHero2);
+
+
     }
 
-    private static void doAllThingsInEndingOfTheTurns() {
+    public static void doAllThingsInEndingOfTheTurns() {
         battleManager.makeIsMovedAndStunnedAndStuffFalse();
         battleManager.applyItemFunctions(battleManager.getPlayer1().getHero(), FunctionType.Passive);
         battleManager.getCurrentPlayer().placeNextCardToHand();
@@ -351,8 +359,8 @@ public class BattleMenu extends Menu {
         }
         for (Cell[] cells : Map.getMap()) {
             for (Cell cell : cells) {
-                if (cell.getItem() != null) {
-                    System.out.println(cell.getItem().toString() + " coordination:  " + cell.getX1Coordinate()+"," + cell.getX2Coordinate());
+                if (cell != null && cell.getItem() != null) {
+                    System.out.println(cell.getItem().toString() + " coordination:  " + cell.getX1Coordinate() + "," + cell.getX2Coordinate());
                 }
             }
         }

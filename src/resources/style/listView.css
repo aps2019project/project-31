@@ -1,3 +1,19 @@
-.list-view{
+.list-view {
     -fx-background-color: rgba(0, 0, 0, 0.2);
+}
+
+.list-cell {
+    -fx-background-color: rgba(0, 0, 0, 0.2);
+    -fx-padding: 0, 0, 0, 0;
+    -fx-border-width: 0;
+    -fx-border-height: 0;;
+}
+
+.list-cell:selected {
+    -fx-background-color: rgba(0, 0, 0, 0.1);
+}
+
+.list-view .scroll-bar:vertical {
+    -fx-opacity: 0;
+    -fx-padding: -7;
 }

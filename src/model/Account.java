@@ -16,14 +16,13 @@ public class Account {
     private static Account mainAccount;
 
     private ArrayList<Card> collection = new ArrayList<>();
-    private int daric;
+    private int daric = 0;
     private ArrayList<Deck> decks = new ArrayList<>();
     private Deck theMainDeck;
     private String username;
     private String password;
     private ArrayList<MatchHistory> matchHistories = new ArrayList<>();
     private int[] winLoseDraw = new int[3];
-
 
 
     public static void loadAllAccounts() {
@@ -40,14 +39,15 @@ public class Account {
         }
     }
 
-    public void incrementWins(){
+    public void incrementWins() {
         winLoseDraw[0]++;
     }
 
-    public void incrementLosses(){
+    public void incrementLosses() {
         winLoseDraw[1]++;
     }
-    public void incrementDraw(){
+
+    public void incrementDraw() {
         winLoseDraw[2]++;
     }
 
@@ -96,6 +96,15 @@ public class Account {
 
     public ArrayList<Card> getCollection() {
         return collection;
+    }
+
+    public ArrayList<Card> getSpecificCards(CardType cardType) {
+        ArrayList<Card> specifics = new ArrayList<>();
+        for (Card card : collection) {
+            if (card.getType().equals(cardType))
+                specifics.add(card);
+        }
+        return specifics;
     }
 
     public int getDaric() {

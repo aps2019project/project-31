@@ -1,16 +1,16 @@
 package controller;
 
+import constants.FunctionType;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Polygon;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.shape.Polyline;
 import model.*;
 
 import java.awt.*;
@@ -37,7 +37,7 @@ public class BattlePageController implements Initializable {
     public ImageView hand5;
     public StackPane column6;
     public ImageView hand6;
-    public Button setting;
+
     public Button endTurn;
     public Button replace;
     public StackPane lastStackPane; // it's scaled to (0.01,0.01) ...
@@ -47,6 +47,53 @@ public class BattlePageController implements Initializable {
     public Label username;
     public Label generalCoolDown;
     public Pane motherFuckinPane;
+    public Polyline place51;
+    public Polyline place52;
+    public Polyline place53;
+    public Polyline place54;
+    public Polyline place55;
+    public Polyline place56;
+    public Polyline place57;
+    public Polyline place58;
+    public Polyline place59;
+    public Polyline place41;
+    public Polyline place42;
+    public Polyline place43;
+    public Polyline place44;
+    public Polyline place45;
+    public Polyline place46;
+    public Polyline place47;
+    public Polyline place48;
+    public Polyline place49;
+    public Polyline place31;
+    public Polyline place32;
+    public Polyline place33;
+    public Polyline place34;
+    public Polyline place35;
+    public Polyline place36;
+    public Polyline place37;
+    public Polyline place38;
+    public Polyline place39;
+    public Polyline place29;
+    public Polyline place28;
+    public Polyline place27;
+    public Polyline place26;
+    public Polyline place25;
+    public Polyline place24;
+    public Polyline place23;
+    public Polyline place22;
+    public Polyline place21;
+    public Polyline place11;
+    public Polyline place12;
+    public Polyline place13;
+    public Polyline place14;
+    public Polyline place15;
+    public Polyline place16;
+    public Polyline place17;
+    public Polyline place18;
+    public Polyline place19;
+    public Button concede;
+
     private StackPane showingGraveYard; // for showing it: lastStackPane = showingGraveYard; showingGraveYard is a designed scene
 
     private Player me;
@@ -79,8 +126,10 @@ public class BattlePageController implements Initializable {
     public Label opponentGeneralCooldown;
     public Label generalSpellManaCost;
     public Label opponentGeneralSpellManaCost;
-    private ArrayList<ImageView> manas;
+    private ArrayList<ImageView> manas = new ArrayList<>();
 
+    public BattlePageController() {
+    }
 
     public void setAsScene() {
         if (scene == null) {
@@ -115,23 +164,21 @@ public class BattlePageController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        System.err.println("Initializing maps ...");
-        Polygon[][] polygons = new Polygon[5][9];
-        for (int i = 0; i < 5; i++) {
-            for (int j = 0; j < 9; j++) {
-                polygons[i][j] = new Polygon();
-                polygons[i][j].getPoints().addAll(0.0, 0.0, 600.0, 0.0, 0.0, 600.0, 600.0, 600.0);
-                polygons[i][j].setFill(Color.RED);
-            }
-        }
-        Map.createTheMap();
-        for (int i = 0; i <= 5; i++) {
-            for (int j = 0; j <= 9; j++) {
-                //      Map.getMap()[i][j] = new Cell(i, j, null);
-            }
-        }
+        BattleManager battle = BattleMenu.getBattleManager();
+        battle.initialTheGame();
 
-        /*manas.add(mana1);
+        battle.getPlayer1().generateDeckArrangement();
+        battle.getPlayer2().generateDeckArrangement();
+
+        battle.setCurrentPlayer(BattleMenu.getBattleManager().getPlayer2());
+
+        battle.applyItemFunctions(BattleMenu.getBattleManager().getCurrentPlayer().getHero(), FunctionType.GameStart);
+        battle.setCurrentPlayer(BattleMenu.getBattleManager().getPlayer1());
+        battle.applyItemFunctions(BattleMenu.getBattleManager().getCurrentPlayer().getHero(), FunctionType.GameStart);
+        battle.setCurrentPlayer(BattleMenu.getBattleManager().getPlayer2());
+        BattleMenu.initHeroes();
+
+        manas.add(mana1);
         manas.add(mana2);
         manas.add(mana3);
         manas.add(mana4);
@@ -146,8 +193,43 @@ public class BattlePageController implements Initializable {
         generalSpellManaCost.setText("" + me.getHero().getHeroSpell().getManaCost());
         opponentGeneralSpellManaCost.setText("" + opponent.getHero().getHeroSpell().getManaCost());
         generalCoolDown.setText("" + me.getHero().getHeroSpell().getManaCost());
-        opponentGeneralCooldown.setText("" + opponent.getHero().getHeroSpell().getManaCost());*/
+        opponentGeneralCooldown.setText("" + opponent.getHero().getHeroSpell().getManaCost());
 
+
+
+        replace.setOnAction(event -> {
+            if (isMyTrun() && battle.getCurrentPlayer().getSelectedCard() != null) {
+                BattleMenu.replaceCardInHand(battle.getCurrentPlayer().getSelectedCard().getId());
+            }
+        });
+        endTurn.setOnAction(event -> {
+            BattleMenu.doAllThingsInEndingOfTheTurns();
+            if (isMyTrun()) {
+                battle.setCurrentPlayer(battle.getOtherPlayer());
+            }
+            if (battle.getCurrentPlayer().isAi()) {
+                ((Ai) battle.getCurrentPlayer()).play();
+                battle.setCurrentPlayer(battle.getOtherPlayer());
+            }
+            BattleMenu.doAllAtTheBeginningOfTurnThings();
+        });
+        // select a card ydt nre
+        concede.setOnAction(event -> {
+            if (battle.getCurrentPlayer() == battle.getPlayer1())
+                battle.player2Won();
+            else
+                battle.player1Won();
+        });
+        graveYard.setOnAction(event -> {
+            GraveYardController.getInstance().setAsScene();
+        });
+
+
+    }
+
+    private boolean isMyTrun() {
+        return BattleMenu.getBattleManager().getCurrentPlayer().
+                getAccount().getUsername().equals(me.getAccount().getUsername());
     }
 
     public static BattlePageController getBattlePageController() {
@@ -166,17 +248,58 @@ public class BattlePageController implements Initializable {
         return manas;
     }
 
-    public Double[] calculateCenter(Double[] points) {
-        Double[] coordinates = new Double[2];
-        double x = 0, y = 0;
-        for (int i = 0; i < points.length; i += 2) {
-            x += points[i];
+
+    public void initTheMapCells() {
+        System.err.println("Initializing maps ...");
+        Map.createTheMap();
+        for (int i = 0; i <= 9; i++) {
+            Map.getMap()[0][i] = new Cell(0, i, null, null);
         }
-        for (int i = 1; i < points.length; i += 2) {
-            y += points[i];
-        }
-        coordinates[0] = x / 4;
-        coordinates[1] = y / 4;
-        return coordinates;
+        Map.getMap()[1][1] = new Cell(1, 1, null, place11);
+        Map.getMap()[1][2] = new Cell(1, 2, null, place12);
+        Map.getMap()[1][3] = new Cell(1, 3, null, place13);
+        Map.getMap()[1][4] = new Cell(1, 4, null, place14);
+        Map.getMap()[1][5] = new Cell(1, 5, null, place15);
+        Map.getMap()[1][6] = new Cell(1, 6, null, place16);
+        Map.getMap()[1][7] = new Cell(1, 7, null, place17);
+        Map.getMap()[1][8] = new Cell(1, 8, null, place18);
+        Map.getMap()[1][9] = new Cell(1, 9, null, place19);
+        Map.getMap()[2][1] = new Cell(2, 1, null, place21);
+        Map.getMap()[2][2] = new Cell(2, 2, null, place22);
+        Map.getMap()[2][3] = new Cell(2, 3, null, place23);
+        Map.getMap()[2][4] = new Cell(2, 4, null, place24);
+        Map.getMap()[2][5] = new Cell(2, 5, null, place25);
+        Map.getMap()[2][6] = new Cell(2, 6, null, place26);
+        Map.getMap()[2][7] = new Cell(2, 7, null, place27);
+        Map.getMap()[2][8] = new Cell(2, 8, null, place28);
+        Map.getMap()[2][9] = new Cell(2, 9, null, place29);
+        Map.getMap()[3][1] = new Cell(3, 1, null, place31);
+        Map.getMap()[3][2] = new Cell(3, 2, null, place32);
+        Map.getMap()[3][3] = new Cell(3, 3, null, place33);
+        Map.getMap()[3][4] = new Cell(3, 4, null, place34);
+        Map.getMap()[3][5] = new Cell(3, 5, null, place35);
+        Map.getMap()[3][6] = new Cell(3, 6, null, place36);
+        Map.getMap()[3][7] = new Cell(3, 7, null, place37);
+        Map.getMap()[3][8] = new Cell(3, 8, null, place38);
+        Map.getMap()[3][9] = new Cell(3, 9, null, place39);
+        Map.getMap()[4][1] = new Cell(4, 1, null, place41);
+        Map.getMap()[4][2] = new Cell(4, 2, null, place42);
+        Map.getMap()[4][3] = new Cell(4, 3, null, place43);
+        Map.getMap()[4][4] = new Cell(4, 4, null, place44);
+        Map.getMap()[4][5] = new Cell(4, 5, null, place45);
+        Map.getMap()[4][6] = new Cell(4, 6, null, place46);
+        Map.getMap()[4][7] = new Cell(4, 7, null, place47);
+        Map.getMap()[4][8] = new Cell(4, 8, null, place48);
+        Map.getMap()[4][9] = new Cell(4, 9, null, place49);
+        Map.getMap()[5][1] = new Cell(5, 1, null, place51);
+        Map.getMap()[5][2] = new Cell(5, 2, null, place52);
+        Map.getMap()[5][3] = new Cell(5, 3, null, place53);
+        Map.getMap()[5][4] = new Cell(5, 4, null, place54);
+        Map.getMap()[5][5] = new Cell(5, 5, null, place55);
+        Map.getMap()[5][6] = new Cell(5, 6, null, place56);
+        Map.getMap()[5][7] = new Cell(5, 7, null, place57);
+        Map.getMap()[5][8] = new Cell(5, 8, null, place58);
+        Map.getMap()[5][9] = new Cell(5, 9, null, place59);
     }
+
 }

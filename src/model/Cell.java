@@ -1,6 +1,7 @@
 package model;
 
 import javafx.scene.shape.Polygon;
+import javafx.scene.shape.Polyline;
 
 public class Cell {
     private int x1Coordinate;
@@ -11,13 +12,13 @@ public class Cell {
     private int isHolyTurns;
     private boolean hasFlag;
     private Item item;
-    private Polygon polygon;
+    private Polyline polygon;
 
-    public Polygon getPolygon() {
+    public Polyline getPolygon() {
         return polygon;
     }
 
-    public void setPolygon(Polygon polygon) {
+    public void setPolygon(Polyline polygon) {
         this.polygon = polygon;
     }
 
@@ -37,7 +38,7 @@ public class Cell {
         this.hasFlag = hasFlag;
     }
 
-    public Cell(int x1Coordinate, int x2Coordinate, Deployable cardInCell, Polygon polygon) {
+    public Cell(int x1Coordinate, int x2Coordinate, Deployable cardInCell, Polyline polygon) {
         this.x1Coordinate = x1Coordinate;
         this.x2Coordinate = x2Coordinate;
         this.cardInCell = cardInCell;
@@ -109,6 +110,20 @@ public class Cell {
 
     public boolean isPoisoned() {
         return onPoisonTurns >= 1;
+    }
+
+    public Double[] calculateCenter() {
+        Double[] coordinates = new Double[2];
+        double x = 0, y = 0;
+        for (int i = 0; i < polygon.getPoints().size(); i += 2) {
+            x += polygon.getPoints().get(i);
+        }
+        for (int i = 1; i < polygon.getPoints().size(); i += 2) {
+            y += polygon.getPoints().get(i);
+        }
+        coordinates[0] = x / 4;
+        coordinates[1] = y / 4;
+        return coordinates;
     }
 
 }
