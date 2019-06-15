@@ -37,7 +37,7 @@ public class LeaderBoardController implements Initializable {
     }
 
     public void setAsScene() {
-        if (scene == null) {
+        if (true) {
             try {
                 Parent root = FXMLLoader.load(getClass().getResource("/LeaderBoard.fxml"));
                 Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
