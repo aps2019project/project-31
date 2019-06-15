@@ -100,8 +100,8 @@ public class Account {
 
     public ArrayList<Card> getSpecificCards(CardType cardType) {
         ArrayList<Card> specifics = new ArrayList<>();
-        for (Card card : collection){
-            if(card.getType().equals(cardType))
+        for (Card card : collection) {
+            if (card.getType().equals(cardType))
                 specifics.add(card);
         }
         return specifics;
