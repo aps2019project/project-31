@@ -47,6 +47,7 @@ public class PlayMenuController implements Initializable {
         mainContainer.setScaleY(scaleX);
         backButton.setOnAction(event -> MainMenuController.getInstance().setAsScene());
         storyButton.setOnMouseClicked(event ->StoryMenuController.getInstance().setAsScene());
+        customButton.setOnMouseClicked(event -> CustomGameController.getInstance().setAsScene());
     }
 
     public PlayMenuController() {

@@ -11,7 +11,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <StackPane fx:id="mainContainer" cacheShape="false" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CardMakerController">
    <children>
       <ImageView fx:id="backgroundImage" fitHeight="720.0" fitWidth="1080.0" pickOnBounds="true">
@@ -21,7 +20,11 @@
       </ImageView>
       <HBox alignment="CENTER" prefHeight="720.0" prefWidth="1080.0">
          <children>
-            <VBox fx:id="displayVBox" alignment="CENTER" prefHeight="720.0" prefWidth="382.0" />
+            <VBox fx:id="displayVBox" alignment="CENTER" prefHeight="720.0" prefWidth="382.0">
+               <children>
+                  <Button id="firstButton" fx:id="previewButton" mnemonicParsing="false" stylesheets="@style/buttonOne.css" text="Preview" />
+                  <Button id="firstButton" fx:id="createButton" layoutX="116.0" layoutY="343.0" mnemonicParsing="false" stylesheets="@style/buttonOne.css" text="Create" />
+               </children></VBox>
             <VBox fx:id="centerVBox" alignment="CENTER" prefHeight="720.0" prefWidth="519.0" HBox.hgrow="NEVER">
                <children>
                   <Label fx:id="messageLabel" alignment="CENTER" prefHeight="99.0" prefWidth="519.0" stylesheets="@style/mainLabel.css" text="Select Card Type!">

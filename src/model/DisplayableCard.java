@@ -35,9 +35,15 @@ public class DisplayableCard extends StackPane {
             this.getChildren().add(imageView);
             addManaGem(card);
             if (imagePath.equals("")) {
-                imagePath = getClass().
-                        getResource("/gifs/Spells/" + card.getName() + "/actionbar.gif")
-                        .toExternalForm();
+                if (!card.getName().matches("custom(.*)")) {
+                    imagePath = getClass().
+                            getResource("/gifs/Spells/" + card.getName() + "/actionbar.gif")
+                            .toExternalForm();
+                } else {
+                    imagePath = getClass().
+                            getResource("/gifs/Spells/custom/actionbar.gif")
+                            .toExternalForm();
+                }
                 mainIcon = new ImageView(new Image(imagePath));
                 mainIcon.setTranslateY(-50);
                 mainIcon.setScaleX(2);
@@ -67,13 +73,26 @@ public class DisplayableCard extends StackPane {
             health.setTranslateX(60);
             if (imagePath.equals("")) {
                 if (card instanceof Minion)
-                    imagePath = getClass().
-                            getResource("/gifs/Minion/" + card.getName() + "/breathing.gif")
-                            .toExternalForm();
-                else
-                    imagePath = getClass().
-                            getResource("/gifs/Hero/" + card.getName() + "/breathing.gif")
-                            .toExternalForm();
+                    if (!card.getName().matches("custom(.*)")) {
+                        imagePath = getClass().
+                                getResource("/gifs/Minion/" + card.getName() + "/breathing.gif")
+                                .toExternalForm();
+                    } else {
+                        imagePath = getClass().
+                                getResource("/gifs/Minion/custom/breathing.gif")
+                                .toExternalForm();
+                    }
+                else {
+                    if (!card.getName().matches("custom(.*)"))
+                        imagePath = getClass().
+                                getResource("/gifs/Hero/" + card.getName() + "/breathing.gif")
+                                .toExternalForm();
+                    else
+                        imagePath = getClass().
+                                getResource("/gifs/Hero/custom/breathing.gif")
+                                .toExternalForm();
+                }
+
                 mainIcon = new ImageView(new Image(imagePath));
                 mainIcon.setTranslateY(-100);
                 mainIcon.setScaleX(2);
@@ -145,10 +164,10 @@ public class DisplayableCard extends StackPane {
     }
 
 
-    public boolean equals(Object displayableCard){
-        if(!(displayableCard instanceof DisplayableCard))
+    public boolean equals(Object displayableCard) {
+        if (!(displayableCard instanceof DisplayableCard))
             return false;
-        return card.equals(((DisplayableCard)displayableCard).getCard());
+        return card.equals(((DisplayableCard) displayableCard).getCard());
     }
 }
 

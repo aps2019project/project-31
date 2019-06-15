@@ -15,7 +15,6 @@ public class BattleMenu extends Menu {
     private static BattleManager battleManager;
     private static boolean areWeInMiddleOfTurn = true;
 
-
     protected static boolean isGameFinished = false;
 
     public static boolean isGameFinished() {
@@ -172,7 +171,7 @@ public class BattleMenu extends Menu {
         }
     }
 
-    private static void initHeroes() {
+    public static void initHeroes() {
         Hero hero1 = battleManager.getPlayer1().getHero();
         Hero hero2 = battleManager.getPlayer2().getHero();
         hero1.getCell().setCardInCell(hero1);
@@ -183,16 +182,13 @@ public class BattleMenu extends Menu {
         DisplayableDeployable faceHero2 = new DisplayableDeployable(hero2);
         hero1.setFace(faceHero1);
         hero2.setFace(faceHero2);
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                BattlePageController.getInstance().motherFuckinPane.getChildren().addAll(faceHero1, faceHero2);
-            }
-        });
+
+        BattlePageController.getInstance().motherFuckinPane.getChildren().addAll(faceHero1, faceHero2);
+
 
     }
 
-    private static void doAllThingsInEndingOfTheTurns() {
+    public static void doAllThingsInEndingOfTheTurns() {
         battleManager.makeIsMovedAndStunnedAndStuffFalse();
         battleManager.applyItemFunctions(battleManager.getPlayer1().getHero(), FunctionType.Passive);
         battleManager.getCurrentPlayer().placeNextCardToHand();
