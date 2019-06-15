@@ -25,7 +25,7 @@
             <Image url="@images/aaaaaaaaa.png" />
          </image>
       </ImageView>
-      <Pane fx:id="motherFuckinPane" prefHeight="200.0" prefWidth="200.0">
+      <Pane id="tile" fx:id="motherFuckinPane" prefHeight="467.0" prefWidth="916.0" stylesheets="@style/buttonOne.css">
          <children>
             <Polyline fx:id="place51" fill="#00000025" layoutX="212.0" layoutY="527.0" points="-27.0, -24.0, 50.0, -24.0, 22.0, 60.0, -58.0, 60.0" stroke="TRANSPARENT" strokeType="INSIDE" />
             <Polyline fx:id="place52" fill="#00000024" layoutX="307.0" layoutY="519.0" points="-38.0, -16.0, 40.0, -16.0, 14.0, 68.0, -67.0, 68.0" stroke="TRANSPARENT" strokeType="INSIDE" />
@@ -73,6 +73,9 @@
             <Polyline fx:id="place18" fill="#00000026" layoutX="758.0" layoutY="194.0" points="-44.0, -15.0, 12.0, -15.0, 21.0, 45.0, -37.0, 45.0" stroke="TRANSPARENT" strokeType="INSIDE" />
             <Polyline fx:id="place19" fill="#00000021" layoutX="833.0" layoutY="186.0" points="-54.0, -7.0, 14.0, -11.0, 29.0, 49.0, -43.0, 49.0" stroke="TRANSPARENT" strokeType="INSIDE" />
          </children>
+         <StackPane.margin>
+            <Insets />
+         </StackPane.margin>
       </Pane>
       <VBox prefHeight="200.0" prefWidth="100.0">
          <children>

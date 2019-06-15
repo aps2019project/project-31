@@ -235,3 +235,7 @@
     -fx-font-size: 30;
     -fx-cursor: hand;
 }
+
+#tile:hover{
+    -fx-background-color: rgba(200,0,0,0.15);
+}

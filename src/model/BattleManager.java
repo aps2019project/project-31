@@ -1281,7 +1281,8 @@ public class BattleManager {
             battleController.health.setText("" + battleController.getMe().getHero().theActualHealth());
             battleController.opponentHealth.setText("" + battleController.getOpponent().getHero().theActualHealth());
             battleController.opponentHand.setText("Hand: " + battleController.getOpponent().handSize() + " / 6");
-        } catch (NullPointerException e) {
+        } catch (Exception e) {
+            e.printStackTrace();
             System.out.println("mohem nis :)");
         }
         try {
@@ -1295,7 +1296,7 @@ public class BattleManager {
                     imageView.setImage(new Image(new FileInputStream("@assets/ui/icon_mana_inactive.png")));
                 }
             }
-        } catch (FileNotFoundException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         try {
@@ -1314,13 +1315,14 @@ public class BattleManager {
             battleController.generalCoolDown.setText("" + battleController.getMe().getHero().getHeroSpell().getCoolDownRemaining());
             battleController.opponentGeneralCooldown.setText("" + battleController.getOpponent().getHero().getHeroSpell().getCoolDownRemaining());
             battleController.deckSize.setText("Deck: " + battleController.getMe().deckSize() + "/20");
-        } catch (NullPointerException e) {
+        } catch (Exception e) {
+            e.printStackTrace();
             System.out.println("migam ke mohem nis");
         }
-        if(battleController.getMe().hand.get(0)!=null)
+        /*if(battleController.getMe().hand.get(0)!=null)
         {
 
-        }
+        }*/
         // next card , cards in hand , all deployedCard in battle with their attack and health should be refreshed too
 
     }
