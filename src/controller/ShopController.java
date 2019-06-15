@@ -48,6 +48,9 @@ public class ShopController implements Initializable {
     public TabPane collectionTabPane;
     public Label daricView;
 
+    public ShopController() {
+    }
+
     public static ShopController getInstance() {
         if (shop == null) {
             shop = new ShopController();
@@ -56,7 +59,7 @@ public class ShopController implements Initializable {
     }
 
     public void setAsScene() {
-        if (scene == null) {
+        if (true) {
             try {
                 Parent root = FXMLLoader.load(getClass().getResource("/Shop.fxml"));
                 Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
@@ -67,12 +70,10 @@ public class ShopController implements Initializable {
                 e.printStackTrace();
             }
         }
-        updateCollection();
-        updateDaricView();
         Initializer.setCurrentScene(scene);
     }
 
-    public void initializeShopItems(ArrayList cards, ListView<DisplayableCard> listView, double scale) {
+    public void initializeShopItems(ArrayList cards, ListView<DisplayableCard> listView, double scale, int translateY) {
         DisplayableCard displayableCard1;
         listView.addEventFilter(ScrollEvent.SCROLL, event -> {
             if (event.getDeltaY() != 0)
@@ -83,7 +84,7 @@ public class ShopController implements Initializable {
             displayableCard1.setScaleX(scale);
             displayableCard1.setScaleY(scale);
 
-            displayableCard1.setTranslateY(-200);
+            displayableCard1.setTranslateY(translateY);
 
             displayableCard1.setBackground(Background.EMPTY);
             displayableCard1.setMaxSize(0, 0);
@@ -112,11 +113,12 @@ public class ShopController implements Initializable {
 
     public void updateCollectionOf(CardType cardType, ListView<DisplayableCard> listView) {
         if (Account.getMainAccount() == null || listView == null) {
+            System.err.println(Account.getMainAccount());
             return;
         }
-        ArrayList<Card> cards = Account.getMainAccount().getSpecificCards(cardType);
+        ArrayList<Card> cards = Account.getMainAccount().getSpecificCardsOf(cardType, Account.getMainAccount().getCollection());
         listView.getItems().clear();
-        initializeShopItems(cards, listView, 0.3);
+        initializeShopItems(cards, listView, 0.3, -210);
     }
 
     public void displayMessage(String massage) {
@@ -213,13 +215,16 @@ public class ShopController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        initializeShopItems(Shop.getAllHeroes(), heroesList, 0.6);
-        initializeShopItems(Shop.getAllMinions(), minionsList, 0.6);
-        initializeShopItems(Shop.getAllSpells(), spellsList, 0.6);
-        initializeShopItems(Shop.getAllUsables(), usablesList, 0.6);
+        initializeShopItems(Shop.getAllHeroes(), heroesList, 0.6, -100);
+        initializeShopItems(Shop.getAllMinions(), minionsList, 0.6, -100);
+        initializeShopItems(Shop.getAllSpells(), spellsList, 0.6 ,-100);
+        initializeShopItems(Shop.getAllUsables(), usablesList, 0.6, -100);
         updateCollection();
         updateDaricView();
-        shopBackButton.setOnAction(event -> MainMenuController.getInstance().setAsScene());
+        shopBackButton.setOnAction(event -> {
+            MainMenuController.getInstance().setAsScene();
+            updateCollection();
+        });
         buyButton.setOnAction(event -> {
             if (Account.getMainAccount() == null) {
                 displayMessage("you are not Logged in!");
@@ -231,12 +236,13 @@ public class ShopController implements Initializable {
             Card card = null;
             if (listView != null) {
                 displayableCard = (DisplayableCard) listView.getSelectionModel().getSelectedItem();
-                card = displayableCard.getCard();
             }
             if (displayableCard != null) {
+                card = displayableCard.getCard();
                 buyCard(displayableCard.getCard());
                 selectTab(collectionTabPane, card);
             }
+            updateCollection();
         });
         sellButton.setOnAction(event -> {
             if (Account.getMainAccount() == null) {
@@ -252,12 +258,16 @@ public class ShopController implements Initializable {
             if (displayableCard != null) {
                 sellCard(displayableCard.getCard());
             }
+            updateCollection();
         });
         findButton.setOnAction(event -> search());
         searchText.setOnAction(event -> search());
+        collectionButton.setOnAction(event -> {
+            CollectionController.getInstance().setAsScene();
+        });
     }
 
-    private void selectTab(TabPane tabPane, Card card) {
+    public void selectTab(TabPane tabPane, Card card) {
         switch (card.getType()) {
             case hero:
                 tabPane.getSelectionModel().select(tabPane.getTabs().get(0));
@@ -286,4 +296,5 @@ public class ShopController implements Initializable {
             listView.scrollTo(new DisplayableCard(card, ""));
         }
     }
+
 }

@@ -15,6 +15,23 @@
     -fx-scale-y: 1.04;
     -fx-cursor: hand;
 }
+#deleteButton{
+    -fx-background-image: url('../assets/ui/button_icon_left@2x.png');
+    -fx-font-family: "Times New Roman";
+    -fx-background-size: cover;
+    -fx-background-color: rgba(0, 0, 0, 0);
+    -fx-text-fill: white;
+    -fx-font-size: 16;
+}
+#deleteButton:hover{
+    -fx-background-image: url('../assets/ui/button_icon_left_glow@2x.png');
+    -fx-background-size: cover;
+    -fx-background-color: rgba(0, 0, 0, 0);
+    -fx-text-fill: white;
+    -fx-scale-x: 1.04;
+    -fx-scale-y: 1.04;
+    -fx-cursor: hand;
+}
 #searchText {
     -fx-font-size: 10;
     -fx-padding: 1, 1, 1, 1;

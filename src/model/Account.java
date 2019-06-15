@@ -12,6 +12,15 @@ import java.util.Collections;
 
 public class Account {
     private static ArrayList<Account> allAccounts = new ArrayList<>();
+
+    public static Deck getEditingDeck() {
+        return editingDeck;
+    }
+
+    public static void setEditingDeck(Deck editingDeck) {
+        Account.editingDeck = editingDeck;
+    }
+
     private static Deck editingDeck;
     private static Account mainAccount;
 
@@ -98,9 +107,9 @@ public class Account {
         return collection;
     }
 
-    public ArrayList<Card> getSpecificCards(CardType cardType) {
+    public ArrayList<Card> getSpecificCardsOf(CardType cardType, ArrayList<Card> cards) {
         ArrayList<Card> specifics = new ArrayList<>();
-        for (Card card : collection) {
+        for (Card card : cards) {
             if (card.getType().equals(cardType))
                 specifics.add(card);
         }
@@ -299,4 +308,5 @@ public class Account {
         }
         getDecks().remove(findDeckByName(deckName));
     }
+
 }

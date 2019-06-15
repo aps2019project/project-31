@@ -75,6 +75,7 @@ public class MainMenuController implements Initializable {
         });
         playButton.setOnAction(event -> PlayMenuController.getInstance().setAsScene());
         shopButton.setOnAction(event -> ShopController.getInstance().setAsScene());
+        collectionButton.setOnAction(event -> CollectionController.getInstance().setAsScene());
         Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
         Double screenWidth = screen.getWidth();
         backgroundImage.setScaleX(screenWidth / backgroundImage.getFitWidth() * 2 / 3);
