@@ -1,5 +1,6 @@
 package controller;
 
+import constants.FunctionType;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
@@ -36,7 +37,7 @@ public class BattlePageController implements Initializable {
     public ImageView hand5;
     public StackPane column6;
     public ImageView hand6;
-    public Button setting;
+
     public Button endTurn;
     public Button replace;
     public StackPane lastStackPane; // it's scaled to (0.01,0.01) ...
@@ -91,6 +92,7 @@ public class BattlePageController implements Initializable {
     public Polyline place17;
     public Polyline place18;
     public Polyline place19;
+    public Button concede;
 
     private StackPane showingGraveYard; // for showing it: lastStackPane = showingGraveYard; showingGraveYard is a designed scene
 
@@ -126,6 +128,8 @@ public class BattlePageController implements Initializable {
     public Label opponentGeneralSpellManaCost;
     private ArrayList<ImageView> manas = new ArrayList<>();
 
+    public BattlePageController() {
+    }
 
     public void setAsScene() {
         if (scene == null) {
@@ -160,7 +164,19 @@ public class BattlePageController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        BattleManager battle = BattleMenu.getBattleManager();
+        battle.initialTheGame();
 
+        battle.getPlayer1().generateDeckArrangement();
+        battle.getPlayer2().generateDeckArrangement();
+
+        battle.setCurrentPlayer(BattleMenu.getBattleManager().getPlayer2());
+
+        battle.applyItemFunctions(BattleMenu.getBattleManager().getCurrentPlayer().getHero(), FunctionType.GameStart);
+        battle.setCurrentPlayer(BattleMenu.getBattleManager().getPlayer1());
+        battle.applyItemFunctions(BattleMenu.getBattleManager().getCurrentPlayer().getHero(), FunctionType.GameStart);
+        battle.setCurrentPlayer(BattleMenu.getBattleManager().getPlayer2());
+        BattleMenu.initHeroes();
 
         manas.add(mana1);
         manas.add(mana2);
@@ -179,6 +195,41 @@ public class BattlePageController implements Initializable {
         generalCoolDown.setText("" + me.getHero().getHeroSpell().getManaCost());
         opponentGeneralCooldown.setText("" + opponent.getHero().getHeroSpell().getManaCost());
 
+
+
+        replace.setOnAction(event -> {
+            if (isMyTrun() && battle.getCurrentPlayer().getSelectedCard() != null) {
+                BattleMenu.replaceCardInHand(battle.getCurrentPlayer().getSelectedCard().getId());
+            }
+        });
+        endTurn.setOnAction(event -> {
+            BattleMenu.doAllThingsInEndingOfTheTurns();
+            if (isMyTrun()) {
+                battle.setCurrentPlayer(battle.getOtherPlayer());
+            }
+            if (battle.getCurrentPlayer().isAi()) {
+                ((Ai) battle.getCurrentPlayer()).play();
+                battle.setCurrentPlayer(battle.getOtherPlayer());
+            }
+            BattleMenu.doAllAtTheBeginningOfTurnThings();
+        });
+        // select a card ydt nre
+        concede.setOnAction(event -> {
+            if (battle.getCurrentPlayer() == battle.getPlayer1())
+                battle.player2Won();
+            else
+                battle.player1Won();
+        });
+        graveYard.setOnAction(event -> {
+            GraveYardController.getInstance().setAsScene();
+        });
+
+
+    }
+
+    private boolean isMyTrun() {
+        return BattleMenu.getBattleManager().getCurrentPlayer().
+                getAccount().getUsername().equals(me.getAccount().getUsername());
     }
 
     public static BattlePageController getBattlePageController() {

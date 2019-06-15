@@ -1269,6 +1269,7 @@ public class BattleManager {
     }
 
     public void refreshTheStatusOfMap() {
+        BattleMenu.getBattleManager().checkTheEndSituation();
         for (Deployable card : player1.cardsOnBattleField) {
             card.getFace().updateStats();
         }
@@ -1315,6 +1316,10 @@ public class BattleManager {
             battleController.deckSize.setText("Deck: " + battleController.getMe().deckSize() + "/20");
         } catch (NullPointerException e) {
             System.out.println("migam ke mohem nis");
+        }
+        if(battleController.getMe().hand.get(0)!=null)
+        {
+
         }
         // next card , cards in hand , all deployedCard in battle with their attack and health should be refreshed too
 
