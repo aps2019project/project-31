@@ -228,6 +228,7 @@ public class ShopController implements Initializable {
         initializeShopItems(Shop.getAllMinions(), minionsList);
         initializeShopItems(Shop.getAllSpells(), spellsList);
         initializeShopItems(Shop.getAllUsables(), usablesList);
+        updateDaricView();
         shopBackButton.setOnAction(event -> MainMenuController.getInstance().setAsScene());
         buyButton.setOnAction(event -> {
             if (Account.getMainAccount() == null) {
