@@ -217,3 +217,21 @@
     -fx-font-size: 20;
     -fx-cursor: hand;
 }
+#playButton{
+    -fx-font-family: "Times New Roman";
+    -fx-background-image: url('../assets/ui/button_secondary@2x.png');
+    -fx-background-size: 200 80;
+    -fx-background-color: rgba(0,0,0,0);
+    -fx-font-size: 30;
+    -fx-text-fill: white;
+}
+#playButton:hover{
+    -fx-font-family: "Times New Roman";
+    -fx-background-image: url('../assets/ui/button_secondary_glow@2x.png');
+    -fx-background-size: 200 80;
+    -fx-scale-x: 1.04;
+    -fx-scale-y: 1.04;
+    -fx-background-color: rgba(0,0,0,0);
+    -fx-font-size: 30;
+    -fx-cursor: hand;
+}
