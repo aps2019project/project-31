@@ -75,6 +75,13 @@ public class CollectionController implements Initializable {
     }
 
     private void updateEditingDeck() {
+        if (Account.getEditingDeck() == null) {
+            heroesList1.getItems().clear();
+            minionsList1.getItems().clear();
+            spellsList1.getItems().clear();
+            usablesList1.getItems().clear();
+            return;
+        }
         try {
             if (Account.getEditingDeck().getHero() != null)
                 ShopController.getInstance().initializeShopItems(new ArrayList<>(Collections.singletonList(Account.getEditingDeck().getHero())), heroesList1, 0.3, -210);
@@ -114,6 +121,7 @@ public class CollectionController implements Initializable {
             }
             Account.getMainAccount().addDeck(new Deck(newDeckName.getText()));
             decksListView.getItems().add(new Label(newDeckName.getText()));
+            newDeckName.clear();
         });
         selectDeckButton.setOnAction(event -> {
             if (decksListView.getSelectionModel().getSelectedItem() == null) {
@@ -124,6 +132,10 @@ public class CollectionController implements Initializable {
             updateEditingDeck();
         });
         addButton.setOnAction(event -> {
+            if(Account.getEditingDeck() == null) {
+                displayMessage("select deck");
+                return;
+            }
             Tab tab = collectionTabPane.getSelectionModel().getSelectedItem();
             ListView listView = (ListView) tab.getContent();
             DisplayableCard displayableCard = null;
@@ -149,7 +161,7 @@ public class CollectionController implements Initializable {
                         return;
                     }
                 } else {
-                    if(Account.getEditingDeck().getCards().size() < 18)
+                    if (Account.getEditingDeck().getCards().size() < 18)
                         Account.getEditingDeck().addCard(card);
                     else {
                         displayMessage("delete some cards first");
@@ -161,6 +173,20 @@ public class CollectionController implements Initializable {
         });
         mainMenuButton.setOnAction(event -> MainMenuController.getInstance().setAsScene());
         shopButton.setOnAction(event -> ShopController.getInstance().setAsScene());
+        deleteDeckButton.setOnAction(event -> {
+            if (Account.getEditingDeck() == null) {
+                displayMessage("select a deck");
+                return;
+            }
+            for(Label label: decksListView.getItems()){
+                if(label.getText().equalsIgnoreCase(Account.getEditingDeck().getDeckName())){
+                    decksListView.getItems().remove(label);
+                    break;
+                }
+            }
+            Account.getMainAccount().deleteDeck(Account.getEditingDeck().getDeckName());
+            updateEditingDeck();
+        });
     }
 
     private void updateDecks() {
