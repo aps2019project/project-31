@@ -5,11 +5,15 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.*;
+import javafx.scene.control.*;
+import javafx.scene.input.ScrollEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import model.*;
 import view.Output;
 
@@ -63,62 +67,53 @@ public class ShopController implements Initializable {
                 e.printStackTrace();
             }
         }
+        updateCollection();
+        updateDaricView();
         Initializer.setCurrentScene(scene);
     }
 
     public void initializeShopItems(ArrayList cards, ListView<DisplayableCard> listView, double scale) {
-        boolean first = true;
-        DisplayableCard displayableCard1 = null;
-        DisplayableCard displayableCard2 = null;
-        VBox vBox = null;
+        DisplayableCard displayableCard1;
+        listView.addEventFilter(ScrollEvent.SCROLL, event -> {
+            if (event.getDeltaY() != 0)
+                event.consume();
+        });
         for (Object card : cards) {
             displayableCard1 = new DisplayableCard((Card) card, "");
             displayableCard1.setScaleX(scale);
             displayableCard1.setScaleY(scale);
+
             displayableCard1.setTranslateY(-200);
-            displayableCard1.setMaxWidth(100);
-            listView.setMaxSize(800, 400);
 
             displayableCard1.setBackground(Background.EMPTY);
+            displayableCard1.setMaxSize(0, 0);
+            displayableCard1.setBorder(Border.EMPTY);
+
 //            listView.setMaxSize(700, 400);
-//            displayableCard1.setMaxSize(100, 200);
+//            listView.setFixedCellSize(200);
+
             listView.getItems().add(displayableCard1);
-            /*if (first) {
-                displayableCard1 = new DisplayableCard((Card) card, "");
-                displayableCard1.setBackground(Background.EMPTY);
-                displayableCard1.setMaxHeight(0);
-                first = false;
-            } else {
-                displayableCard2 = new DisplayableCard((Card) card, "");
-                displayableCard2.setMaxHeight(0);
-                vBox = new VBox(displayableCard1, displayableCard2);
-                vBox.setMaxHeight(200);
-                vBox.setMaxWidth(80);
-                vBox.setBackground(Background.EMPTY);
-                listView.getItems().add(vBox);
-                displayableCard1 = null;
-                displayableCard2 = null;
-                first = true;
-            }*/
         }
-        /*if (displayableCard1 != null) {
-            vBox = new VBox(displayableCard1);
-            vBox.setBackground(Background.EMPTY);
-            listView.getItems().add(vBox);
-        }*/
     }
 
-    public void updateCollection(){
+    public void updateCollection() {
         updateCollectionOf(CardType.hero, heroesList1);
         updateCollectionOf(CardType.minion, minionsList1);
         updateCollectionOf(CardType.spell, spellsList1);
         updateCollectionOf(CardType.item, usablesList1);
     }
-    public void updateDaricView(){
+
+    public void updateDaricView() {
+        if (Account.getMainAccount() == null || daricView == null) {
+            return;
+        }
         daricView.setText(Integer.toString(Account.getMainAccount().getDaric()));
     }
 
-    public void updateCollectionOf(CardType cardType, ListView<DisplayableCard> listView){
+    public void updateCollectionOf(CardType cardType, ListView<DisplayableCard> listView) {
+        if (Account.getMainAccount() == null || listView == null) {
+            return;
+        }
         ArrayList<Card> cards = Account.getMainAccount().getSpecificCards(cardType);
         listView.getItems().clear();
         initializeShopItems(cards, listView, 0.3);
@@ -218,10 +213,10 @@ public class ShopController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        initializeShopItems(Shop.getAllHeroes(), heroesList, 0.5);
-        initializeShopItems(Shop.getAllMinions(), minionsList, 0.5);
-        initializeShopItems(Shop.getAllSpells(), spellsList, 0.5);
-        initializeShopItems(Shop.getAllUsables(), usablesList, 0.5);
+        initializeShopItems(Shop.getAllHeroes(), heroesList, 0.6);
+        initializeShopItems(Shop.getAllMinions(), minionsList, 0.6);
+        initializeShopItems(Shop.getAllSpells(), spellsList, 0.6);
+        initializeShopItems(Shop.getAllUsables(), usablesList, 0.6);
         updateCollection();
         updateDaricView();
         shopBackButton.setOnAction(event -> MainMenuController.getInstance().setAsScene());
@@ -262,7 +257,7 @@ public class ShopController implements Initializable {
         searchText.setOnAction(event -> search());
     }
 
-    private void selectTab(TabPane tabPane, Card card){
+    private void selectTab(TabPane tabPane, Card card) {
         switch (card.getType()) {
             case hero:
                 tabPane.getSelectionModel().select(tabPane.getTabs().get(0));
