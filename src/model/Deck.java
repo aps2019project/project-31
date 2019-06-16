@@ -1,6 +1,7 @@
 package model;
 
 import constants.CardType;
+import javafx.scene.control.Label;
 import view.Output;
 
 import java.util.ArrayList;

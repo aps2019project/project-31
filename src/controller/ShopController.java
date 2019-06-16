@@ -79,6 +79,7 @@ public class ShopController implements Initializable {
             if (event.getDeltaY() != 0)
                 event.consume();
         });
+        listView.getItems().clear();
         for (Object card : cards) {
             displayableCard1 = new DisplayableCard((Card) card, "");
             displayableCard1.setScaleX(scale);
