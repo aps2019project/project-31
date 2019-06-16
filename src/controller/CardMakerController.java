@@ -122,6 +122,7 @@ public class CardMakerController implements Initializable {
             System.out.println(currentTargetString);
         });
 
+
         minionButton.setOnAction(actionEvent -> makeMinion());
     }
 
@@ -150,8 +151,7 @@ public class CardMakerController implements Initializable {
                         nameField.setPromptText("enter range");
                         nameField.setOnAction(actionEvent2 -> {
                             currentCardRange = Integer.parseInt(nameField.getText());
-                            centerVBox.getChildren().removeAll(nameField);
-                            makeFunction();
+                            getCardText(nameField);
                         });
                         return;
                     case "hybrid":
@@ -160,18 +160,11 @@ public class CardMakerController implements Initializable {
                         nameField.setPromptText("enter range");
                         nameField.setOnAction(actionEvent2 -> {
                             currentCardRange = Integer.parseInt(nameField.getText());
-                            centerVBox.getChildren().removeAll(nameField);
-                            makeFunction();
+                            getCardText(nameField);
                         });
                         return;
                 }
-                nameField.clear();
-                nameField.setPromptText("enter card text");
-                nameField.setOnAction(actionEvent2 -> {
-                    currentCardText = nameField.getText();
-                    centerVBox.getChildren().removeAll(nameField);
-                    makeFunction();
-                });
+                getCardText(nameField);
             });
 
         });
@@ -195,6 +188,16 @@ public class CardMakerController implements Initializable {
 
         selectionVBox.getChildren().addAll(nameField/*, attackText, healthText*/);
 
+    }
+
+    private void getCardText(TextField nameField) {
+        nameField.clear();
+        nameField.setPromptText("enter card text");
+        nameField.setOnAction(actionEvent2 -> {
+            currentCardText = nameField.getText();
+            centerVBox.getChildren().removeAll(nameField);
+            makeFunction();
+        });
     }
 
     private void makeFunction() {

@@ -129,6 +129,7 @@ public class BattlePageController implements Initializable {
     private ArrayList<ImageView> manas = new ArrayList<>();
 
     public BattlePageController() {
+        System.err.println("HLLLO");
     }
 
     public void setAsScene() {
