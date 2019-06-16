@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import java.net.URL?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -15,7 +21,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CollectionController">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CollectionController">
    <children>
       <ImageView fitHeight="720.0" fitWidth="1080.0" pickOnBounds="true">
          <image>
@@ -30,10 +36,6 @@
                      <children>
                         <Pane prefHeight="377.0" prefWidth="770.0">
                            <children>
-                              <Label alignment="CENTER" layoutX="233.0" prefHeight="47.0" prefWidth="577.0" text="Your Collection" textFill="#00ff8d">
-                                 <font>
-                                    <Font size="16.0" />
-                                 </font></Label>
                               <TabPane fx:id="collectionTabPane" prefHeight="369.0" prefWidth="768.0" stylesheets="@style/tabPane.css" tabClosingPolicy="UNAVAILABLE" tabMaxHeight="35.0" tabMaxWidth="45.0" tabMinHeight="35.0" tabMinWidth="45.0">
                                  <tabs>
                                     <Tab fx:id="heroesTab1" text="heroes">
@@ -58,6 +60,10 @@
                                     </Tab>
                                  </tabs>
                               </TabPane>
+                              <Label alignment="CENTER" layoutX="233.0" prefHeight="47.0" prefWidth="577.0" text="Your Collection" textFill="#00ffcd">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font></Label>
                            </children>
                         </Pane>
                         <HBox prefHeight="50.0" prefWidth="770.0">
@@ -78,10 +84,6 @@
                         </HBox>
                         <Pane prefHeight="294.0" prefWidth="770.0">
                            <children>
-                              <Label alignment="CENTER" layoutX="233.0" prefHeight="47.0" prefWidth="577.0" text="Selceted Deck" textFill="#00f8ff">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font></Label>
                               <TabPane fx:id="deckTabPane" layoutY="5.0" prefHeight="294.0" prefWidth="770.0" stylesheets="@style/tabPane.css" tabClosingPolicy="UNAVAILABLE" tabMaxHeight="35.0" tabMaxWidth="45.0" tabMinHeight="35.0" tabMinWidth="45.0">
                                  <tabs>
                                     <Tab fx:id="heroesTab11" text="Hero">
@@ -106,6 +108,10 @@
                                     </Tab>
                                  </tabs>
                               </TabPane>
+                              <Label fx:id="deckLabel" alignment="CENTER" layoutX="233.0" prefHeight="54.0" prefWidth="577.0" text="Selceted Deck" textFill="#00f8ff">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font></Label>
                            </children>
                         </Pane>
                      </children>

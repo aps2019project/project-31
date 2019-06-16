@@ -44,6 +44,7 @@ public class CollectionController implements Initializable {
     public ListView<DisplayableCard> heroesList;
     public TabPane deckTabPane;
     public TabPane collectionTabPane;
+    public Label deckLabel;
 
     public static CollectionController getInstance() {
         if (collection == null)
@@ -145,6 +146,7 @@ public class CollectionController implements Initializable {
                 return;
             }
             Account.setEditingDeck(findDeckByName(decksListView.getSelectionModel().getSelectedItem().getText()));
+            deckLabel.setText(Account.getEditingDeck().getDeckName());
             updateEditingDeck();
         });
         addButton.setOnAction(event -> {
