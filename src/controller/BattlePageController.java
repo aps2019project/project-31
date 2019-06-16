@@ -141,7 +141,7 @@ public class BattlePageController implements Initializable {
             try {
                 Parent root = FXMLLoader.load(getClass().getResource("/BattlePage.fxml"));
                 Double screenWidth = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
-                scene = new Scene(root, screenWidth * 2 / 3, screenWidth * 4 / 9);
+                scene = new Scene(root);
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -228,7 +228,6 @@ public class BattlePageController implements Initializable {
             Map.getMap()[5][9].setPolygon(place59);
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("kir tuuuush");
         }
 
         try {
@@ -238,7 +237,10 @@ public class BattlePageController implements Initializable {
                     final Polyline polyline = Map.getMap()[i][j].getPolygon();
                     try {
                         polyline.setOnMouseEntered(event -> {
-                            polyline.setFill(Color.RED);
+                            polyline.setFill(Color.GREEN);
+                        });
+                        polyline.setOnMouseClicked(mouseEvent -> {
+                            System.out.println("selected this: " + polyline.toString());
                         });
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -346,7 +348,6 @@ public class BattlePageController implements Initializable {
         DisplayableDeployable faceHero2 = new DisplayableDeployable(hero2);
         hero1.setFace(faceHero1);
         hero2.setFace(faceHero2);
-
         motherFuckinPane.getChildren().addAll(faceHero1, faceHero2);
         faceHero1.updateStats();
         faceHero2.updateStats();

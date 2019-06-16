@@ -7,6 +7,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -160,22 +161,7 @@ public class DisplayableDeployable extends StackPane {
             label.setFont(Font.font(12));
             label.setTextFill(Color.CYAN);
         }
-        if (deployable.getCell() != null && deployable.getCell().getPolygon() != null) {
-            currentStance.setTranslateX(deployable.getCell().calculateCenter()[0]);
-            currentStance.setTranslateY(deployable.getCell().calculateCenter()[1]);
-            healthLabel.setTranslateX(deployable.getCell().calculateCenter()[0]+25);
-            healthLabel.setTranslateY(deployable.getCell().calculateCenter()[1]+50);
-            attackLabel.setTranslateX(deployable.getCell().calculateCenter()[0]-40);
-            attackLabel.setTranslateY(deployable.getCell().calculateCenter()[1]+50);
 
-            attackIcon.setTranslateX(deployable.getCell().calculateCenter()[0]-40);
-            attackIcon.setTranslateY(deployable.getCell().calculateCenter()[1]+50);
-            healthIcon.setTranslateX(deployable.getCell().calculateCenter()[0]+25);
-            healthIcon.setTranslateY(deployable.getCell().calculateCenter()[1]+50);
-
-
-
-        }
     }
 
 }
