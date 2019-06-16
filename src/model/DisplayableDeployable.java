@@ -28,6 +28,8 @@ public class DisplayableDeployable extends StackPane {
     Label healthLabel;
     Label attackLabel;
     VBox stats;
+    ImageView attackIcon;
+    ImageView healthIcon;
 
     public DisplayableDeployable(Deployable deployable) {
         this.setAlignment(Pos.CENTER);
@@ -71,9 +73,9 @@ public class DisplayableDeployable extends StackPane {
         healthLabel.setTranslateY(50);
         healthLabel.setTranslateX(40);
 
-        ImageView attackIcon = new ImageView(new Image(getClass().
+        attackIcon = new ImageView(new Image(getClass().
                 getResource("/assets/ui/icon_atk.png").toExternalForm()));
-        ImageView healthIcon = new ImageView(new Image(getClass().
+        healthIcon = new ImageView(new Image(getClass().
                 getResource("/assets/ui/icon_hp.png").toExternalForm()));
         attackIcon.setTranslateY(50);
         attackIcon.setTranslateX(-40);
@@ -158,9 +160,21 @@ public class DisplayableDeployable extends StackPane {
             label.setFont(Font.font(12));
             label.setTextFill(Color.CYAN);
         }
-        if (deployable.getCell() != null && deployable.getCell().getPolygon() != null){
+        if (deployable.getCell() != null && deployable.getCell().getPolygon() != null) {
             currentStance.setTranslateX(deployable.getCell().calculateCenter()[0]);
             currentStance.setTranslateY(deployable.getCell().calculateCenter()[1]);
+            healthLabel.setTranslateX(deployable.getCell().calculateCenter()[0]+50);
+            healthLabel.setTranslateY(deployable.getCell().calculateCenter()[1]+50);
+            attackLabel.setTranslateX(deployable.getCell().calculateCenter()[0]-40);
+            attackLabel.setTranslateY(deployable.getCell().calculateCenter()[1]+50);
+
+            attackIcon.setTranslateX(deployable.getCell().calculateCenter()[0]+50);
+            attackIcon.setTranslateY(deployable.getCell().calculateCenter()[1]+50);
+            healthIcon.setTranslateX(deployable.getCell().calculateCenter()[0]-40);
+            healthIcon.setTranslateY(deployable.getCell().calculateCenter()[1]+50);
+
+
+
         }
     }
 

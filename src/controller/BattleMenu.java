@@ -126,7 +126,7 @@ public class BattleMenu extends Menu {
             }
 
         }
-        battleManager.refreshTheStatusOfMap();
+    //    battleManager.refreshTheStatusOfMap();
 
     }
 
@@ -146,7 +146,7 @@ public class BattleMenu extends Menu {
         battleManager.setCurrentPlayer(battleManager.getPlayer1());
         battleManager.applyItemFunctions(battleManager.getCurrentPlayer().getHero(), FunctionType.GameStart);
         battleManager.setCurrentPlayer(battleManager.getPlayer2());
-        initHeroes();
+      //  initHeroes();
         while (true) {
 
             isPlayer1Turn = !isPlayer1Turn;
@@ -171,22 +171,7 @@ public class BattleMenu extends Menu {
         }
     }
 
-    public static void initHeroes() {
-        Hero hero1 = battleManager.getPlayer1().getHero();
-        Hero hero2 = battleManager.getPlayer2().getHero();
-        hero1.getCell().setCardInCell(hero1);
-        hero2.getCell().setCardInCell(hero2);
-        battleManager.getPlayer1().addCardToBattlefield(hero1);
-        battleManager.getPlayer2().addCardToBattlefield(hero2);
-        DisplayableDeployable faceHero1 = new DisplayableDeployable(hero1);
-        DisplayableDeployable faceHero2 = new DisplayableDeployable(hero2);
-        hero1.setFace(faceHero1);
-        hero2.setFace(faceHero2);
 
-        BattlePageController.getInstance().motherFuckinPane.getChildren().addAll(faceHero1, faceHero2);
-
-
-    }
 
     public static void doAllThingsInEndingOfTheTurns() {
         battleManager.makeIsMovedAndStunnedAndStuffFalse();
@@ -202,7 +187,7 @@ public class BattleMenu extends Menu {
         battleManager.addTurn();
         battleManager.getPlayer1().getHero().getHeroSpell().decrementCooldonwRemaining();
         battleManager.getPlayer2().getHero().getHeroSpell().decrementCooldonwRemaining();
-        battleManager.refreshTheStatusOfMap();
+    //    battleManager.refreshTheStatusOfMap();
     }
 
 

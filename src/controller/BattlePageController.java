@@ -7,13 +7,16 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Polyline;
 import model.*;
 
 import java.awt.*;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -92,7 +95,7 @@ public class BattlePageController implements Initializable {
     public Polyline place17;
     public Polyline place18;
     public Polyline place19;
-    public Button concede;
+    public Button setting;
 
     private StackPane showingGraveYard; // for showing it: lastStackPane = showingGraveYard; showingGraveYard is a designed scene
 
@@ -164,39 +167,110 @@ public class BattlePageController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        try {
+
+            BattlePageController.getInstance().initTheMapCells();
+
+            Map.getMap()[1][1].setPolygon(place11);
+            Map.getMap()[1][2].setPolygon(place12);
+            Map.getMap()[1][3].setPolygon(place13);
+            Map.getMap()[1][4].setPolygon(place14);
+            Map.getMap()[1][5].setPolygon(place15);
+            Map.getMap()[1][6].setPolygon(place16);
+            Map.getMap()[1][7].setPolygon(place17);
+            Map.getMap()[1][8].setPolygon(place18);
+            Map.getMap()[1][9].setPolygon(place19);
+            Map.getMap()[2][1].setPolygon(place21);
+            Map.getMap()[2][2].setPolygon(place22);
+            Map.getMap()[2][3].setPolygon(place23);
+            Map.getMap()[2][4].setPolygon(place24);
+            Map.getMap()[2][5].setPolygon(place25);
+            Map.getMap()[2][6].setPolygon(place26);
+            Map.getMap()[2][7].setPolygon(place27);
+            Map.getMap()[2][8].setPolygon(place28);
+            Map.getMap()[2][9].setPolygon(place29);
+            Map.getMap()[3][1].setPolygon(place31);
+            Map.getMap()[3][2].setPolygon(place32);
+            Map.getMap()[3][3].setPolygon(place33);
+            Map.getMap()[3][4].setPolygon(place34);
+            Map.getMap()[3][5].setPolygon(place35);
+            Map.getMap()[3][6].setPolygon(place36);
+            Map.getMap()[3][7].setPolygon(place37);
+            Map.getMap()[3][8].setPolygon(place38);
+            Map.getMap()[3][9].setPolygon(place39);
+            Map.getMap()[4][1].setPolygon(place41);
+            Map.getMap()[4][2].setPolygon(place42);
+            Map.getMap()[4][3].setPolygon(place43);
+            Map.getMap()[4][4].setPolygon(place44);
+            Map.getMap()[4][5].setPolygon(place45);
+            Map.getMap()[4][6].setPolygon(place46);
+            Map.getMap()[4][7].setPolygon(place47);
+            Map.getMap()[4][8].setPolygon(place48);
+            Map.getMap()[4][9].setPolygon(place49);
+            Map.getMap()[5][1].setPolygon(place51);
+            Map.getMap()[5][2].setPolygon(place52);
+            Map.getMap()[5][3].setPolygon(place53);
+            Map.getMap()[5][4].setPolygon(place54);
+            Map.getMap()[5][5].setPolygon(place55);
+            Map.getMap()[5][6].setPolygon(place56);
+            Map.getMap()[5][7].setPolygon(place57);
+            Map.getMap()[5][8].setPolygon(place58);
+            Map.getMap()[5][9].setPolygon(place59);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("kir tuuuush");
+        }
+        try {
+
+            for (int i = 1; i <= 5; i++) {
+                for (int j = 1; j <= 9; j++) {
+                    final Polyline polyline = Map.getMap()[i][j].getPolygon();
+                    try {
+                        polyline.setOnMouseEntered(event -> {
+                            polyline.setFill(Color.RED);
+                        });
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         BattleManager battle = BattleMenu.getBattleManager();
-        battle.initialTheGame();
-
-        battle.getPlayer1().generateDeckArrangement();
-        battle.getPlayer2().generateDeckArrangement();
-
-        battle.setCurrentPlayer(BattleMenu.getBattleManager().getPlayer2());
-
-        battle.applyItemFunctions(BattleMenu.getBattleManager().getCurrentPlayer().getHero(), FunctionType.GameStart);
-        battle.setCurrentPlayer(BattleMenu.getBattleManager().getPlayer1());
-        battle.applyItemFunctions(BattleMenu.getBattleManager().getCurrentPlayer().getHero(), FunctionType.GameStart);
-        battle.setCurrentPlayer(BattleMenu.getBattleManager().getPlayer2());
-        BattleMenu.initHeroes();
-
-        manas.add(mana1);
-        manas.add(mana2);
-        manas.add(mana3);
-        manas.add(mana4);
-        manas.add(mana5);
-        manas.add(mana6);
-        manas.add(mana7);
-        manas.add(mana8);
-        manas.add(mana9);
-        initPlayers();
-        username.setText(me.getAccount().getUsername());
-        opponentUsername.setText(opponent.getAccount().getUsername());
-        generalSpellManaCost.setText("" + me.getHero().getHeroSpell().getManaCost());
-        opponentGeneralSpellManaCost.setText("" + opponent.getHero().getHeroSpell().getManaCost());
-        generalCoolDown.setText("" + me.getHero().getHeroSpell().getManaCost());
-        opponentGeneralCooldown.setText("" + opponent.getHero().getHeroSpell().getManaCost());
+        try {
 
 
-
+            battle.initialTheGame();
+            initPlayers();
+            username.setText(me.getAccount().getUsername());
+            opponentUsername.setText(opponent.getAccount().getUsername());
+            generalSpellManaCost.setText("" + me.getHero().getHeroSpell().getManaCost());
+            opponentGeneralSpellManaCost.setText("" + opponent.getHero().getHeroSpell().getManaCost());
+            generalCoolDown.setText("" + me.getHero().getHeroSpell().getManaCost());
+            opponentGeneralCooldown.setText("" + opponent.getHero().getHeroSpell().getManaCost());
+            battle.getPlayer1().generateDeckArrangement();
+            battle.getPlayer2().generateDeckArrangement();
+            battle.setCurrentPlayer(BattleMenu.getBattleManager().getPlayer2());
+            battle.applyItemFunctions(BattleMenu.getBattleManager().getCurrentPlayer().getHero(), FunctionType.GameStart);
+            battle.setCurrentPlayer(BattleMenu.getBattleManager().getPlayer1());
+            battle.applyItemFunctions(BattleMenu.getBattleManager().getCurrentPlayer().getHero(), FunctionType.GameStart);
+            battle.setCurrentPlayer(BattleMenu.getBattleManager().getPlayer2());
+            initHeroes(battle, motherFuckinPane);
+            refreshTheStatusOfMap(battle);
+            manas.add(mana1);
+            manas.add(mana2);
+            manas.add(mana3);
+            manas.add(mana4);
+            manas.add(mana5);
+            manas.add(mana6);
+            manas.add(mana7);
+            manas.add(mana8);
+            manas.add(mana9);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         replace.setOnAction(event -> {
             if (isMyTrun() && battle.getCurrentPlayer().getSelectedCard() != null) {
                 BattleMenu.replaceCardInHand(battle.getCurrentPlayer().getSelectedCard().getId());
@@ -214,7 +288,7 @@ public class BattlePageController implements Initializable {
             BattleMenu.doAllAtTheBeginningOfTurnThings();
         });
         // select a card ydt nre
-        concede.setOnAction(event -> {
+        setting.setOnAction(event -> {
             if (battle.getCurrentPlayer() == battle.getPlayer1())
                 battle.player2Won();
             else
@@ -223,6 +297,25 @@ public class BattlePageController implements Initializable {
         graveYard.setOnAction(event -> {
             GraveYardController.getInstance().setAsScene();
         });
+
+
+    }
+
+    public static void initHeroes(BattleManager battleManager, Pane motherFuckinPane) {
+        Hero hero1 = battleManager.getPlayer1().getHero();
+        Hero hero2 = battleManager.getPlayer2().getHero();
+        hero1.getCell().setCardInCell(hero1);
+        hero2.getCell().setCardInCell(hero2);
+        battleManager.getPlayer1().addCardToBattlefield(hero1);
+        battleManager.getPlayer2().addCardToBattlefield(hero2);
+        DisplayableDeployable faceHero1 = new DisplayableDeployable(hero1);
+        DisplayableDeployable faceHero2 = new DisplayableDeployable(hero2);
+        hero1.setFace(faceHero1);
+        hero2.setFace(faceHero2);
+
+        motherFuckinPane.getChildren().addAll(faceHero1, faceHero2);
+        faceHero1.updateStats();
+        faceHero2.updateStats();
 
 
     }
@@ -248,58 +341,69 @@ public class BattlePageController implements Initializable {
         return manas;
     }
 
+    public void refreshTheStatusOfMap(BattleManager battleManager) {
+        BattleMenu.getBattleManager().checkTheEndSituation();
+        Player player1 = battleManager.getPlayer1();
+        Player player2 = battleManager.getPlayer2();
+        for (Deployable card : player1.getCardsOnBattleField()) {
+            card.getFace().updateStats();
+        }
+        for (Deployable card : player2.getCardsOnBattleField()) {
+            card.getFace().updateStats();
+        }
+
+        try {
+            health.setText("" + me.getHero().theActualHealth());
+            opponentHealth.setText("" + opponent.getHero().theActualHealth());
+            opponentHand.setText("Hand: " + opponent.handSize() + " / 6");
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("mohem nis :)");
+        }
+        try {
+            if (me == battleManager.getCurrentPlayer()) {
+                for (int i = 0; i < battleManager.getCurrentPlayer().getMana(); i++) {
+                    manas.get(i).setImage
+                            (new javafx.scene.image.Image(new FileInputStream("@assets/ui/icon_mana@2x.png")));
+                }
+            } else {
+                for (ImageView imageView : manas) {
+                    imageView.setImage(new Image(new FileInputStream("@assets/ui/icon_mana_inactive.png")));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        try {
+
+            int usualMana;
+            if (battleManager.getTurn() <= 14) {
+                usualMana = (battleManager.getTurn() - 1) / 2 + 2;
+            } else {
+                usualMana = 9;
+            }
+            if (opponent == battleManager.getCurrentPlayer())
+                opponentMana.setText("" + usualMana + player1.getManaChangerInTurn()[battleManager.getTurn()] + " / " + usualMana);
+            else {
+                opponentMana.setText("0 / 0");
+            }
+            generalCoolDown.setText("" + me.getHero().getHeroSpell().getCoolDownRemaining());
+            opponentGeneralCooldown.setText("" + opponent.getHero().getHeroSpell().getCoolDownRemaining());
+            deckSize.setText("Deck: " + me.deckSize() + "/20");
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("migam ke mohem nis");
+        }
+        /*if(battleController.getMe().hand.get(0)!=null)
+        {
+
+        }*/
+        // next card , cards in hand , all deployedCard in battle with their attack and health should be refreshed too
+
+    }
 
     public void initTheMapCells() {
-        System.err.println("Initializing maps ...");
-        Map.createTheMap();
-        for (int i = 0; i <= 9; i++) {
-            Map.getMap()[0][i] = new Cell(0, i, null, null);
-        }
-        Map.getMap()[1][1] = new Cell(1, 1, null, place11);
-        Map.getMap()[1][2] = new Cell(1, 2, null, place12);
-        Map.getMap()[1][3] = new Cell(1, 3, null, place13);
-        Map.getMap()[1][4] = new Cell(1, 4, null, place14);
-        Map.getMap()[1][5] = new Cell(1, 5, null, place15);
-        Map.getMap()[1][6] = new Cell(1, 6, null, place16);
-        Map.getMap()[1][7] = new Cell(1, 7, null, place17);
-        Map.getMap()[1][8] = new Cell(1, 8, null, place18);
-        Map.getMap()[1][9] = new Cell(1, 9, null, place19);
-        Map.getMap()[2][1] = new Cell(2, 1, null, place21);
-        Map.getMap()[2][2] = new Cell(2, 2, null, place22);
-        Map.getMap()[2][3] = new Cell(2, 3, null, place23);
-        Map.getMap()[2][4] = new Cell(2, 4, null, place24);
-        Map.getMap()[2][5] = new Cell(2, 5, null, place25);
-        Map.getMap()[2][6] = new Cell(2, 6, null, place26);
-        Map.getMap()[2][7] = new Cell(2, 7, null, place27);
-        Map.getMap()[2][8] = new Cell(2, 8, null, place28);
-        Map.getMap()[2][9] = new Cell(2, 9, null, place29);
-        Map.getMap()[3][1] = new Cell(3, 1, null, place31);
-        Map.getMap()[3][2] = new Cell(3, 2, null, place32);
-        Map.getMap()[3][3] = new Cell(3, 3, null, place33);
-        Map.getMap()[3][4] = new Cell(3, 4, null, place34);
-        Map.getMap()[3][5] = new Cell(3, 5, null, place35);
-        Map.getMap()[3][6] = new Cell(3, 6, null, place36);
-        Map.getMap()[3][7] = new Cell(3, 7, null, place37);
-        Map.getMap()[3][8] = new Cell(3, 8, null, place38);
-        Map.getMap()[3][9] = new Cell(3, 9, null, place39);
-        Map.getMap()[4][1] = new Cell(4, 1, null, place41);
-        Map.getMap()[4][2] = new Cell(4, 2, null, place42);
-        Map.getMap()[4][3] = new Cell(4, 3, null, place43);
-        Map.getMap()[4][4] = new Cell(4, 4, null, place44);
-        Map.getMap()[4][5] = new Cell(4, 5, null, place45);
-        Map.getMap()[4][6] = new Cell(4, 6, null, place46);
-        Map.getMap()[4][7] = new Cell(4, 7, null, place47);
-        Map.getMap()[4][8] = new Cell(4, 8, null, place48);
-        Map.getMap()[4][9] = new Cell(4, 9, null, place49);
-        Map.getMap()[5][1] = new Cell(5, 1, null, place51);
-        Map.getMap()[5][2] = new Cell(5, 2, null, place52);
-        Map.getMap()[5][3] = new Cell(5, 3, null, place53);
-        Map.getMap()[5][4] = new Cell(5, 4, null, place54);
-        Map.getMap()[5][5] = new Cell(5, 5, null, place55);
-        Map.getMap()[5][6] = new Cell(5, 6, null, place56);
-        Map.getMap()[5][7] = new Cell(5, 7, null, place57);
-        Map.getMap()[5][8] = new Cell(5, 8, null, place58);
-        Map.getMap()[5][9] = new Cell(5, 9, null, place59);
+
     }
 
 }

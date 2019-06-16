@@ -46,7 +46,8 @@ public class Initializer extends Application {
         Story.loadStoryDecks();
         System.err.println("Loading cards ...");
         Shop.loadAllCards();
-        BattlePageController.getInstance().initTheMapCells();
+        System.err.println("Initializing maps ...");
+        Map.createTheMap();
         System.err.println("cards loaded");
         launch(args);
         Input.start();
