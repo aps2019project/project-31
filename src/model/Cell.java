@@ -49,6 +49,17 @@ public class Cell {
         this.polygon = polygon;
     }
 
+    public Cell(int x1Coordinate, int x2Coordinate, Deployable cardInCell) {
+        this.x1Coordinate = x1Coordinate;
+        this.x2Coordinate = x2Coordinate;
+        this.cardInCell = cardInCell;
+        onFireTurns = 0;
+        onPoisonTurns = 0;
+        hasFlag = false;
+        item = null;
+    }
+
+
     public void setIsHolyTurns(int isHolyTurns) {
         this.isHolyTurns = isHolyTurns;
     }
@@ -115,14 +126,12 @@ public class Cell {
     public Double[] calculateCenter() {
         Double[] coordinates = new Double[2];
         double x = 0, y = 0;
-        for (int i = 0; i < polygon.getPoints().size(); i += 2) {
-            x += polygon.getPoints().get(i);
-        }
-        for (int i = 1; i < polygon.getPoints().size(); i += 2) {
-            y += polygon.getPoints().get(i);
-        }
-        coordinates[0] = x / 4;
-        coordinates[1] = y / 4;
+        x += polygon.getPoints().get(0) + polygon.getPoints().get(7);
+        y +=polygon.getPoints().get(1);
+        coordinates[0] = (x / 2) + polygon.getLayoutX()-100;
+        coordinates[1] = (y) + polygon.getLayoutY()-100;
+        System.out.println("x average is : " + coordinates[0]);
+        System.out.println("y average is : " + coordinates[1]);
         return coordinates;
     }
 

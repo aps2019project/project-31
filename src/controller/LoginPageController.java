@@ -68,7 +68,7 @@ public class LoginPageController implements Initializable {
     }
 
     public void setAsScene() {
-        if (scene == null) {
+        if (true) {
             try {
                 Parent root = FXMLLoader.load(getClass().getResource("/LoginPage.fxml"));
                 Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
@@ -99,7 +99,9 @@ public class LoginPageController implements Initializable {
         exitButton.setOnAction(actionEvent -> {
             Initializer.getPrimaryStage().close();
         });
-        loginButton.setOnAction(actionEvent -> login());
+        loginButton.setOnAction(actionEvent -> {
+            login();
+        });
 
 
         infoButton.setOnAction(actionEvent -> {
@@ -166,7 +168,7 @@ public class LoginPageController implements Initializable {
             MainMenuController.getInstance().setAsScene();
             usernameTF.clear();
             passwordField.clear();
-
+            System.err.println(Account.getMainAccount().getTheMainDeck().getDeckName());
             return;
         } else {
             displayMessage("Incorrect Password!", 17, 2, infoVBox);

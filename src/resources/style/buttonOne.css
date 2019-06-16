@@ -45,7 +45,7 @@
     -fx-background-size: cover;
     -fx-background-repeat: no-repeat;
     -fx-background-insets: 0;
-    -fx-font-size: 26;
+    -fx-font-size: 20;
     -fx-font-family: "Times New Roman";
     -fx-text-fill: white;
 }
@@ -56,7 +56,23 @@
     -fx-scale-y: 1.04;
     -fx-cursor: hand;
 }
-
+ #leftLongButton {
+     -fx-background-color: rgba(0,0,0,0);
+     -fx-background-image: url('../assets/ui/button_primary_left@2x.png');
+     -fx-background-size: cover;
+     -fx-background-repeat: no-repeat;
+     -fx-background-insets: 0;
+     -fx-font-size: 15;
+     -fx-font-family: "Times New Roman";
+     -fx-text-fill: white;
+ }
+#leftLongButton:hover{
+    -fx-background-image: url('../assets/ui/button_primary_left_glow@2x.png');
+    -fx-background-color: rgba(0,0,0,0);
+    -fx-scale-x: 1.04;
+    -fx-scale-y: 1.04;
+    -fx-cursor: hand;
+}
 
 #leaderBoardHeader{
     -fx-background-image: url('../assets/arena/gauntlet_control_bar_bg.png');
@@ -234,4 +250,8 @@
     -fx-background-color: rgba(0,0,0,0);
     -fx-font-size: 30;
     -fx-cursor: hand;
+}
+
+#tile:hover{
+    -fx-background-color: rgba(200,0,0,0.15);
 }

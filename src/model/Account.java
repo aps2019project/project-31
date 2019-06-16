@@ -12,6 +12,15 @@ import java.util.Collections;
 
 public class Account {
     private static ArrayList<Account> allAccounts = new ArrayList<>();
+
+    public static Deck getEditingDeck() {
+        return editingDeck;
+    }
+
+    public static void setEditingDeck(Deck editingDeck) {
+        Account.editingDeck = editingDeck;
+    }
+
     private static Deck editingDeck;
     private static Account mainAccount;
 
@@ -71,6 +80,18 @@ public class Account {
         Account.mainAccount = mainAccount;
     }
 
+    public static void saveCurrentAccount() {//buggy
+        YaGson yaGson = new YaGsonBuilder().create();
+        String path = System.getProperty("user.dir") + "/Sources/Accounts/Accounts.txt";
+        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(path))) {
+            if (Account.getMainAccount() != null) {
+                bufferedWriter.write(yaGson.toJson(Account.getMainAccount()) + "\n");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void saveAllAccounts() {
         YaGson yaGson = new YaGsonBuilder().create();
         String path = System.getProperty("user.dir") + "/Sources/Accounts/Accounts.txt";
@@ -98,9 +119,9 @@ public class Account {
         return collection;
     }
 
-    public ArrayList<Card> getSpecificCards(CardType cardType) {
+    public ArrayList<Card> getSpecificCardsOf(CardType cardType, ArrayList<Card> cards) {
         ArrayList<Card> specifics = new ArrayList<>();
-        for (Card card : collection) {
+        for (Card card : cards) {
             if (card.getType().equals(cardType))
                 specifics.add(card);
         }
@@ -268,6 +289,9 @@ public class Account {
         editingDeck.show();
     }
 
+    public void checkValidationOfDeck(Deck deck) {
+        checkValidationOfDeck(deck.getDeckName());
+    }
 
     public void checkValidationOfDeck(String deckName) {
         selectDeck(deckName);
@@ -299,4 +323,5 @@ public class Account {
         }
         getDecks().remove(findDeckByName(deckName));
     }
+
 }

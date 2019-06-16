@@ -35,11 +35,19 @@ public class Player {
         this.cardsOnBattleField = new ArrayList<>();
         this.graveYard = new ArrayList<>();
         try {
-            this.currentDeck = new Deck("temp: " + account.getTheMainDeck().getDeckName(),
-                    account.getTheMainDeck().getHero().duplicateDeployed(account, howFuckedUpIAm++),
-                    account.getTheMainDeck().getItem());
+            if (account.getTheMainDeck().getItem() == null) {
+                this.currentDeck = new Deck("temp: " + account.getTheMainDeck().getDeckName(),
+                        account.getTheMainDeck().getHero().duplicateDeployed(account, howFuckedUpIAm++),
+                        null);
+            } else {
+                this.currentDeck = new Deck("temp: " + account.getTheMainDeck().getDeckName(),
+                        account.getTheMainDeck().getHero().duplicateDeployed(account, howFuckedUpIAm++),
+                        account.getTheMainDeck().getItem());
+            }
+            System.out.println("the current deck is MADE");
         } catch (Exception e) {
-            System.err.println("the account.getMainDeck() is null");
+            e.printStackTrace();
+            System.err.println("currentDeck is null (the account.getMainDeck() is null)");
         }
         this.isAi = isAi;
 
