@@ -1,5 +1,6 @@
 package controller;
 
+import constants.CardType;
 import constants.FunctionType;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -167,7 +168,15 @@ public class BattlePageController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        ColumnOfHand[] columnHands = new ColumnOfHand[6];
+
         try {
+            columnHands[0] = new ColumnOfHand(column1, manaCost1);
+            columnHands[1] = new ColumnOfHand(column2, manaCost2);
+            columnHands[2] = new ColumnOfHand(column3, manaCost3);
+            columnHands[3] = new ColumnOfHand(column4, manaCost4);
+            columnHands[4] = new ColumnOfHand(column5, manaCost5);
+            columnHands[5] = new ColumnOfHand(column6, manaCost6);
 
             BattlePageController.getInstance().initTheMapCells();
 
@@ -220,6 +229,7 @@ public class BattlePageController implements Initializable {
             e.printStackTrace();
             System.out.println("kir tuuuush");
         }
+
         try {
 
             for (int i = 1; i <= 5; i++) {
@@ -241,9 +251,31 @@ public class BattlePageController implements Initializable {
         BattleManager battle = BattleMenu.getBattleManager();
         try {
 
-
-            battle.initialTheGame();
             initPlayers();
+            battle.initialTheGame();
+            for (int i = 0; i < 6; i++) {
+                if (me.getHand().get(i) != null) {
+                    if (me.getHand().get(i).getType() == CardType.minion) {
+                        DisplayableDeployable face = new DisplayableDeployable((Deployable) me.getHand().get(i));
+                        ((Deployable) me.getHand().get(i)).setFace(face);
+                        columnHands[i].getStackPane().getChildren().add(face);
+                        face.setTranslateY(95.0);
+                        //
+                        face.setOnMouseClicked(event -> {
+                            System.out.println("clicked!");
+                            if (battle.getCurrentPlayer() == me)
+                                me.selectACard(face.getDeployable().getId());
+                            else
+                                System.out.println("not my turn");
+                        });
+                        //
+                    }
+
+
+                    columnHands[i].getManaCost().setText(me.getHand().get(i).getManaCost() + "");
+                }
+            }
+
             username.setText(me.getAccount().getUsername());
             opponentUsername.setText(opponent.getAccount().getUsername());
             generalSpellManaCost.setText("" + me.getHero().getHeroSpell().getManaCost());
@@ -289,10 +321,11 @@ public class BattlePageController implements Initializable {
         });
         // select a card ydt nre
         setting.setOnAction(event -> {
-            if (battle.getCurrentPlayer() == battle.getPlayer1())
+            if (me == battle.getPlayer1())
                 battle.player2Won();
             else
                 battle.player1Won();
+            MainMenuController.getInstance().setAsScene();
         });
         graveYard.setOnAction(event -> {
             GraveYardController.getInstance().setAsScene();
@@ -406,4 +439,22 @@ public class BattlePageController implements Initializable {
 
     }
 
+}
+
+class ColumnOfHand {
+    StackPane stackPane;
+    Label manaCost;
+
+    public StackPane getStackPane() {
+        return stackPane;
+    }
+
+    public Label getManaCost() {
+        return manaCost;
+    }
+
+    public ColumnOfHand(StackPane stackPane, Label manaCost) {
+        this.stackPane = stackPane;
+        this.manaCost = manaCost;
+    }
 }

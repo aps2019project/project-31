@@ -38,7 +38,7 @@
                                     <Image url="@assets/generals/general_portrait_border@2x.png" />
                                  </image>
                               </ImageView>
-                              <ImageView fitHeight="200.0" fitWidth="200.0" scaleX="0.5" scaleY="0.5" translateX="100.0" translateY="40.0" StackPane.alignment="CENTER_LEFT">
+                              <ImageView fitHeight="200.0" fitWidth="200.0" scaleX="0.5" scaleY="0.5" translateX="-15.0" translateY="85.0" StackPane.alignment="CENTER_LEFT">
                                  <image>
                                     <Image url="@assets/ui/dialogue_border@2x.png" />
                                  </image>
@@ -110,22 +110,22 @@
                                     </HBox>
                                  </children>
                               </StackPane>
-                              <ImageView scaleX="0.7" scaleY="0.7" translateX="-96.0" translateY="-4.0" StackPane.alignment="CENTER">
+                              <ImageView scaleX="0.7" scaleY="0.7" translateX="25.0" translateY="45.0" StackPane.alignment="CENTER_LEFT">
                                  <image>
                                     <Image url="@assets/ui/icon_cooldown_counter.png" />
                                  </image>
                               </ImageView>
-                              <Label fx:id="generalCoolDown" text="2" translateX="193.0" translateY="-5.0" StackPane.alignment="CENTER_LEFT">
+                              <Label fx:id="generalCoolDown" text="2" translateX="80.0" translateY="45.0" StackPane.alignment="CENTER_LEFT">
                                  <font>
                                     <Font size="24.0" />
                                  </font>
                               </Label>
-                              <ImageView scaleX="0.8" scaleY="0.8" translateX="175.0" translateY="87.0" StackPane.alignment="CENTER_LEFT">
+                              <ImageView scaleX="0.8" scaleY="0.8" translateX="58.0" translateY="130.0" StackPane.alignment="CENTER_LEFT">
                                  <image>
                                     <Image url="@images/blackMana.png" />
                                  </image>
                               </ImageView>
-                              <Label fx:id="generalSpellManaCost" text="2" textFill="WHITE" translateX="197.0" translateY="87.0" StackPane.alignment="CENTER_LEFT">
+                              <Label fx:id="generalSpellManaCost" text="2" textFill="WHITE" translateX="80.0" translateY="130.0" StackPane.alignment="CENTER_LEFT">
                                  <font>
                                     <Font size="22.0" />
                                  </font>
@@ -139,7 +139,7 @@
                                     <Image url="@assets/generals/general_portrait_border@2x.png" />
                                  </image>
                               </ImageView>
-                              <ImageView fitHeight="200.0" fitWidth="200.0" scaleX="0.5" scaleY="0.5" translateX="40.0" translateY="50.0">
+                              <ImageView fitHeight="200.0" fitWidth="200.0" scaleX="0.5" scaleY="0.5" translateX="150.0" translateY="95.0">
                                  <image>
                                     <Image url="@assets/ui/dialogue_border@2x.png" />
                                  </image>
@@ -173,22 +173,22 @@
                                     <Font size="24.0" />
                                  </font>
                               </Label>
-                              <ImageView scaleX="0.7" scaleY="0.7" translateX="42.0" translateY="2.0">
+                              <ImageView scaleX="0.7" scaleY="0.7" translateX="155.0" translateY="55.0">
                                  <image>
                                     <Image url="@assets/ui/icon_cooldown_counter.png" />
                                  </image>
                               </ImageView>
-                              <Label fx:id="opponentGeneralCooldown" text="2" translateX="42.0" translateY="2.0">
+                              <Label fx:id="opponentGeneralCooldown" text="2" translateX="155.0" translateY="55.0">
                                  <font>
                                     <Font size="24.0" />
                                  </font>
                               </Label>
-                              <ImageView scaleX="0.8" scaleY="0.8" translateX="42.0" translateY="95.0">
+                              <ImageView scaleX="0.8" scaleY="0.8" translateX="150.0" translateY="140.0">
                                  <image>
                                     <Image url="@images/blackMana.png" />
                                  </image>
                               </ImageView>
-                              <Label fx:id="opponentGeneralSpellManaCost" text="2" textFill="WHITE" translateX="43.0" translateY="95.0" StackPane.alignment="CENTER">
+                              <Label fx:id="opponentGeneralSpellManaCost" text="2" textFill="WHITE" translateX="150.0" translateY="140.0" StackPane.alignment="CENTER">
                                  <font>
                                     <Font size="22.0" />
                                  </font>
@@ -379,7 +379,7 @@
                         </StackPane>
                         <StackPane alignment="BOTTOM_CENTER" prefHeight="399.0" prefWidth="278.0">
                            <children>
-                              <Button id="settingButton" fx:id="setting" mnemonicParsing="false" prefHeight="52.0" prefWidth="132.0" stylesheets="@style/buttonOne.css" text="Setting" translateX="-70.0" translateY="-20.0" />
+                              <Button id="settingButton" fx:id="setting" mnemonicParsing="false" prefHeight="52.0" prefWidth="132.0" stylesheets="@style/buttonOne.css" text="Concede" translateX="-70.0" translateY="-20.0" />
                               <Button id="endTurnButton" fx:id="endTurn" mnemonicParsing="false" prefHeight="76.0" prefWidth="233.0" stylesheets="@style/buttonOne.css" text="End Turn" translateY="90.0" StackPane.alignment="CENTER">
                                  <opaqueInsets>
                                     <Insets />
@@ -398,55 +398,55 @@
          </children>
       </VBox>
       <StackPane fx:id="lastStackPane" prefHeight="462.0" prefWidth="1080.0" scaleX="0.01" scaleY="0.01" />
-      <Pane id="tile" fx:id="motherFuckinPane" prefHeight="467.0" prefWidth="916.0" stylesheets="@style/buttonOne.css">
+      <Pane id="tile" fx:id="motherFuckinPane" prefHeight="401.0" prefWidth="664.0" stylesheets="@style/buttonOne.css">
          <children>
-            <Polyline fx:id="place51" fill="#00000025" layoutX="212.0" layoutY="527.0" points="-27.0, -24.0, 50.0, -24.0, 22.0, 60.0, -58.0, 60.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-            <Polyline fx:id="place52" fill="#00000024" layoutX="307.0" layoutY="519.0" points="-38.0, -16.0, 40.0, -16.0, 14.0, 68.0, -67.0, 68.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-            <Polyline fx:id="place53" fill="#00000026" layoutX="383.0" layoutY="528.0" points="-28.0, -25.0, 47.0, -25.0, 23.0, 57.0, -55.0, 57.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-            <Polyline fx:id="place54" fill="#00000024" layoutX="471.0" layoutY="529.0" points="-35.0, -25.0, 38.0, -25.0, 23.0, 57.0, -57.0, 56.0" stroke="#ffffff00" strokeType="INSIDE" />
-            <Polyline fx:id="place55" fill="#00000026" layoutX="557.0" layoutY="529.0" points="-43.0, -25.0, 23.0, -25.0, 23.0, 57.0, -55.0, 57.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-            <Polyline fx:id="place56" fill="#00000024" layoutX="631.0" layoutY="529.0" points="-43.0, -25.0, 31.0, -25.0, 35.0, 57.0, -43.0, 57.0" stroke="#d6d6d600" strokeType="INSIDE" />
-            <Polyline fx:id="place57" fill="#00000024" layoutX="702.0" layoutY="529.0" points="-36.0, -25.0, 36.0, -25.0, 45.0, 57.0, -29.0, 57.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-            <Polyline fx:id="place58" fill="#00000026" layoutX="797.0" layoutY="528.0" points="-50.0, -25.0, 21.0, -25.0, 31.0, 57.0, -43.0, 57.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-            <Polyline fx:id="place59" fill="#00000021" layoutX="885.0" layoutY="528.0" points="-57.0, -25.0, 24.0, -25.0, 31.0, 58.0, -44.0, 58.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-            <Polyline fx:id="place41" fill="#00000025" layoutX="244.0" layoutY="435.0" points="-27.0, -24.0, 50.0, -24.0, 22.0, 60.0, -55.0, 60.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-            <Polyline fx:id="place42" fill="#00000024" layoutX="342.0" layoutY="427.0" points="-40.0, -16.0, 28.0, -16.0, 5.0, 68.0, -70.0, 68.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-            <Polyline fx:id="place43" fill="#00000026" layoutX="401.0" layoutY="430.0" points="-23.0, -17.0, 49.0, -17.0, 27.0, 65.0, -44.0, 65.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-            <Polyline fx:id="place44" fill="#00000024" layoutX="488.0" layoutY="434.0" points="-31.0, -19.0, 34.0, -19.0, 19.0, 61.0, -51.0, 61.0" stroke="#ffffff00" strokeType="INSIDE" /><Polyline fx:id="place45" fill="#00000026" layoutX="564.0" layoutY="437.0" points="-37.0, -25.0, 23.0, -25.0, 16.0, 57.0, -50.0, 57.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-            <Polyline fx:id="place46" fill="#00000024" layoutX="641.0" layoutY="437.0" points="-48.0, -25.0, 16.0, -25.0, 16.0, 57.0, -54.0, 57.0" stroke="#d6d6d600" strokeType="INSIDE" />
-            <Polyline fx:id="place47" fill="#00000024" layoutX="697.0" layoutY="437.0" points="-36.0, -25.0, 27.0, -25.0, 36.0, 57.0, -36.0, 57.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-            <Polyline fx:id="place48" fill="#00000026" layoutX="788.0" layoutY="437.0" points="-50.0, -25.0, 21.0, -25.0, 31.0, 57.0, -43.0, 57.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-            <Polyline fx:id="place49" fill="#00000021" layoutX="876.0" layoutY="439.0" points="-57.0, -25.0, 24.0, -25.0, 31.0, 58.0, -44.0, 58.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-            <Polyline fx:id="place31" fill="#00000025" layoutX="275.0" layoutY="351.0" points="-27.0, -24.0, 45.0, -24.0, 20.0, 51.0, -53.0, 51.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-            <Polyline fx:id="place32" fill="#00000024" layoutX="368.0" layoutY="339.0" points="-40.0, -16.0, 28.0, -16.0, 5.0, 68.0, -65.0, 68.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-            <Polyline fx:id="place33" fill="#00000026" layoutX="428.0" layoutY="341.0" points="-26.0, -17.0, 39.0, -17.0, 25.0, 65.0, -48.0, 65.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-            <Polyline fx:id="place34" fill="#00000024" layoutX="501.0" layoutY="344.0" points="-27.0, -19.0, 31.0, -19.0, 19.0, 61.0, -44.0, 61.0" stroke="#ffffff00" strokeType="INSIDE" />
-            <Polyline fx:id="place35" fill="#00000026" layoutX="572.0" layoutY="349.0" points="-33.0, -25.0, 20.0, -25.0, 12.0, 57.0, -46.0, 57.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-            <Polyline fx:id="place36" fill="#00000024" layoutX="646.0" layoutY="344.0" points="-49.0, -20.0, 16.0, -18.0, 16.0, 57.0, -54.0, 57.0" stroke="#d6d6d600" strokeType="INSIDE" />
-            <Polyline fx:id="place37" fill="#00000024" layoutX="693.0" layoutY="347.0" points="-29.0, -18.0, 29.0, -18.0, 36.0, 57.0, -29.0, 57.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-            <Polyline fx:id="place38" fill="#00000026" layoutX="772.0" layoutY="351.0" points="-43.0, -22.0, 25.0, -22.0, 34.0, 57.0, -34.0, 57.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-            <Polyline fx:id="place39" fill="#00000021" layoutX="863.0" layoutY="352.0" points="-57.0, -25.0, 24.0, -25.0, 31.0, 58.0, -44.0, 58.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-            <Polyline fx:id="place29" fill="#00000021" layoutX="841.0" layoutY="258.0" points="-49.0, -11.0, 31.0, -11.0, 39.0, 58.0, -39.0, 58.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-            <Polyline fx:id="place28" fill="#00000026" layoutX="758.0" layoutY="264.0" points="-43.0, -17.0, 26.0, -17.0, 34.0, 57.0, -34.0, 57.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-            <Polyline fx:id="place27" fill="#00000024" layoutX="686.0" layoutY="265.0" points="-29.0, -18.0, 29.0, -18.0, 29.0, 52.0, -20.0, 52.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-            <Polyline fx:id="place26" fill="#00000024" layoutX="646.0" layoutY="263.0" points="-47.0, -13.0, 4.0, -13.0, 11.0, 54.0, -47.0, 54.0" stroke="#d6d6d600" strokeType="INSIDE" />
-            <Polyline fx:id="place25" fill="#00000024" layoutX="588.0" layoutY="261.0" points="-47.0, -13.0, 4.0, -13.0, 4.0, 54.0, -47.0, 54.0" stroke="#d6d6d600" strokeType="INSIDE" />
-            <Polyline fx:id="place24" fill="#00000024" layoutX="531.0" layoutY="264.0" points="-47.0, -13.0, 4.0, -13.0, -4.0, 54.0, -59.0, 54.0" stroke="#d6d6d600" strokeType="INSIDE" />
-            <Polyline fx:id="place23" fill="#00000024" layoutX="478.0" layoutY="264.0" points="-59.0, -13.0, 0.0, -13.0, -14.0, 54.0, -74.0, 54.0" stroke="#d6d6d600" strokeType="INSIDE" />
-            <Polyline fx:id="place22" fill="#00000024" layoutX="407.0" layoutY="264.0" points="-55.0, -13.0, 6.0, -13.0, -11.0, 54.0, -80.0, 54.0" stroke="#d6d6d600" strokeType="INSIDE" />
-            <Polyline fx:id="place21" fill="#00000024" layoutX="331.0" layoutY="264.0" points="-55.0, -13.0, 10.0, -13.0, -11.0, 54.0, -80.0, 54.0" stroke="#d6d6d600" strokeType="INSIDE" />
-            <Polyline fx:id="place11" fill="#00000024" layoutX="355.0" layoutY="193.0" points="-55.0, -13.0, 10.0, -13.0, -11.0, 54.0, -80.0, 54.0" stroke="#d6d6d600" strokeType="INSIDE" />
-            <Polyline fx:id="place12" fill="#00000024" layoutX="427.0" layoutY="193.0" points="-55.0, -13.0, 2.0, -13.0, -11.0, 54.0, -80.0, 54.0" stroke="#d6d6d600" strokeType="INSIDE" />
-            <Polyline fx:id="place13" fill="#00000024" layoutX="489.0" layoutY="197.0" points="-53.0, -20.0, 2.0, -26.0, -9.0, 44.0, -68.0, 50.0" stroke="#d6d6d600" strokeType="INSIDE" />
-            <Polyline fx:id="place14" fill="#00000024" layoutX="557.0" layoutY="197.0" points="-58.0, -26.0, -14.0, -26.0, -21.0, 44.0, -73.0, 44.0" stroke="#d6d6d600" strokeType="INSIDE" />
-            <Polyline fx:id="place15" fill="#00000024" layoutX="596.0" layoutY="186.0" points="-47.0, -15.0, -4.0, -13.0, -4.0, 54.0, -53.0, 54.0" stroke="#d6d6d600" strokeType="INSIDE" />
-            <Polyline fx:id="place16" fill="#00000024" layoutX="646.0" layoutY="189.0" points="-47.0, -13.0, 4.0, -13.0, 4.0, 54.0, -47.0, 54.0" stroke="#d6d6d600" strokeType="INSIDE" />
-            <Polyline fx:id="place17" fill="#00000024" layoutX="686.0" layoutY="197.0" points="-29.0, -18.0, 20.0, -18.0, 28.0, 43.0, -29.0, 43.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-            <Polyline fx:id="place18" fill="#00000026" layoutX="758.0" layoutY="194.0" points="-44.0, -15.0, 12.0, -15.0, 21.0, 45.0, -37.0, 45.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-            <Polyline fx:id="place19" fill="#00000021" layoutX="833.0" layoutY="186.0" points="-54.0, -7.0, 14.0, -11.0, 29.0, 49.0, -43.0, 49.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+            <Polyline fx:id="place51" fill="#00000025" layoutX="55.0" layoutY="377.0" points="-27.0, -24.0, 50.0, -24.0, 22.0, 60.0, -58.0, 60.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+            <Polyline fx:id="place52" fill="#00000024" layoutX="150.0" layoutY="369.0" points="-38.0, -16.0, 40.0, -16.0, 14.0, 68.0, -67.0, 68.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+            <Polyline fx:id="place53" fill="#00000026" layoutX="226.0" layoutY="378.0" points="-28.0, -25.0, 47.0, -25.0, 23.0, 57.0, -55.0, 57.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+            <Polyline fx:id="place54" fill="#00000024" layoutX="314.0" layoutY="379.0" points="-35.0, -25.0, 38.0, -25.0, 23.0, 57.0, -57.0, 56.0" stroke="#ffffff00" strokeType="INSIDE" />
+            <Polyline fx:id="place55" fill="#00000026" layoutX="400.0" layoutY="379.0" points="-43.0, -25.0, 23.0, -25.0, 23.0, 57.0, -55.0, 57.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+            <Polyline fx:id="place56" fill="#00000024" layoutX="474.0" layoutY="379.0" points="-43.0, -25.0, 31.0, -25.0, 35.0, 57.0, -43.0, 57.0" stroke="#d6d6d600" strokeType="INSIDE" />
+            <Polyline fx:id="place57" fill="#00000024" layoutX="545.0" layoutY="379.0" points="-36.0, -25.0, 36.0, -25.0, 45.0, 57.0, -29.0, 57.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+            <Polyline fx:id="place58" fill="#00000026" layoutX="640.0" layoutY="378.0" points="-50.0, -25.0, 21.0, -25.0, 31.0, 57.0, -43.0, 57.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+            <Polyline fx:id="place59" fill="#00000021" layoutX="728.0" layoutY="378.0" points="-57.0, -25.0, 21.0, -25.0, 34.0, 58.0, -44.0, 58.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+            <Polyline fx:id="place41" fill="#00000025" layoutX="86.0" layoutY="291.0" points="-27.0, -24.0, 50.0, -24.0, 22.0, 60.0, -55.0, 60.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+            <Polyline fx:id="place42" fill="#00000024" layoutX="184.0" layoutY="283.0" points="-40.0, -16.0, 28.0, -16.0, 5.0, 68.0, -70.0, 68.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+            <Polyline fx:id="place43" fill="#00000026" layoutX="243.0" layoutY="286.0" points="-23.0, -17.0, 49.0, -17.0, 27.0, 65.0, -44.0, 65.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+            <Polyline fx:id="place44" fill="#00000024" layoutX="330.0" layoutY="290.0" points="-31.0, -19.0, 34.0, -19.0, 19.0, 61.0, -51.0, 61.0" stroke="#ffffff00" strokeType="INSIDE" /><Polyline fx:id="place45" fill="#00000026" layoutX="406.0" layoutY="293.0" points="-37.0, -25.0, 23.0, -25.0, 16.0, 57.0, -50.0, 57.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+            <Polyline fx:id="place46" fill="#00000024" layoutX="483.0" layoutY="293.0" points="-48.0, -25.0, 16.0, -25.0, 16.0, 57.0, -54.0, 57.0" stroke="#d6d6d600" strokeType="INSIDE" />
+            <Polyline fx:id="place47" fill="#00000024" layoutX="539.0" layoutY="293.0" points="-36.0, -25.0, 27.0, -25.0, 36.0, 57.0, -36.0, 57.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+            <Polyline fx:id="place48" fill="#00000026" layoutX="630.0" layoutY="293.0" points="-50.0, -25.0, 21.0, -25.0, 31.0, 57.0, -43.0, 57.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+            <Polyline fx:id="place49" fill="#00000021" layoutX="718.0" layoutY="295.0" points="-57.0, -25.0, 12.0, -25.0, 28.0, 58.0, -44.0, 58.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+            <Polyline fx:id="place31" fill="#00000025" layoutX="121.0" layoutY="210.0" points="-27.0, -24.0, 45.0, -24.0, 20.0, 51.0, -53.0, 51.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+            <Polyline fx:id="place32" fill="#00000024" layoutX="214.0" layoutY="198.0" points="-40.0, -16.0, 28.0, -16.0, 5.0, 68.0, -65.0, 68.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+            <Polyline fx:id="place33" fill="#00000026" layoutX="274.0" layoutY="200.0" points="-26.0, -17.0, 39.0, -17.0, 25.0, 65.0, -48.0, 65.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+            <Polyline fx:id="place34" fill="#00000024" layoutX="347.0" layoutY="203.0" points="-27.0, -19.0, 31.0, -19.0, 19.0, 61.0, -44.0, 61.0" stroke="#ffffff00" strokeType="INSIDE" />
+            <Polyline fx:id="place35" fill="#00000026" layoutX="418.0" layoutY="208.0" points="-33.0, -25.0, 20.0, -25.0, 12.0, 57.0, -46.0, 57.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+            <Polyline fx:id="place36" fill="#00000024" layoutX="492.0" layoutY="203.0" points="-49.0, -20.0, 16.0, -18.0, 16.0, 57.0, -54.0, 57.0" stroke="#d6d6d600" strokeType="INSIDE" />
+            <Polyline fx:id="place37" fill="#00000024" layoutX="539.0" layoutY="206.0" points="-29.0, -18.0, 29.0, -18.0, 36.0, 57.0, -29.0, 57.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+            <Polyline fx:id="place38" fill="#00000026" layoutX="618.0" layoutY="210.0" points="-43.0, -22.0, 25.0, -22.0, 34.0, 57.0, -34.0, 57.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+            <Polyline fx:id="place39" fill="#00000021" layoutX="709.0" layoutY="211.0" points="-57.0, -25.0, 6.0, -25.0, 24.0, 58.0, -44.0, 58.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+            <Polyline fx:id="place29" fill="#00000021" layoutX="666.0" layoutY="44.0" points="-49.0, -11.0, 14.0, -11.0, 34.0, 58.0, -39.0, 58.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+            <Polyline fx:id="place28" fill="#00000026" layoutX="681.0" layoutY="124.0" points="-53.0, -17.0, 18.0, -17.0, 34.0, 57.0, -34.0, 57.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+            <Polyline fx:id="place27" fill="#00000024" layoutX="537.0" layoutY="127.0" points="-29.0, -18.0, 20.0, -18.0, 29.0, 52.0, -20.0, 52.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+            <Polyline fx:id="place26" fill="#00000024" layoutX="497.0" layoutY="125.0" points="-47.0, -13.0, 4.0, -13.0, 11.0, 54.0, -47.0, 54.0" stroke="#d6d6d600" strokeType="INSIDE" />
+            <Polyline fx:id="place25" fill="#00000024" layoutX="439.0" layoutY="123.0" points="-47.0, -13.0, 4.0, -13.0, 4.0, 54.0, -53.0, 54.0" stroke="#d6d6d600" strokeType="INSIDE" />
+            <Polyline fx:id="place24" fill="#00000024" layoutX="382.0" layoutY="126.0" points="-47.0, -13.0, 4.0, -13.0, -4.0, 54.0, -59.0, 54.0" stroke="#d6d6d600" strokeType="INSIDE" />
+            <Polyline fx:id="place23" fill="#00000024" layoutX="327.0" layoutY="122.0" points="-59.0, -13.0, 0.0, -13.0, -14.0, 54.0, -74.0, 54.0" stroke="#d6d6d600" strokeType="INSIDE" />
+            <Polyline fx:id="place22" fill="#00000024" layoutX="254.0" layoutY="122.0" points="-55.0, -13.0, 6.0, -13.0, -11.0, 54.0, -80.0, 54.0" stroke="#d6d6d600" strokeType="INSIDE" />
+            <Polyline fx:id="place21" fill="#00000024" layoutX="175.0" layoutY="122.0" points="-55.0, -13.0, 10.0, -13.0, -11.0, 54.0, -80.0, 54.0" stroke="#d6d6d600" strokeType="INSIDE" />
+            <Polyline fx:id="place11" fill="#00000024" layoutX="198.0" layoutY="48.0" points="-55.0, -13.0, 10.0, -13.0, -11.0, 54.0, -80.0, 54.0" stroke="#d6d6d600" strokeType="INSIDE" />
+            <Polyline fx:id="place12" fill="#00000024" layoutX="274.0" layoutY="48.0" points="-55.0, -13.0, 2.0, -13.0, -11.0, 54.0, -80.0, 54.0" stroke="#d6d6d600" strokeType="INSIDE" />
+            <Polyline fx:id="place13" fill="#00000024" layoutX="336.0" layoutY="57.0" points="-53.0, -20.0, 2.0, -26.0, -9.0, 44.0, -70.0, 44.0" stroke="#d6d6d600" strokeType="INSIDE" />
+            <Polyline fx:id="place14" fill="#00000024" layoutX="403.0" layoutY="60.0" points="-58.0, -26.0, -14.0, -26.0, -21.0, 44.0, -73.0, 44.0" stroke="#d6d6d600" strokeType="INSIDE" />
+            <Polyline fx:id="place15" fill="#00000024" layoutX="443.0" layoutY="47.0" points="-47.0, -15.0, -4.0, -13.0, -4.0, 54.0, -53.0, 54.0" stroke="#d6d6d600" strokeType="INSIDE" />
+            <Polyline fx:id="place16" fill="#00000024" layoutX="494.0" layoutY="48.0" points="-47.0, -13.0, 4.0, -13.0, 4.0, 54.0, -47.0, 54.0" stroke="#d6d6d600" strokeType="INSIDE" />
+            <Polyline fx:id="place17" fill="#00000024" layoutX="529.0" layoutY="54.0" points="-29.0, -18.0, 20.0, -18.0, 28.0, 43.0, -29.0, 43.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+            <Polyline fx:id="place18" fill="#00000026" layoutX="601.0" layoutY="54.0" points="-44.0, -15.0, 12.0, -15.0, 21.0, 45.0, -37.0, 45.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+            <Polyline fx:id="place19" fill="#00000021" layoutX="613.0" layoutY="126.0" points="-47.0, -17.0, 12.0, -17.0, 29.0, 49.0, -43.0, 49.0" stroke="TRANSPARENT" strokeType="INSIDE" />
          </children>
          <StackPane.margin>
-            <Insets />
+            <Insets bottom="120.0" left="160.0" right="150.0" top="150.0" />
          </StackPane.margin>
       </Pane>
    </children>
