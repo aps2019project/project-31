@@ -101,6 +101,10 @@ public class CollectionController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         updateCollection();
         updateDecks();
+        setAsMainButton.setOnAction(event -> {
+            Account.getMainAccount().setTheMainDeck(Account.getEditingDeck());
+            System.out.println("the main deck has set");
+        });
         addNewDeckButton.setOnAction(event -> {
             if (newDeckName.getText() == null) {
                 displayMessage("enter name");

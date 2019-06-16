@@ -46,6 +46,7 @@ public class Player {
             }
             System.out.println("the current deck is MADE");
         } catch (Exception e) {
+            e.printStackTrace();
             System.err.println("currentDeck is null (the account.getMainDeck() is null)");
         }
         this.isAi = isAi;
