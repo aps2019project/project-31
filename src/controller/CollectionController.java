@@ -83,14 +83,24 @@ public class CollectionController implements Initializable {
             return;
         }
         try {
-            if (Account.getEditingDeck().getHero() != null)
-                ShopController.getInstance().initializeShopItems(new ArrayList<>(Collections.singletonList(Account.getEditingDeck().getHero())), heroesList1, 0.3, -210);
             updateDeckOf(CardType.minion, minionsList1);
             updateDeckOf(CardType.spell, spellsList1);
+
+            if (Account.getEditingDeck().getHero() != null)
+                ShopController.getInstance().initializeShopItems(new ArrayList<>(Collections.singletonList(Account.getEditingDeck().getHero())), heroesList1, 0.3, -210);
+            else heroesList1.getItems().clear();
             if (Account.getEditingDeck().getItem() != null)
                 ShopController.getInstance().initializeShopItems(new ArrayList<>(Collections.singletonList(Account.getEditingDeck().getItem())), usablesList1, 0.3, -210);
+            else usablesList1.getItems().clear();
         } catch (Exception ex) {
             ex.printStackTrace();
+        }
+    }
+
+    private void updateDeckList() {
+        decksListView.getItems().clear();
+        for (Deck deck : Account.getMainAccount().getDecks()) {
+            decksListView.getItems().add(new Label(deck.getDeckName()));
         }
     }
 
@@ -136,7 +146,7 @@ public class CollectionController implements Initializable {
             updateEditingDeck();
         });
         addButton.setOnAction(event -> {
-            if(Account.getEditingDeck() == null) {
+            if (Account.getEditingDeck() == null) {
                 displayMessage("select deck");
                 return;
             }
@@ -182,14 +192,16 @@ public class CollectionController implements Initializable {
                 displayMessage("select a deck");
                 return;
             }
-            for(Label label: decksListView.getItems()){
-                if(label.getText().equalsIgnoreCase(Account.getEditingDeck().getDeckName())){
+            for (Label label : decksListView.getItems()) {
+                if (label.getText().equalsIgnoreCase(Account.getEditingDeck().getDeckName())) {
                     decksListView.getItems().remove(label);
                     break;
                 }
             }
             Account.getMainAccount().deleteDeck(Account.getEditingDeck().getDeckName());
+            decksListView.getSelectionModel().clearSelection();
             updateEditingDeck();
+            updateDeckList();
         });
     }
 
