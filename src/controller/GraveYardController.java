@@ -29,8 +29,8 @@ public class GraveYardController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        username.setText(BattlePageController.getInstance().getMe().getAccount().getUsername());
-        opponentUsername.setText(BattlePageController.getInstance().getOpponent().getAccount().getUsername());
+       /* username.setText(BattlePageController.getInstance().getMe().getAccount().getUsername());
+        opponentUsername.setText(BattlePageController.getInstance().getOpponent().getAccount().getUsername());*/
         backToBattle.setOnAction(event -> {
             BattlePageController.getInstance().setAsScene();
         });
