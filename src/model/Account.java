@@ -80,7 +80,7 @@ public class Account {
         Account.mainAccount = mainAccount;
     }
 
-    public static void saveCurrentAccount() {
+    public static void saveCurrentAccount() {//buggy
         YaGson yaGson = new YaGsonBuilder().create();
         String path = System.getProperty("user.dir") + "/Sources/Accounts/Accounts.txt";
         try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(path))) {
