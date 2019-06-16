@@ -1,7 +1,7 @@
 package model;
 
 import constants.CardType;
-import javafx.scene.control.Label;
+import javafx.collections.ObservableList;
 import view.Output;
 
 import java.util.ArrayList;
@@ -53,8 +53,63 @@ public class Deck {
     }
 
     public void addCard(Card card) {
-        if (card.getType() == CardType.spell || card.getType() == CardType.minion || card.getType() == CardType.minion)
-            cards.add(card);
+        if (card.getType() == CardType.spell || card.getType() == CardType.minion) {
+            if (cards.size() < 18) {
+                cards.add(card);
+            }
+        }
+        if (card.getType() == CardType.item) {
+            if (item == null) {
+                setItem((Item) card);
+            }
+        }
+        if (card.getType() == CardType.hero) {
+            if (hero == null) {
+                setHero((Hero) card);
+            }
+        }
+    }
+
+    public void addCards(ArrayList<Card> cards) {
+        this.cards.addAll(cards);
+    }
+
+    public void addDisplayableCards(ObservableList<DisplayableCard> displayableCards) {
+        for (DisplayableCard displayableCard : displayableCards)
+            addDisplayableCard(displayableCard);
+    }
+
+    public void addDisplayableCard(DisplayableCard displayableCard) {
+        addCard(displayableCard.getCard());
+    }
+
+    public void deleteCard(Card card) {
+        deleteCardByName(card.getName());
+    }
+
+    public void deleteDisplayableCard(DisplayableCard displayablecard) {
+        deleteCard(displayablecard.getCard());
+    }
+
+    public void deleteDisplayableCards(ObservableList<DisplayableCard> displayableCards) {
+        for (DisplayableCard displayableCard : displayableCards)
+            deleteDisplayableCard(displayableCard);
+    }
+
+    public void deleteCardByName(String cardName) {
+        for (Card c : cards) {
+            if (c.getName().equalsIgnoreCase(cardName)) {
+                cards.remove(c);
+                return;
+            }
+        }
+        if (hero.getName().equalsIgnoreCase(cardName)) {
+            hero = null;
+            return;
+        }
+        if (item.getName().equalsIgnoreCase(cardName)) {
+            item = null;
+        }
     }
 
     public void setHero(Hero hero) {
@@ -64,10 +119,6 @@ public class Deck {
     public Deck(String deckName) {
         this.deckName = deckName;
         this.cards = new ArrayList<>();
-    }
-
-    public void addCards(ArrayList<Card> cards) {
-        this.cards.addAll(cards);
     }
 
     public Deck(String deckName, Hero hero, Item item) {

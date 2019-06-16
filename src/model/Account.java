@@ -279,6 +279,9 @@ public class Account {
         editingDeck.show();
     }
 
+    public void checkValidationOfDeck(Deck deck){
+        checkValidationOfDeck(deck.getDeckName());
+    }
 
     public void checkValidationOfDeck(String deckName) {
         selectDeck(deckName);

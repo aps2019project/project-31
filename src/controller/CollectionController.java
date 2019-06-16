@@ -19,7 +19,7 @@ import java.net.URL;
 import java.util.*;
 
 public class CollectionController implements Initializable {
-    private static CollectionController collection = new CollectionController();
+    private static CollectionController collection;
     private static Scene scene;
 
     public Button selectDeckButton;
@@ -46,6 +46,8 @@ public class CollectionController implements Initializable {
     public TabPane collectionTabPane;
 
     public static CollectionController getInstance() {
+        if (collection == null)
+            collection = new CollectionController();
         return collection;
     }
 
@@ -117,7 +119,7 @@ public class CollectionController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         updateCollection();
-        updateDecks();
+        updateDeckList();
         setAsMainButton.setOnAction(event -> {
             Account.getMainAccount().setTheMainDeck(Account.getEditingDeck());
             System.out.println("the main deck has set");
@@ -150,33 +152,36 @@ public class CollectionController implements Initializable {
                 displayMessage("select deck");
                 return;
             }
-            Tab tab = collectionTabPane.getSelectionModel().getSelectedItem();
-            ListView listView = (ListView) tab.getContent();
-            DisplayableCard displayableCard = null;
-            Card card;
-            if (listView != null) {
-                displayableCard = (DisplayableCard) listView.getSelectionModel().getSelectedItem();
+            if (collectionTabPane.getSelectionModel().getSelectedItem() == null) {
+                displayMessage("select a tab first");
+                return;
             }
+            ListView listView = (ListView) collectionTabPane.getSelectionModel().getSelectedItem().getContent();
+            DisplayableCard displayableCard;
+            if (listView.getSelectionModel().getSelectedItems() == null) {
+                displayMessage("select card fist");
+                return;
+            }
+            displayableCard = (DisplayableCard) listView.getSelectionModel().getSelectedItem();
             if (displayableCard != null) {
-                card = displayableCard.getCard();
-                ShopController.getInstance().selectTab(deckTabPane, card);
-                if (card.getType() == CardType.hero) {
-                    if (Account.getEditingDeck().getHero() == null)
-                        Account.getEditingDeck().setHero((Hero) card);
-                    else {
+                ShopController.getInstance().selectTab(deckTabPane, displayableCard.getCard());
+                if (displayableCard.getCard().getType() == CardType.hero) {
+                    if (Account.getEditingDeck().getHero() == null) {
+                        Account.getEditingDeck().addDisplayableCard(displayableCard);
+                    } else {
                         displayMessage("delete current hero");
                         return;
                     }
-                } else if (card.getType() == CardType.item) {
+                } else if (displayableCard.getCard().getType() == CardType.item) {
                     if (Account.getEditingDeck().getItem() == null)
-                        Account.getEditingDeck().setItem((Item) card);
+                        Account.getEditingDeck().addDisplayableCard(displayableCard);
                     else {
                         displayMessage("delete current item");
                         return;
                     }
                 } else {
                     if (Account.getEditingDeck().getCards().size() < 18)
-                        Account.getEditingDeck().addCard(card);
+                        Account.getEditingDeck().addDisplayableCard(displayableCard);
                     else {
                         displayMessage("delete some cards first");
                         return;
@@ -185,8 +190,6 @@ public class CollectionController implements Initializable {
                 updateEditingDeck();
             }
         });
-        mainMenuButton.setOnAction(event -> MainMenuController.getInstance().setAsScene());
-        shopButton.setOnAction(event -> ShopController.getInstance().setAsScene());
         deleteDeckButton.setOnAction(event -> {
             if (Account.getEditingDeck() == null) {
                 displayMessage("select a deck");
@@ -199,17 +202,33 @@ public class CollectionController implements Initializable {
                 }
             }
             Account.getMainAccount().deleteDeck(Account.getEditingDeck().getDeckName());
+            Account.setEditingDeck(null);
             decksListView.getSelectionModel().clearSelection();
             updateEditingDeck();
             updateDeckList();
         });
-    }
-
-    private void updateDecks() {
-        decksListView.getItems().clear();
-        for (Deck deck : Account.getMainAccount().getDecks()) {
-            decksListView.getItems().add(new Label(deck.getDeckName()));
-        }
+        deleteButton.setOnAction(event -> {
+            if (deckTabPane.getSelectionModel().getSelectedItem().getContent() == null) {
+                displayMessage("select a tab first");
+                return;
+            }
+            ListView listView = (ListView) deckTabPane.getSelectionModel().getSelectedItem().getContent();
+            if (listView.getSelectionModel().getSelectedItems().size() == 0) {
+                displayMessage("select a card first");
+                return;
+            }
+            Account.getEditingDeck().deleteDisplayableCards(listView.getSelectionModel().getSelectedItems());
+            updateEditingDeck();
+        });
+        setAsMainButton.setOnAction(event -> {
+            if(Account.getEditingDeck().checkIfValid() == false){
+                displayMessage("deck is not valid!!");
+                return;
+            }
+            Account.getMainAccount().selectAsMainDeck(Account.getEditingDeck().getDeckName());
+        });
+        mainMenuButton.setOnAction(event -> MainMenuController.getInstance().setAsScene());
+        shopButton.setOnAction(event -> ShopController.getInstance().setAsScene());
     }
 
     public void displayMessage(String massage) {
