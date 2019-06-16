@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.image.*?>
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Rectangle2D?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 
-
-<StackPane fx:id="mainContainer" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainMenuController">
+<StackPane fx:id="mainContainer" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainMenuController">
    <children>
-      <ImageView fx:id="backgroundImage" fitHeight="743.0" fitWidth="1439.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="backgroundImage" fitHeight="753.0" fitWidth="1111.0" pickOnBounds="true">
          <image>
             <Image url="@assets/scenes/load/scene_load_background.jpg" />
          </image>
@@ -27,7 +27,7 @@
                   <Button id="mainMenuButton" fx:id="shopButton" mnemonicParsing="false" prefHeight="163.0" prefWidth="236.0" stylesheets="@style/buttonOne.css" text="Shop" />
                   <Button id="mainMenuButton" fx:id="collectionButton" mnemonicParsing="false" prefHeight="177.0" prefWidth="236.0" stylesheets="@style/buttonOne.css" text="Collection" />
                   <Button id="mainMenuButton" fx:id="leaderboardButton" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="92.0" prefWidth="276.0" stylesheets="@style/buttonOne.css" text="Leaderboards" />
-                  <Button id="mainMenuButton" fx:id="exitButton" mnemonicParsing="false" prefHeight="152.0" prefWidth="396.0" stylesheets="@style/buttonOne.css" text="Exit" />
+                  <Button id="mainMenuButton" fx:id="saveButton" mnemonicParsing="false" prefHeight="152.0" prefWidth="396.0" stylesheets="@style/buttonOne.css" text="Save" />
                </children>
                <padding>
                   <Insets left="-5.0" />

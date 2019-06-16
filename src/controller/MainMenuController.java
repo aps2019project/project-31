@@ -24,16 +24,14 @@ public class MainMenuController implements Initializable {
     private static MainMenuController mainMenu;
     @FXML
     public StackPane mainContainer;
-    @FXML
     public ImageView backgroundImage;
     public Button playButton;
     public Button shopButton;
     public Button leaderboardButton;
-    public Button exitButton;
     public Button collectionButton;
-    @FXML
     public BorderPane borderPane;
     public Button logoutButton;
+    public Button saveButton;
 
 
     public MainMenuController() {
@@ -76,6 +74,7 @@ public class MainMenuController implements Initializable {
         playButton.setOnAction(event -> PlayMenuController.getInstance().setAsScene());
         shopButton.setOnAction(event -> ShopController.getInstance().setAsScene());
         collectionButton.setOnAction(event -> CollectionController.getInstance().setAsScene());
+        saveButton.setOnAction(event -> Account.saveCurrentAccount());
         Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
         Double screenWidth = screen.getWidth();
         backgroundImage.setScaleX(screenWidth / backgroundImage.getFitWidth() * 2 / 3);

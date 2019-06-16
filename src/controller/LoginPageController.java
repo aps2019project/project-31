@@ -168,7 +168,7 @@ public class LoginPageController implements Initializable {
             MainMenuController.getInstance().setAsScene();
             usernameTF.clear();
             passwordField.clear();
-
+            System.err.println(Account.getMainAccount().getTheMainDeck().getDeckName());
             return;
         } else {
             displayMessage("Incorrect Password!", 17, 2, infoVBox);
