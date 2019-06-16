@@ -121,10 +121,6 @@ public class CollectionController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         updateCollection();
         updateDeckList();
-        setAsMainButton.setOnAction(event -> {
-            Account.getMainAccount().setTheMainDeck(Account.getEditingDeck());
-            System.out.println("the main deck has set");
-        });
         addNewDeckButton.setOnAction(event -> {
             if (newDeckName.getText() == null) {
                 displayMessage("enter name");
@@ -238,11 +234,12 @@ public class CollectionController implements Initializable {
             updateEditingDeck();
         });
         setAsMainButton.setOnAction(event -> {
-            if (Account.getEditingDeck().checkIfValid() == false) {
+            if (!Account.getEditingDeck().checkIfValid()) {
                 displayMessage("deck is not valid!!");
                 return;
             }
             Account.getMainAccount().selectAsMainDeck(Account.getEditingDeck().getDeckName());
+            displayMessage("Main Deck is set \"" + Account.getEditingDeck().getDeckName() + "\"");
         });
         mainMenuButton.setOnAction(event -> MainMenuController.getInstance().setAsScene());
         shopButton.setOnAction(event -> ShopController.getInstance().setAsScene());
