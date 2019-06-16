@@ -34,8 +34,6 @@ public class Account {
     private int[] winLoseDraw = new int[3];
 
 
-
-
     public static void loadAllAccounts() {
         YaGson yaGson = new YaGsonBuilder().create();
         String path = System.getProperty("user.dir") + "/Sources/Accounts/Accounts.txt";
@@ -80,6 +78,18 @@ public class Account {
 
     public static void setMainAccount(Account mainAccount) {
         Account.mainAccount = mainAccount;
+    }
+
+    public static void saveCurrentAccount() {//buggy
+        YaGson yaGson = new YaGsonBuilder().create();
+        String path = System.getProperty("user.dir") + "/Sources/Accounts/Accounts.txt";
+        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(path))) {
+            if (Account.getMainAccount() != null) {
+                bufferedWriter.write(yaGson.toJson(Account.getMainAccount()) + "\n");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void saveAllAccounts() {
@@ -279,6 +289,9 @@ public class Account {
         editingDeck.show();
     }
 
+    public void checkValidationOfDeck(Deck deck) {
+        checkValidationOfDeck(deck.getDeckName());
+    }
 
     public void checkValidationOfDeck(String deckName) {
         selectDeck(deckName);

@@ -167,10 +167,21 @@ public class ShopController implements Initializable {
         }
         for (Deck deck : Account.getMainAccount().getDecks()) {
             try {
-                deck.getCards().remove(theCard);
+                for (int i = 0; i < deck.getCards().size(); i++)
+                    deck.getCards().remove(theCard);
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            if (deck.getHero() != null)
+                if (deck.getHero().getName().equalsIgnoreCase(card.getName()))
+                    deck.setHero(null);
+            if (deck.getItem() != null)
+                if (deck.getItem() != null && deck.getItem().getName().equalsIgnoreCase(card.getName()))
+                    deck.setItem(null);
+        }
+        if (Account.getMainAccount().getTheMainDeck() != null
+                && !Account.getMainAccount().getTheMainDeck().checkIfValid()) {
+            displayMessage("main deck is no longer valid select a new one");
         }
         Account.getMainAccount().addDaric(card.getPrice());
         Account.getMainAccount().getCollection().remove(theCard);
@@ -218,7 +229,7 @@ public class ShopController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         initializeShopItems(Shop.getAllHeroes(), heroesList, 0.6, -100);
         initializeShopItems(Shop.getAllMinions(), minionsList, 0.6, -100);
-        initializeShopItems(Shop.getAllSpells(), spellsList, 0.6 ,-100);
+        initializeShopItems(Shop.getAllSpells(), spellsList, 0.6, -100);
         initializeShopItems(Shop.getAllUsables(), usablesList, 0.6, -100);
         updateCollection();
         updateDaricView();
