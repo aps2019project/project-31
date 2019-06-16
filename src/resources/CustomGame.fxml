@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CustomGameController">
+   <children>
+      <ImageView fitHeight="720.0" fitWidth="1080.0">
+         <image>
+            <Image url="@images/chapter17_background@2x.jpg" />
+         </image>
+      </ImageView>
+      <ChoiceBox fx:id="gameMode" prefWidth="150.0" stylesheets="@style/inputBox.css" translateX="280.0" translateY="50.0" StackPane.alignment="TOP_LEFT" />
+      <Label id="mainLable" stylesheets="@style/mainLabel.css" text="Game Mode" textFill="WHITE" translateX="50.0" translateY="43.0" StackPane.alignment="TOP_LEFT">
+         <font>
+            <Font size="29.0" />
+         </font>
+      </Label>
+      <Label fx:id="numberOfFlagsLable" stylesheets="@style/mainLabel.css" text="Number Of Flags" textFill="WHITE" translateX="20.0" translateY="110.0" StackPane.alignment="TOP_LEFT">
+         <font>
+            <Font size="28.0" />
+         </font>
+      </Label>
+      <Button id="playButton" fx:id="playButtonCustom" mnemonicParsing="false" prefHeight="84.0" prefWidth="200.0" stylesheets="@style/buttonOne.css" text="PLAY" translateX="250.0" translateY="70.0" StackPane.alignment="TOP_CENTER" />
+      <TextField fx:id="numberOfFlagsTextField" prefHeight="34.0" prefWidth="160.0" stylesheets="@style/inputBox.css" translateX="-180.0" translateY="116.0" StackPane.alignment="TOP_CENTER">
+         <StackPane.margin>
+            <Insets left="460.0" right="460.0" />
+         </StackPane.margin>
+      </TextField>
+      <Label fx:id="numberOfTurnWinLable" stylesheets="@style/mainLabel.css" text="Winning Turns" textFill="WHITE" translateX="40.0" translateY="176.0" StackPane.alignment="TOP_LEFT">
+         <font>
+            <Font size="28.0" />
+         </font>
+      </Label>
+      <TextField fx:id="numberOfTurnWinTextField" prefHeight="37.0" prefWidth="160.0" stylesheets="@style/inputBox.css" translateY="182.0" StackPane.alignment="TOP_CENTER">
+         <StackPane.margin>
+            <Insets left="280.0" right="640.0" />
+         </StackPane.margin>
+      </TextField>
+      <Button id="firstButton" fx:id="back" mnemonicParsing="false" stylesheets="@style/buttonOne.css" text="Back" translateY="310.0" />
+      <VBox fx:id="vbox" prefHeight="227.0" prefWidth="450.0">
+         <StackPane.margin>
+            <Insets bottom="90.0" left="380.0" right="250.0" top="400.0" />
+         </StackPane.margin>
+      </VBox>
+   </children>
+</StackPane>
