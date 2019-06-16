@@ -166,6 +166,7 @@ public class CollectionController implements Initializable {
             }
             displayableCard = (DisplayableCard) listView.getSelectionModel().getSelectedItem();
             if (displayableCard != null) {
+                Card card = displayableCard.getCard();
                 ShopController.getInstance().selectTab(deckTabPane, displayableCard.getCard());
                 if (displayableCard.getCard().getType() == CardType.hero) {
                     if (Account.getEditingDeck().getHero() == null) {
@@ -182,6 +183,20 @@ public class CollectionController implements Initializable {
                         return;
                     }
                 } else {
+                    int count = 0;
+                    for (Card c : Account.getMainAccount().getCollection()) {
+                        if (c.getName().equalsIgnoreCase(card.getName()))
+                            count++;
+                    }
+                    for (Card c : Account.getEditingDeck().getCards()) {
+                        if (c.getName().equalsIgnoreCase(card.getName())) {
+                            count--;
+                        }
+                    }
+                    if (count <= 0) {
+                        displayMessage("buy some first");
+                        return;
+                    }
                     if (Account.getEditingDeck().getCards().size() < 18)
                         Account.getEditingDeck().addDisplayableCard(displayableCard);
                     else {
@@ -223,7 +238,7 @@ public class CollectionController implements Initializable {
             updateEditingDeck();
         });
         setAsMainButton.setOnAction(event -> {
-            if(Account.getEditingDeck().checkIfValid() == false){
+            if (Account.getEditingDeck().checkIfValid() == false) {
                 displayMessage("deck is not valid!!");
                 return;
             }
