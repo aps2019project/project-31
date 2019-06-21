@@ -354,7 +354,10 @@ public class BattlePageController implements Initializable {
         motherFuckinPane.getChildren().addAll(faceHero1, faceHero2);
         faceHero1.updateStats();
         faceHero2.updateStats();
-
+        faceHero1.setOnMouseClicked(mouseEvent ->
+                battleManager.getCurrentPlayer().selectACard(faceHero1.getDeployable().getUniqueId()));
+        faceHero2.setOnMouseClicked(mouseEvent ->
+                battleManager.getCurrentPlayer().selectACard(faceHero2.getDeployable().getUniqueId()));
         /*faceHero1.setTranslateX(200);
         new AnimationTimer(){
             long now = 0;

@@ -203,6 +203,7 @@ public class Player {
     }
 
     public void setSelectedCard(Card selectedCard) {
+        System.err.println("selected " +selectedCard.getName() + " successfully!");
         this.selectedCard = selectedCard;
     }
 
