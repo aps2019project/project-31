@@ -1,6 +1,8 @@
 package model;
 
+import constants.CardType;
 import controller.BattleMenu;
+import controller.BattlePageController;
 import javafx.application.Platform;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Polyline;
@@ -23,10 +25,14 @@ public class Cell {
     public void setPolygon(Polyline polygon) {
 
         this.polygon = polygon;
-        Platform.runLater(()->{
+        Platform.runLater(() -> {
             polygon.setOnMouseClicked(mouseEvent -> {
-                System.out.println("selected cell " + x1Coordinate + x2Coordinate);
-
+                Player me = BattlePageController.getInstance().getMe();
+                if (me.selectedCard != null && me.isSelectedCardDeployed() && this.cardInCell == null) {
+                    BattleMenu.getBattleManager().move((Deployable) me.selectedCard, x1Coordinate, x2Coordinate);
+                } else if (me.selectedCard != null && !me.isSelectedCardDeployed()) {
+                    BattleMenu.insert(me.selectedCard, x1Coordinate, x2Coordinate);
+                }
             });
         });
     }

@@ -187,7 +187,8 @@ public class DisplayableDeployable extends StackPane {
             label.setFont(Font.font(12));
             label.setTextFill(Color.CYAN);
         }
-
+        moveToCurrentCell();
+        moveToCurrentCell();
     }
 
 }
