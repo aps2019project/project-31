@@ -91,8 +91,8 @@ public class BattleMenu extends Menu {
         }
         SinglePlayer.makeAIAccount(theAiDeck);
         makeInstanceOfBattleManager(player1, SinglePlayer.getAiPlayer(), numberOfFlags, maxNumberOfHavingFlag, gameMode);
-        BattlePageController.getInstance().setMe(player1);
-        BattlePageController.getInstance().setOpponent(SinglePlayer.getAiPlayer());
+//        BattlePageController.getInstance().setMe(player1);
+  //      BattlePageController.getInstance().setOpponent(SinglePlayer.getAiPlayer());
     }
 
 

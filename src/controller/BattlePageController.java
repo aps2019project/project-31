@@ -151,9 +151,7 @@ public class BattlePageController implements Initializable {
     }
 
     public static BattlePageController getInstance() {
-        if (battlePageController == null) {
-            battlePageController = new BattlePageController();
-        }
+        if (battlePageController == null) battlePageController = new BattlePageController();
         return battlePageController;
     }
 
@@ -177,6 +175,7 @@ public class BattlePageController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        battlePageController = this;
         ColumnOfHand[] columnHands = new ColumnOfHand[6];
         initPlayers();
         try {
