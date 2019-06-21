@@ -137,7 +137,7 @@ public class DisplayableDeployable extends StackPane {
     public void moveToCurrentCell() {
         double amountX = (deployable.getCell().calculateCenter()[0] - getTranslateX()) / 15;
         double amountY = (deployable.getCell().calculateCenter()[1] - getTranslateY()) / 15;
-        if (amountX < 5 && amountY < 5) return;
+        if (amountX < 0.5 && amountY < 0.5) return;
         if (isMoving) return;
         run();
         isMoving = true;
