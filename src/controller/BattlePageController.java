@@ -131,6 +131,7 @@ public class BattlePageController implements Initializable {
     public Label generalSpellManaCost;
     public Label opponentGeneralSpellManaCost;
     private ArrayList<ImageView> manas = new ArrayList<>();
+    ColumnOfHand[] columnHands = new ColumnOfHand[6];
 
     public BattlePageController() {
         System.err.println("HLLLO");
@@ -173,10 +174,19 @@ public class BattlePageController implements Initializable {
         }
     }
 
+    public void removeFromHand(DisplayableDeployable face) {
+        for (ColumnOfHand column : columnHands) {
+            if(column.stackPane.getChildren().remove(face))
+                return;
+        }
+    }
+
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
         battlePageController = this;
-        ColumnOfHand[] columnHands = new ColumnOfHand[6];
+
         initPlayers();
         try {
             columnHands[0] = new ColumnOfHand(column1, manaCost1);
@@ -297,7 +307,6 @@ public class BattlePageController implements Initializable {
             battle.applyItemFunctions(BattleMenu.getBattleManager().getCurrentPlayer().getHero(), FunctionType.GameStart);
             battle.setCurrentPlayer(BattleMenu.getBattleManager().getPlayer1());
             battle.applyItemFunctions(BattleMenu.getBattleManager().getCurrentPlayer().getHero(), FunctionType.GameStart);
-            battle.setCurrentPlayer(BattleMenu.getBattleManager().getPlayer2());
             initHeroes(battle, motherFuckinPane);
             refreshTheStatusOfMap(battle);
             manas.add(mana1);

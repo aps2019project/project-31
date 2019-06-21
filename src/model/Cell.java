@@ -32,6 +32,7 @@ public class Cell {
                     BattleMenu.getBattleManager().move((Deployable) me.selectedCard, x1Coordinate, x2Coordinate);
                 } else if (me.selectedCard != null && !me.isSelectedCardDeployed()) {
                     BattleMenu.insert(me.selectedCard, x1Coordinate, x2Coordinate);
+                    BattlePageController.getInstance().removeFromHand(((Deployable) me.selectedCard).face);
                 }
             });
         });
