@@ -20,6 +20,7 @@ public class DisplayableDeployable extends StackPane {
     }
 
     Deployable deployable;
+    boolean isMoving = false;
     ImageView idle;
     ImageView run;
     ImageView attack;
@@ -134,15 +135,20 @@ public class DisplayableDeployable extends StackPane {
     }
 
     public void moveToCurrentCell() {
+        double amountX = (deployable.getCell().calculateCenter()[0] - getTranslateX()) / 15;
+        double amountY = (deployable.getCell().calculateCenter()[1] - getTranslateY()) / 15;
+        if (amountX < 5 && amountY < 5) return;
+        if (isMoving) return;
         run();
+        isMoving = true;
         new AnimationTimer() {
             int counter = 0;
             long now = 0;
-            double amountX = (deployable.getCell().calculateCenter()[0] - getTranslateX()) / 15;
-            double amountY = (deployable.getCell().calculateCenter()[1] - getTranslateY()) / 15;
+
 
             @Override
             public void handle(long l) {
+
                 if (now == 0) now = l;
                 if (l - now > Math.pow(10, 8)) {
                     now = l;
@@ -152,6 +158,7 @@ public class DisplayableDeployable extends StackPane {
                     setTranslateY(getTranslateY() + amountY);
                     if (counter == 15) {
                         setIdle();
+                        isMoving = false;
                         stop();
                     }
                 }

@@ -152,9 +152,7 @@ public class BattlePageController implements Initializable {
     }
 
     public static BattlePageController getInstance() {
-        if (battlePageController == null) {
-            battlePageController = new BattlePageController();
-        }
+        if (battlePageController == null) battlePageController = new BattlePageController();
         return battlePageController;
     }
 
@@ -168,11 +166,11 @@ public class BattlePageController implements Initializable {
 
     public void initPlayers() {
         if (BattleMenu.getBattleManager().getPlayer1().getAccount().getUsername().equals(Account.getMainAccount().getUsername())) {
-            BattlePageController.getInstance().me = BattleMenu.getBattleManager().getPlayer1();
-            BattlePageController.getInstance().opponent = BattleMenu.getBattleManager().getPlayer2();
+            me = BattleMenu.getBattleManager().getPlayer1();
+            opponent = BattleMenu.getBattleManager().getPlayer2();
         } else {
-            BattlePageController.getInstance().me = BattleMenu.getBattleManager().getPlayer2();
-            BattlePageController.getInstance().opponent = BattleMenu.getBattleManager().getPlayer1();
+            me = BattleMenu.getBattleManager().getPlayer2();
+            opponent = BattleMenu.getBattleManager().getPlayer1();
         }
     }
 
@@ -186,6 +184,8 @@ public class BattlePageController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        battlePageController = this;
 
         initPlayers();
         try {
@@ -497,6 +497,4 @@ class ColumnOfHand {
         this.stackPane = stackPane;
         this.manaCost = manaCost;
     }
-
-
 }
