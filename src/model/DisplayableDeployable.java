@@ -133,6 +133,31 @@ public class DisplayableDeployable extends StackPane {
 
     }
 
+    public void moveToCurrentCell(){
+        run();
+        new AnimationTimer(){
+            int counter = 0;
+            long now = 0;
+            double amountX = (deployable.getCell().calculateCenter()[0] - getTranslateX())/10;
+            double amountY = (deployable.getCell().calculateCenter()[1] - getTranslateY())/10;
+            @Override
+            public void handle(long l) {
+                if (now==0) now = l;
+                if (l - now > Math.pow(10,8)){
+                    now = l;
+                    counter++;
+
+                    setTranslateX(getTranslateX() + amountX);
+                    setTranslateY(getTranslateY() + amountY);
+                    if (counter == 10){
+                        setIdle();
+                        stop();
+                    }
+                }
+            }
+        }.start();
+    }
+
     public void attack() {
         action(attack, 0.8);
     }

@@ -90,6 +90,7 @@ public class Cell {
 
     public void setCardInCell(Deployable cardInCell) {
         this.cardInCell = cardInCell;
+
     }
 
     public void decreaseOnFire() {

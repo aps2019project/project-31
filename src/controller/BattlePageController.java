@@ -2,6 +2,7 @@ package controller;
 
 import constants.CardType;
 import constants.FunctionType;
+import javafx.animation.AnimationTimer;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
@@ -181,6 +182,7 @@ public class BattlePageController implements Initializable {
 
             BattlePageController.getInstance().initTheMapCells();
 
+
             Map.getMap()[1][1].setPolygon(place11);
             Map.getMap()[1][2].setPolygon(place12);
             Map.getMap()[1][3].setPolygon(place13);
@@ -341,6 +343,7 @@ public class BattlePageController implements Initializable {
         Hero hero1 = battleManager.getPlayer1().getHero();
         Hero hero2 = battleManager.getPlayer2().getHero();
         hero1.getCell().setCardInCell(hero1);
+
         hero2.getCell().setCardInCell(hero2);
         battleManager.getPlayer1().addCardToBattlefield(hero1);
         battleManager.getPlayer2().addCardToBattlefield(hero2);
@@ -351,6 +354,28 @@ public class BattlePageController implements Initializable {
         motherFuckinPane.getChildren().addAll(faceHero1, faceHero2);
         faceHero1.updateStats();
         faceHero2.updateStats();
+
+        /*faceHero1.setTranslateX(200);
+        new AnimationTimer(){
+            long now = 0;
+            double amount = (hero1.getCell().getPolygon().getTranslateX() - 10 - faceHero1.getTranslateX())/10;
+            @Override
+            public void handle(long l) {
+                if (now==0) now = l;
+                if (l - now > Math.pow(10,8)){
+                    now = l;
+
+
+                    faceHero1.setTranslateX(faceHero1.getTranslateX() + amount);
+                    System.out.println(5);
+                }
+            }
+        }.start();*/
+        faceHero1.moveToCurrentCell();
+        faceHero2.moveToCurrentCell();
+        System.out.println(faceHero1.getDeployable().getCell().getPolygon().getTranslateX());
+
+
 
 
     }
