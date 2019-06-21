@@ -2,7 +2,6 @@ package controller;
 
 import constants.CardType;
 import constants.FunctionType;
-import javafx.animation.AnimationTimer;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
@@ -158,8 +157,16 @@ public class BattlePageController implements Initializable {
         return battlePageController;
     }
 
-    private void initPlayers() {
-        if (BattleMenu.getBattleManager().getPlayer1().getAccount().getUsername().equals(Account.getMainAccount())) {
+    public void setMe(Player me) {
+        this.me = me;
+    }
+
+    public void setOpponent(Player opponent) {
+        this.opponent = opponent;
+    }
+
+    public void initPlayers() {
+        if (BattleMenu.getBattleManager().getPlayer1().getAccount().getUsername().equals(Account.getMainAccount().getUsername())) {
             me = BattleMenu.getBattleManager().getPlayer1();
             opponent = BattleMenu.getBattleManager().getPlayer2();
         } else {
@@ -171,7 +178,7 @@ public class BattlePageController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         ColumnOfHand[] columnHands = new ColumnOfHand[6];
-
+        initPlayers();
         try {
             columnHands[0] = new ColumnOfHand(column1, manaCost1);
             columnHands[1] = new ColumnOfHand(column2, manaCost2);
@@ -179,8 +186,6 @@ public class BattlePageController implements Initializable {
             columnHands[3] = new ColumnOfHand(column4, manaCost4);
             columnHands[4] = new ColumnOfHand(column5, manaCost5);
             columnHands[5] = new ColumnOfHand(column6, manaCost6);
-
-            BattlePageController.getInstance().initTheMapCells();
 
 
             Map.getMap()[1][1].setPolygon(place11);
@@ -256,7 +261,7 @@ public class BattlePageController implements Initializable {
         BattleManager battle = BattleMenu.getBattleManager();
         try {
 
-            initPlayers();
+
             battle.initialTheGame();
             for (int i = 0; i < 6; i++) {
                 if (me.getHand().get(i) != null) {
@@ -339,7 +344,7 @@ public class BattlePageController implements Initializable {
 
     }
 
-    public static void initHeroes(BattleManager battleManager, Pane motherFuckinPane) {
+    public void initHeroes(BattleManager battleManager, Pane motherFuckinPane) {
         Hero hero1 = battleManager.getPlayer1().getHero();
         Hero hero2 = battleManager.getPlayer2().getHero();
         hero1.getCell().setCardInCell(hero1);
@@ -353,17 +358,34 @@ public class BattlePageController implements Initializable {
         motherFuckinPane.getChildren().addAll(faceHero1, faceHero2);
         faceHero1.updateStats();
         faceHero2.updateStats();
-        faceHero1.setOnMouseClicked(mouseEvent ->
-                battleManager.getCurrentPlayer().selectACard(faceHero1.getDeployable().getUniqueId()));
-        faceHero2.setOnMouseClicked(mouseEvent ->
-                battleManager.getCurrentPlayer().selectACard(faceHero2.getDeployable().getUniqueId()));
-        faceHero1.moveToCurrentCell();
-        faceHero2.moveToCurrentCell();
+
         System.out.println(faceHero1.getDeployable().getCell().getPolygon().getTranslateX());
+        faceHero1.setOnMouseClicked(event -> {
+            setOnMouseDeployable(hero1, battleManager);
+            faceHero1.updateStats();
+        });
+        faceHero2.setOnMouseClicked(event -> {
+            setOnMouseDeployable(hero2, battleManager);
+            faceHero2.updateStats();
+        });
 
 
+    }
 
-
+    public static void setOnMouseDeployable(Deployable card, BattleManager battleManager) {
+        Player me = BattlePageController.getInstance().me;
+        Player opponent = BattlePageController.getInstance().opponent;
+        if (battleManager.getCurrentPlayer() == me) {
+            if (me.getSelectedCard() != null && me.getSelectedCard().getType() == CardType.spell) {
+                BattleMenu.insert(me.getSelectedCard(), card.getCell().getX1Coordinate(), card.getCell().getX2Coordinate());
+            } else {
+                me.selectACard(card.getUniqueId());
+            }
+        } else {
+            if (opponent.isSelectedCardDeployed()) {
+                battleManager.attack((Deployable) opponent.getSelectedCard(), card);
+            }
+        }
     }
 
     private boolean isMyTrun() {
@@ -448,9 +470,6 @@ public class BattlePageController implements Initializable {
 
     }
 
-    public void initTheMapCells() {
-
-    }
 
 }
 

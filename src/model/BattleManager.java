@@ -106,6 +106,9 @@ public class BattleManager {
             theMinion.setFace(face);
             if (BattlePageController.getInstance() != null)
                 BattlePageController.getInstance().motherFuckinPane.getChildren().add(face);
+            face.setOnMouseClicked(event -> {
+                BattlePageController.setOnMouseDeployable(theMinion,this);
+            });
         });
         currentPlayer.removeFromHand(minion);
         applyOnSpawnFunction(theMinion);
