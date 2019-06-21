@@ -26,6 +26,7 @@ public class Cell {
         Platform.runLater(()->{
             polygon.setOnMouseClicked(mouseEvent -> {
                 System.out.println("selected cell " + x1Coordinate + x2Coordinate);
+
             });
         });
     }
