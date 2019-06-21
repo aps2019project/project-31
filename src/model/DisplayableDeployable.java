@@ -20,6 +20,8 @@ public class DisplayableDeployable extends StackPane {
     }
 
     Deployable deployable;
+    boolean isMoving = false;
+    boolean isInPlace = false;
     ImageView idle;
     ImageView run;
     ImageView attack;
@@ -134,7 +136,10 @@ public class DisplayableDeployable extends StackPane {
     }
 
     public void moveToCurrentCell() {
+        if (isMoving || isInPlace) return;
         run();
+        isMoving = true;
+        isInPlace = false;
         new AnimationTimer() {
             int counter = 0;
             long now = 0;
@@ -152,6 +157,8 @@ public class DisplayableDeployable extends StackPane {
                     setTranslateY(getTranslateY() + amountY);
                     if (counter == 15) {
                         setIdle();
+                        isMoving = false;
+                        isInPlace = true;
                         stop();
                     }
                 }
