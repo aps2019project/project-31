@@ -7,6 +7,7 @@ import constants.FunctionType;
 import constants.GameMode;
 import controller.BattleMenu;
 import controller.BattlePageController;
+import javafx.application.Platform;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import view.Input;
@@ -100,10 +101,12 @@ public class BattleManager {
         Output.insertionSuccessful(theMinion, x1, x2);
         applyItemFunctions(theMinion, FunctionType.OnSpawn);
         currentPlayer.addCardToBattlefield(theMinion);
-        /*DisplayableDeployable face = new DisplayableDeployable(theMinion);
-        theMinion.setFace(face);
-        if (BattlePageController.getInstance() != null)
-            BattlePageController.getInstance().motherFuckinPane.getChildren().add(face);*/
+        Platform.runLater(()->{
+            DisplayableDeployable face = new DisplayableDeployable(theMinion);
+            theMinion.setFace(face);
+            if (BattlePageController.getInstance() != null)
+                BattlePageController.getInstance().motherFuckinPane.getChildren().add(face);
+        });
         currentPlayer.removeFromHand(minion);
         applyOnSpawnFunction(theMinion);
         currentPlayer.decreaseMana(theMinion.manaCost);

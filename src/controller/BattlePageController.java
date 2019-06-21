@@ -343,7 +343,6 @@ public class BattlePageController implements Initializable {
         Hero hero1 = battleManager.getPlayer1().getHero();
         Hero hero2 = battleManager.getPlayer2().getHero();
         hero1.getCell().setCardInCell(hero1);
-
         hero2.getCell().setCardInCell(hero2);
         battleManager.getPlayer1().addCardToBattlefield(hero1);
         battleManager.getPlayer2().addCardToBattlefield(hero2);
@@ -358,22 +357,6 @@ public class BattlePageController implements Initializable {
                 battleManager.getCurrentPlayer().selectACard(faceHero1.getDeployable().getUniqueId()));
         faceHero2.setOnMouseClicked(mouseEvent ->
                 battleManager.getCurrentPlayer().selectACard(faceHero2.getDeployable().getUniqueId()));
-        /*faceHero1.setTranslateX(200);
-        new AnimationTimer(){
-            long now = 0;
-            double amount = (hero1.getCell().getPolygon().getTranslateX() - 10 - faceHero1.getTranslateX())/10;
-            @Override
-            public void handle(long l) {
-                if (now==0) now = l;
-                if (l - now > Math.pow(10,8)){
-                    now = l;
-
-
-                    faceHero1.setTranslateX(faceHero1.getTranslateX() + amount);
-                    System.out.println(5);
-                }
-            }
-        }.start();*/
         faceHero1.moveToCurrentCell();
         faceHero2.moveToCurrentCell();
         System.out.println(faceHero1.getDeployable().getCell().getPolygon().getTranslateX());

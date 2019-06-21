@@ -1,5 +1,7 @@
 package model;
 
+import controller.BattleMenu;
+import javafx.application.Platform;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Polyline;
 
@@ -19,7 +21,13 @@ public class Cell {
     }
 
     public void setPolygon(Polyline polygon) {
+
         this.polygon = polygon;
+        Platform.runLater(()->{
+            polygon.setOnMouseClicked(mouseEvent -> {
+                System.out.println("selected cell " + x1Coordinate + x2Coordinate);
+            });
+        });
     }
 
     public Item getItem() {
@@ -47,6 +55,7 @@ public class Cell {
         hasFlag = false;
         item = null;
         this.polygon = polygon;
+
     }
 
     public Cell(int x1Coordinate, int x2Coordinate, Deployable cardInCell) {
