@@ -15,6 +15,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polyline;
 import model.*;
+import org.w3c.dom.css.RGBColor;
 
 import java.awt.*;
 import java.io.FileInputStream;
@@ -253,7 +254,10 @@ public class BattlePageController implements Initializable {
                     final Polyline polyline = Map.getMap()[i][j].getPolygon();
                     try {
                         polyline.setOnMouseEntered(event -> {
-                            polyline.setFill(Color.GREEN);
+                            polyline.setFill(Color.rgb(0,0,0,0.35));
+                        });
+                        polyline.setOnMouseExited(event -> {
+                            polyline.setFill(Color.rgb(0,0,0,0.15));
                         });
                         polyline.setOnMouseClicked(mouseEvent -> {
                             System.out.println("selected this: " + polyline.toString());
