@@ -18,6 +18,7 @@ import model.*;
 import org.w3c.dom.css.RGBColor;
 
 import java.awt.*;
+import java.awt.event.MouseEvent;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
@@ -177,7 +178,7 @@ public class BattlePageController implements Initializable {
 
     public void removeFromHand(DisplayableDeployable face) {
         for (ColumnOfHand column : columnHands) {
-            if(column.stackPane.getChildren().remove(face))
+            if (column.stackPane.getChildren().remove(face))
                 return;
         }
     }
@@ -251,17 +252,24 @@ public class BattlePageController implements Initializable {
 
             for (int i = 1; i <= 5; i++) {
                 for (int j = 1; j <= 9; j++) {
-                    final Polyline polyline = Map.getMap()[i][j].getPolygon();
+                    Cell cell = Map.getMap()[i][j];
+                    final Polyline polyline = cell.getPolygon();
                     try {
                         polyline.setOnMouseEntered(event -> {
-                            polyline.setFill(Color.rgb(0,0,0,0.35));
+                            polyline.setFill(Color.rgb(0, 0, 0, 0.35));
                         });
                         polyline.setOnMouseExited(event -> {
-                            polyline.setFill(Color.rgb(0,0,0,0.15));
+                            polyline.setFill(Color.rgb(0, 0, 0, 0.15));
                         });
-                        polyline.setOnMouseClicked(mouseEvent -> {
-                            System.out.println("selected this: " + polyline.toString());
+                        polyline.setOnMouseClicked(event -> {
+                            if (me.getSelectedCard() != null && me.isSelectedCardDeployed() && cell.getCardInCell() == null) {
+                                BattleMenu.getBattleManager().move((Deployable) me.getSelectedCard(), cell.getX1Coordinate(), cell.getX2Coordinate());
+                            } else if (me.getSelectedCard() != null && !me.isSelectedCardDeployed()) {
+                                BattleMenu.insert(me.getSelectedCard(), cell.getX1Coordinate(), cell.getX2Coordinate());
+
+                            }
                         });
+
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

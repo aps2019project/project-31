@@ -25,17 +25,7 @@ public class Cell {
     public void setPolygon(Polyline polygon) {
 
         this.polygon = polygon;
-        Platform.runLater(() -> {
-            polygon.setOnMouseClicked(mouseEvent -> {
-                Player me = BattlePageController.getInstance().getMe();
-                if (me.selectedCard != null && me.isSelectedCardDeployed() && this.cardInCell == null) {
-                    BattleMenu.getBattleManager().move((Deployable) me.selectedCard, x1Coordinate, x2Coordinate);
-                } else if (me.selectedCard != null && !me.isSelectedCardDeployed()) {
-                    BattleMenu.insert(me.selectedCard, x1Coordinate, x2Coordinate);
 
-                }
-            });
-        });
     }
 
     public Item getItem() {
