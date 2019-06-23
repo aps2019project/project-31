@@ -54,7 +54,6 @@ public class BattleMenu extends Menu {
                                                        GameMode gameMode, int storyNumber) {
         Player player1 = new Player(account, false);
 
-
         Deck theAiDeck = null;
         switch (battleManagerMode) {
             case Story:
@@ -73,11 +72,8 @@ public class BattleMenu extends Menu {
                     System.err.println("story number invalid");
                     return;
                 }
-
-
                 System.out.println(theAiDeck.getDeckName());
                 System.out.println(theAiDeck.getCards().get(0).toString());
-
                 break;
             case CustomGame:
                 theAiDeck = SinglePlayer.getCustomGameDeck();
@@ -89,7 +85,6 @@ public class BattleMenu extends Menu {
         }
         SinglePlayer.makeAIAccount(theAiDeck);
         makeInstanceOfBattleManager(player1, SinglePlayer.getAiPlayer(), numberOfFlags, maxNumberOfHavingFlag, gameMode);
-
     }
 
 
@@ -108,7 +103,6 @@ public class BattleMenu extends Menu {
         }
         player1.setBattle(battleManager);
         player2.setBattle(battleManager);
-
     }
 
 
@@ -124,7 +118,6 @@ public class BattleMenu extends Menu {
                 Collections.shuffle(Shop.getAllCollectibles());
                 battleManager.putFlagOnMap(Shop.getAllCollectibles().get(0));
             }
-
         }
         //    battleManager.refreshTheStatusOfMap();
 
@@ -148,7 +141,6 @@ public class BattleMenu extends Menu {
         battleManager.setCurrentPlayer(battleManager.getPlayer2());
         //  initHeroes();
         while (true) {
-
             isPlayer1Turn = !isPlayer1Turn;
             battleManager.setCurrentPlayer(battleManager.getOtherPlayer());
             doAllAtTheBeginningOfTurnThings();
@@ -229,16 +221,12 @@ public class BattleMenu extends Menu {
             return false;
         }
         if (battleManager.cardInHandByCardId(card.getId()) != null) {
-
-
             if (card.getManaCost() > battleManager.getCurrentPlayer().getMana()) {
                 Output.notHaveEnoughMana();
                 System.err.println("Not enough mana");
                 return false;
             }
-
             if (card.getType() == CardType.minion) {
-
                 battleManager.playMinion((Minion) card, x1, x2);
             }
             if (card.getType() == CardType.spell) {
@@ -290,7 +278,6 @@ public class BattleMenu extends Menu {
                     Output.print(deployable.infoToString());
             }
         }
-
     }
 
     public static void showSelectedCardInfo() {

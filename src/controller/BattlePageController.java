@@ -27,7 +27,6 @@ public class BattlePageController implements Initializable {
     private static Scene scene;
     private static BattlePageController battlePageController;
 
-
     public Button graveYard;
     public StackPane column1;
     public StackPane column2;
@@ -103,10 +102,7 @@ public class BattlePageController implements Initializable {
     private Player me;
     private Player opponent;
 
-
     public Label opponentMana;
-
-
     public Pane nextCardField;
     public ImageView mana1;
     public ImageView mana2;
@@ -117,6 +113,7 @@ public class BattlePageController implements Initializable {
     public ImageView mana7;
     public ImageView mana8;
     public ImageView mana9;
+
     public Label manaCost1;
     public Label manaCost2;
     public Label manaCost3;
@@ -124,14 +121,14 @@ public class BattlePageController implements Initializable {
     public Label manaCost5;
     public Label manaCost6;
 
-
     public Label opponentHealth;
     public Label opponentUsername;
     public Label opponentGeneralCoolDown;
     public Label generalSpellManaCost;
     public Label opponentGeneralSpellManaCost;
+
     private ArrayList<ImageView> manas = new ArrayList<>();
-    ColumnOfHand[] columnHands = new ColumnOfHand[6];
+    private ColumnOfHand[] columnHands = new ColumnOfHand[6];
 
     public BattlePageController() {
         System.err.println("HLLLO");
@@ -184,70 +181,69 @@ public class BattlePageController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
-        battlePageController = this;
-
+        battlePageController = BattlePageController.getInstance();
         initPlayers();
         try {
-            columnHands[0] = new ColumnOfHand(column1, manaCost1);
-            columnHands[1] = new ColumnOfHand(column2, manaCost2);
-            columnHands[2] = new ColumnOfHand(column3, manaCost3);
-            columnHands[3] = new ColumnOfHand(column4, manaCost4);
-            columnHands[4] = new ColumnOfHand(column5, manaCost5);
-            columnHands[5] = new ColumnOfHand(column6, manaCost6);
-
-
-            Map.getMap()[1][1].setPolygon(place11);
-            Map.getMap()[1][2].setPolygon(place12);
-            Map.getMap()[1][3].setPolygon(place13);
-            Map.getMap()[1][4].setPolygon(place14);
-            Map.getMap()[1][5].setPolygon(place15);
-            Map.getMap()[1][6].setPolygon(place16);
-            Map.getMap()[1][7].setPolygon(place17);
-            Map.getMap()[1][8].setPolygon(place18);
-            Map.getMap()[1][9].setPolygon(place19);
-            Map.getMap()[2][1].setPolygon(place21);
-            Map.getMap()[2][2].setPolygon(place22);
-            Map.getMap()[2][3].setPolygon(place23);
-            Map.getMap()[2][4].setPolygon(place24);
-            Map.getMap()[2][5].setPolygon(place25);
-            Map.getMap()[2][6].setPolygon(place26);
-            Map.getMap()[2][7].setPolygon(place27);
-            Map.getMap()[2][8].setPolygon(place28);
-            Map.getMap()[2][9].setPolygon(place29);
-            Map.getMap()[3][1].setPolygon(place31);
-            Map.getMap()[3][2].setPolygon(place32);
-            Map.getMap()[3][3].setPolygon(place33);
-            Map.getMap()[3][4].setPolygon(place34);
-            Map.getMap()[3][5].setPolygon(place35);
-            Map.getMap()[3][6].setPolygon(place36);
-            Map.getMap()[3][7].setPolygon(place37);
-            Map.getMap()[3][8].setPolygon(place38);
-            Map.getMap()[3][9].setPolygon(place39);
-            Map.getMap()[4][1].setPolygon(place41);
-            Map.getMap()[4][2].setPolygon(place42);
-            Map.getMap()[4][3].setPolygon(place43);
-            Map.getMap()[4][4].setPolygon(place44);
-            Map.getMap()[4][5].setPolygon(place45);
-            Map.getMap()[4][6].setPolygon(place46);
-            Map.getMap()[4][7].setPolygon(place47);
-            Map.getMap()[4][8].setPolygon(place48);
-            Map.getMap()[4][9].setPolygon(place49);
-            Map.getMap()[5][1].setPolygon(place51);
-            Map.getMap()[5][2].setPolygon(place52);
-            Map.getMap()[5][3].setPolygon(place53);
-            Map.getMap()[5][4].setPolygon(place54);
-            Map.getMap()[5][5].setPolygon(place55);
-            Map.getMap()[5][6].setPolygon(place56);
-            Map.getMap()[5][7].setPolygon(place57);
-            Map.getMap()[5][8].setPolygon(place58);
-            Map.getMap()[5][9].setPolygon(place59);
+            {
+                columnHands[0] = new ColumnOfHand(column1, manaCost1);
+                columnHands[1] = new ColumnOfHand(column2, manaCost2);
+                columnHands[2] = new ColumnOfHand(column3, manaCost3);
+                columnHands[3] = new ColumnOfHand(column4, manaCost4);
+                columnHands[4] = new ColumnOfHand(column5, manaCost5);
+                columnHands[5] = new ColumnOfHand(column6, manaCost6);
+            }
+            {
+                Map.getMap()[1][1].setPolygon(place11);
+                Map.getMap()[1][2].setPolygon(place12);
+                Map.getMap()[1][3].setPolygon(place13);
+                Map.getMap()[1][4].setPolygon(place14);
+                Map.getMap()[1][5].setPolygon(place15);
+                Map.getMap()[1][6].setPolygon(place16);
+                Map.getMap()[1][7].setPolygon(place17);
+                Map.getMap()[1][8].setPolygon(place18);
+                Map.getMap()[1][9].setPolygon(place19);
+                Map.getMap()[2][1].setPolygon(place21);
+                Map.getMap()[2][2].setPolygon(place22);
+                Map.getMap()[2][3].setPolygon(place23);
+                Map.getMap()[2][4].setPolygon(place24);
+                Map.getMap()[2][5].setPolygon(place25);
+                Map.getMap()[2][6].setPolygon(place26);
+                Map.getMap()[2][7].setPolygon(place27);
+                Map.getMap()[2][8].setPolygon(place28);
+                Map.getMap()[2][9].setPolygon(place29);
+                Map.getMap()[3][1].setPolygon(place31);
+                Map.getMap()[3][2].setPolygon(place32);
+                Map.getMap()[3][3].setPolygon(place33);
+                Map.getMap()[3][4].setPolygon(place34);
+                Map.getMap()[3][5].setPolygon(place35);
+                Map.getMap()[3][6].setPolygon(place36);
+                Map.getMap()[3][7].setPolygon(place37);
+                Map.getMap()[3][8].setPolygon(place38);
+                Map.getMap()[3][9].setPolygon(place39);
+                Map.getMap()[4][1].setPolygon(place41);
+                Map.getMap()[4][2].setPolygon(place42);
+                Map.getMap()[4][3].setPolygon(place43);
+                Map.getMap()[4][4].setPolygon(place44);
+                Map.getMap()[4][5].setPolygon(place45);
+                Map.getMap()[4][6].setPolygon(place46);
+                Map.getMap()[4][7].setPolygon(place47);
+                Map.getMap()[4][8].setPolygon(place48);
+                Map.getMap()[4][9].setPolygon(place49);
+                Map.getMap()[5][1].setPolygon(place51);
+                Map.getMap()[5][2].setPolygon(place52);
+                Map.getMap()[5][3].setPolygon(place53);
+                Map.getMap()[5][4].setPolygon(place54);
+                Map.getMap()[5][5].setPolygon(place55);
+                Map.getMap()[5][6].setPolygon(place56);
+                Map.getMap()[5][7].setPolygon(place57);
+                Map.getMap()[5][8].setPolygon(place58);
+                Map.getMap()[5][9].setPolygon(place59);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         try {
-
             for (int i = 1; i <= 5; i++) {
                 for (int j = 1; j <= 9; j++) {
                     Cell cell = Map.getMap()[i][j];
@@ -279,8 +275,6 @@ public class BattlePageController implements Initializable {
         }
         BattleManager battle = BattleMenu.getBattleManager();
         try {
-
-
             battle.initialTheGame();
             for (int i = 0; i < 6; i++) {
                 if (me.getHand().get(i) != null) {
@@ -386,8 +380,6 @@ public class BattlePageController implements Initializable {
             setOnMouseDeployable(hero2, battleManager);
             faceHero2.updateStats();
         });
-
-
     }
 
     public static void setOnMouseDeployable(Deployable card, BattleManager battleManager) {
@@ -409,10 +401,6 @@ public class BattlePageController implements Initializable {
     private boolean isMyTrun() {
         return BattleMenu.getBattleManager().getCurrentPlayer().
                 getAccount().getUsername().equals(me.getAccount().getUsername());
-    }
-
-    public static BattlePageController getBattlePageController() {
-        return battlePageController;
     }
 
     public Player getMe() {

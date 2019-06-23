@@ -1,10 +1,5 @@
 package model;
 
-import constants.CardType;
-import controller.BattleMenu;
-import controller.BattlePageController;
-import javafx.application.Platform;
-import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Polyline;
 
 public class Cell {
@@ -23,9 +18,7 @@ public class Cell {
     }
 
     public void setPolygon(Polyline polygon) {
-
         this.polygon = polygon;
-
     }
 
     public Item getItem() {
@@ -53,7 +46,6 @@ public class Cell {
         hasFlag = false;
         item = null;
         this.polygon = polygon;
-
     }
 
     public Cell(int x1Coordinate, int x2Coordinate, Deployable cardInCell) {
@@ -65,7 +57,6 @@ public class Cell {
         hasFlag = false;
         item = null;
     }
-
 
     public void setIsHolyTurns(int isHolyTurns) {
         this.isHolyTurns = isHolyTurns;
@@ -97,7 +88,6 @@ public class Cell {
 
     public void setCardInCell(Deployable cardInCell) {
         this.cardInCell = cardInCell;
-
     }
 
     public void decreaseOnFire() {
@@ -109,7 +99,6 @@ public class Cell {
         if (onPoisonTurns > 0)
             onPoisonTurns--;
     }
-
 
     public int getX1Coordinate() {
         return x1Coordinate;
@@ -143,4 +132,7 @@ public class Cell {
         return coordinates;
     }
 
+    public Double[] getCenter(){
+        return calculateCenter();
+    }
 }
