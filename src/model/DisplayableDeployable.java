@@ -7,6 +7,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -19,6 +20,7 @@ public class DisplayableDeployable extends StackPane {
     }
 
     Deployable deployable;
+    boolean isMoving = false;
     ImageView idle;
     ImageView run;
     ImageView attack;
@@ -132,6 +134,38 @@ public class DisplayableDeployable extends StackPane {
 
     }
 
+    public void moveToCurrentCell() {
+        double amountX = (deployable.getCell().calculateCenter()[0] - getTranslateX()) / 15;
+        double amountY = (deployable.getCell().calculateCenter()[1] - getTranslateY()) / 15;
+        if (amountX < 0.5 && amountY < 0.5) return;
+        if (isMoving) return;
+        run();
+        isMoving = true;
+        new AnimationTimer() {
+            int counter = 0;
+            long now = 0;
+
+
+            @Override
+            public void handle(long l) {
+
+                if (now == 0) now = l;
+                if (l - now > Math.pow(10, 8)) {
+                    now = l;
+                    counter++;
+
+                    setTranslateX(getTranslateX() + amountX);
+                    setTranslateY(getTranslateY() + amountY);
+                    if (counter == 15) {
+                        setIdle();
+                        isMoving = false;
+                        stop();
+                    }
+                }
+            }
+        }.start();
+    }
+
     public void attack() {
         action(attack, 0.8);
     }
@@ -160,22 +194,8 @@ public class DisplayableDeployable extends StackPane {
             label.setFont(Font.font(12));
             label.setTextFill(Color.CYAN);
         }
-        if (deployable.getCell() != null && deployable.getCell().getPolygon() != null) {
-            currentStance.setTranslateX(deployable.getCell().calculateCenter()[0]);
-            currentStance.setTranslateY(deployable.getCell().calculateCenter()[1]);
-            healthLabel.setTranslateX(deployable.getCell().calculateCenter()[0]+25);
-            healthLabel.setTranslateY(deployable.getCell().calculateCenter()[1]+50);
-            attackLabel.setTranslateX(deployable.getCell().calculateCenter()[0]-40);
-            attackLabel.setTranslateY(deployable.getCell().calculateCenter()[1]+50);
-
-            attackIcon.setTranslateX(deployable.getCell().calculateCenter()[0]-40);
-            attackIcon.setTranslateY(deployable.getCell().calculateCenter()[1]+50);
-            healthIcon.setTranslateX(deployable.getCell().calculateCenter()[0]+25);
-            healthIcon.setTranslateY(deployable.getCell().calculateCenter()[1]+50);
-
-
-
-        }
+        moveToCurrentCell();
+        moveToCurrentCell();
     }
 
 }

@@ -1,6 +1,8 @@
 package model;
 
+import constants.CardType;
 import constants.FunctionType;
+import controller.BattlePageController;
 import view.Output;
 
 import java.io.BufferedInputStream;
@@ -203,23 +205,46 @@ public class Player {
     }
 
     public void setSelectedCard(Card selectedCard) {
+        System.err.println("selected " + selectedCard.getName() + " successfully!");
         this.selectedCard = selectedCard;
     }
 
-    public boolean selectACard(int cardId) {
+    public Card cardInHand(int cardId) {
         for (Card card : hand) {
-            if (card != null && cardId == card.getId()) {
-                System.err.println("selected card successfully");
-                selectedCard = card;
-                return true;
-            }
+            if (card != null && cardId == card.getId())
+                return card;
         }
+        return null;
+    }
+
+    public Deployable myDeployable(int uniqueId) {
         for (Deployable card : cardsOnBattleField) {
-            if (card != null && cardId == card.getUniqueId()) {
-                System.err.println("selected card successfully");
-                selectedCard = card;
-                return true;
-            }
+            if (card != null && uniqueId == card.getUniqueId())
+                return card;
+        }
+        return null;
+    }
+
+    public Deployable opponentDeployable(int uniqueId) {
+        for (Deployable card : BattlePageController.getInstance().getOpponent().cardsOnBattleField) {
+            if (card != null && uniqueId == card.getUniqueId())
+                return card;
+        }
+        return null;
+    }
+
+
+
+    public boolean selectACard(int cardId) {
+        if (cardInHand(cardId) != null) {
+            System.err.println("selected card successfully");
+            selectedCard = cardInHand(cardId);
+            return true;
+        }
+        if (myDeployable(cardId) != null) {
+            System.err.println("selected card successfully");
+            selectedCard = cardInHand(cardId);
+            return true;
         }
         if (battle.getCurrentPlayer().getHero().getId() == cardId) {
             System.err.println("selected card successfully");

@@ -15,8 +15,10 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polyline;
 import model.*;
+import org.w3c.dom.css.RGBColor;
 
 import java.awt.*;
+import java.awt.event.MouseEvent;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
@@ -131,8 +133,10 @@ public class BattlePageController implements Initializable {
     public Label generalSpellManaCost;
     public Label opponentGeneralSpellManaCost;
     private ArrayList<ImageView> manas = new ArrayList<>();
+    ColumnOfHand[] columnHands = new ColumnOfHand[6];
 
     public BattlePageController() {
+        System.err.println("HLLLO");
     }
 
     public void setAsScene() {
@@ -140,7 +144,7 @@ public class BattlePageController implements Initializable {
             try {
                 Parent root = FXMLLoader.load(getClass().getResource("/BattlePage.fxml"));
                 Double screenWidth = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
-                scene = new Scene(root, screenWidth * 2 / 3, screenWidth * 4 / 9);
+                scene = new Scene(root);
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -150,14 +154,20 @@ public class BattlePageController implements Initializable {
     }
 
     public static BattlePageController getInstance() {
-        if (battlePageController == null) {
-            battlePageController = new BattlePageController();
-        }
+        if (battlePageController == null) battlePageController = new BattlePageController();
         return battlePageController;
     }
 
-    private void initPlayers() {
-        if (BattleMenu.getBattleManager().getPlayer1().getAccount().getUsername().equals(Account.getMainAccount())) {
+    public void setMe(Player me) {
+        this.me = me;
+    }
+
+    public void setOpponent(Player opponent) {
+        this.opponent = opponent;
+    }
+
+    public void initPlayers() {
+        if (BattleMenu.getBattleManager().getPlayer1().getAccount().getUsername().equals(Account.getMainAccount().getUsername())) {
             me = BattleMenu.getBattleManager().getPlayer1();
             opponent = BattleMenu.getBattleManager().getPlayer2();
         } else {
@@ -166,10 +176,20 @@ public class BattlePageController implements Initializable {
         }
     }
 
+    public void removeFromHand(DisplayableDeployable face) {
+        for (ColumnOfHand column : columnHands) {
+            if (column.stackPane.getChildren().remove(face))
+                return;
+        }
+    }
+
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        ColumnOfHand[] columnHands = new ColumnOfHand[6];
 
+        battlePageController = this;
+
+        initPlayers();
         try {
             columnHands[0] = new ColumnOfHand(column1, manaCost1);
             columnHands[1] = new ColumnOfHand(column2, manaCost2);
@@ -178,7 +198,6 @@ public class BattlePageController implements Initializable {
             columnHands[4] = new ColumnOfHand(column5, manaCost5);
             columnHands[5] = new ColumnOfHand(column6, manaCost6);
 
-            BattlePageController.getInstance().initTheMapCells();
 
             Map.getMap()[1][1].setPolygon(place11);
             Map.getMap()[1][2].setPolygon(place12);
@@ -227,18 +246,30 @@ public class BattlePageController implements Initializable {
             Map.getMap()[5][9].setPolygon(place59);
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("kir tuuuush");
         }
 
         try {
 
             for (int i = 1; i <= 5; i++) {
                 for (int j = 1; j <= 9; j++) {
-                    final Polyline polyline = Map.getMap()[i][j].getPolygon();
+                    Cell cell = Map.getMap()[i][j];
+                    final Polyline polyline = cell.getPolygon();
                     try {
                         polyline.setOnMouseEntered(event -> {
-                            polyline.setFill(Color.RED);
+                            polyline.setFill(Color.rgb(0, 0, 0, 0.35));
                         });
+                        polyline.setOnMouseExited(event -> {
+                            polyline.setFill(Color.rgb(0, 0, 0, 0.15));
+                        });
+                        polyline.setOnMouseClicked(event -> {
+                            if (me.getSelectedCard() != null && me.isSelectedCardDeployed() && cell.getCardInCell() == null) {
+                                BattleMenu.getBattleManager().move((Deployable) me.getSelectedCard(), cell.getX1Coordinate(), cell.getX2Coordinate());
+                            } else if (me.getSelectedCard() != null && !me.isSelectedCardDeployed()) {
+                                BattleMenu.insert(me.getSelectedCard(), cell.getX1Coordinate(), cell.getX2Coordinate());
+
+                            }
+                        });
+
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -251,7 +282,7 @@ public class BattlePageController implements Initializable {
         BattleManager battle = BattleMenu.getBattleManager();
         try {
 
-            initPlayers();
+
             battle.initialTheGame();
             for (int i = 0; i < 6; i++) {
                 if (me.getHand().get(i) != null) {
@@ -288,7 +319,6 @@ public class BattlePageController implements Initializable {
             battle.applyItemFunctions(BattleMenu.getBattleManager().getCurrentPlayer().getHero(), FunctionType.GameStart);
             battle.setCurrentPlayer(BattleMenu.getBattleManager().getPlayer1());
             battle.applyItemFunctions(BattleMenu.getBattleManager().getCurrentPlayer().getHero(), FunctionType.GameStart);
-            battle.setCurrentPlayer(BattleMenu.getBattleManager().getPlayer2());
             initHeroes(battle, motherFuckinPane);
             refreshTheStatusOfMap(battle);
             manas.add(mana1);
@@ -334,7 +364,7 @@ public class BattlePageController implements Initializable {
 
     }
 
-    public static void initHeroes(BattleManager battleManager, Pane motherFuckinPane) {
+    public void initHeroes(BattleManager battleManager, Pane motherFuckinPane) {
         Hero hero1 = battleManager.getPlayer1().getHero();
         Hero hero2 = battleManager.getPlayer2().getHero();
         hero1.getCell().setCardInCell(hero1);
@@ -345,12 +375,37 @@ public class BattlePageController implements Initializable {
         DisplayableDeployable faceHero2 = new DisplayableDeployable(hero2);
         hero1.setFace(faceHero1);
         hero2.setFace(faceHero2);
-
         motherFuckinPane.getChildren().addAll(faceHero1, faceHero2);
         faceHero1.updateStats();
         faceHero2.updateStats();
 
+        System.out.println(faceHero1.getDeployable().getCell().getPolygon().getTranslateX());
+        faceHero1.setOnMouseClicked(event -> {
+            setOnMouseDeployable(hero1, battleManager);
+            faceHero1.updateStats();
+        });
+        faceHero2.setOnMouseClicked(event -> {
+            setOnMouseDeployable(hero2, battleManager);
+            faceHero2.updateStats();
+        });
 
+
+    }
+
+    public static void setOnMouseDeployable(Deployable card, BattleManager battleManager) {
+        Player me = BattlePageController.getInstance().me;
+        Player opponent = BattlePageController.getInstance().opponent;
+        if (battleManager.getCurrentPlayer() == me) {
+            if (me.getSelectedCard() != null && me.getSelectedCard().getType() == CardType.spell) {
+                BattleMenu.insert(me.getSelectedCard(), card.getCell().getX1Coordinate(), card.getCell().getX2Coordinate());
+            } else {
+                me.selectACard(card.getUniqueId());
+            }
+        } else {
+            if (opponent.isSelectedCardDeployed()) {
+                battleManager.attack((Deployable) opponent.getSelectedCard(), card);
+            }
+        }
     }
 
     private boolean isMyTrun() {
@@ -435,9 +490,6 @@ public class BattlePageController implements Initializable {
 
     }
 
-    public void initTheMapCells() {
-
-    }
 
 }
 

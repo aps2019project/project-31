@@ -91,7 +91,9 @@ public class BattleMenu extends Menu {
         }
         SinglePlayer.makeAIAccount(theAiDeck);
         makeInstanceOfBattleManager(player1, SinglePlayer.getAiPlayer(), numberOfFlags, maxNumberOfHavingFlag, gameMode);
+
     }
+
 
     private static void makeInstanceOfBattleManager(Player player1, Player player2, int numberOfFlags,
                                                     int maxTurnsHavingFlag, GameMode gameMode) {
@@ -126,7 +128,7 @@ public class BattleMenu extends Menu {
             }
 
         }
-    //    battleManager.refreshTheStatusOfMap();
+        //    battleManager.refreshTheStatusOfMap();
 
     }
 
@@ -146,7 +148,7 @@ public class BattleMenu extends Menu {
         battleManager.setCurrentPlayer(battleManager.getPlayer1());
         battleManager.applyItemFunctions(battleManager.getCurrentPlayer().getHero(), FunctionType.GameStart);
         battleManager.setCurrentPlayer(battleManager.getPlayer2());
-      //  initHeroes();
+        //  initHeroes();
         while (true) {
 
             isPlayer1Turn = !isPlayer1Turn;
@@ -172,7 +174,6 @@ public class BattleMenu extends Menu {
     }
 
 
-
     public static void doAllThingsInEndingOfTheTurns() {
         battleManager.makeIsMovedAndStunnedAndStuffFalse();
         battleManager.applyItemFunctions(battleManager.getPlayer1().getHero(), FunctionType.Passive);
@@ -187,7 +188,7 @@ public class BattleMenu extends Menu {
         battleManager.addTurn();
         battleManager.getPlayer1().getHero().getHeroSpell().decrementCooldonwRemaining();
         battleManager.getPlayer2().getHero().getHeroSpell().decrementCooldonwRemaining();
-    //    battleManager.refreshTheStatusOfMap();
+        //    battleManager.refreshTheStatusOfMap();
     }
 
 
