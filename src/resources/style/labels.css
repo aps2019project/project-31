@@ -1,0 +1,30 @@
+#grayCrystal {
+    -fx-background-image: url('../images/blackMana.png');
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+}
+#nextCard {
+    -fx-background-image: url('../assets/tutorial/lesson_ring@2x.png');
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+    -fx-background-color: rgba(0, 0, 0, 0);
+}
+#nextCard:hover {
+    -fx-background-image: url('../assets/tutorial/lesson_ring@2x.png'),
+        url('../assets/tutorial/lesson_ring_glow@2x.png');
+    -fx-background-size: cover, cover;
+    -fx-background-repeat: no-repeat, no-repeat;
+    -fx-background-color: rgba(0, 0, 0, 0);
+    -fx-cursor: hand;
+
+}
+#generalCoolDown {
+    -fx-background-image: url('../assets/ui/icon_cooldown_counter@2x.png');
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+}
+#health {
+    -fx-background-image: url('../assets/ui/icon_general_hp@2x.png');
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+}

@@ -15,10 +15,8 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polyline;
 import model.*;
-import org.w3c.dom.css.RGBColor;
 
 import java.awt.*;
-import java.awt.event.MouseEvent;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
@@ -52,7 +50,7 @@ public class BattlePageController implements Initializable {
     public Label health;
     public Label username;
     public Label generalCoolDown;
-    public Pane motherFuckinPane;
+    public Pane mainPane;
     public Polyline place51;
     public Polyline place52;
     public Polyline place53;
@@ -100,7 +98,7 @@ public class BattlePageController implements Initializable {
     public Polyline place19;
     public Button setting;
 
-    private StackPane showingGraveYard; // for showing it: lastStackPane = showingGraveYard; showingGraveYard is a designed scene
+//    private StackPane showingGraveYard; // for showing it: lastStackPane = showingGraveYard; showingGraveYard is a designed scene
 
     private Player me;
     private Player opponent;
@@ -109,7 +107,7 @@ public class BattlePageController implements Initializable {
     public Label opponentMana;
 
 
-    public ImageView nextCardField;
+    public Pane nextCardField;
     public ImageView mana1;
     public ImageView mana2;
     public ImageView mana3;
@@ -129,7 +127,7 @@ public class BattlePageController implements Initializable {
 
     public Label opponentHealth;
     public Label opponentUsername;
-    public Label opponentGeneralCooldown;
+    public Label opponentGeneralCoolDown;
     public Label generalSpellManaCost;
     public Label opponentGeneralSpellManaCost;
     private ArrayList<ImageView> manas = new ArrayList<>();
@@ -312,14 +310,14 @@ public class BattlePageController implements Initializable {
             generalSpellManaCost.setText("" + me.getHero().getHeroSpell().getManaCost());
             opponentGeneralSpellManaCost.setText("" + opponent.getHero().getHeroSpell().getManaCost());
             generalCoolDown.setText("" + me.getHero().getHeroSpell().getManaCost());
-            opponentGeneralCooldown.setText("" + opponent.getHero().getHeroSpell().getManaCost());
+            opponentGeneralCoolDown.setText("" + opponent.getHero().getHeroSpell().getManaCost());
             battle.getPlayer1().generateDeckArrangement();
             battle.getPlayer2().generateDeckArrangement();
             battle.setCurrentPlayer(BattleMenu.getBattleManager().getPlayer2());
             battle.applyItemFunctions(BattleMenu.getBattleManager().getCurrentPlayer().getHero(), FunctionType.GameStart);
             battle.setCurrentPlayer(BattleMenu.getBattleManager().getPlayer1());
             battle.applyItemFunctions(BattleMenu.getBattleManager().getCurrentPlayer().getHero(), FunctionType.GameStart);
-            initHeroes(battle, motherFuckinPane);
+            initHeroes(battle, mainPane);
             refreshTheStatusOfMap(battle);
             manas.add(mana1);
             manas.add(mana2);
@@ -364,7 +362,7 @@ public class BattlePageController implements Initializable {
 
     }
 
-    public void initHeroes(BattleManager battleManager, Pane motherFuckinPane) {
+    public void initHeroes(BattleManager battleManager, Pane mainPane) {
         Hero hero1 = battleManager.getPlayer1().getHero();
         Hero hero2 = battleManager.getPlayer2().getHero();
         hero1.getCell().setCardInCell(hero1);
@@ -375,7 +373,7 @@ public class BattlePageController implements Initializable {
         DisplayableDeployable faceHero2 = new DisplayableDeployable(hero2);
         hero1.setFace(faceHero1);
         hero2.setFace(faceHero2);
-        motherFuckinPane.getChildren().addAll(faceHero1, faceHero2);
+        mainPane.getChildren().addAll(faceHero1, faceHero2);
         faceHero1.updateStats();
         faceHero2.updateStats();
 
@@ -476,7 +474,7 @@ public class BattlePageController implements Initializable {
                 opponentMana.setText("0 / 0");
             }
             generalCoolDown.setText("" + me.getHero().getHeroSpell().getCoolDownRemaining());
-            opponentGeneralCooldown.setText("" + opponent.getHero().getHeroSpell().getCoolDownRemaining());
+            opponentGeneralCoolDown.setText("" + opponent.getHero().getHeroSpell().getCoolDownRemaining());
             deckSize.setText("Deck: " + me.deckSize() + "/20");
         } catch (Exception e) {
             e.printStackTrace();

@@ -124,16 +124,16 @@
     -fx-font-family: "Times New Roman";
     -fx-background-image: url('../assets/ui/button_end_turn_mine.png');
     -fx-background-color: rgba(0,0,0,0);
-    -fx-background-size: 240 80;
-
-    -fx-font-size: 20;
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
     -fx-text-fill: white;
 }
 
 #endTurnButton:hover{
     -fx-background-image: url('../assets/ui/button_end_turn_mine_glow.png');
     -fx-background-color: rgba(0,0,0,0);
-    -fx-background-size: 240 80;
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
     -fx-scale-x: 1.04;
     -fx-scale-y: 1.04;
     -fx-cursor: hand;
@@ -141,16 +141,17 @@
 #settingButton{
     -fx-font-family: "Times New Roman";
     -fx-background-image: url('../assets/ui/button_primary_left.png');
-    -fx-background-size: 130 50;
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
     -fx-background-color: rgba(0,0,0,0);
-    -fx-font-size: 20;
     -fx-text-fill: white;
 }
 
 #settingButton:hover{
     -fx-background-image: url('../assets/ui/button_primary_left_glow@2x.png');
     -fx-background-color: rgba(0,0,0,0);
-    -fx-background-size: 130 50;
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
     -fx-scale-x: 1.04;
     -fx-scale-y: 1.04;
     -fx-cursor: hand;
@@ -158,31 +159,44 @@
 #friendsButton{
     -fx-font-family: "Times New Roman";
     -fx-background-image: url('../assets/ui/button_primary_right.png');
-    -fx-background-size: 130 50;
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
     -fx-background-color: rgba(0,0,0,0);
-    -fx-font-size: 20;
     -fx-text-fill: white;
 }
 #friendsButton:hover{
      -fx-background-image: url('../assets/ui/button_primary_right_glow@2x.png');
      -fx-background-color: rgba(0,0,0,0);
-     -fx-background-size: 130 50;
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
      -fx-scale-x: 1.04;
      -fx-scale-y: 1.04;
      -fx-cursor: hand;
  }
 #replaceButton{
      -fx-font-family: "Times New Roman";
-     -fx-background-color: rgba(0,0,0,0);
-     -fx-background-size: 200 200;
+    -fx-background-image: url('../assets/ui/replace_background@2x.png'),
+    url('../assets/ui/replace_inner_ring@2x.png'),
+    url('../assets/ui/replace_outer_ring_smoke@2x.png');
+
+    -fx-background-size: cover, cover, cover, cover, cover;
+    -fx-background-repeat: no-repeat, no-repeat, no-repeat, no-repeat;
+    -fx-background-color: rgba(0,0,0,0);
 
      -fx-font-size: 20;
      -fx-text-fill: white;
 }
 #replaceButton:hover{
     -fx-font-family: "Times New Roman";
-    -fx-background-image: url('../assets/ui/replace_inner_glow@2x.png');
-    -fx-background-size: 100 100;
+    -fx-background-image:
+    url('../assets/ui/replace_background@2x.png'),
+    url('../assets/ui/replace_inner_ring@2x.png'),
+    url('../assets/ui/replace_outer_ring_smoke@2x.png'),
+    url('../assets/ui/replace_inner_glow@2x.png'),
+    url('../assets/ui/replace_outer_ring_shine@2x.png'),
+    url('../assets/ui/replace_outer_ring_shine@2x.png');
+    -fx-background-size: cover, cover, cover, cover, cover, cover;
+    -fx-background-repeat: no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat;
     -fx-background-color: rgba(0,0,0,0);
     -fx-font-size: 20;
     -fx-cursor: hand;
@@ -190,47 +204,48 @@
 #DeckSize{
     -fx-font-family: "Times New Roman";
     -fx-background-image: url('../assets/ui/button_end_turn_enemy@2x.png');
-    -fx-background-size: 180 55;
+    /*-fx-background-size: 180 55;*/
     -fx-background-color: rgba(0,0,0,0);
-    -fx-font-size: 20;
+    -fx-background-repeat: no-repeat, no-repeat;
+    -fx-background-size: cover, cover;
+    /*-fx-font-size: 20;*/
     -fx-text-fill: white;
 }
 #OpponentHand{
     -fx-font-family: "Times New Roman";
     -fx-background-image: url('../assets/ui/gold_main_menu_container@2x.png');
-    -fx-background-size: 160 50;
-
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
     -fx-background-color: rgba(0,0,0,0);
-    -fx-font-size: 20;
     -fx-text-fill: white;
 }
 #opponentMana{
 
     -fx-font-family: "Times New Roman";
     -fx-background-image: url('../images/button_primary_middle@2.png');
-    -fx-background-size: 80 50;
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
 
     -fx-background-color: rgba(0,0,0,0);
-    -fx-font-size: 23;
     -fx-text-fill: white;
 }
 
 #graveYard{
     -fx-font-family: "Times New Roman";
     -fx-background-image: url('../assets/ui/button_cancel@2x.png');
-    -fx-background-size: 150 60;
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
     -fx-background-color: rgba(0,0,0,0);
-    -fx-font-size: 20;
     -fx-text-fill: white;
 }
 #graveYard:hover{
     -fx-font-family: "Times New Roman";
     -fx-background-image: url('../assets/ui/button_cancel_glow@2x.png');
-    -fx-background-size: 150 60;
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
     -fx-scale-x: 1.04;
     -fx-scale-y: 1.04;
     -fx-background-color: rgba(0,0,0,0);
-    -fx-font-size: 20;
     -fx-cursor: hand;
 }
 #playButton{

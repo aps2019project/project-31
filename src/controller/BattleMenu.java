@@ -2,12 +2,10 @@ package controller;
 
 import constants.*;
 import constants.GameMode;
-import javafx.application.Platform;
 import model.*;
 import view.Input;
 import view.Output;
 
-import java.rmi.ServerError;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -204,7 +202,7 @@ public class BattleMenu extends Menu {
                     validCards.add(Map.findCellByCardId(cardId).getCardInCell());
             }
         }
-        BattleMenu.getBattleManager().comboAtack(Map.findCellByCardId(opponentCardId).getCardInCell(), validCards);
+        BattleMenu.getBattleManager().comboAttack(Map.findCellByCardId(opponentCardId).getCardInCell(), validCards);
     }
 
     public static void attack(int uniqueCardId) {

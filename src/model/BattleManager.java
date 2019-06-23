@@ -106,7 +106,7 @@ public class BattleManager {
             theMinion.setFace(face);
             face.updateStats();
             if (BattlePageController.getInstance() != null)
-                BattlePageController.getInstance().motherFuckinPane.getChildren().add(face);
+                BattlePageController.getInstance().mainPane.getChildren().add(face);
             face.setOnMouseClicked(event -> {
                 BattlePageController.setOnMouseDeployable(theMinion, this);
             });
@@ -882,14 +882,14 @@ public class BattleManager {
         }
 
         enemy.cell.setCardInCell(null);
-        BattlePageController.getInstance().motherFuckinPane.getChildren().remove(enemy.getFace());
+        BattlePageController.getInstance().mainPane.getChildren().remove(enemy.getFace());
 
         player.addCardToGraveYard(new DisplayableDeployable(enemy));
         player.getCardsOnBattleField().remove(enemy);
 
     }
 
-    public void comboAtack(Deployable enemy, ArrayList<Deployable> comboAttackers) {
+    public void comboAttack(Deployable enemy, ArrayList<Deployable> comboAttackers) {
         attack(comboAttackers.get(0), enemy);
         for (int i = 1; i < comboAttackers.size(); i++) {
             dealAttackDamageAndDoOtherStuff(comboAttackers.get(i), enemy);
