@@ -53,7 +53,7 @@ public class Item extends Card {
     }
 
     public Cell findCellByCollectibleItem() {
-        for (Cell[] cells : Map.getMap()) {
+        for (Cell[] cells : Map.getInstance().getMap()) {
             for (Cell cell : cells) {
                 if (cell.getItem().getUniqueId() == uniqueId)
                     return cell;

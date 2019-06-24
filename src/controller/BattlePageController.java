@@ -193,51 +193,51 @@ public class BattlePageController implements Initializable {
                 columnHands[5] = new ColumnOfHand(column6, manaCost6);
             }
             {
-                Map.getMap()[1][1].setPolygon(place11);
-                Map.getMap()[1][2].setPolygon(place12);
-                Map.getMap()[1][3].setPolygon(place13);
-                Map.getMap()[1][4].setPolygon(place14);
-                Map.getMap()[1][5].setPolygon(place15);
-                Map.getMap()[1][6].setPolygon(place16);
-                Map.getMap()[1][7].setPolygon(place17);
-                Map.getMap()[1][8].setPolygon(place18);
-                Map.getMap()[1][9].setPolygon(place19);
-                Map.getMap()[2][1].setPolygon(place21);
-                Map.getMap()[2][2].setPolygon(place22);
-                Map.getMap()[2][3].setPolygon(place23);
-                Map.getMap()[2][4].setPolygon(place24);
-                Map.getMap()[2][5].setPolygon(place25);
-                Map.getMap()[2][6].setPolygon(place26);
-                Map.getMap()[2][7].setPolygon(place27);
-                Map.getMap()[2][8].setPolygon(place28);
-                Map.getMap()[2][9].setPolygon(place29);
-                Map.getMap()[3][1].setPolygon(place31);
-                Map.getMap()[3][2].setPolygon(place32);
-                Map.getMap()[3][3].setPolygon(place33);
-                Map.getMap()[3][4].setPolygon(place34);
-                Map.getMap()[3][5].setPolygon(place35);
-                Map.getMap()[3][6].setPolygon(place36);
-                Map.getMap()[3][7].setPolygon(place37);
-                Map.getMap()[3][8].setPolygon(place38);
-                Map.getMap()[3][9].setPolygon(place39);
-                Map.getMap()[4][1].setPolygon(place41);
-                Map.getMap()[4][2].setPolygon(place42);
-                Map.getMap()[4][3].setPolygon(place43);
-                Map.getMap()[4][4].setPolygon(place44);
-                Map.getMap()[4][5].setPolygon(place45);
-                Map.getMap()[4][6].setPolygon(place46);
-                Map.getMap()[4][7].setPolygon(place47);
-                Map.getMap()[4][8].setPolygon(place48);
-                Map.getMap()[4][9].setPolygon(place49);
-                Map.getMap()[5][1].setPolygon(place51);
-                Map.getMap()[5][2].setPolygon(place52);
-                Map.getMap()[5][3].setPolygon(place53);
-                Map.getMap()[5][4].setPolygon(place54);
-                Map.getMap()[5][5].setPolygon(place55);
-                Map.getMap()[5][6].setPolygon(place56);
-                Map.getMap()[5][7].setPolygon(place57);
-                Map.getMap()[5][8].setPolygon(place58);
-                Map.getMap()[5][9].setPolygon(place59);
+                Map.getInstance().getMap()[1][1].setPolygon(place11);
+                Map.getInstance().getMap()[1][2].setPolygon(place12);
+                Map.getInstance().getMap()[1][3].setPolygon(place13);
+                Map.getInstance().getMap()[1][4].setPolygon(place14);
+                Map.getInstance().getMap()[1][5].setPolygon(place15);
+                Map.getInstance().getMap()[1][6].setPolygon(place16);
+                Map.getInstance().getMap()[1][7].setPolygon(place17);
+                Map.getInstance().getMap()[1][8].setPolygon(place18);
+                Map.getInstance().getMap()[1][9].setPolygon(place19);
+                Map.getInstance().getMap()[2][1].setPolygon(place21);
+                Map.getInstance().getMap()[2][2].setPolygon(place22);
+                Map.getInstance().getMap()[2][3].setPolygon(place23);
+                Map.getInstance().getMap()[2][4].setPolygon(place24);
+                Map.getInstance().getMap()[2][5].setPolygon(place25);
+                Map.getInstance().getMap()[2][6].setPolygon(place26);
+                Map.getInstance().getMap()[2][7].setPolygon(place27);
+                Map.getInstance().getMap()[2][8].setPolygon(place28);
+                Map.getInstance().getMap()[2][9].setPolygon(place29);
+                Map.getInstance().getMap()[3][1].setPolygon(place31);
+                Map.getInstance().getMap()[3][2].setPolygon(place32);
+                Map.getInstance().getMap()[3][3].setPolygon(place33);
+                Map.getInstance().getMap()[3][4].setPolygon(place34);
+                Map.getInstance().getMap()[3][5].setPolygon(place35);
+                Map.getInstance().getMap()[3][6].setPolygon(place36);
+                Map.getInstance().getMap()[3][7].setPolygon(place37);
+                Map.getInstance().getMap()[3][8].setPolygon(place38);
+                Map.getInstance().getMap()[3][9].setPolygon(place39);
+                Map.getInstance().getMap()[4][1].setPolygon(place41);
+                Map.getInstance().getMap()[4][2].setPolygon(place42);
+                Map.getInstance().getMap()[4][3].setPolygon(place43);
+                Map.getInstance().getMap()[4][4].setPolygon(place44);
+                Map.getInstance().getMap()[4][5].setPolygon(place45);
+                Map.getInstance().getMap()[4][6].setPolygon(place46);
+                Map.getInstance().getMap()[4][7].setPolygon(place47);
+                Map.getInstance().getMap()[4][8].setPolygon(place48);
+                Map.getInstance().getMap()[4][9].setPolygon(place49);
+                Map.getInstance().getMap()[5][1].setPolygon(place51);
+                Map.getInstance().getMap()[5][2].setPolygon(place52);
+                Map.getInstance().getMap()[5][3].setPolygon(place53);
+                Map.getInstance().getMap()[5][4].setPolygon(place54);
+                Map.getInstance().getMap()[5][5].setPolygon(place55);
+                Map.getInstance().getMap()[5][6].setPolygon(place56);
+                Map.getInstance().getMap()[5][7].setPolygon(place57);
+                Map.getInstance().getMap()[5][8].setPolygon(place58);
+                Map.getInstance().getMap()[5][9].setPolygon(place59);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -246,7 +246,7 @@ public class BattlePageController implements Initializable {
         try {
             for (int i = 1; i <= 5; i++) {
                 for (int j = 1; j <= 9; j++) {
-                    Cell cell = Map.getMap()[i][j];
+                    Cell cell = Map.getInstance().getMap()[i][j];
                     final Polyline polyline = cell.getPolygon();
                     try {
                         polyline.setOnMouseEntered(event -> {

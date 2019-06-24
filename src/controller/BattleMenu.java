@@ -186,24 +186,24 @@ public class BattleMenu extends Menu {
         ArrayList<Deployable> validCards = new ArrayList<>();
         for (String number : strNumbers) {
             int cardId = Integer.parseInt(number);
-            if (Map.findCellByCardId(cardId).getCardInCell() != null &&
-                    Map.findCellByCardId(opponentCardId).getCardInCell() != null &&
-                    BattleManager.isAttackTypeValidForAttack(Map.findCellByCardId(cardId).getCardInCell(),
-                            Map.findCellByCardId(opponentCardId).getCardInCell())) {
-                if (Map.findCellByCardId(cardId).getCardInCell().isCombo())
-                    validCards.add(Map.findCellByCardId(cardId).getCardInCell());
+            if (Map.getInstance().findCellByCardId(cardId).getCardInCell() != null &&
+                    Map.getInstance().findCellByCardId(opponentCardId).getCardInCell() != null &&
+                    BattleManager.isAttackTypeValidForAttack(Map.getInstance().findCellByCardId(cardId).getCardInCell(),
+                            Map.getInstance().findCellByCardId(opponentCardId).getCardInCell())) {
+                if (Map.getInstance().findCellByCardId(cardId).getCardInCell().isCombo())
+                    validCards.add(Map.getInstance().findCellByCardId(cardId).getCardInCell());
             }
         }
-        BattleMenu.getBattleManager().comboAttack(Map.findCellByCardId(opponentCardId).getCardInCell(), validCards);
+        BattleMenu.getBattleManager().comboAttack(Map.getInstance().findCellByCardId(opponentCardId).getCardInCell(), validCards);
     }
 
     public static void attack(int uniqueCardId) {
         Card selectedCard = BattleMenu.getBattleManager().getCurrentPlayer().getSelectedCard();
         if (selectedCard != null && battleManager.getCurrentPlayer().isSelectedCardDeployed()) {
-            if (Map.findCellByCardId(uniqueCardId) != null &&
-                    Map.findCellByCardId(uniqueCardId).getCardInCell() != null)
+            if (Map.getInstance().findCellByCardId(uniqueCardId) != null &&
+                    Map.getInstance().findCellByCardId(uniqueCardId).getCardInCell() != null)
                 battleManager.attack((Deployable) selectedCard
-                        , Map.findCellByCardId(uniqueCardId).getCardInCell());
+                        , Map.getInstance().findCellByCardId(uniqueCardId).getCardInCell());
             else
                 Output.enemyNotExist();
         } else {
@@ -328,7 +328,7 @@ public class BattleMenu extends Menu {
             if (deployable != null)
                 System.out.println(deployable.shortVersionString());
         }
-        for (Cell[] cells : Map.getMap()) {
+        for (Cell[] cells : Map.getInstance().getMap()) {
             for (Cell cell : cells) {
                 if (cell != null && cell.getItem() != null) {
                     System.out.println(cell.getItem().toString() + " coordination:  " + cell.getX1Coordinate() + "," + cell.getX2Coordinate());

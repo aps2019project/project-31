@@ -90,10 +90,10 @@ public class BattleManager {
             return false;
 
         }
-        Minion theMinion = minion.duplicateDeployed(Map.getCell(x1, x2), currentPlayer.account);
-        Map.putCardInCell(theMinion, x1, x2);
-        if (Map.getCell(x1, x2).doesHaveFlag()) {
-            Map.getCell(x1, x2).setHasFlag(false);
+        Minion theMinion = minion.duplicateDeployed(Map.getInstance().getCell(x1, x2), currentPlayer.account);
+        Map.getInstance().putCardInCell(theMinion, x1, x2);
+        if (Map.getInstance().getCell(x1, x2).doesHaveFlag()) {
+            Map.getInstance().getCell(x1, x2).setHasFlag(false);
             theMinion.setHasFlag(true);
             if (gameMode == GameMode.Domination)
                 currentPlayer.numberOfFlags++;
@@ -141,7 +141,7 @@ public class BattleManager {
 
     public static int generateUniqueIdForCollectibleItem(int cardId) {
         int numberOfItems = 0;
-        for (Cell[] cells : Map.getMap()) {
+        for (Cell[] cells : Map.getInstance().getMap()) {
             for (Cell cell : cells) {
                 if (cell.getItem() != null && cell.getItem().getId() == cardId)
                     numberOfItems++;
@@ -159,7 +159,7 @@ public class BattleManager {
                 int distance = Integer.parseInt(matcher.group(1));
                 for (int i = 0; i < distance * 2; i++) {
                     for (int j = 0; j < distance * 2; j++) {
-                        Card cardInCell = Map.getCardInCell(x1 - distance + i, x2 - distance + j);
+                        Card cardInCell = Map.getInstance().getCardInCell(x1 - distance + i, x2 - distance + j);
                         if (cardInCell != null) {
                             if (!cardInCell.getAccount().equals(currentPlayer.getAccount()) &&
                                     cardInCell.getType() == CardType.minion) {
@@ -245,7 +245,7 @@ public class BattleManager {
             }
 
             if (target.matches("(.*)" + TargetStrings.ALLIED_MINION + "(.*)")) {
-                Card card = Map.getCardInCell(x1, x2);
+                Card card = Map.getInstance().getCardInCell(x1, x2);
                 if (card == null || card.getAccount() == null) {
                     System.err.println("null mikhorim to allied_minion");
                     return false;
@@ -269,20 +269,20 @@ public class BattleManager {
             }
 
             if (target.matches("(.*)" + TargetStrings.ENEMY + "(.*)")) {
-                if (Map.getCardInCell(x1, x2) != null &&
-                        Map.getCardInCell(x1, x2).getAccount().equals(currentPlayer.getAccount())) {
+                if (Map.getInstance().getCardInCell(x1, x2) != null &&
+                        Map.getInstance().getCardInCell(x1, x2).getAccount().equals(currentPlayer.getAccount())) {
                     //wrong target
                     System.err.println("Invalid target");
                     return false;
                 } else {
-                    targetCards.add(Map.getCardInCell(x1, x2));
+                    targetCards.add(Map.getInstance().getCardInCell(x1, x2));
                 }
             }
 
             if (target.matches("(.*)" + TargetStrings.ALL_ALLIES + "(.*)")) {
                 targetCards.addAll(currentPlayer.getCardsOnBattleField());
             } else if (target.matches("(.*)" + TargetStrings.ALLY + "(.*)")) {
-                Card card = Map.getCardInCell(x1, x2);
+                Card card = Map.getInstance().getCardInCell(x1, x2);
                 if (card != null &&
                         card.getAccount().equals(currentPlayer.getAccount())) {
                     targetCards.add(card);
@@ -297,7 +297,7 @@ public class BattleManager {
             }
 
             if (target.matches("(.*)" + TargetStrings.ANY_UNIT + "(.*)")) {
-                Card card = Map.getCardInCell(x1, x2);
+                Card card = Map.getInstance().getCardInCell(x1, x2);
                 if (card != null) {
                     targetCards.add(card);
                 } else {
@@ -311,9 +311,9 @@ public class BattleManager {
                 targetCards.addAll(getOtherPlayer().getCardsOnBattleField());
             } else if (target.matches("(.*)" + TargetStrings.ALL_ENEMIES_IN_COLUMN + "(.*)")) {
                 for (int i = 1; i <= Map.MAP_X2_LENGTH; i++) {
-                    if (Map.getCardInCell(x1, x2) != null &&
-                            !Map.getCardInCell(i, x2).getAccount().equals(currentPlayer.getAccount())) {
-                        targetCards.add(Map.getCardInCell(i, x2));
+                    if (Map.getInstance().getCardInCell(x1, x2) != null &&
+                            !Map.getInstance().getCardInCell(i, x2).getAccount().equals(currentPlayer.getAccount())) {
+                        targetCards.add(Map.getInstance().getCardInCell(i, x2));
                     }
                 }
             } else if (target.matches("(.*)" + TargetStrings.ALL_ENEMIES_IN_ROW + "(.*)")) {
@@ -329,11 +329,11 @@ public class BattleManager {
             }
 
             if (target.matches("(.*)" + TargetStrings.ENEMY_MINION + "(.*)")) {
-                if (Map.getCardInCell(x1, x2) != null
-                        && Map.getCardInCell(x1, x2).getType() == CardType.minion
-                        && Map.getCardInCell(x1, x2).getAccount().equals(currentPlayer.getAccount())) {
+                if (Map.getInstance().getCardInCell(x1, x2) != null
+                        && Map.getInstance().getCardInCell(x1, x2).getType() == CardType.minion
+                        && Map.getInstance().getCardInCell(x1, x2).getAccount().equals(currentPlayer.getAccount())) {
                     // isn't it better if we make haveCardInBattle instead of .equals ?
-                    targetCards.add(Map.getCardInCell(x1, x2));
+                    targetCards.add(Map.getInstance().getCardInCell(x1, x2));
                 } else {
                     //error message for view
                     return false;
@@ -351,8 +351,8 @@ public class BattleManager {
             if (matcher.matches()) {
                 for (int i = x1; i < Integer.parseInt(matcher.group(1)); i++) {
                     for (int j = x2; j < Integer.parseInt(matcher.group(1)); j++) {
-                        targetCells.add(Map.getCell(i, j));
-                        targetCards.add(Map.getCardInCell(i, j));
+                        targetCells.add(Map.getInstance().getCell(i, j));
+                        targetCards.add(Map.getInstance().getCardInCell(i, j));
                     }
                 }
             }
@@ -360,9 +360,9 @@ public class BattleManager {
             if (target.matches("(.*)" + TargetStrings.SURROUNDING_ALLIED_MINIONS + "(.*)")) {
                 for (int i = x1 - 1; i < x1 + 2; i++) {
                     for (int j = x2 - 1; j < x2 + 2; j++) {
-                        if (Map.getCardInCell(x1, x2) != null &&
-                                Map.getCardInCell(x1, x2).getAccount().equals(currentPlayer.getAccount())) {
-                            targetCards.add(Map.getCardInCell(x1, x2));
+                        if (Map.getInstance().getCardInCell(x1, x2) != null &&
+                                Map.getInstance().getCardInCell(x1, x2).getAccount().equals(currentPlayer.getAccount())) {
+                            targetCards.add(Map.getInstance().getCardInCell(x1, x2));
                         }
                     }
                 }
@@ -404,9 +404,9 @@ public class BattleManager {
 
     private void addEnemiesInRow(ArrayList<Card> targetCards, int rowNum) {
         for (int i = 1; i <= Map.MAP_X1_LENGTH; i++) {
-            if (Map.getCardInCell(rowNum, i) != null &&
-                    !Map.getCardInCell(rowNum, i).getAccount().equals(currentPlayer.getAccount())) {
-                targetCards.add(Map.getCardInCell(rowNum, i));
+            if (Map.getInstance().getCardInCell(rowNum, i) != null &&
+                    !Map.getInstance().getCardInCell(rowNum, i).getAccount().equals(currentPlayer.getAccount())) {
+                targetCards.add(Map.getInstance().getCardInCell(rowNum, i));
             }
         }
     }
@@ -414,9 +414,9 @@ public class BattleManager {
     private void addSurroundingCards(ArrayList<Card> list, int x1, int x2) {
         for (int i = x1 - 1; i < x1 + 2; i++) {
             for (int j = x2 - 1; j < x2 + 2; j++) {
-                if (Map.getCardInCell(x1, x2) != null &&
-                        !Map.getCardInCell(x1, x2).getAccount().equals(currentPlayer.getAccount())) {
-                    list.add(Map.getCardInCell(x1, x2));
+                if (Map.getInstance().getCardInCell(x1, x2) != null &&
+                        !Map.getInstance().getCardInCell(x1, x2).getAccount().equals(currentPlayer.getAccount())) {
+                    list.add(Map.getInstance().getCardInCell(x1, x2));
                 }
             }
         }
@@ -501,31 +501,31 @@ public class BattleManager {
         Matcher matcher = pattern.matcher(function.getFunction());
         if (matcher.matches()) {
             int amount = Integer.parseInt(matcher.group(1));
-            attackTarget.takeDamage(attackTarget.accumulatingAttack((Deployable) Map.getCardInCell(x1, x2)) * amount);
+            attackTarget.takeDamage(attackTarget.accumulatingAttack((Deployable) Map.getInstance().getCardInCell(x1, x2)) * amount);
         }
     }
 
     private void handleUnpoisonable(Function function, int x1, int x2) {
         if (function.getFunction().matches("(.*)" + FunctionStrings.UNPOISONABLE + "(.*)")) {
             ArrayList<Buff> toRemove = new ArrayList<>();
-            for (Buff buff : ((Deployable) Map.getCardInCell(x1, x2)).getBuffs()) {
+            for (Buff buff : ((Deployable) Map.getInstance().getCardInCell(x1, x2)).getBuffs()) {
                 if (buff.getBuffType() == Buff.BuffType.Poison) {
                     toRemove.add(buff);
                 }
             }
-            ((Deployable) Map.getCardInCell(x1, x2)).getBuffs().removeAll(toRemove);
+            ((Deployable) Map.getInstance().getCardInCell(x1, x2)).getBuffs().removeAll(toRemove);
         }
     }
 
     private void handleIndisarmable(Function function, int x1, int x2) {
         if (function.getFunction().matches("(.*)" + FunctionStrings.INDISARMABLE + "(.*)")) {
             ArrayList<Buff> toRemove = new ArrayList<>();
-            for (Buff buff : ((Deployable) Map.getCardInCell(x1, x2)).getBuffs()) {
+            for (Buff buff : ((Deployable) Map.getInstance().getCardInCell(x1, x2)).getBuffs()) {
                 if (buff.getBuffType() == Buff.BuffType.Disarm) {
                     toRemove.add(buff);
                 }
             }
-            ((Deployable) Map.getCardInCell(x1, x2)).getBuffs().removeAll(toRemove);
+            ((Deployable) Map.getInstance().getCardInCell(x1, x2)).getBuffs().removeAll(toRemove);
         }
     }
 
@@ -763,8 +763,8 @@ public class BattleManager {
     }
 
     public boolean checkCoordinates(int x1, int x2) {
-        if (Map.getCell(x1, x2) == null ||
-                Map.getCardInCell(x1, x2) != null) {
+        if (Map.getInstance().getCell(x1, x2) == null ||
+                Map.getInstance().getCardInCell(x1, x2) != null) {
             return false;
         }
 
@@ -773,8 +773,8 @@ public class BattleManager {
             for (int j = 0; j < 3; j++) {
                 if (i != 1 || j != 1) {
                     if (x1 - 1 + i >= 1 && x1 - 1 + i <= Map.MAP_X1_LENGTH && x2 - 1 + j >= 1 &&
-                            x2 - 1 + j <= Map.MAP_X2_LENGTH && Map.getCardInCell(x1 - 1 + i, x2 - 1 + j) != null) {
-                        if (Map.getCardInCell(x1 - 1 + i, x2 - 1 + j).getAccount().equals(currentPlayer.getAccount())) {
+                            x2 - 1 + j <= Map.MAP_X2_LENGTH && Map.getInstance().getCardInCell(x1 - 1 + i, x2 - 1 + j) != null) {
+                        if (Map.getInstance().getCardInCell(x1 - 1 + i, x2 - 1 + j).getAccount().equals(currentPlayer.getAccount())) {
                             return true;
                         }
                     }
@@ -840,19 +840,19 @@ public class BattleManager {
             System.err.println("the cell is null in the move method");
             return;
         }
-        if (Map.getDistance(Map.getCell(x1, x2), card.cell) <= Map.getMaxMoveRange()) {
-            if (Map.getCell(x1, x2).getCardInCell() == null && !card.isMoved && !card.isStunned()) {
-                if (!card.hasFlag && Map.getCell(x1, x2).doesHaveFlag()) {
+        if (Map.getInstance().getDistance(Map.getInstance().getCell(x1, x2), card.cell) <= Map.getInstance().getMaxMoveRange()) {
+            if (Map.getInstance().getCell(x1, x2).getCardInCell() == null && !card.isMoved && !card.isStunned()) {
+                if (!card.hasFlag && Map.getInstance().getCell(x1, x2).doesHaveFlag()) {
                     if (gameMode == GameMode.Domination)
                         currentPlayer.numberOfFlags++;
                     card.setHasFlag(true);
-                    Map.getCell(x1, x2).setHasFlag(false);
+                    Map.getInstance().getCell(x1, x2).setHasFlag(false);
                 }
                 card.cell.setCardInCell(null);
-                card.cell = Map.getCell(x1, x2);
+                card.cell = Map.getInstance().getCell(x1, x2);
                 card.setMoved(true);
                 if (card.cell.getItem() != null && card.item != null)
-                    Map.getCell(x1, x2).setCardInCell(card);
+                    Map.getInstance().getCell(x1, x2).setCardInCell(card);
                 Output.movedSuccessfully(card);
             } else {
                 Output.invalidTargetForMove();
@@ -1048,15 +1048,15 @@ public class BattleManager {
         }
         return (attacker.attackType == AttackType.melee && isNear(attacker.cell, counterAttacker.cell)) ||
                 (attacker.attackType == AttackType.ranged &&
-                        Map.getDistance(attacker.cell, counterAttacker.cell) <= attacker.attackRange) ||
+                        Map.getInstance().getDistance(attacker.cell, counterAttacker.cell) <= attacker.attackRange) ||
                 (attacker.attackType == AttackType.hybrid &&
-                        Map.getDistance(attacker.cell, counterAttacker.cell) <= attacker.attackRange);
+                        Map.getInstance().getDistance(attacker.cell, counterAttacker.cell) <= attacker.attackRange);
     }
 
     private boolean isAttackTypeValidForCounterAttack(Deployable attacker, Deployable counterAttacker) {
         return counterAttacker.attackType == AttackType.melee && isNear(attacker.cell, counterAttacker.cell) ||
                 (counterAttacker.attackType == AttackType.ranged && !isNear(attacker.cell, counterAttacker.cell) &&
-                        Map.getDistance(attacker.cell, counterAttacker.cell) <= counterAttacker.attackRange) ||
+                        Map.getInstance().getDistance(attacker.cell, counterAttacker.cell) <= counterAttacker.attackRange) ||
                 counterAttacker.attackType == AttackType.hybrid;
     }
 
@@ -1158,13 +1158,13 @@ public class BattleManager {
     private void generateFlags() {
         Random random = new Random();
         if (gameMode == GameMode.Flag) {
-            Map.getCell(3, 5).setHasFlag(true);
+            Map.getInstance().getCell(3, 5).setHasFlag(true);
         }
         if (gameMode == GameMode.Domination) {
             for (int i = 0; i < maxNumberOfFlags; i++) {
                 int x1 = random.nextInt(5) + 1;
                 int x2 = random.nextInt(5) + 3;
-                Map.getCell(x1, x2).setHasFlag(true);
+                Map.getInstance().getCell(x1, x2).setHasFlag(true);
             }
         }
 
@@ -1182,7 +1182,7 @@ public class BattleManager {
     }
 
     public static int[] flagPosition() {
-        for (Cell[] cells : Map.getMap()) {
+        for (Cell[] cells : Map.getInstance().getMap()) {
             for (Cell cell : cells) {
                 if (cell.doesHaveFlag())
                     return new int[]{cell.getX1Coordinate(), cell.getX2Coordinate()};
@@ -1269,12 +1269,10 @@ public class BattleManager {
         Random random = new Random();
         int x1 = random.nextInt(5) + 1;
         int x2 = random.nextInt(9) + 1;
-        if (Map.getCell(x1, x2).getCardInCell() != null)
-            Map.getCell(x1, x2).getCardInCell().setItem(item);
+        if (Map.getInstance().getCell(x1, x2).getCardInCell() != null)
+            Map.getInstance().getCell(x1, x2).getCardInCell().setItem(item);
         else
-            Map.getCell(x1, x2).setItem(item);
+            Map.getInstance().getCell(x1, x2).setItem(item);
         //    refreshTheStatusOfMap();
     }
-
-
 }
