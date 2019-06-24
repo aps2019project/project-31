@@ -144,8 +144,6 @@ public class DisplayableDeployable extends StackPane {
         new AnimationTimer() {
             int counter = 0;
             long now = 0;
-
-
             @Override
             public void handle(long l) {
 

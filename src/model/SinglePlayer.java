@@ -3,7 +3,6 @@ package model;
 import com.gilecode.yagson.YaGson;
 import com.gilecode.yagson.YaGsonBuilder;
 import constants.GameMode;
-import controller.Menu;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -46,7 +45,7 @@ public class SinglePlayer extends BattleManager {
 
     public static void makeAIAccount(Deck deck) {
         AIAccount = new Account("AI", "beep", 20000);
-        AIAccount.setTheMainDeck(deck);
+        AIAccount.setMainDeck(deck);
         aiPlayer = new Ai(AIAccount);
     }
 

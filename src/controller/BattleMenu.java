@@ -218,11 +218,11 @@ public class BattleMenu extends Menu {
 
     public static boolean insert(Card card, int x1, int x2) {
         if (card == null) {
+            System.err.println("insert(method) -> card is null");
             return false;
         }
         if (battleManager.cardInHandByCardId(card.getId()) != null) {
             if (card.getManaCost() > battleManager.getCurrentPlayer().getMana()) {
-                Output.notHaveEnoughMana();
                 System.err.println("Not enough mana");
                 return false;
             }
@@ -243,7 +243,6 @@ public class BattleMenu extends Menu {
                 }
             }
         } else {
-            Output.notInHand();
             System.err.println("Minion not in hand");
             return false;
         }

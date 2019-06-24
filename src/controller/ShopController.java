@@ -179,8 +179,8 @@ public class ShopController implements Initializable {
                 if (deck.getItem() != null && deck.getItem().getName().equalsIgnoreCase(card.getName()))
                     deck.setItem(null);
         }
-        if (Account.getMainAccount().getTheMainDeck() != null
-                && !Account.getMainAccount().getTheMainDeck().checkIfValid()) {
+        if (Account.getMainAccount().getMainDeck() != null
+                && !Account.getMainAccount().getMainDeck().checkIfValid()) {
             displayMessage("main deck is no longer valid select a new one");
         }
         Account.getMainAccount().addDaric(card.getPrice());

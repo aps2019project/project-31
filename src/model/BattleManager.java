@@ -85,7 +85,6 @@ public class BattleManager {
 
     public boolean playMinion(Minion minion, int x1, int x2) {
         if (!checkCoordinates(x1, x2)) {
-            Output.invalidInsertionTarget();
             System.err.println("Invalid Coordinates");
             return false;
 
@@ -105,10 +104,15 @@ public class BattleManager {
             DisplayableDeployable face = new DisplayableDeployable(theMinion);
             theMinion.setFace(face);
             face.updateStats();
-            if (BattlePageController.getInstance() != null)
+            if (BattlePageController.getInstance() != null) {
+                if(BattlePageController.getInstance().mainPane == null){
+                    System.err.println("main pane is null");
+                    return;
+                }
                 BattlePageController.getInstance().mainPane.getChildren().add(face);
+            }
             face.setOnMouseClicked(event -> {
-                BattlePageController.setOnMouseDeployable(theMinion, this);
+                BattlePageController.getInstance().setOnMouseDeployable(theMinion, this);
             });
         });
         currentPlayer.removeFromHand(minion);
@@ -769,18 +773,17 @@ public class BattleManager {
         }
 
 
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                if (i != 1 || j != 1) {
-                    if (x1 - 1 + i >= 1 && x1 - 1 + i <= Map.MAP_X1_LENGTH && x2 - 1 + j >= 1 &&
-                            x2 - 1 + j <= Map.MAP_X2_LENGTH && Map.getInstance().getCardInCell(x1 - 1 + i, x2 - 1 + j) != null) {
-                        if (Map.getInstance().getCardInCell(x1 - 1 + i, x2 - 1 + j).getAccount().equals(currentPlayer.getAccount())) {
+        for (int i = -1; i <= 1; i++) {
+            for (int j = -1; j <= 1; j++) {
+                if (i != 0 || j != 0) {
+                    if (x1 + i >= 1 && x1 + i <= Map.MAP_X1_LENGTH && x2 + j >= 1 &&
+                            x2 + j <= Map.MAP_X2_LENGTH && Map.getInstance().getCardInCell(x1 + i, x2 + j) != null) {
+                        if (Map.getInstance().getCardInCell(x1 + i, x2 + j).getAccount().equals(currentPlayer.getAccount())) {
                             return true;
                         }
                     }
                 }
             }
-
         }
         return false;
     }
@@ -1146,8 +1149,8 @@ public class BattleManager {
     public void initialTheGame() {
         player1.duplicateTheDeck();
         player2.duplicateTheDeck();
-        Collections.shuffle(player1.currentDeck.getCards());
-        Collections.shuffle(player2.currentDeck.getCards());
+//        Collections.shuffle(player1.currentDeck.getCards());
+//        Collections.shuffle(player2.currentDeck.getCards());
         initialTheHands();
         player1.getHero().setAccount(player1.account);
         player2.getHero().setAccount(player2.account);
@@ -1175,7 +1178,7 @@ public class BattleManager {
             player1.hand.add(player1.currentDeck.getCards().get(i));
             player2.hand.add(player2.currentDeck.getCards().get(i));
         }
-        for (int i = 0; i < 6; i++) {
+        for (int i = 6; i >= 0; i--) {
             player1.getCurrentDeck().getCards().remove(i);
             player2.getCurrentDeck().getCards().remove(i);
         }

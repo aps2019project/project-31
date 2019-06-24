@@ -458,6 +458,7 @@
                         </ImageView>
                      </children>
                   </HBox>
+                  <VBox fx:id="messageBox" prefHeight="200.0" prefWidth="100.0" />
                </children>
             </VBox>
          </right>

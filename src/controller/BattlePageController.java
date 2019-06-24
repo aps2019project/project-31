@@ -12,6 +12,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polyline;
 import model.*;
@@ -96,6 +97,7 @@ public class BattlePageController implements Initializable {
     public Polyline place18;
     public Polyline place19;
     public Button setting;
+    public VBox messageBox;
 
 //    private StackPane showingGraveYard; // for showing it: lastStackPane = showingGraveYard; showingGraveYard is a designed scene
 
@@ -169,6 +171,10 @@ public class BattlePageController implements Initializable {
             me = BattleMenu.getBattleManager().getPlayer2();
             opponent = BattleMenu.getBattleManager().getPlayer1();
         }
+        if(opponent == null){
+            System.err.println("nulllll");
+            return;
+        }
     }
 
     public void removeFromHand(DisplayableDeployable face) {
@@ -178,10 +184,13 @@ public class BattlePageController implements Initializable {
         }
     }
 
+    public void displayMessage(String s) {
+        LoginPageController.getInstance().displayMessage(s, 10, 2, messageBox);
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        battlePageController = BattlePageController.getInstance();
+        battlePageController = this;
         initPlayers();
         try {
             {
@@ -256,23 +265,30 @@ public class BattlePageController implements Initializable {
                             polyline.setFill(Color.rgb(0, 0, 0, 0.15));
                         });
                         polyline.setOnMouseClicked(event -> {
-                            if (me.getSelectedCard() != null && me.isSelectedCardDeployed() && cell.getCardInCell() == null) {
+                            if (me.getSelectedCard() == null) {
+                                displayMessage("select a card first");
+                                System.err.println("no selected card");
+                                return;
+                            }
+                            if (cell.getCardInCell() != null) {
+                                displayMessage("destination is not empty");
+                                return;
+                            }
+                            if (me.isSelectedCardDeployed()) {
                                 BattleMenu.getBattleManager().move((Deployable) me.getSelectedCard(), cell.getX1Coordinate(), cell.getX2Coordinate());
-                            } else if (me.getSelectedCard() != null && !me.isSelectedCardDeployed()) {
+                            } else if (!me.isSelectedCardDeployed()) {
                                 BattleMenu.insert(me.getSelectedCard(), cell.getX1Coordinate(), cell.getX2Coordinate());
-
                             }
                         });
-
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         BattleManager battle = BattleMenu.getBattleManager();
         try {
             battle.initialTheGame();
@@ -282,19 +298,19 @@ public class BattlePageController implements Initializable {
                         DisplayableDeployable face = new DisplayableDeployable((Deployable) me.getHand().get(i));
                         ((Deployable) me.getHand().get(i)).setFace(face);
                         columnHands[i].getStackPane().getChildren().add(face);
-                        face.setTranslateY(95.0);
                         //
+                        face.setTranslateY(-10);
                         face.setOnMouseClicked(event -> {
-                            System.out.println("clicked!");
+                            System.out.println("clicked! on a card");
                             if (battle.getCurrentPlayer() == me)
                                 me.selectACard(face.getDeployable().getId());
-                            else
+                            else {
+                                displayMessage("not my turn");
                                 System.out.println("not my turn");
+                            }
                         });
                         //
                     }
-
-
                     columnHands[i].getManaCost().setText(me.getHand().get(i).getManaCost() + "");
                 }
             }
@@ -326,13 +342,13 @@ public class BattlePageController implements Initializable {
             e.printStackTrace();
         }
         replace.setOnAction(event -> {
-            if (isMyTrun() && battle.getCurrentPlayer().getSelectedCard() != null) {
+            if (isMyTurn() && battle.getCurrentPlayer().getSelectedCard() != null) {
                 BattleMenu.replaceCardInHand(battle.getCurrentPlayer().getSelectedCard().getId());
             }
         });
         endTurn.setOnAction(event -> {
             BattleMenu.doAllThingsInEndingOfTheTurns();
-            if (isMyTrun()) {
+            if (isMyTurn()) {
                 battle.setCurrentPlayer(battle.getOtherPlayer());
             }
             if (battle.getCurrentPlayer().isAi()) {
@@ -382,9 +398,7 @@ public class BattlePageController implements Initializable {
         });
     }
 
-    public static void setOnMouseDeployable(Deployable card, BattleManager battleManager) {
-        Player me = BattlePageController.getInstance().me;
-        Player opponent = BattlePageController.getInstance().opponent;
+    public void setOnMouseDeployable(Deployable card, BattleManager battleManager) {
         if (battleManager.getCurrentPlayer() == me) {
             if (me.getSelectedCard() != null && me.getSelectedCard().getType() == CardType.spell) {
                 BattleMenu.insert(me.getSelectedCard(), card.getCell().getX1Coordinate(), card.getCell().getX2Coordinate());
@@ -392,13 +406,17 @@ public class BattlePageController implements Initializable {
                 me.selectACard(card.getUniqueId());
             }
         } else {
+            if(opponent == null) {
+                System.err.println("null opponent");
+                return;
+            }
             if (opponent.isSelectedCardDeployed()) {
                 battleManager.attack((Deployable) opponent.getSelectedCard(), card);
             }
         }
     }
 
-    private boolean isMyTrun() {
+    private boolean isMyTurn() {
         return BattleMenu.getBattleManager().getCurrentPlayer().
                 getAccount().getUsername().equals(me.getAccount().getUsername());
     }
