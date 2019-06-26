@@ -93,7 +93,7 @@ public class Player {
     }
 
     public void decreaseManaInTheTurn(int turn, int addMana) {
-        manaChangerInTurn[turn] += addMana;
+        manaChangerInTurn[turn] -= addMana;
     }
 
     public void increaseManaInTheTurn(int turn, int addMana) {

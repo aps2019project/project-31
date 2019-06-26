@@ -99,6 +99,7 @@ public class BattlePageController implements Initializable {
     public Polyline place19;
     public Button setting;
     public VBox messageBox;
+    public Label myMana;
 
 //    private StackPane showingGraveYard; // for showing it: lastStackPane = showingGraveYard; showingGraveYard is a designed scene
 
@@ -186,7 +187,7 @@ public class BattlePageController implements Initializable {
             nextCardField.getChildren().add(new DisplayableDeployable((Deployable) me.getNextCard()));
         }
         if (me.getNextCard().getType() == CardType.spell) {
-
+            //
         }
         nextCardField.getChildren().get(1).setTranslateX(30);
         nextCardField.getChildren().get(1).setTranslateY(10);
@@ -199,10 +200,11 @@ public class BattlePageController implements Initializable {
                 if (nextCardField.getChildren().size() >= 2) {
                     if (((DisplayableDeployable) nextCardField.getChildren().get(1)).getDeployable().getType() == CardType.minion) {
                         showMinionInHand(((DisplayableDeployable) nextCardField.getChildren().get(1)).getDeployable(), i, battle);
+                        nextCardField.getChildren().remove(1);
                     }
                     //if(type == spell)
                 }
-                updateNextCard();
+                updateManaViewers(battle);
                 return;
             }
         }
@@ -363,16 +365,18 @@ public class BattlePageController implements Initializable {
         });
         endTurn.setOnAction(event -> {
             BattleMenu.doAllThingsInEndingOfTheTurns();
-            opponentMana.setText(opponent.getMana() + " / 9");
             if (isMyTurn()) {
                 battle.setCurrentPlayer(battle.getOtherPlayer());
             }
+            BattleMenu.doAllAtTheBeginningOfTurnThings();
             if (battle.getCurrentPlayer().isAi()) {
                 System.err.println("ai is playing");
                 ((Ai) battle.getCurrentPlayer()).play();
                 battle.setCurrentPlayer(battle.getOtherPlayer());
+                BattleMenu.doAllThingsInEndingOfTheTurns();
+                BattleMenu.doAllAtTheBeginningOfTurnThings();
             }
-            BattleMenu.doAllAtTheBeginningOfTurnThings();
+            updateManaViewers(battle);
         });
         // select a card ydt nre
         setting.setOnAction(event -> {
@@ -395,9 +399,10 @@ public class BattlePageController implements Initializable {
         face.setTranslateY(-10);
         face.setOnMouseClicked(event -> {
             System.out.println("clicked! on a card");
-            if (battle.getCurrentPlayer() == me)
+            if (battle.getCurrentPlayer() == me) {
+                System.out.println(face.getDeployable().getId());
                 me.selectACard(face.getDeployable().getId());
-            else {
+            } else {
                 displayMessage("not my turn");
                 System.out.println("not my turn");
             }
@@ -501,18 +506,7 @@ public class BattlePageController implements Initializable {
             e.printStackTrace();
         }
         try {
-
-            int usualMana;
-            if (battleManager.getTurn() <= 14) {
-                usualMana = (battleManager.getTurn() - 1) / 2 + 2;
-            } else {
-                usualMana = 9;
-            }
-            if (opponent == battleManager.getCurrentPlayer())
-                opponentMana.setText("" + usualMana + player1.getManaChangerInTurn()[battleManager.getTurn()] + " / " + usualMana);
-            else {
-                opponentMana.setText("0 / 0");
-            }
+            updateManaViewers(battleManager);
             generalCoolDown.setText("" + me.getHero().getHeroSpell().getCoolDownRemaining());
             opponentGeneralCoolDown.setText("" + opponent.getHero().getHeroSpell().getCoolDownRemaining());
             deckSize.setText("Deck: " + me.deckSize() + "/20");
@@ -528,7 +522,16 @@ public class BattlePageController implements Initializable {
 
     }
 
-
+    private void updateManaViewers(BattleManager battleManager) {
+        int usualMana;
+        if (battleManager.getTurn() <= 14) {
+            usualMana = (battleManager.getTurn() - 1) / 2 + 2;
+        } else {
+            usualMana = 9;
+        }
+        opponentMana.setText("" + (usualMana + opponent.getManaChangerInTurn()[battleManager.getTurn()]) + " / " + usualMana);
+        myMana.setText("" + (usualMana + me.getManaChangerInTurn()[battleManager.getTurn()]) + " / " + usualMana);
+    }
 }
 
 class ColumnOfHand {

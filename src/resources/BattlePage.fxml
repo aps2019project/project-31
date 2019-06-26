@@ -279,7 +279,7 @@
                            <children>
                               <StackPane layoutX="-23.0" layoutY="-21.0" prefHeight="99.0" prefWidth="520.0">
                                  <children>
-                                    <HBox prefHeight="76.0" prefWidth="562.0" rotate="-3.0">
+                                    <HBox prefHeight="76.0" prefWidth="562.0" rotate="-3.0" visible="false">
                                        <children>
                                           <ImageView fx:id="mana1">
                                              <image>
@@ -330,6 +330,20 @@
                                     </HBox>
                                  </children>
                               </StackPane>
+                              <HBox prefHeight="75.0" prefWidth="558.0">
+                                 <children>
+                                    <Label id="opponentMana" fx:id="myMana" alignment="CENTER" prefHeight="47.0" prefWidth="85.0" stylesheets="@style/buttonOne.css" text="9 / 9" textFill="WHITE">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Label>
+                                    <ImageView fitHeight="49.0" fitWidth="46.0">
+                                       <image>
+                                          <Image url="@assets/ui/icon_mana@2x.png" />
+                                       </image>
+                                    </ImageView>
+                                 </children>
+                              </HBox>
                            </children>
                         </Pane>
                      </children>

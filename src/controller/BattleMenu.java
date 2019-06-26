@@ -113,6 +113,9 @@ public class BattleMenu extends Menu {
 
         battleManager.assignManaToPlayers();
 
+        if(BattlePageController.getInstance().nextCardField.getChildren().size() <= 1)
+            BattlePageController.getInstance().updateNextCard();
+
         for (int theTurn : battleManager.getTurnsAppearingTheCollectibleFlags()) {
             if (theTurn == battleManager.getTurn()) {
                 Collections.shuffle(Shop.getAllCollectibles());
@@ -122,7 +125,7 @@ public class BattleMenu extends Menu {
         //    battleManager.refreshTheStatusOfMap();
 
     }
-
+//    92 + 15 = 107
     public BattleMenu(int id, String title) {
         super(id, title);
     }
