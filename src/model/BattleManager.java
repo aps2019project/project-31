@@ -98,7 +98,7 @@ public class BattleManager {
             theMinion.setFace(face);
             face.updateStats();
             if (BattlePageController.getInstance() != null) {
-                if(BattlePageController.getInstance().mainPane == null){
+                if (BattlePageController.getInstance().mainPane == null) {
                     System.err.println("main pane is null");
                     return;
                 }

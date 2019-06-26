@@ -43,6 +43,7 @@ public class DisplayableDeployable extends StackPane {
             imagePath = getClass().getResource("/gifs/Minion/" + deployable.getName()).toExternalForm();
         } else {
             imagePath = getClass().getResource("/gifs/Hero/" + deployable.getName()).toExternalForm();
+
         }
         idle = new ImageView(new Image(imagePath + "/idle.gif"));
         idle.setScaleY(SCALE);
@@ -138,13 +139,20 @@ public class DisplayableDeployable extends StackPane {
     public void moveToCurrentCell() {
         double amountX = (deployable.getCell().calculateCenter()[0] - getTranslateX()) / 15;
         double amountY = (deployable.getCell().calculateCenter()[1] - getTranslateY()) / 15;
+        if (deployable.getName().equals("Kaveh")) {
+            amountX -= 30/15;
+            amountY -= 40/15;
+        }
         if (amountX < 0.5 && amountY < 0.5) return;
         if (isMoving) return;
         run();
         isMoving = true;
+        double finalAmountX = amountX;
+        double finalAmountY = amountY;
         new AnimationTimer() {
             int counter = 0;
             long now = 0;
+
             @Override
             public void handle(long l) {
 
@@ -153,8 +161,8 @@ public class DisplayableDeployable extends StackPane {
                     now = l;
                     counter++;
 
-                    setTranslateX(getTranslateX() + amountX);
-                    setTranslateY(getTranslateY() + amountY);
+                    setTranslateX(getTranslateX() + finalAmountX);
+                    setTranslateY(getTranslateY() + finalAmountY);
                     if (counter == 15) {
                         setIdle();
                         isMoving = false;
