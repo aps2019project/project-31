@@ -309,7 +309,9 @@ public class BattlePageController implements Initializable {
                                 return;
                             }
                             if (me.isSelectedCardDeployed()) {
-                                BattleMenu.getBattleManager().move((Deployable) me.getSelectedCard(), cell.getX1Coordinate(), cell.getX2Coordinate());
+                                BattleMenu.getBattleManager().move((Deployable) me.getSelectedCard(),
+                                        cell.getX1Coordinate(), cell.getX2Coordinate());
+                                System.out.println("moved!");
                             } else if (!me.isSelectedCardDeployed()) {
                                 BattleMenu.insert(me.getSelectedCard(), cell.getX1Coordinate(), cell.getX2Coordinate());
                             }
