@@ -165,6 +165,7 @@ public class CardMakerController implements Initializable {
 
         spellButton.setOnAction(actionEvent -> makeSpell());
         minionButton.setOnAction(actionEvent -> makeMinion());
+        backButton.setOnAction(event -> MainMenuController.getInstance().setAsScene());
     }
 
     private void makeSpell() {

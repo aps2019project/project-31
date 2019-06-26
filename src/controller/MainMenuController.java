@@ -32,6 +32,7 @@ public class MainMenuController implements Initializable {
     public BorderPane borderPane;
     public Button logoutButton;
     public Button saveButton;
+    public Button cardMakerButton;
 
 
     public MainMenuController() {
@@ -75,6 +76,7 @@ public class MainMenuController implements Initializable {
         shopButton.setOnAction(event -> ShopController.getInstance().setAsScene());
         collectionButton.setOnAction(event -> CollectionController.getInstance().setAsScene());
         saveButton.setOnAction(event -> Account.saveAllAccounts());
+        cardMakerButton.setOnAction(event -> CardMakerController.getInstance().setAsScene());
         Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
         Double screenWidth = screen.getWidth();
         backgroundImage.setScaleX(screenWidth / backgroundImage.getFitWidth() * 2 / 3);
