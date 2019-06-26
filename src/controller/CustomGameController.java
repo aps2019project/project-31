@@ -51,6 +51,7 @@ public class CustomGameController implements Initializable {
                 BattleMenu.setBattleManagerForSinglePLayer(BattleManagerMode.CustomGame, Account.getMainAccount(),
                         100, 100, GameMode.DeathMatch, 1);
                 //Initializer.getBattleMenu().runTheGame();
+                BattlePageController.getInstance().setAsScene();
             }
             else if (gameMode.getValue().equals(modes[1])) {
                 if (numberOfFlagsTextField.getText().length() < 1 || numberOfFlagsLable.getText().equals("")) {
@@ -65,6 +66,7 @@ public class CustomGameController implements Initializable {
                     BattleMenu.setBattleManagerForSinglePLayer(BattleManagerMode.CustomGame, Account.getMainAccount(),
                             numberOfFlags, 100, GameMode.Domination, 1);
                     // Initializer.getBattleMenu().runTheGame();
+                    BattlePageController.getInstance().setAsScene();
                 }
             }
             else if (gameMode.getValue().equals(modes[2])) {
@@ -80,6 +82,7 @@ public class CustomGameController implements Initializable {
                     BattleMenu.setBattleManagerForSinglePLayer(BattleManagerMode.CustomGame, Account.getMainAccount(),
                             100, numberOfTurnsHavingFlagToWin, GameMode.Flag, 1);
                     // Initializer.getBattleMenu().runTheGame();
+                    BattlePageController.getInstance().setAsScene();
                 }
             }
         });
