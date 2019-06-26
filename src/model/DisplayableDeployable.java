@@ -131,7 +131,6 @@ public class DisplayableDeployable extends StackPane {
                 }
             }
         }.start();
-
     }
 
     public void moveToCurrentCell() {
