@@ -26,7 +26,7 @@ public class Ai extends Player {
             for (int k = 1; k <= Map.MAP_X1_LENGTH; k++) {
                 for (int j = 1; j < Map.MAP_X2_LENGTH; j++) {
                     if (BattleMenu.insert(hand.get(i), k, j)) {
-                        i--;
+//                        i--;
                         continue outerLoop;
                     }
                     //needs to be fixed
