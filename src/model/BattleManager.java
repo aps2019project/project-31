@@ -98,7 +98,7 @@ public class BattleManager {
             theMinion.setFace(face);
             face.updateStats();
             if (BattlePageController.getInstance() != null) {
-                if(BattlePageController.getInstance().mainPane == null){
+                if (BattlePageController.getInstance().mainPane == null) {
                     System.err.println("main pane is null");
                     return;
                 }
@@ -849,6 +849,9 @@ public class BattleManager {
                 card.setMoved(true);
                 if (card.cell.getItem() != null && card.item != null)
                     Map.getInstance().getCell(x1, x2).setCardInCell(card);
+                Platform.runLater(() -> {
+                    BattlePageController.getInstance().refreshTheStatusOfMap(this);
+                });
                 Output.movedSuccessfully(card);
             } else {
                 Output.invalidTargetForMove();
