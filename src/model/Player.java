@@ -237,7 +237,7 @@ public class Player {
         }
         if (myDeployable(cardId) != null) {
             System.err.println("selected card successfully");
-            selectedCard = cardInHand(cardId);
+            selectedCard = myDeployable(cardId);
             return true;
         }
         if (battle.getCurrentPlayer().getHero().getId() == cardId) {

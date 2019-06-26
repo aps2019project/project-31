@@ -37,6 +37,9 @@ public class DisplayableDeployable extends StackPane {
 
     public DisplayableDeployable(Deployable deployable) {
         this.setAlignment(Pos.CENTER);
+        setOnMouseClicked(mouseEvent -> {
+            BattleManager.currentPlayer.setSelectedCard(deployable);
+        });
         String imagePath;
         this.deployable = deployable;
         if (deployable.getType() == CardType.minion) {
