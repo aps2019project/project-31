@@ -1,5 +1,7 @@
 package controller;
 
+import com.gilecode.yagson.YaGson;
+import com.gilecode.yagson.YaGsonBuilder;
 import constants.AttackType;
 import constants.CardType;
 import constants.FunctionType;
@@ -18,6 +20,8 @@ import javafx.scene.layout.*;
 import model.*;
 
 import java.awt.*;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -41,7 +45,7 @@ public class CardMakerController implements Initializable {
     @FXML
     private Button spellButton;
     @FXML
-    private Button itemButton;
+    private Button backButton;
 
     @FXML
     private VBox centerVBox;
@@ -75,6 +79,7 @@ public class CardMakerController implements Initializable {
     private AttackType currentAttackType = null;
     private Card currentCard;
     private int currentCardRange = 0;
+    private DisplayableCard displayableCard;
 
 
     public static CardMakerController getInstance() {
@@ -101,12 +106,44 @@ public class CardMakerController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        cardMaker = this;
         double screenWidth = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
         double scaleX = screenWidth / mainContainer.getPrefWidth() * 3 / 5;
         mainContainer.setScaleX(scaleX);
         mainContainer.setScaleY(scaleX);
         centerVBox.setScaleY(0.87);
         selectionVBox.setSpacing(10);
+
+        createButton.setOnAction(actionEvent -> {
+            if (currentCard == null)
+                return;
+            YaGson yaGson = new YaGsonBuilder().create();
+            switch (currentCardType) {
+                case minion:
+                    String path = System.getProperty("user.dir") + "/Sources/Cards/Minions.txt";
+                    try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(path, true))) {
+                        bufferedWriter.write(yaGson.toJson(currentCard) + "\n");
+
+                    } catch (IOException e) {
+                        System.err.println("Exception!:" + e);
+
+                    }
+                    break;
+                case spell:
+                    String path1 = System.getProperty("user.dir") + "/Sources/Cards/Spells.txt";
+                    try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(path1, true))) {
+                        bufferedWriter.write(yaGson.toJson(currentCard) + "\n");
+
+                    } catch (IOException e) {
+                        System.err.println("Exception!:" + e);
+                    }
+                    break;
+            }
+            currentCard = null;
+            displayVBox.getChildren().removeAll(displayableCard);
+
+        });
+
         previewButton.setOnAction(actionEvent -> {
             switch (currentCardType) {
                 case minion:
@@ -115,15 +152,34 @@ public class CardMakerController implements Initializable {
                             false, false, null, currentCardRange, currentCardHealth,
                             currentCardAttack, 0, currentAttackType, isCombo, currentCardHealth,
                             currentCardAttack, currentCardHealth);
-
+                    break;
+                case spell:
+                    currentCard = new Spell(currentCardPrice, currentManaCost, currentCardText, currentCardFunctions, null,
+                            currentCardName, 999, currentCardType, false);
             }
-            displayVBox.getChildren().add(new DisplayableCard(currentCard, ""));
+            displayableCard = new DisplayableCard(currentCard, "");
+            displayVBox.getChildren().add(displayableCard);
             System.out.println(currentFunctionString);
             System.out.println(currentTargetString);
         });
 
-
+        spellButton.setOnAction(actionEvent -> makeSpell());
         minionButton.setOnAction(actionEvent -> makeMinion());
+    }
+
+    private void makeSpell() {
+        currentCardType = CardType.spell;
+        messageLabel.setText("Enter card properties!");
+
+        TextField nameField = makeTextField("enter name price cost");
+        nameField.setOnAction(actionEvent -> {
+            String[] things = nameField.getText().split(" ");
+            currentCardName = "custom" + things[0];
+            currentCardPrice = Integer.parseInt(things[1]);
+            currentManaCost = Integer.parseInt(things[2]);
+            getCardText(nameField);
+        });
+        selectionVBox.getChildren().add(nameField);
     }
 
     private void makeMinion() {
@@ -152,6 +208,7 @@ public class CardMakerController implements Initializable {
                         nameField.setOnAction(actionEvent2 -> {
                             currentCardRange = Integer.parseInt(nameField.getText());
                             getCardText(nameField);
+
                         });
                         return;
                     case "hybrid":
@@ -195,7 +252,7 @@ public class CardMakerController implements Initializable {
         nameField.setPromptText("enter card text");
         nameField.setOnAction(actionEvent2 -> {
             currentCardText = nameField.getText();
-            centerVBox.getChildren().removeAll(nameField);
+            selectionVBox.getChildren().removeAll(nameField);
             makeFunction();
         });
     }
@@ -363,6 +420,7 @@ public class CardMakerController implements Initializable {
                         numTextField.setOnAction(actionEvent2 -> {
                             currentFunctionString += numTextField.getText().trim();
                             makeTargetString(true);
+                            centerVBox.getChildren().removeAll(numTextField);
                         });
                         break;
                     default:
@@ -392,7 +450,11 @@ public class CardMakerController implements Initializable {
         centerVBox.getChildren().add(inputField);
         if (isCellBased) {
             inputField.setPromptText("enter target square length");
-            inputField.setOnAction(actionEvent -> currentTargetString += TargetStrings.SQUARE + inputField.getText());
+            inputField.setOnAction(actionEvent -> {
+                currentTargetString += TargetStrings.SQUARE + inputField.getText();
+                centerVBox.getChildren().removeAll(inputField);
+            });
+
         } else {
             for (String target1 : TargetStrings.allTargets()) {
                 selectionVBox.getChildren().add(LoginPageController.getInstance()
