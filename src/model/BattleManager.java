@@ -951,8 +951,6 @@ public class BattleManager {
         applyOnDefendFunction(enemy, card);
         applyItemOnAttackDefendFunctions(card, FunctionType.OnAttack, currentPlayer);
         applyItemOnAttackDefendFunctions(enemy, FunctionType.OnDefend, getOtherPlayer());
-
-
     }
 
     private boolean ignoreHolyBuff(Card card) {

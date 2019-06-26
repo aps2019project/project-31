@@ -46,7 +46,6 @@ public class Initializer extends Application {
         System.err.println("cards loaded");
         launch(args);
         Input.start();
-
     }
 
     @Override

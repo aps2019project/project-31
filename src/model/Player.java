@@ -229,8 +229,6 @@ public class Player {
         return null;
     }
 
-
-
     public boolean selectACard(int cardId) {
         if (cardInHand(cardId) != null) {
             System.err.println("selected card successfully");
@@ -347,12 +345,9 @@ public class Player {
     }
 
     public void duplicateTheDeck() {
-//        currentDeck.getCards().clear();
         for (Card card : account.getMainDeck().getCards()) {
             currentDeck.getCards().add(card);
         }
-//        currentDeck.setItem(account.getMainDeck().getItem());
-//        currentDeck.setHero(account.getMainDeck().getHero());
     }
 
     public void showHand() {

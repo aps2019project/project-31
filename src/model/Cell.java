@@ -123,7 +123,7 @@ public class Cell {
     public Double[] calculateCenter() {
         Double[] coordinates = new Double[2];
         double x = 0, y = 0;
-        x += polygon.getPoints().get(0) + polygon.getPoints().get(7);
+        x += polygon.getPoints().get(0) + polygon.getPoints().get(2);
         y += polygon.getPoints().get(1);
         coordinates[0] = (x / 2) + polygon.getLayoutX() - 100;
         coordinates[1] = (y) + polygon.getLayoutY() - 100;

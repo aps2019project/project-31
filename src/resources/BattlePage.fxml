@@ -409,9 +409,9 @@
          <right>
             <VBox prefHeight="398.0" prefWidth="134.0" BorderPane.alignment="CENTER">
                <children>
-                  <StackPane prefHeight="130.0" prefWidth="170.0">
+                  <StackPane prefHeight="169.0" prefWidth="134.0">
                      <children>
-                        <Pane prefHeight="130.0" prefWidth="170.0">
+                        <Pane prefHeight="147.0" prefWidth="134.0">
                            <children>
                               <ImageView fitHeight="111.0" fitWidth="113.0" layoutX="9.0" layoutY="7.0">
                                  <image>
@@ -435,7 +435,7 @@
                         </Pane>
                      </children>
                   </StackPane>
-                  <StackPane prefHeight="60.0" prefWidth="134.0">
+                  <StackPane prefHeight="87.0" prefWidth="123.0">
                      <children>
                         <Label id="OpponentHand" fx:id="opponentHand" alignment="CENTER" prefHeight="50.0" prefWidth="125.0" stylesheets="@style/buttonOne.css" text="Hand: 6/6" textFill="WHITE">
                            <font>

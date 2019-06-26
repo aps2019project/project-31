@@ -2,6 +2,7 @@ package controller;
 
 import constants.CardType;
 import constants.FunctionType;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
@@ -177,10 +178,21 @@ public class BattlePageController implements Initializable {
         }
     }
 
+    public void updateNextCard(){
+        if(nextCardField.getChildren().size() > 1)
+            nextCardField.getChildren().remove(1);
+        nextCardField.getChildren().add(new DisplayableDeployable((Deployable) me.getNextCard()));
+    }
+
     public void removeFromHand(DisplayableDeployable face) {
         for (ColumnOfHand column : columnHands) {
-            if (column.stackPane.getChildren().remove(face))
+            if (column.stackPane.getChildren().remove(face)) {
+                if(nextCardField.getChildren().size() >= 1) {
+                    column.stackPane.getChildren().add(nextCardField.getChildren().get(1));
+                }
+                updateNextCard();
                 return;
+            }
         }
     }
 
@@ -314,7 +326,6 @@ public class BattlePageController implements Initializable {
                     columnHands[i].getManaCost().setText(me.getHand().get(i).getManaCost() + "");
                 }
             }
-
             username.setText(me.getAccount().getUsername());
             opponentUsername.setText(opponent.getAccount().getUsername());
             generalSpellManaCost.setText("" + me.getHero().getHeroSpell().getManaCost());
@@ -341,6 +352,7 @@ public class BattlePageController implements Initializable {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        Platform.runLater(this::updateNextCard);
         replace.setOnAction(event -> {
             if (isMyTurn() && battle.getCurrentPlayer().getSelectedCard() != null) {
                 BattleMenu.replaceCardInHand(battle.getCurrentPlayer().getSelectedCard().getId());
@@ -348,10 +360,12 @@ public class BattlePageController implements Initializable {
         });
         endTurn.setOnAction(event -> {
             BattleMenu.doAllThingsInEndingOfTheTurns();
+            opponentMana.setText(opponent.getMana() + " / 9");
             if (isMyTurn()) {
                 battle.setCurrentPlayer(battle.getOtherPlayer());
             }
             if (battle.getCurrentPlayer().isAi()) {
+                System.err.println("ai is playing");
                 ((Ai) battle.getCurrentPlayer()).play();
                 battle.setCurrentPlayer(battle.getOtherPlayer());
             }
@@ -368,8 +382,6 @@ public class BattlePageController implements Initializable {
         graveYard.setOnAction(event -> {
             GraveYardController.getInstance().setAsScene();
         });
-
-
     }
 
     public void initHeroes(BattleManager battleManager, Pane mainPane) {
