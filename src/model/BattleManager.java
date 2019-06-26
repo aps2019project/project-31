@@ -6,16 +6,9 @@ import constants.CardType;
 import constants.FunctionType;
 import constants.GameMode;
 import controller.BattleMenu;
-import controller.BattlePageController;
 import javafx.application.Platform;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import view.Input;
 import view.Output;
 
-import javax.print.DocFlavor;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.*;
 
 import java.util.ArrayList;
@@ -83,7 +76,7 @@ public class BattleManager {
         return gameMode;
     }
 
-    public boolean playMinion(Minion minion, int x1, int x2) {
+    public boolean playMinion(Minion minion, int x1, int x2, BattleManager battle) {
         if (!checkCoordinates(x1, x2)) {
             System.err.println("Invalid Coordinates");
             return false;
@@ -118,7 +111,7 @@ public class BattleManager {
         currentPlayer.removeFromHand(minion);
         applyOnSpawnFunction(theMinion);
         currentPlayer.decreaseMana(theMinion.manaCost);
-        BattlePageController.getInstance().removeFromHand(((Deployable) BattlePageController.getInstance().getMe().selectedCard).face);
+        BattlePageController.getInstance().removeMinionFromHand(((Deployable) BattlePageController.getInstance().getMe().selectedCard).face, battle);
         currentPlayer.selectedCard = null;
         //refreshTheStatusOfMap();
         return true;
@@ -1147,8 +1140,8 @@ public class BattleManager {
     public void initialTheGame() {
         player1.duplicateTheDeck();
         player2.duplicateTheDeck();
-//        Collections.shuffle(player1.currentDeck.getCards());
-//        Collections.shuffle(player2.currentDeck.getCards());
+        Collections.shuffle(player1.currentDeck.getCards());
+        Collections.shuffle(player2.currentDeck.getCards());
         initialTheHands();
         player1.getHero().setAccount(player1.account);
         player2.getHero().setAccount(player2.account);

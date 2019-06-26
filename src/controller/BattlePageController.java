@@ -172,23 +172,35 @@ public class BattlePageController implements Initializable {
             me = BattleMenu.getBattleManager().getPlayer2();
             opponent = BattleMenu.getBattleManager().getPlayer1();
         }
-        if(opponent == null){
+        if (opponent == null) {
             System.err.println("nulllll");
             return;
         }
     }
 
-    public void updateNextCard(){
-        if(nextCardField.getChildren().size() > 1)
+    public void updateNextCard() {
+        me.placeNextCardToHand();//it happens if there is space in hand
+        if (nextCardField.getChildren().size() > 1)
             nextCardField.getChildren().remove(1);
-        nextCardField.getChildren().add(new DisplayableDeployable((Deployable) me.getNextCard()));
+        if (me.getNextCard().getType() == CardType.minion) {
+            nextCardField.getChildren().add(new DisplayableDeployable((Deployable) me.getNextCard()));
+        }
+        if (me.getNextCard().getType() == CardType.spell) {
+
+        }
+        nextCardField.getChildren().get(1).setTranslateX(30);
+        nextCardField.getChildren().get(1).setTranslateY(10);
     }
 
-    public void removeFromHand(DisplayableDeployable face) {
-        for (ColumnOfHand column : columnHands) {
+    public void removeMinionFromHand(DisplayableDeployable face, BattleManager battle) {
+        for (int i = 0; i < 6; i++) {
+            ColumnOfHand column = columnHands[i];
             if (column.stackPane.getChildren().remove(face)) {
-                if(nextCardField.getChildren().size() >= 1) {
-                    column.stackPane.getChildren().add(nextCardField.getChildren().get(1));
+                if (nextCardField.getChildren().size() >= 2) {
+                    if (((DisplayableDeployable) nextCardField.getChildren().get(1)).getDeployable().getType() == CardType.minion) {
+                        showMinionInHand(((DisplayableDeployable) nextCardField.getChildren().get(1)).getDeployable(), i, battle);
+                    }
+                    //if(type == spell)
                 }
                 updateNextCard();
                 return;
@@ -307,21 +319,10 @@ public class BattlePageController implements Initializable {
             for (int i = 0; i < 6; i++) {
                 if (me.getHand().get(i) != null) {
                     if (me.getHand().get(i).getType() == CardType.minion) {
-                        DisplayableDeployable face = new DisplayableDeployable((Deployable) me.getHand().get(i));
-                        ((Deployable) me.getHand().get(i)).setFace(face);
-                        columnHands[i].getStackPane().getChildren().add(face);
-                        //
-                        face.setTranslateY(-10);
-                        face.setOnMouseClicked(event -> {
-                            System.out.println("clicked! on a card");
-                            if (battle.getCurrentPlayer() == me)
-                                me.selectACard(face.getDeployable().getId());
-                            else {
-                                displayMessage("not my turn");
-                                System.out.println("not my turn");
-                            }
-                        });
-                        //
+                        showMinionInHand((Deployable) me.getHand().get(i), i, battle);
+                    }
+                    if (me.getHand().get(i).getType() == CardType.spell) {
+
                     }
                     columnHands[i].getManaCost().setText(me.getHand().get(i).getManaCost() + "");
                 }
@@ -384,6 +385,25 @@ public class BattlePageController implements Initializable {
         });
     }
 
+    private void showMinionInHand(Deployable deployable, int index, BattleManager battle) {
+        DisplayableDeployable face = new DisplayableDeployable(deployable);
+        deployable.setFace(face);
+        columnHands[index].getStackPane().getChildren().add(face);
+        //
+        face.setTranslateY(-10);
+        face.setOnMouseClicked(event -> {
+            System.out.println("clicked! on a card");
+            if (battle.getCurrentPlayer() == me)
+                me.selectACard(face.getDeployable().getId());
+            else {
+                displayMessage("not my turn");
+                System.out.println("not my turn");
+            }
+        });
+        //
+        columnHands[index].getManaCost().setText(deployable.getManaCost() + "");
+    }
+
     public void initHeroes(BattleManager battleManager, Pane mainPane) {
         Hero hero1 = battleManager.getPlayer1().getHero();
         Hero hero2 = battleManager.getPlayer2().getHero();
@@ -418,7 +438,7 @@ public class BattlePageController implements Initializable {
                 me.selectACard(card.getUniqueId());
             }
         } else {
-            if(opponent == null) {
+            if (opponent == null) {
                 System.err.println("null opponent");
                 return;
             }

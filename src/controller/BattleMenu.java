@@ -167,7 +167,7 @@ public class BattleMenu extends Menu {
     public static void doAllThingsInEndingOfTheTurns() {
         battleManager.makeIsMovedAndStunnedAndStuffFalse();
         battleManager.applyItemFunctions(battleManager.getPlayer1().getHero(), FunctionType.Passive);
-        battleManager.getCurrentPlayer().placeNextCardToHand();
+        battleManager.getCurrentPlayer().placeNextCardToHand();//this should just be called just after inserting cards from hand to battle!!
         battleManager.getCurrentPlayer().endOfTurnBuffsAndFunctions();
         battleManager.getOtherPlayer().endOfTurnBuffsAndFunctions();
         battleManager.checkTheEndSituation();
@@ -227,7 +227,7 @@ public class BattleMenu extends Menu {
                 return false;
             }
             if (card.getType() == CardType.minion) {
-                battleManager.playMinion((Minion) card, x1, x2);
+                battleManager.playMinion((Minion) card, x1, x2, battleManager);
             }
             if (card.getType() == CardType.spell) {
                 card.setAccount(battleManager.getCurrentPlayer().getAccount());
