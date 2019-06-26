@@ -252,11 +252,20 @@
                <children>
                   <Pane prefHeight="200.0" prefWidth="200.0">
                      <children>
-                        <ImageView fitHeight="202.0" fitWidth="181.0">
-                           <image>
-                              <Image url="@assets/generals/general_portrait_border@2x.png" />
-                           </image>
-                        </ImageView>
+                        <AnchorPane fx:id="profile1Stack">
+                           <children>
+                              <ImageView fx:id="player1Profile" fitHeight="202.0" fitWidth="181.0">
+                                 <image>
+                                    <Image url="@assets/generals/general_portrait_border@2x.png" />
+                                 </image>
+                              </ImageView>
+                              <ImageView fx:id="profPic1" fitHeight="141.0" fitWidth="153.0" layoutX="23.0" layoutY="28.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@assets/dialogue/speech_portrait_lyonarthird@2x.png" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                        </AnchorPane>
                         <Label id="health" fx:id="health" alignment="CENTER" layoutX="63.0" layoutY="141.0" prefHeight="56.0" prefWidth="54.0" stylesheets="@style/labels.css" text="25" textFill="WHITE">
                            <font>
                               <Font size="24.0" />
@@ -279,7 +288,7 @@
                            <children>
                               <StackPane layoutX="-23.0" layoutY="-21.0" prefHeight="99.0" prefWidth="520.0">
                                  <children>
-                                    <HBox prefHeight="76.0" prefWidth="562.0" rotate="-3.0">
+                                    <HBox prefHeight="76.0" prefWidth="562.0" rotate="-3.0" visible="false">
                                        <children>
                                           <ImageView fx:id="mana1">
                                              <image>
@@ -330,22 +339,45 @@
                                     </HBox>
                                  </children>
                               </StackPane>
+                              <HBox prefHeight="75.0" prefWidth="558.0">
+                                 <children>
+                                    <Label id="opponentMana" fx:id="myMana" alignment="CENTER" prefHeight="47.0" prefWidth="85.0" stylesheets="@style/buttonOne.css" text="9 / 9" textFill="WHITE">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Label>
+                                    <ImageView fitHeight="49.0" fitWidth="46.0">
+                                       <image>
+                                          <Image url="@assets/ui/icon_mana@2x.png" />
+                                       </image>
+                                    </ImageView>
+                                 </children>
+                              </HBox>
                            </children>
                         </Pane>
                      </children>
                   </VBox>
                   <Pane prefHeight="198.0" prefWidth="348.0">
                      <children>
-                        <ImageView fitHeight="200.0" fitWidth="174.0" layoutX="149.0" layoutY="1.0">
-                           <image>
-                              <Image url="@assets/generals/general_portrait_border@2x.png" />
-                           </image>
-                        </ImageView>
-                        <Label id="health" fx:id="opponentHealth" alignment="CENTER" layoutX="210.0" layoutY="146.0" prefHeight="56.0" prefWidth="54.0" stylesheets="@style/labels.css" text="25" textFill="WHITE">
-                           <font>
-                              <Font size="24.0" />
-                           </font>
-                        </Label>
+                        <AnchorPane fx:id="profile2Stack" layoutX="170.0" prefHeight="200.0" prefWidth="4.0">
+                           <children>
+                              <ImageView fx:id="player2Profile" fitHeight="200.0" fitWidth="174.0">
+                                 <image>
+                                    <Image url="@assets/generals/general_portrait_border@2x.png" />
+                                 </image>
+                              </ImageView>
+                              <ImageView fx:id="profPic2" fitHeight="136.0" fitWidth="132.0" layoutX="19.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@assets/dialogue/speech_portrait_vetruvianthird@2x.png" />
+                                 </image>
+                              </ImageView>
+                              <Label id="health" fx:id="opponentHealth" alignment="CENTER" layoutX="60.0" layoutY="144.0" prefHeight="56.0" prefWidth="54.0" stylesheets="@style/labels.css" text="25" textFill="WHITE">
+                                 <font>
+                                    <Font size="24.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </AnchorPane>
                         <Label fx:id="opponentUsername" layoutX="39.0" layoutY="27.0" prefHeight="53.0" prefWidth="134.0" rotate="3.0" text="Player2" textFill="WHITE">
                            <font>
                               <Font size="36.0" />

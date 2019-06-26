@@ -93,7 +93,7 @@ public class Player {
     }
 
     public void decreaseManaInTheTurn(int turn, int addMana) {
-        manaChangerInTurn[turn] += addMana;
+        manaChangerInTurn[turn] -= addMana;
     }
 
     public void increaseManaInTheTurn(int turn, int addMana) {
@@ -237,7 +237,7 @@ public class Player {
         }
         if (myDeployable(cardId) != null) {
             System.err.println("selected card successfully");
-            selectedCard = cardInHand(cardId);
+            selectedCard = myDeployable(cardId);
             return true;
         }
         if (battle.getCurrentPlayer().getHero().getId() == cardId) {

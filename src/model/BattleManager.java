@@ -80,7 +80,6 @@ public class BattleManager {
         if (!checkCoordinates(x1, x2)) {
             System.err.println("Invalid Coordinates");
             return false;
-
         }
         Minion theMinion = minion.duplicateDeployed(Map.getInstance().getCell(x1, x2), currentPlayer.account);
         Map.getInstance().putCardInCell(theMinion, x1, x2);

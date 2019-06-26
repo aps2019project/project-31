@@ -29,20 +29,21 @@ public class GraveYardController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-       /* username.setText(BattlePageController.getInstance().getMe().getAccount().getUsername());
-        opponentUsername.setText(BattlePageController.getInstance().getOpponent().getAccount().getUsername());*/
+        username.setText(BattlePageController.getInstance().getMe().getAccount().getUsername());
+        opponentUsername.setText(BattlePageController.getInstance().getOpponent().getAccount().getUsername());
         backToBattle.setOnAction(event -> {
             BattlePageController.getInstance().setAsScene();
         });
-
+        player1Profile = BattlePageController.getInstance().player1Profile;
+        player2Profile = BattlePageController.getInstance().player2Profile;
     }
+
     public static GraveYardController getInstance() {
         if (graveYard == null) {
             graveYard = new GraveYardController();
         }
         return graveYard;
     }
-
 
     public void setAsScene() {
         if (scene == null) {
