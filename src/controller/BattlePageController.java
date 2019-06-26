@@ -537,8 +537,12 @@ public class BattlePageController implements Initializable {
         } else {
             usualMana = 9;
         }
-        opponentMana.setText("" + (usualMana + opponent.getManaChangerInTurn()[battleManager.getTurn()]) + " / " + usualMana);
-        myMana.setText("" + (usualMana + me.getManaChangerInTurn()[battleManager.getTurn()]) + " / " + usualMana);
+        if(me == battleManager.getCurrentPlayer()){
+            myMana.setText(me.getMana() + " / " + usualMana);
+            opponentMana.setText(opponent.getMana() + " / " + usualMana);
+        }
+//        opponentMana.setText("" + (usualMana + opponent.getManaChangerInTurn()[battleManager.getTurn()]) + " / " + usualMana);
+//        myMana.setText("" + (usualMana + me.getManaChangerInTurn()[battleManager.getTurn()]) + " / " + usualMana);
         /////getManaChangerInTurn[] has bug
     }
 }
