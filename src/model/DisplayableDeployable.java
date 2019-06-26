@@ -1,5 +1,6 @@
 package model;
 
+import constants.CardType;
 import javafx.animation.Animation;
 import javafx.animation.AnimationTimer;
 import javafx.beans.property.DoubleProperty;
@@ -32,41 +33,42 @@ public class DisplayableDeployable extends StackPane {
     VBox stats;
     ImageView attackIcon;
     ImageView healthIcon;
+    double SCALE = 1.2;
 
     public DisplayableDeployable(Deployable deployable) {
         this.setAlignment(Pos.CENTER);
         String imagePath;
         this.deployable = deployable;
-        if (deployable instanceof Minion) {
+        if (deployable.getType() == CardType.minion) {
             imagePath = getClass().getResource("/gifs/Minion/" + deployable.getName()).toExternalForm();
         } else {
             imagePath = getClass().getResource("/gifs/Hero/" + deployable.getName()).toExternalForm();
         }
         idle = new ImageView(new Image(imagePath + "/idle.gif"));
-        idle.setScaleY(1.5);
-        idle.setScaleX(1.5);
+        idle.setScaleY(SCALE);
+        idle.setScaleX(SCALE);
 
         attack = new ImageView(new Image(imagePath + "/attack.gif"));
-        attack.setScaleY(1.5);
-        attack.setScaleX(1.5);
+        attack.setScaleY(SCALE);
+        attack.setScaleX(SCALE);
 
         death = new ImageView(new Image(imagePath + "/death.gif"));
-        death.setScaleY(1.5);
-        death.setScaleX(1.5);
+        death.setScaleY(SCALE);
+        death.setScaleX(SCALE);
 
         hit = new ImageView(new Image(imagePath + "/hit.gif"));
-        hit.setScaleY(1.5);
-        hit.setScaleX(1.5);
+        hit.setScaleY(SCALE);
+        hit.setScaleX(SCALE);
 
         run = new ImageView(new Image(imagePath + "/run.gif"));
-        run.setScaleY(1.5);
-        run.setScaleX(1.5);
+        run.setScaleY(SCALE);
+        run.setScaleX(SCALE);
 
         attackLabel = new Label(deployable.getCurrentAttack() + "");
         healthLabel = new Label(deployable.getCurrentHealth() + "");
 
-        attackLabel.setFont(Font.font(17));
-        healthLabel.setFont(Font.font(17));
+        attackLabel.setFont(Font.font(15));
+        healthLabel.setFont(Font.font(15));
         attackLabel.setTextFill(Color.WHITE);
         healthLabel.setTextFill(Color.WHITE);
 
@@ -81,12 +83,12 @@ public class DisplayableDeployable extends StackPane {
                 getResource("/assets/ui/icon_hp.png").toExternalForm()));
         attackIcon.setTranslateY(50);
         attackIcon.setTranslateX(-40);
-        attackIcon.setScaleX(0.7);
-        attackIcon.setScaleY(0.7);
+        attackIcon.setScaleX(0.5);
+        attackIcon.setScaleY(0.5);
         healthIcon.setTranslateY(50);
         healthIcon.setTranslateX(25);
-        healthIcon.setScaleX(0.7);
-        healthIcon.setScaleY(0.7);
+        healthIcon.setScaleX(0.5);
+        healthIcon.setScaleY(0.5);
 
         currentStance = idle;
         this.getChildren().addAll(idle, healthIcon, attackIcon, healthLabel, attackLabel);
@@ -111,8 +113,8 @@ public class DisplayableDeployable extends StackPane {
             currentStance = null;
         }
         action = new ImageView(new Image(action.getImage().getUrl()));
-        action.setScaleY(1.5);
-        action.setScaleX(1.5);
+        action.setScaleY(SCALE);
+        action.setScaleX(SCALE);
         getChildren().add(action);
         final ImageView temp = action;
 
@@ -143,8 +145,6 @@ public class DisplayableDeployable extends StackPane {
         new AnimationTimer() {
             int counter = 0;
             long now = 0;
-
-
             @Override
             public void handle(long l) {
 

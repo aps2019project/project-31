@@ -367,8 +367,8 @@ public class Input {
             return;
         }
         if (input.equalsIgnoreCase("enter battle menu") || input.equalsIgnoreCase("enter battle")) {
-            if (Account.getMainAccount().getTheMainDeck() != null) {
-                if (Account.getMainAccount().getTheMainDeck().checkIfValid()) {
+            if (Account.getMainAccount().getMainDeck() != null) {
+                if (Account.getMainAccount().getMainDeck().checkIfValid()) {
                     setCurrentMenu(MenuManager.getBattleMenu());
                 } else {
                     System.out.println("selected deck is invalid");
@@ -484,7 +484,7 @@ public class Input {
             }
             Account.getMainAccount().checkValidationOfDeck(thePlayer2Deck.getDeckName());
             if (thePlayer2Deck.checkIfValid())
-                theAccount.setTheMainDeck(thePlayer2Deck);
+                theAccount.setMainDeck(thePlayer2Deck);
             if (matcher.group(3).trim().equalsIgnoreCase("domination")) {
                 BattleMenu.setBattleManagerForMultiPlayer(Account.getMainAccount(), theAccount,
                         Integer.parseInt(matcher.group(4)), 100, GameMode.Domination);

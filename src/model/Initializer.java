@@ -2,14 +2,9 @@ package model;
 
 import controller.*;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Group;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import view.Input;
-
-import java.awt.*;
 
 public class Initializer extends Application {
     private static Stage primaryStage;
@@ -47,11 +42,10 @@ public class Initializer extends Application {
         System.err.println("Loading cards ...");
         Shop.loadAllCards();
         System.err.println("Initializing maps ...");
-        Map.createTheMap();
+        Map.getInstance().createTheMap();
         System.err.println("cards loaded");
         launch(args);
         Input.start();
-
     }
 
     @Override

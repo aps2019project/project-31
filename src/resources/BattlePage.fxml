@@ -1,11 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.StackPane?>
@@ -13,7 +22,7 @@
 <?import javafx.scene.shape.Polyline?>
 <?import javafx.scene.text.Font?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.BattlePageController">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.BattlePageController">
    <children>
       <ImageView fitHeight="720.0" fitWidth="1080.0">
          <image>
@@ -25,41 +34,252 @@
             <Image url="@images/aaaaaaaaa.png" />
          </image>
       </ImageView>
-      <VBox prefHeight="200.0" prefWidth="100.0">
-         <children>
-            <StackPane prefHeight="324.0" prefWidth="1080.0">
+      <BorderPane prefHeight="200.0" prefWidth="200.0">
+         <bottom>
+            <HBox prefHeight="132.0" prefWidth="1080.0" BorderPane.alignment="CENTER">
                <children>
-                  <HBox prefHeight="100.0" prefWidth="200.0">
+                  <StackPane prefHeight="132.0" prefWidth="132.0">
                      <children>
-                        <StackPane prefHeight="321.0" prefWidth="674.0">
+                        <Pane prefHeight="132.0" prefWidth="132.0">
                            <children>
-                              <ImageView fitHeight="200.0" fitWidth="179.0" StackPane.alignment="TOP_LEFT">
-                                 <image>
-                                    <Image url="@assets/generals/general_portrait_border@2x.png" />
-                                 </image>
-                              </ImageView>
-                              <ImageView fitHeight="200.0" fitWidth="200.0" scaleX="0.5" scaleY="0.5" translateX="-15.0" translateY="85.0" StackPane.alignment="CENTER_LEFT">
-                                 <image>
-                                    <Image url="@assets/ui/dialogue_border@2x.png" />
-                                 </image>
-                              </ImageView>
-                              <ImageView scaleX="0.5" scaleY="0.5" translateX="33.0" translateY="10.0" StackPane.alignment="CENTER_LEFT">
-                                 <image>
-                                    <Image url="@assets/ui/icon_general_hp@2x.png" />
-                                 </image>
-                              </ImageView>
-                              <Label fx:id="health" text="25" textFill="WHITE" translateX="75.0" translateY="10.0" StackPane.alignment="CENTER_LEFT">
+                              <Button id="replaceButton" fx:id="replace" mnemonicParsing="false" prefHeight="133.0" prefWidth="132.0" stylesheets="@style/buttonOne.css" text="Replace" />
+                              <Label id="DeckSize" fx:id="deckSize" alignment="CENTER" layoutX="14.0" layoutY="92.0" prefHeight="42.0" prefWidth="108.0" stylesheets="@style/buttonOne.css" text="Deck:  20/20" textFill="WHITE">
                                  <font>
-                                    <Font size="24.0" />
-                                 </font></Label>
-                              <Label fx:id="username" rotate="-3.0" text="Player1" textFill="WHITE" translateX="170.0" translateY="20.0" StackPane.alignment="TOP_LEFT">
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </Pane>
+                     </children>
+                  </StackPane>
+                  <StackPane prefHeight="132.0" prefWidth="120.0">
+                     <children>
+                        <Pane prefHeight="132.0" prefWidth="120.0">
+                           <children>
+                              <StackPane fx:id="column1" layoutX="5.0">
+                                 <children>
+                                    <ImageView fx:id="hand1" fitHeight="126.0" fitWidth="112.0" layoutX="5.0">
+                                       <image>
+                                          <Image url="@images/circle.png" />
+                                       </image>
+                                    </ImageView>
+                                 </children>
+                              </StackPane>
+                              <Label id="grayCrystal" fx:id="manaCost1" alignment="BOTTOM_CENTER" layoutX="38.0" layoutY="89.0" prefHeight="44.0" prefWidth="42.0" stylesheets="@style/labels.css" text="0" textFill="WHITE">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
+                                 <padding>
+                                    <Insets bottom="4.0" />
+                                 </padding>
+                              </Label>
+                           </children>
+                        </Pane>
+                     </children>
+                  </StackPane>
+                  <StackPane prefHeight="132.0" prefWidth="120.0">
+                     <children>
+                        <Pane prefHeight="132.0" prefWidth="120.0">
+                           <children>
+                              <StackPane fx:id="column2" layoutX="5.0">
+                                 <children>
+                                    <ImageView fx:id="hand2" fitHeight="126.0" fitWidth="112.0" layoutX="5.0">
+                                       <image>
+                                          <Image url="@images/circle.png" />
+                                       </image>
+                                    </ImageView>
+                                 </children>
+                              </StackPane>
+                              <Label id="grayCrystal" fx:id="manaCost2" alignment="BOTTOM_CENTER" layoutX="38.0" layoutY="89.0" prefHeight="44.0" prefWidth="42.0" stylesheets="@style/labels.css" text="0" textFill="WHITE">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
+                                 <padding>
+                                    <Insets bottom="4.0" />
+                                 </padding>
+                              </Label>
+                           </children>
+                        </Pane>
+                     </children>
+                  </StackPane>
+                  <StackPane prefHeight="132.0" prefWidth="120.0">
+                     <children>
+                        <Pane prefHeight="132.0" prefWidth="120.0">
+                           <children>
+                              <StackPane fx:id="column3" layoutX="5.0">
+                                 <children>
+                                    <ImageView fx:id="hand3" fitHeight="126.0" fitWidth="112.0" layoutX="5.0">
+                                       <image>
+                                          <Image url="@images/circle.png" />
+                                       </image>
+                                    </ImageView>
+                                 </children>
+                              </StackPane>
+                              <Label id="grayCrystal" fx:id="manaCost3" alignment="BOTTOM_CENTER" layoutX="38.0" layoutY="89.0" prefHeight="44.0" prefWidth="42.0" stylesheets="@style/labels.css" text="0" textFill="WHITE">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
+                                 <padding>
+                                    <Insets bottom="4.0" />
+                                 </padding>
+                              </Label>
+                           </children>
+                        </Pane>
+                     </children>
+                  </StackPane>
+                  <StackPane prefHeight="132.0" prefWidth="120.0">
+                     <children>
+                        <Pane prefHeight="132.0" prefWidth="120.0">
+                           <children>
+                              <StackPane fx:id="column4" layoutX="5.0">
+                                 <children>
+                                    <ImageView fx:id="hand4" fitHeight="126.0" fitWidth="112.0" layoutX="5.0">
+                                       <image>
+                                          <Image url="@images/circle.png" />
+                                       </image>
+                                    </ImageView>
+                                 </children>
+                              </StackPane>
+                              <Label id="grayCrystal" fx:id="manaCost4" alignment="BOTTOM_CENTER" layoutX="38.0" layoutY="89.0" prefHeight="44.0" prefWidth="42.0" stylesheets="@style/labels.css" text="0" textFill="WHITE">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
+                                 <padding>
+                                    <Insets bottom="4.0" />
+                                 </padding>
+                              </Label>
+                           </children>
+                        </Pane>
+                     </children>
+                  </StackPane>
+                  <StackPane prefHeight="132.0" prefWidth="120.0">
+                     <children>
+                        <Pane prefHeight="132.0" prefWidth="120.0">
+                           <children>
+                              <StackPane fx:id="column5" layoutX="5.0">
+                                 <children>
+                                    <ImageView fx:id="hand5" fitHeight="126.0" fitWidth="112.0" layoutX="5.0">
+                                       <image>
+                                          <Image url="@images/circle.png" />
+                                       </image>
+                                    </ImageView>
+                                 </children>
+                              </StackPane>
+                              <Label id="grayCrystal" fx:id="manaCost5" alignment="BOTTOM_CENTER" layoutX="38.0" layoutY="89.0" prefHeight="44.0" prefWidth="42.0" stylesheets="@style/labels.css" text="0" textFill="WHITE">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
+                                 <padding>
+                                    <Insets bottom="4.0" />
+                                 </padding>
+                              </Label>
+                           </children>
+                        </Pane>
+                     </children>
+                  </StackPane>
+                  <StackPane prefHeight="132.0" prefWidth="120.0">
+                     <children>
+                        <Pane prefHeight="132.0" prefWidth="120.0">
+                           <children>
+                              <StackPane fx:id="column6" layoutX="5.0">
+                                 <children>
+                                    <ImageView fx:id="hand6" fitHeight="126.0" fitWidth="112.0" layoutX="5.0">
+                                       <image>
+                                          <Image url="@images/circle.png" />
+                                       </image>
+                                    </ImageView>
+                                 </children>
+                              </StackPane>
+                              <Label id="grayCrystal" fx:id="manaCost6" alignment="BOTTOM_CENTER" layoutX="38.0" layoutY="89.0" prefHeight="44.0" prefWidth="42.0" stylesheets="@style/labels.css" text="0" textFill="WHITE">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
+                                 <padding>
+                                    <Insets bottom="4.0" />
+                                 </padding>
+                              </Label>
+                           </children>
+                        </Pane>
+                     </children>
+                  </StackPane>
+                  <StackPane prefHeight="132.0" prefWidth="226.0">
+                     <children>
+                        <Pane prefHeight="200.0" prefWidth="200.0">
+                           <children>
+                              <Button id="endTurnButton" fx:id="endTurn" alignment="CENTER" mnemonicParsing="false" prefHeight="81.0" prefWidth="227.0" stylesheets="@style/buttonOne.css" text="End Turn">
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
+                                 <cursor>
+                                    <Cursor fx:constant="DEFAULT" />
+                                 </cursor>
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                                 <padding>
+                                    <Insets top="10.0" />
+                                 </padding>
+                              </Button>
+                              <Button id="friendsButton" layoutX="110.0" layoutY="82.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="120.0" stylesheets="@style/buttonOne.css" text="Friends" />
+                              <Button id="settingButton" fx:id="setting" layoutX="-7.0" layoutY="82.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="119.0" stylesheets="@style/buttonOne.css" text="Concede" />
+                           </children>
+                        </Pane>
+                     </children>
+                  </StackPane>
+               </children>
+            </HBox>
+         </bottom>
+         <top>
+            <HBox prefHeight="198.0" prefWidth="1080.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Pane prefHeight="200.0" prefWidth="200.0">
+                     <children>
+                        <ImageView fitHeight="202.0" fitWidth="181.0">
+                           <image>
+                              <Image url="@assets/generals/general_portrait_border@2x.png" />
+                           </image>
+                        </ImageView>
+                        <Label id="health" fx:id="health" alignment="CENTER" layoutX="63.0" layoutY="141.0" prefHeight="56.0" prefWidth="54.0" stylesheets="@style/labels.css" text="25" textFill="WHITE">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </Pane>
+                  <VBox prefHeight="198.0" prefWidth="533.0">
+                     <children>
+                        <Pane>
+                           <children>
+                              <Label fx:id="username" layoutX="-14.0" layoutY="9.0" prefHeight="68.0" prefWidth="392.0" rotate="-3.0" text="Player1" textFill="WHITE">
                                  <font>
                                     <Font size="36.0" />
                                  </font>
                               </Label>
-                              <StackPane prefHeight="321.0" prefWidth="688.0" scaleX="0.8" scaleY="0.8" translateX="120.0" translateY="40.0">
+                           </children>
+                        </Pane>
+                        <Pane>
+                           <children>
+                              <StackPane layoutX="-23.0" layoutY="-21.0" prefHeight="99.0" prefWidth="520.0">
                                  <children>
-                                    <HBox prefHeight="100.0" prefWidth="200.0" rotate="-3.0">
+                                    <HBox prefHeight="76.0" prefWidth="562.0" rotate="-3.0">
                                        <children>
                                           <ImageView fx:id="mana1">
                                              <image>
@@ -110,344 +330,192 @@
                                     </HBox>
                                  </children>
                               </StackPane>
-                              <ImageView scaleX="0.7" scaleY="0.7" translateX="25.0" translateY="45.0" StackPane.alignment="CENTER_LEFT">
-                                 <image>
-                                    <Image url="@assets/ui/icon_cooldown_counter.png" />
-                                 </image>
-                              </ImageView>
-                              <Label fx:id="generalCoolDown" text="2" translateX="80.0" translateY="45.0" StackPane.alignment="CENTER_LEFT">
-                                 <font>
-                                    <Font size="24.0" />
-                                 </font>
-                              </Label>
-                              <ImageView scaleX="0.8" scaleY="0.8" translateX="58.0" translateY="130.0" StackPane.alignment="CENTER_LEFT">
-                                 <image>
-                                    <Image url="@images/blackMana.png" />
-                                 </image>
-                              </ImageView>
-                              <Label fx:id="generalSpellManaCost" text="2" textFill="WHITE" translateX="80.0" translateY="130.0" StackPane.alignment="CENTER_LEFT">
-                                 <font>
-                                    <Font size="22.0" />
-                                 </font>
-                              </Label>
                            </children>
-                        </StackPane>
-                        <StackPane prefHeight="321.0" prefWidth="566.0">
+                        </Pane>
+                     </children>
+                  </VBox>
+                  <Pane prefHeight="198.0" prefWidth="348.0">
+                     <children>
+                        <ImageView fitHeight="200.0" fitWidth="174.0" layoutX="149.0" layoutY="1.0">
+                           <image>
+                              <Image url="@assets/generals/general_portrait_border@2x.png" />
+                           </image>
+                        </ImageView>
+                        <Label id="health" fx:id="opponentHealth" alignment="CENTER" layoutX="210.0" layoutY="146.0" prefHeight="56.0" prefWidth="54.0" stylesheets="@style/labels.css" text="25" textFill="WHITE">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="opponentUsername" layoutX="39.0" layoutY="27.0" prefHeight="53.0" prefWidth="134.0" rotate="3.0" text="Player2" textFill="WHITE">
+                           <font>
+                              <Font size="36.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </Pane>
+               </children>
+            </HBox>
+         </top>
+         <left>
+            <VBox prefHeight="413.0" prefWidth="169.0" BorderPane.alignment="CENTER">
+               <children>
+                  <StackPane prefHeight="130.0" prefWidth="170.0">
+                     <children>
+                        <Pane>
                            <children>
-                              <ImageView fitHeight="200.0" fitWidth="179.0" StackPane.alignment="TOP_RIGHT">
-                                 <image>
-                                    <Image url="@assets/generals/general_portrait_border@2x.png" />
-                                 </image>
-                              </ImageView>
-                              <ImageView fitHeight="200.0" fitWidth="200.0" scaleX="0.5" scaleY="0.5" translateX="150.0" translateY="95.0">
+                              <ImageView fitHeight="111.0" fitWidth="113.0" layoutX="9.0" layoutY="7.0">
                                  <image>
                                     <Image url="@assets/ui/dialogue_border@2x.png" />
                                  </image>
                               </ImageView>
-                              <ImageView scaleX="0.5" scaleY="0.5" translateX="-34.0" translateY="17.0" StackPane.alignment="CENTER_RIGHT">
-                                 <image>
-                                    <Image url="@assets/ui/icon_general_hp@2x.png" />
-                                 </image>
-                              </ImageView>
-                              <Label fx:id="opponentHealth" text="25" textFill="WHITE" translateX="152.0" translateY="14.0">
+                              <Label id="generalCoolDown" fx:id="generalCoolDown" alignment="CENTER" layoutX="31.0" layoutY="-14.0" prefHeight="52.0" prefWidth="62.0" stylesheets="@style/labels.css" text="2">
                                  <font>
                                     <Font size="24.0" />
-                                 </font></Label>
-                              <Label fx:id="opponentUsername" rotate="3.0" text="Player2" textFill="WHITE" translateX="20.0" translateY="20.0" StackPane.alignment="TOP_CENTER">
-                                 <font>
-                                    <Font size="36.0" />
                                  </font>
+                                 <padding>
+                                    <Insets left="10.0" />
+                                 </padding>
                               </Label>
-                              <Label id="OpponentHand" fx:id="opponentHand" alignment="CENTER" prefHeight="53.0" prefWidth="161.0" rotate="3.0" stylesheets="@style/buttonOne.css" text="Hand: 6/6" textFill="WHITE" translateX="-10.0" translateY="65.0" StackPane.alignment="TOP_CENTER">
+                              <Label id="grayCrystal" fx:id="generalSpellManaCost" alignment="CENTER" layoutX="44.0" layoutY="86.0" prefHeight="42.0" prefWidth="37.0" stylesheets="@style/labels.css" text="2" textFill="WHITE">
                                  <font>
                                     <Font size="18.0" />
                                  </font>
                               </Label>
-                              <ImageView rotate="3.0" scaleX="0.5" scaleY="0.5" translateX="-30.0" translateY="84.0" StackPane.alignment="TOP_CENTER">
-                                 <image>
-                                    <Image url="@assets/ui/icon_mana@2x.png" />
-                                 </image>
-                              </ImageView>
-                              <Label id="opponentMana" fx:id="opponentMana" alignment="CENTER" prefHeight="50.0" prefWidth="80.0" rotate="3.0" stylesheets="@style/buttonOne.css" text="9 / 9" textFill="WHITE" translateX="-100.0" translateY="-14.0" StackPane.alignment="CENTER">
-                                 <font>
-                                    <Font size="24.0" />
-                                 </font>
-                              </Label>
-                              <ImageView scaleX="0.7" scaleY="0.7" translateX="155.0" translateY="55.0">
-                                 <image>
-                                    <Image url="@assets/ui/icon_cooldown_counter.png" />
-                                 </image>
-                              </ImageView>
-                              <Label fx:id="opponentGeneralCooldown" text="2" translateX="155.0" translateY="55.0">
-                                 <font>
-                                    <Font size="24.0" />
-                                 </font>
-                              </Label>
-                              <ImageView scaleX="0.8" scaleY="0.8" translateX="150.0" translateY="140.0">
-                                 <image>
-                                    <Image url="@images/blackMana.png" />
-                                 </image>
-                              </ImageView>
-                              <Label fx:id="opponentGeneralSpellManaCost" text="2" textFill="WHITE" translateX="150.0" translateY="140.0" StackPane.alignment="CENTER">
-                                 <font>
-                                    <Font size="22.0" />
-                                 </font>
-                              </Label>
                            </children>
-                        </StackPane>
+                        </Pane>
                      </children>
-                  </HBox>
-               </children>
-            </StackPane>
-            <StackPane alignment="BOTTOM_CENTER" prefHeight="402.0" prefWidth="1080.0">
-               <children>
-                  <HBox alignment="BOTTOM_CENTER" prefHeight="355.0" prefWidth="1080.0">
+                  </StackPane>
+                  <Button id="graveYard" fx:id="graveYard" mnemonicParsing="false" prefHeight="57.0" prefWidth="183.0" stylesheets="@style/buttonOne.css" text="Grave Yard">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Button>
+                  <StackPane prefHeight="157.0" prefWidth="170.0">
                      <children>
-                        <StackPane alignment="BOTTOM_CENTER" prefHeight="399.0" prefWidth="215.0">
+                        <Pane fx:id="nextCardField" prefHeight="150.0" prefWidth="170.0">
                            <children>
-                              <ImageView fitHeight="200.0" fitWidth="200.0">
+                              <Button id="nextCard" alignment="BOTTOM_CENTER" mnemonicParsing="false" prefHeight="139.0" prefWidth="141.0" stylesheets="@style/labels.css" text="Next Card" textFill="WHITE">
+                                 <font>
+                                    <Font size="23.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                        </Pane>
+                     </children>
+                  </StackPane>
+               </children>
+            </VBox>
+         </left>
+         <right>
+            <VBox prefHeight="398.0" prefWidth="134.0" BorderPane.alignment="CENTER">
+               <children>
+                  <StackPane prefHeight="169.0" prefWidth="134.0">
+                     <children>
+                        <Pane prefHeight="147.0" prefWidth="134.0">
+                           <children>
+                              <ImageView fitHeight="111.0" fitWidth="113.0" layoutX="9.0" layoutY="7.0">
                                  <image>
-                                    <Image url="@assets/ui/replace_background@2x.png" />
+                                    <Image url="@assets/ui/dialogue_border@2x.png" />
                                  </image>
                               </ImageView>
-                              <ImageView fitHeight="200.0" fitWidth="200.0" scaleX="0.8" scaleY="0.8">
-                                 <image>
-                                    <Image url="@assets/ui/replace_outer_ring_shine.png" />
-                                 </image>
-                              </ImageView>
-                              <ImageView fitHeight="200.0" fitWidth="200.0">
-                                 <image>
-                                    <Image url="@assets/ui/replace_outer_ring_smoke@2x.png" />
-                                 </image>
-                              </ImageView>
-                              <Label id="DeckSize" fx:id="deckSize" alignment="CENTER" prefHeight="51.0" prefWidth="174.0" stylesheets="@style/buttonOne.css" text="Deck:  20/20" textFill="WHITE" translateX="14.0" StackPane.alignment="BOTTOM_LEFT">
+                              <Label id="generalCoolDown" fx:id="opponentGeneralCoolDown" alignment="CENTER" layoutX="31.0" layoutY="-14.0" prefHeight="52.0" prefWidth="62.0" stylesheets="@style/labels.css" text="2">
+                                 <font>
+                                    <Font size="24.0" />
+                                 </font>
+                                 <padding>
+                                    <Insets left="10.0" />
+                                 </padding>
+                              </Label>
+                              <Label id="grayCrystal" fx:id="opponentGeneralSpellManaCost" alignment="CENTER" layoutX="49.0" layoutY="88.0" prefHeight="42.0" prefWidth="37.0" stylesheets="@style/labels.css" text="2" textFill="WHITE">
                                  <font>
                                     <Font size="18.0" />
                                  </font>
                               </Label>
-                              <ImageView fx:id="nextCardField" translateY="-80.0" StackPane.alignment="CENTER">
-                                 <image>
-                                    <Image url="@assets/tutorial/lesson_ring.png" />
-                                 </image>
-                              </ImageView>
-                              <Label text="Next Card" textFill="WHITE" translateX="50.0" translateY="150.0" StackPane.alignment="TOP_LEFT">
-                                 <font>
-                                    <Font size="24.0" />
-                                 </font>
-                              </Label>
-                              <Button id="graveYard" fx:id="graveYard" mnemonicParsing="false" prefHeight="61.0" prefWidth="149.0" stylesheets="@style/buttonOne.css" text="Grave Yard" translateY="-10.0" StackPane.alignment="TOP_CENTER" />
-                              <Button id="replaceButton" fx:id="replace" mnemonicParsing="false" prefHeight="194.0" prefWidth="239.0" stylesheets="@style/buttonOne.css" text="Replace" translateY="100.0" StackPane.alignment="CENTER" />
                            </children>
-                        </StackPane>
-                        <StackPane alignment="BOTTOM_CENTER" prefHeight="399.0" prefWidth="140.0">
-                           <children>
-                              <StackPane fx:id="column1" prefHeight="150.0" prefWidth="200.0" StackPane.alignment="BOTTOM_CENTER">
-                                 <children>
-                                    <ImageView fx:id="hand1" translateY="-15.0" StackPane.alignment="BOTTOM_CENTER">
-                                       <image>
-                                          <Image url="@images/circle.png" />
-                                       </image>
-                                    </ImageView>
-                                    <ImageView scaleX="0.8" scaleY="0.8" StackPane.alignment="BOTTOM_CENTER">
-                                       <image>
-                                          <Image url="@images/blackMana.png" />
-                                       </image>
-                                    </ImageView>
-                                    <Label fx:id="manaCost1" text="0" textFill="WHITE" translateY="-12.0" StackPane.alignment="BOTTOM_CENTER">
-                                       <font>
-                                          <Font size="24.0" />
-                                       </font>
-                                    </Label>
-                                 </children>
-                              </StackPane>
-                           </children>
-                        </StackPane>
-                        <StackPane alignment="BOTTOM_CENTER" prefHeight="399.0" prefWidth="139.0">
-                           <children>
-                              <StackPane fx:id="column2" prefHeight="150.0" prefWidth="200.0">
-                                 <children>
-                                    <ImageView fx:id="hand2" translateY="-15.0" StackPane.alignment="BOTTOM_CENTER">
-                                       <image>
-                                          <Image url="@images/circle.png" />
-                                       </image>
-                                    </ImageView>
-                                    <ImageView scaleX="0.8" scaleY="0.8" StackPane.alignment="BOTTOM_CENTER">
-                                       <image>
-                                          <Image url="@images/blackMana.png" />
-                                       </image>
-                                    </ImageView>
-                                    <Label fx:id="manaCost2" text="0" textFill="WHITE" translateY="-12.0" StackPane.alignment="BOTTOM_CENTER">
-                                       <font>
-                                          <Font size="24.0" />
-                                       </font>
-                                    </Label>
-                                 </children>
-                              </StackPane>
-                           </children>
-                        </StackPane>
-                        <StackPane alignment="BOTTOM_CENTER" prefHeight="399.0" prefWidth="141.0">
-                           <children>
-                              <StackPane fx:id="column3" prefHeight="150.0" prefWidth="200.0">
-                                 <children>
-                                    <ImageView fx:id="hand3" translateY="-15.0" StackPane.alignment="BOTTOM_CENTER">
-                                       <image>
-                                          <Image url="@images/circle.png" />
-                                       </image>
-                                    </ImageView>
-                                    <ImageView scaleX="0.8" scaleY="0.8" StackPane.alignment="BOTTOM_CENTER">
-                                       <image>
-                                          <Image url="@images/blackMana.png" />
-                                       </image>
-                                    </ImageView>
-                                    <Label fx:id="manaCost3" text="0" textFill="WHITE" translateY="-12.0" StackPane.alignment="BOTTOM_CENTER">
-                                       <font>
-                                          <Font size="24.0" />
-                                       </font>
-                                    </Label>
-                                 </children>
-                              </StackPane>
-                           </children>
-                        </StackPane>
-                        <StackPane alignment="BOTTOM_CENTER" prefHeight="399.0" prefWidth="139.0">
-                           <children>
-                              <StackPane fx:id="column4" prefHeight="150.0" prefWidth="200.0" StackPane.alignment="BOTTOM_CENTER">
-                                 <children>
-                                    <ImageView fx:id="hand4" translateY="-15.0" StackPane.alignment="BOTTOM_CENTER">
-                                       <image>
-                                          <Image url="@images/circle.png" />
-                                       </image>
-                                    </ImageView>
-                                    <ImageView scaleX="0.8" scaleY="0.8" StackPane.alignment="BOTTOM_CENTER">
-                                       <image>
-                                          <Image url="@images/blackMana.png" />
-                                       </image>
-                                    </ImageView>
-                                    <Label fx:id="manaCost4" text="0" textFill="WHITE" translateY="-12.0" StackPane.alignment="BOTTOM_CENTER">
-                                       <font>
-                                          <Font size="24.0" />
-                                       </font>
-                                    </Label>
-                                 </children>
-                              </StackPane>
-                           </children>
-                        </StackPane>
-                        <StackPane alignment="BOTTOM_CENTER" prefHeight="399.0" prefWidth="140.0">
-                           <children>
-                              <StackPane fx:id="column5" prefHeight="150.0" prefWidth="200.0">
-                                 <children>
-                                    <ImageView fx:id="hand5" translateY="-15.0" StackPane.alignment="BOTTOM_CENTER">
-                                       <image>
-                                          <Image url="@images/circle.png" />
-                                       </image>
-                                    </ImageView>
-                                    <ImageView scaleX="0.8" scaleY="0.8" StackPane.alignment="BOTTOM_CENTER">
-                                       <image>
-                                          <Image url="@images/blackMana.png" />
-                                       </image>
-                                    </ImageView>
-                                    <Label fx:id="manaCost5" text="0" textFill="WHITE" translateY="-12.0" StackPane.alignment="BOTTOM_CENTER">
-                                       <font>
-                                          <Font size="24.0" />
-                                       </font>
-                                    </Label>
-                                 </children>
-                              </StackPane>
-                           </children>
-                        </StackPane>
-                        <StackPane prefHeight="399.0" prefWidth="140.0">
-                           <children>
-                              <StackPane fx:id="column6" prefHeight="150.0" prefWidth="200.0" StackPane.alignment="BOTTOM_CENTER">
-                                 <children>
-                                    <ImageView fx:id="hand6" translateY="-15.0" StackPane.alignment="BOTTOM_CENTER">
-                                       <image>
-                                          <Image url="@images/circle.png" />
-                                       </image>
-                                    </ImageView>
-                                    <ImageView scaleX="0.8" scaleY="0.8" StackPane.alignment="BOTTOM_CENTER">
-                                       <image>
-                                          <Image url="@images/blackMana.png" />
-                                       </image>
-                                    </ImageView>
-                                    <Label fx:id="manaCost6" text="0" textFill="WHITE" translateY="-12.0" StackPane.alignment="BOTTOM_CENTER">
-                                       <font>
-                                          <Font size="24.0" />
-                                       </font>
-                                    </Label>
-                                 </children>
-                              </StackPane>
-                           </children>
-                        </StackPane>
-                        <StackPane alignment="BOTTOM_CENTER" prefHeight="399.0" prefWidth="278.0">
-                           <children>
-                              <Button id="settingButton" fx:id="setting" mnemonicParsing="false" prefHeight="52.0" prefWidth="132.0" stylesheets="@style/buttonOne.css" text="Concede" translateX="-70.0" translateY="-20.0" />
-                              <Button id="endTurnButton" fx:id="endTurn" mnemonicParsing="false" prefHeight="76.0" prefWidth="233.0" stylesheets="@style/buttonOne.css" text="End Turn" translateY="90.0" StackPane.alignment="CENTER">
-                                 <opaqueInsets>
-                                    <Insets />
-                                 </opaqueInsets>
-                                 <cursor>
-                                    <Cursor fx:constant="DEFAULT" />
-                                 </cursor>
-                              </Button>
-                              <Button id="friendsButton" mnemonicParsing="false" prefHeight="52.0" prefWidth="133.0" stylesheets="@style/buttonOne.css" text="Friends" translateY="-20.0" StackPane.alignment="BOTTOM_RIGHT" />
-                           </children>
-                        </StackPane>
+                        </Pane>
+                     </children>
+                  </StackPane>
+                  <StackPane prefHeight="87.0" prefWidth="123.0">
+                     <children>
+                        <Label id="OpponentHand" fx:id="opponentHand" alignment="CENTER" prefHeight="50.0" prefWidth="125.0" stylesheets="@style/buttonOne.css" text="Hand: 6/6" textFill="WHITE">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </StackPane>
+                  <HBox prefHeight="52.0" prefWidth="134.0">
+                     <children>
+                        <Label id="opponentMana" fx:id="opponentMana" alignment="CENTER" prefHeight="47.0" prefWidth="85.0" stylesheets="@style/buttonOne.css" text="9 / 9" textFill="WHITE">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Label>
+                        <ImageView fitHeight="49.0" fitWidth="46.0">
+                           <image>
+                              <Image url="@assets/ui/icon_mana@2x.png" />
+                           </image>
+                        </ImageView>
                      </children>
                   </HBox>
+                  <VBox fx:id="messageBox" prefHeight="200.0" prefWidth="100.0" />
                </children>
-            </StackPane>
-         </children>
-      </VBox>
-      <StackPane fx:id="lastStackPane" prefHeight="462.0" prefWidth="1080.0" scaleX="0.01" scaleY="0.01" />
-      <Pane fx:id="motherFuckinPane" prefHeight="401.0" prefWidth="664.0">
-         <children>
-            <Polyline fx:id="place51" fill="#00000025" layoutX="55.0" layoutY="377.0" points="-27.0, -24.0, 50.0, -24.0, 22.0, 60.0, -58.0, 60.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-            <Polyline fx:id="place52" fill="#00000024" layoutX="150.0" layoutY="369.0" points="-38.0, -16.0, 40.0, -16.0, 14.0, 68.0, -67.0, 68.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-            <Polyline fx:id="place53" fill="#00000026" layoutX="226.0" layoutY="378.0" points="-28.0, -25.0, 47.0, -25.0, 23.0, 57.0, -55.0, 57.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-            <Polyline fx:id="place54" fill="#00000024" layoutX="314.0" layoutY="379.0" points="-35.0, -25.0, 38.0, -25.0, 23.0, 57.0, -57.0, 56.0" stroke="#ffffff00" strokeType="INSIDE" />
-            <Polyline fx:id="place55" fill="#00000026" layoutX="400.0" layoutY="379.0" points="-43.0, -25.0, 23.0, -25.0, 23.0, 57.0, -55.0, 57.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-            <Polyline fx:id="place56" fill="#00000024" layoutX="474.0" layoutY="379.0" points="-43.0, -25.0, 31.0, -25.0, 35.0, 57.0, -43.0, 57.0" stroke="#d6d6d600" strokeType="INSIDE" />
-            <Polyline fx:id="place57" fill="#00000024" layoutX="545.0" layoutY="379.0" points="-36.0, -25.0, 36.0, -25.0, 45.0, 57.0, -29.0, 57.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-            <Polyline fx:id="place58" fill="#00000026" layoutX="640.0" layoutY="378.0" points="-50.0, -25.0, 21.0, -25.0, 31.0, 57.0, -43.0, 57.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-            <Polyline fx:id="place59" fill="#00000021" layoutX="728.0" layoutY="378.0" points="-57.0, -25.0, 21.0, -25.0, 34.0, 58.0, -44.0, 58.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-            <Polyline fx:id="place41" fill="#00000025" layoutX="86.0" layoutY="291.0" points="-27.0, -24.0, 50.0, -24.0, 22.0, 60.0, -55.0, 60.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-            <Polyline fx:id="place42" fill="#00000024" layoutX="184.0" layoutY="283.0" points="-40.0, -16.0, 28.0, -16.0, 5.0, 68.0, -70.0, 68.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-            <Polyline fx:id="place43" fill="#00000026" layoutX="243.0" layoutY="286.0" points="-23.0, -17.0, 49.0, -17.0, 27.0, 65.0, -44.0, 65.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-            <Polyline fx:id="place44" fill="#00000024" layoutX="330.0" layoutY="290.0" points="-31.0, -19.0, 34.0, -19.0, 19.0, 61.0, -51.0, 61.0" stroke="#ffffff00" strokeType="INSIDE" /><Polyline fx:id="place45" fill="#00000026" layoutX="406.0" layoutY="293.0" points="-37.0, -25.0, 23.0, -25.0, 16.0, 57.0, -50.0, 57.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-            <Polyline fx:id="place46" fill="#00000024" layoutX="483.0" layoutY="293.0" points="-48.0, -25.0, 16.0, -25.0, 16.0, 57.0, -54.0, 57.0" stroke="#d6d6d600" strokeType="INSIDE" />
-            <Polyline fx:id="place47" fill="#00000024" layoutX="539.0" layoutY="293.0" points="-36.0, -25.0, 27.0, -25.0, 36.0, 57.0, -36.0, 57.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-            <Polyline fx:id="place48" fill="#00000026" layoutX="630.0" layoutY="293.0" points="-50.0, -25.0, 21.0, -25.0, 31.0, 57.0, -43.0, 57.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-            <Polyline fx:id="place49" fill="#00000021" layoutX="718.0" layoutY="295.0" points="-57.0, -25.0, 12.0, -25.0, 28.0, 58.0, -44.0, 58.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-            <Polyline fx:id="place31" fill="#00000025" layoutX="121.0" layoutY="210.0" points="-27.0, -24.0, 45.0, -24.0, 20.0, 51.0, -53.0, 51.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-            <Polyline fx:id="place32" fill="#00000024" layoutX="214.0" layoutY="198.0" points="-40.0, -16.0, 28.0, -16.0, 5.0, 68.0, -65.0, 68.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-            <Polyline fx:id="place33" fill="#00000026" layoutX="274.0" layoutY="200.0" points="-26.0, -17.0, 39.0, -17.0, 25.0, 65.0, -48.0, 65.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-            <Polyline fx:id="place34" fill="#00000024" layoutX="347.0" layoutY="203.0" points="-27.0, -19.0, 31.0, -19.0, 19.0, 61.0, -44.0, 61.0" stroke="#ffffff00" strokeType="INSIDE" />
-            <Polyline fx:id="place35" fill="#00000026" layoutX="418.0" layoutY="208.0" points="-33.0, -25.0, 20.0, -25.0, 12.0, 57.0, -46.0, 57.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-            <Polyline fx:id="place36" fill="#00000024" layoutX="492.0" layoutY="203.0" points="-49.0, -20.0, 16.0, -18.0, 16.0, 57.0, -54.0, 57.0" stroke="#d6d6d600" strokeType="INSIDE" />
-            <Polyline fx:id="place37" fill="#00000024" layoutX="539.0" layoutY="206.0" points="-29.0, -18.0, 29.0, -18.0, 36.0, 57.0, -29.0, 57.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-            <Polyline fx:id="place38" fill="#00000026" layoutX="618.0" layoutY="210.0" points="-43.0, -22.0, 25.0, -22.0, 34.0, 57.0, -34.0, 57.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-            <Polyline fx:id="place39" fill="#00000021" layoutX="709.0" layoutY="211.0" points="-57.0, -25.0, 6.0, -25.0, 24.0, 58.0, -44.0, 58.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-            <Polyline fx:id="place29" fill="#00000021" layoutX="666.0" layoutY="44.0" points="-49.0, -11.0, 14.0, -11.0, 34.0, 58.0, -39.0, 58.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-            <Polyline fx:id="place28" fill="#00000026" layoutX="681.0" layoutY="124.0" points="-53.0, -17.0, 18.0, -17.0, 34.0, 57.0, -34.0, 57.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-            <Polyline fx:id="place27" fill="#00000024" layoutX="537.0" layoutY="127.0" points="-29.0, -18.0, 20.0, -18.0, 29.0, 52.0, -20.0, 52.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-            <Polyline fx:id="place26" fill="#00000024" layoutX="497.0" layoutY="125.0" points="-47.0, -13.0, 4.0, -13.0, 11.0, 54.0, -47.0, 54.0" stroke="#d6d6d600" strokeType="INSIDE" />
-            <Polyline fx:id="place25" fill="#00000024" layoutX="439.0" layoutY="123.0" points="-47.0, -13.0, 4.0, -13.0, 4.0, 54.0, -53.0, 54.0" stroke="#d6d6d600" strokeType="INSIDE" />
-            <Polyline fx:id="place24" fill="#00000024" layoutX="382.0" layoutY="126.0" points="-47.0, -13.0, 4.0, -13.0, -4.0, 54.0, -59.0, 54.0" stroke="#d6d6d600" strokeType="INSIDE" />
-            <Polyline fx:id="place23" fill="#00000024" layoutX="327.0" layoutY="122.0" points="-59.0, -13.0, 0.0, -13.0, -14.0, 54.0, -74.0, 54.0" stroke="#d6d6d600" strokeType="INSIDE" />
-            <Polyline fx:id="place22" fill="#00000024" layoutX="254.0" layoutY="122.0" points="-55.0, -13.0, 6.0, -13.0, -11.0, 54.0, -80.0, 54.0" stroke="#d6d6d600" strokeType="INSIDE" />
-            <Polyline fx:id="place21" fill="#00000024" layoutX="175.0" layoutY="122.0" points="-55.0, -13.0, 10.0, -13.0, -11.0, 54.0, -80.0, 54.0" stroke="#d6d6d600" strokeType="INSIDE" />
-            <Polyline fx:id="place11" fill="#00000024" layoutX="198.0" layoutY="48.0" points="-55.0, -13.0, 10.0, -13.0, -11.0, 54.0, -80.0, 54.0" stroke="#d6d6d600" strokeType="INSIDE" />
-            <Polyline fx:id="place12" fill="#00000024" layoutX="274.0" layoutY="48.0" points="-55.0, -13.0, 2.0, -13.0, -11.0, 54.0, -80.0, 54.0" stroke="#d6d6d600" strokeType="INSIDE" />
-            <Polyline fx:id="place13" fill="#00000024" layoutX="336.0" layoutY="57.0" points="-53.0, -20.0, 2.0, -26.0, -9.0, 44.0, -70.0, 44.0" stroke="#d6d6d600" strokeType="INSIDE" />
-            <Polyline fx:id="place14" fill="#00000024" layoutX="403.0" layoutY="60.0" points="-58.0, -26.0, -14.0, -26.0, -21.0, 44.0, -73.0, 44.0" stroke="#d6d6d600" strokeType="INSIDE" />
-            <Polyline fx:id="place15" fill="#00000024" layoutX="443.0" layoutY="47.0" points="-47.0, -15.0, -4.0, -13.0, -4.0, 54.0, -53.0, 54.0" stroke="#d6d6d600" strokeType="INSIDE" />
-            <Polyline fx:id="place16" fill="#00000024" layoutX="494.0" layoutY="48.0" points="-47.0, -13.0, 4.0, -13.0, 4.0, 54.0, -47.0, 54.0" stroke="#d6d6d600" strokeType="INSIDE" />
-            <Polyline fx:id="place17" fill="#00000024" layoutX="529.0" layoutY="54.0" points="-29.0, -18.0, 20.0, -18.0, 28.0, 43.0, -29.0, 43.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-            <Polyline fx:id="place18" fill="#00000026" layoutX="601.0" layoutY="54.0" points="-44.0, -15.0, 12.0, -15.0, 21.0, 45.0, -37.0, 45.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-            <Polyline fx:id="place19" fill="#00000021" layoutX="613.0" layoutY="126.0" points="-47.0, -17.0, 12.0, -17.0, 29.0, 49.0, -43.0, 49.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-         </children>
-         <StackPane.margin>
-            <Insets bottom="120.0" left="160.0" right="150.0" top="150.0" />
-         </StackPane.margin>
-      </Pane>
+            </VBox>
+         </right>
+         <center>
+            <Pane prefHeight="392.0" prefWidth="712.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Pane fx:id="mainPane" layoutX="-6.0" layoutY="-47.0" prefHeight="401.0" prefWidth="664.0">
+                     <children>
+                        <Polyline fx:id="place51" fill="#00000025" layoutX="55.0" layoutY="377.0" points="-27.0, -24.0, 50.0, -24.0, 22.0, 60.0, -58.0, 60.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+                        <Polyline fx:id="place52" fill="#00000024" layoutX="150.0" layoutY="369.0" points="-38.0, -16.0, 40.0, -16.0, 14.0, 68.0, -67.0, 68.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+                        <Polyline fx:id="place53" fill="#00000026" layoutX="226.0" layoutY="378.0" points="-28.0, -25.0, 47.0, -25.0, 23.0, 57.0, -55.0, 57.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+                        <Polyline fx:id="place54" fill="#00000024" layoutX="314.0" layoutY="379.0" points="-35.0, -25.0, 38.0, -25.0, 23.0, 57.0, -57.0, 56.0" stroke="#ffffff00" strokeType="INSIDE" />
+                        <Polyline fx:id="place55" fill="#00000026" layoutX="400.0" layoutY="379.0" points="-43.0, -25.0, 23.0, -25.0, 23.0, 57.0, -55.0, 57.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+                        <Polyline fx:id="place56" fill="#00000024" layoutX="474.0" layoutY="379.0" points="-43.0, -25.0, 31.0, -25.0, 35.0, 57.0, -43.0, 57.0" stroke="#d6d6d600" strokeType="INSIDE" />
+                        <Polyline fx:id="place57" fill="#00000024" layoutX="545.0" layoutY="379.0" points="-36.0, -25.0, 36.0, -25.0, 45.0, 57.0, -29.0, 57.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+                        <Polyline fx:id="place58" fill="#00000026" layoutX="640.0" layoutY="378.0" points="-50.0, -25.0, 21.0, -25.0, 31.0, 57.0, -43.0, 57.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+                        <Polyline fx:id="place59" fill="#00000021" layoutX="728.0" layoutY="378.0" points="-57.0, -25.0, 21.0, -25.0, 34.0, 58.0, -44.0, 58.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+                        <Polyline fx:id="place41" fill="#00000025" layoutX="86.0" layoutY="291.0" points="-27.0, -24.0, 50.0, -24.0, 22.0, 60.0, -55.0, 60.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+                        <Polyline fx:id="place42" fill="#00000024" layoutX="184.0" layoutY="283.0" points="-40.0, -16.0, 28.0, -16.0, 5.0, 68.0, -70.0, 68.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+                        <Polyline fx:id="place43" fill="#00000026" layoutX="243.0" layoutY="286.0" points="-23.0, -17.0, 49.0, -17.0, 27.0, 65.0, -44.0, 65.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+                        <Polyline fx:id="place44" fill="#00000024" layoutX="330.0" layoutY="290.0" points="-31.0, -19.0, 34.0, -19.0, 19.0, 61.0, -51.0, 61.0" stroke="#ffffff00" strokeType="INSIDE" />
+                        <Polyline fx:id="place45" fill="#00000026" layoutX="406.0" layoutY="293.0" points="-37.0, -25.0, 23.0, -25.0, 16.0, 57.0, -50.0, 57.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+                        <Polyline fx:id="place46" fill="#00000024" layoutX="483.0" layoutY="293.0" points="-48.0, -25.0, 16.0, -25.0, 16.0, 57.0, -54.0, 57.0" stroke="#d6d6d600" strokeType="INSIDE" />
+                        <Polyline fx:id="place47" fill="#00000024" layoutX="539.0" layoutY="293.0" points="-36.0, -25.0, 27.0, -25.0, 36.0, 57.0, -36.0, 57.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+                        <Polyline fx:id="place48" fill="#00000026" layoutX="630.0" layoutY="293.0" points="-50.0, -25.0, 21.0, -25.0, 31.0, 57.0, -43.0, 57.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+                        <Polyline fx:id="place49" fill="#00000021" layoutX="718.0" layoutY="295.0" points="-57.0, -25.0, 12.0, -25.0, 28.0, 58.0, -44.0, 58.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+                        <Polyline fx:id="place31" fill="#00000025" layoutX="121.0" layoutY="210.0" points="-27.0, -24.0, 45.0, -24.0, 20.0, 51.0, -53.0, 51.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+                        <Polyline fx:id="place32" fill="#00000024" layoutX="214.0" layoutY="198.0" points="-40.0, -16.0, 28.0, -16.0, 5.0, 68.0, -65.0, 68.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+                        <Polyline fx:id="place33" fill="#00000026" layoutX="274.0" layoutY="200.0" points="-26.0, -17.0, 39.0, -17.0, 25.0, 65.0, -48.0, 65.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+                        <Polyline fx:id="place34" fill="#00000024" layoutX="347.0" layoutY="203.0" points="-27.0, -19.0, 31.0, -19.0, 19.0, 61.0, -44.0, 61.0" stroke="#ffffff00" strokeType="INSIDE" />
+                        <Polyline fx:id="place35" fill="#00000026" layoutX="418.0" layoutY="208.0" points="-33.0, -25.0, 20.0, -25.0, 12.0, 57.0, -46.0, 57.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+                        <Polyline fx:id="place36" fill="#00000024" layoutX="492.0" layoutY="203.0" points="-49.0, -20.0, 16.0, -18.0, 16.0, 57.0, -54.0, 57.0" stroke="#d6d6d600" strokeType="INSIDE" />
+                        <Polyline fx:id="place37" fill="#00000024" layoutX="539.0" layoutY="206.0" points="-29.0, -18.0, 29.0, -18.0, 36.0, 57.0, -29.0, 57.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+                        <Polyline fx:id="place38" fill="#00000026" layoutX="618.0" layoutY="210.0" points="-43.0, -22.0, 25.0, -22.0, 34.0, 57.0, -34.0, 57.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+                        <Polyline fx:id="place39" fill="#00000021" layoutX="709.0" layoutY="211.0" points="-57.0, -25.0, 6.0, -25.0, 24.0, 58.0, -44.0, 58.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+                        <Polyline fx:id="place29" fill="#00000021" layoutX="666.0" layoutY="44.0" points="-49.0, -11.0, 14.0, -11.0, 34.0, 58.0, -39.0, 58.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+                        <Polyline fx:id="place28" fill="#00000026" layoutX="681.0" layoutY="124.0" points="-53.0, -17.0, 18.0, -17.0, 34.0, 57.0, -34.0, 57.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+                        <Polyline fx:id="place27" fill="#00000024" layoutX="537.0" layoutY="127.0" points="-29.0, -18.0, 20.0, -18.0, 29.0, 52.0, -20.0, 52.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+                        <Polyline fx:id="place26" fill="#00000024" layoutX="497.0" layoutY="125.0" points="-47.0, -13.0, 4.0, -13.0, 11.0, 54.0, -47.0, 54.0" stroke="#d6d6d600" strokeType="INSIDE" />
+                        <Polyline fx:id="place25" fill="#00000024" layoutX="439.0" layoutY="123.0" points="-47.0, -13.0, 4.0, -13.0, 4.0, 54.0, -53.0, 54.0" stroke="#d6d6d600" strokeType="INSIDE" />
+                        <Polyline fx:id="place24" fill="#00000024" layoutX="382.0" layoutY="126.0" points="-47.0, -13.0, 4.0, -13.0, -4.0, 54.0, -59.0, 54.0" stroke="#d6d6d600" strokeType="INSIDE" />
+                        <Polyline fx:id="place23" fill="#00000024" layoutX="327.0" layoutY="122.0" points="-59.0, -13.0, 0.0, -13.0, -14.0, 54.0, -74.0, 54.0" stroke="#d6d6d600" strokeType="INSIDE" />
+                        <Polyline fx:id="place22" fill="#00000024" layoutX="254.0" layoutY="122.0" points="-55.0, -13.0, 6.0, -13.0, -11.0, 54.0, -80.0, 54.0" stroke="#d6d6d600" strokeType="INSIDE" />
+                        <Polyline fx:id="place21" fill="#00000024" layoutX="175.0" layoutY="122.0" points="-55.0, -13.0, 10.0, -13.0, -11.0, 54.0, -80.0, 54.0" stroke="#d6d6d600" strokeType="INSIDE" />
+                        <Polyline fx:id="place11" fill="#00000024" layoutX="198.0" layoutY="48.0" points="-55.0, -13.0, 10.0, -13.0, -11.0, 54.0, -80.0, 54.0" stroke="#d6d6d600" strokeType="INSIDE" />
+                        <Polyline fx:id="place12" fill="#00000024" layoutX="274.0" layoutY="48.0" points="-55.0, -13.0, 2.0, -13.0, -11.0, 54.0, -80.0, 54.0" stroke="#d6d6d600" strokeType="INSIDE" />
+                        <Polyline fx:id="place13" fill="#00000024" layoutX="336.0" layoutY="57.0" points="-53.0, -20.0, 2.0, -26.0, -9.0, 44.0, -70.0, 44.0" stroke="#d6d6d600" strokeType="INSIDE" />
+                        <Polyline fx:id="place14" fill="#00000024" layoutX="403.0" layoutY="60.0" points="-58.0, -26.0, -14.0, -26.0, -21.0, 44.0, -73.0, 44.0" stroke="#d6d6d600" strokeType="INSIDE" />
+                        <Polyline fx:id="place15" fill="#00000024" layoutX="443.0" layoutY="47.0" points="-47.0, -15.0, -4.0, -13.0, -4.0, 54.0, -53.0, 54.0" stroke="#d6d6d600" strokeType="INSIDE" />
+                        <Polyline fx:id="place16" fill="#00000024" layoutX="494.0" layoutY="48.0" points="-47.0, -13.0, 4.0, -13.0, 4.0, 54.0, -47.0, 54.0" stroke="#d6d6d600" strokeType="INSIDE" />
+                        <Polyline fx:id="place17" fill="#00000024" layoutX="529.0" layoutY="54.0" points="-29.0, -18.0, 20.0, -18.0, 28.0, 43.0, -29.0, 43.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+                        <Polyline fx:id="place18" fill="#00000026" layoutX="601.0" layoutY="54.0" points="-44.0, -15.0, 12.0, -15.0, 21.0, 45.0, -37.0, 45.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+                        <Polyline fx:id="place19" fill="#00000021" layoutX="613.0" layoutY="126.0" points="-47.0, -17.0, 12.0, -17.0, 29.0, 49.0, -43.0, 49.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+                     </children>
+                  </Pane>
+               </children></Pane>
+         </center>
+      </BorderPane>
    </children>
 </StackPane>

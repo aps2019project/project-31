@@ -1,11 +1,9 @@
 package model;
 
-import constants.CardType;
 import constants.FunctionType;
 import controller.BattlePageController;
 import view.Output;
 
-import java.io.BufferedInputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.ConcurrentModificationException;
@@ -37,14 +35,14 @@ public class Player {
         this.cardsOnBattleField = new ArrayList<>();
         this.graveYard = new ArrayList<>();
         try {
-            if (account.getTheMainDeck().getItem() == null) {
-                this.currentDeck = new Deck("temp: " + account.getTheMainDeck().getDeckName(),
-                        account.getTheMainDeck().getHero().duplicateDeployed(account, howFuckedUpIAm++),
+            if (account.getMainDeck().getItem() == null) {
+                this.currentDeck = new Deck("temp: " + account.getMainDeck().getDeckName(),
+                        account.getMainDeck().getHero().duplicateDeployed(account, howFuckedUpIAm++),
                         null);
             } else {
-                this.currentDeck = new Deck("temp: " + account.getTheMainDeck().getDeckName(),
-                        account.getTheMainDeck().getHero().duplicateDeployed(account, howFuckedUpIAm++),
-                        account.getTheMainDeck().getItem());
+                this.currentDeck = new Deck("temp: " + account.getMainDeck().getDeckName(),
+                        account.getMainDeck().getHero().duplicateDeployed(account, howFuckedUpIAm++),
+                        account.getMainDeck().getItem());
             }
             System.out.println("the current deck is MADE");
         } catch (Exception e) {
@@ -160,9 +158,7 @@ public class Player {
     }
 
     public ArrayList<Card> getHand() {
-
         return hand;
-
     }
 
     public Card getNextCard() {
@@ -232,8 +228,6 @@ public class Player {
         }
         return null;
     }
-
-
 
     public boolean selectACard(int cardId) {
         if (cardInHand(cardId) != null) {
@@ -351,7 +345,7 @@ public class Player {
     }
 
     public void duplicateTheDeck() {
-        for (Card card : account.getTheMainDeck().getCards()) {
+        for (Card card : account.getMainDeck().getCards()) {
             currentDeck.getCards().add(card);
         }
     }

@@ -1,6 +1,5 @@
 package controller;
 
-import javafx.animation.Animation;
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -168,7 +167,7 @@ public class LoginPageController implements Initializable {
             MainMenuController.getInstance().setAsScene();
             usernameTF.clear();
             passwordField.clear();
-            System.err.println(Account.getMainAccount().getTheMainDeck().getDeckName());
+            System.err.println(Account.getMainAccount().getMainDeck().getDeckName());
             return;
         } else {
             displayMessage("Incorrect Password!", 17, 2, infoVBox);

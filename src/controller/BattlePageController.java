@@ -2,6 +2,7 @@ package controller;
 
 import constants.CardType;
 import constants.FunctionType;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
@@ -12,6 +13,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polyline;
 import model.*;
@@ -26,7 +28,6 @@ import java.util.ResourceBundle;
 public class BattlePageController implements Initializable {
     private static Scene scene;
     private static BattlePageController battlePageController;
-
 
     public Button graveYard;
     public StackPane column1;
@@ -50,7 +51,7 @@ public class BattlePageController implements Initializable {
     public Label health;
     public Label username;
     public Label generalCoolDown;
-    public Pane motherFuckinPane;
+    public Pane mainPane;
     public Polyline place51;
     public Polyline place52;
     public Polyline place53;
@@ -97,17 +98,15 @@ public class BattlePageController implements Initializable {
     public Polyline place18;
     public Polyline place19;
     public Button setting;
+    public VBox messageBox;
 
-    private StackPane showingGraveYard; // for showing it: lastStackPane = showingGraveYard; showingGraveYard is a designed scene
+//    private StackPane showingGraveYard; // for showing it: lastStackPane = showingGraveYard; showingGraveYard is a designed scene
 
     private Player me;
     private Player opponent;
 
-
     public Label opponentMana;
-
-
-    public ImageView nextCardField;
+    public Pane nextCardField;
     public ImageView mana1;
     public ImageView mana2;
     public ImageView mana3;
@@ -117,6 +116,7 @@ public class BattlePageController implements Initializable {
     public ImageView mana7;
     public ImageView mana8;
     public ImageView mana9;
+
     public Label manaCost1;
     public Label manaCost2;
     public Label manaCost3;
@@ -124,14 +124,14 @@ public class BattlePageController implements Initializable {
     public Label manaCost5;
     public Label manaCost6;
 
-
     public Label opponentHealth;
     public Label opponentUsername;
-    public Label opponentGeneralCooldown;
+    public Label opponentGeneralCoolDown;
     public Label generalSpellManaCost;
     public Label opponentGeneralSpellManaCost;
+
     private ArrayList<ImageView> manas = new ArrayList<>();
-    ColumnOfHand[] columnHands = new ColumnOfHand[6];
+    private ColumnOfHand[] columnHands = new ColumnOfHand[6];
 
     public BattlePageController() {
         System.err.println("HLLLO");
@@ -172,142 +172,174 @@ public class BattlePageController implements Initializable {
             me = BattleMenu.getBattleManager().getPlayer2();
             opponent = BattleMenu.getBattleManager().getPlayer1();
         }
-    }
-
-    public void removeFromHand(DisplayableDeployable face) {
-        for (ColumnOfHand column : columnHands) {
-            if(column.stackPane.getChildren().remove(face))
-                return;
+        if (opponent == null) {
+            System.err.println("nulllll");
+            return;
         }
     }
 
+    public void updateNextCard() {
+        me.placeNextCardToHand();//it happens if there is space in hand
+        if (nextCardField.getChildren().size() > 1)
+            nextCardField.getChildren().remove(1);
+        if (me.getNextCard().getType() == CardType.minion) {
+            nextCardField.getChildren().add(new DisplayableDeployable((Deployable) me.getNextCard()));
+        }
+        if (me.getNextCard().getType() == CardType.spell) {
+
+        }
+        nextCardField.getChildren().get(1).setTranslateX(30);
+        nextCardField.getChildren().get(1).setTranslateY(10);
+    }
+
+    public void removeMinionFromHand(DisplayableDeployable face, BattleManager battle) {
+        for (int i = 0; i < 6; i++) {
+            ColumnOfHand column = columnHands[i];
+            if (column.stackPane.getChildren().remove(face)) {
+                if (nextCardField.getChildren().size() >= 2) {
+                    if (((DisplayableDeployable) nextCardField.getChildren().get(1)).getDeployable().getType() == CardType.minion) {
+                        showMinionInHand(((DisplayableDeployable) nextCardField.getChildren().get(1)).getDeployable(), i, battle);
+                    }
+                    //if(type == spell)
+                }
+                updateNextCard();
+                return;
+            }
+        }
+    }
+
+    public void displayMessage(String s) {
+        LoginPageController.getInstance().displayMessage(s, 10, 2, messageBox);
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
         battlePageController = this;
-
         initPlayers();
         try {
-            columnHands[0] = new ColumnOfHand(column1, manaCost1);
-            columnHands[1] = new ColumnOfHand(column2, manaCost2);
-            columnHands[2] = new ColumnOfHand(column3, manaCost3);
-            columnHands[3] = new ColumnOfHand(column4, manaCost4);
-            columnHands[4] = new ColumnOfHand(column5, manaCost5);
-            columnHands[5] = new ColumnOfHand(column6, manaCost6);
-
-
-            Map.getMap()[1][1].setPolygon(place11);
-            Map.getMap()[1][2].setPolygon(place12);
-            Map.getMap()[1][3].setPolygon(place13);
-            Map.getMap()[1][4].setPolygon(place14);
-            Map.getMap()[1][5].setPolygon(place15);
-            Map.getMap()[1][6].setPolygon(place16);
-            Map.getMap()[1][7].setPolygon(place17);
-            Map.getMap()[1][8].setPolygon(place18);
-            Map.getMap()[1][9].setPolygon(place19);
-            Map.getMap()[2][1].setPolygon(place21);
-            Map.getMap()[2][2].setPolygon(place22);
-            Map.getMap()[2][3].setPolygon(place23);
-            Map.getMap()[2][4].setPolygon(place24);
-            Map.getMap()[2][5].setPolygon(place25);
-            Map.getMap()[2][6].setPolygon(place26);
-            Map.getMap()[2][7].setPolygon(place27);
-            Map.getMap()[2][8].setPolygon(place28);
-            Map.getMap()[2][9].setPolygon(place29);
-            Map.getMap()[3][1].setPolygon(place31);
-            Map.getMap()[3][2].setPolygon(place32);
-            Map.getMap()[3][3].setPolygon(place33);
-            Map.getMap()[3][4].setPolygon(place34);
-            Map.getMap()[3][5].setPolygon(place35);
-            Map.getMap()[3][6].setPolygon(place36);
-            Map.getMap()[3][7].setPolygon(place37);
-            Map.getMap()[3][8].setPolygon(place38);
-            Map.getMap()[3][9].setPolygon(place39);
-            Map.getMap()[4][1].setPolygon(place41);
-            Map.getMap()[4][2].setPolygon(place42);
-            Map.getMap()[4][3].setPolygon(place43);
-            Map.getMap()[4][4].setPolygon(place44);
-            Map.getMap()[4][5].setPolygon(place45);
-            Map.getMap()[4][6].setPolygon(place46);
-            Map.getMap()[4][7].setPolygon(place47);
-            Map.getMap()[4][8].setPolygon(place48);
-            Map.getMap()[4][9].setPolygon(place49);
-            Map.getMap()[5][1].setPolygon(place51);
-            Map.getMap()[5][2].setPolygon(place52);
-            Map.getMap()[5][3].setPolygon(place53);
-            Map.getMap()[5][4].setPolygon(place54);
-            Map.getMap()[5][5].setPolygon(place55);
-            Map.getMap()[5][6].setPolygon(place56);
-            Map.getMap()[5][7].setPolygon(place57);
-            Map.getMap()[5][8].setPolygon(place58);
-            Map.getMap()[5][9].setPolygon(place59);
+            {
+                columnHands[0] = new ColumnOfHand(column1, manaCost1);
+                columnHands[1] = new ColumnOfHand(column2, manaCost2);
+                columnHands[2] = new ColumnOfHand(column3, manaCost3);
+                columnHands[3] = new ColumnOfHand(column4, manaCost4);
+                columnHands[4] = new ColumnOfHand(column5, manaCost5);
+                columnHands[5] = new ColumnOfHand(column6, manaCost6);
+            }
+            {
+                Map.getInstance().getMap()[1][1].setPolygon(place11);
+                Map.getInstance().getMap()[1][2].setPolygon(place12);
+                Map.getInstance().getMap()[1][3].setPolygon(place13);
+                Map.getInstance().getMap()[1][4].setPolygon(place14);
+                Map.getInstance().getMap()[1][5].setPolygon(place15);
+                Map.getInstance().getMap()[1][6].setPolygon(place16);
+                Map.getInstance().getMap()[1][7].setPolygon(place17);
+                Map.getInstance().getMap()[1][8].setPolygon(place18);
+                Map.getInstance().getMap()[1][9].setPolygon(place19);
+                Map.getInstance().getMap()[2][1].setPolygon(place21);
+                Map.getInstance().getMap()[2][2].setPolygon(place22);
+                Map.getInstance().getMap()[2][3].setPolygon(place23);
+                Map.getInstance().getMap()[2][4].setPolygon(place24);
+                Map.getInstance().getMap()[2][5].setPolygon(place25);
+                Map.getInstance().getMap()[2][6].setPolygon(place26);
+                Map.getInstance().getMap()[2][7].setPolygon(place27);
+                Map.getInstance().getMap()[2][8].setPolygon(place28);
+                Map.getInstance().getMap()[2][9].setPolygon(place29);
+                Map.getInstance().getMap()[3][1].setPolygon(place31);
+                Map.getInstance().getMap()[3][2].setPolygon(place32);
+                Map.getInstance().getMap()[3][3].setPolygon(place33);
+                Map.getInstance().getMap()[3][4].setPolygon(place34);
+                Map.getInstance().getMap()[3][5].setPolygon(place35);
+                Map.getInstance().getMap()[3][6].setPolygon(place36);
+                Map.getInstance().getMap()[3][7].setPolygon(place37);
+                Map.getInstance().getMap()[3][8].setPolygon(place38);
+                Map.getInstance().getMap()[3][9].setPolygon(place39);
+                Map.getInstance().getMap()[4][1].setPolygon(place41);
+                Map.getInstance().getMap()[4][2].setPolygon(place42);
+                Map.getInstance().getMap()[4][3].setPolygon(place43);
+                Map.getInstance().getMap()[4][4].setPolygon(place44);
+                Map.getInstance().getMap()[4][5].setPolygon(place45);
+                Map.getInstance().getMap()[4][6].setPolygon(place46);
+                Map.getInstance().getMap()[4][7].setPolygon(place47);
+                Map.getInstance().getMap()[4][8].setPolygon(place48);
+                Map.getInstance().getMap()[4][9].setPolygon(place49);
+                Map.getInstance().getMap()[5][1].setPolygon(place51);
+                Map.getInstance().getMap()[5][2].setPolygon(place52);
+                Map.getInstance().getMap()[5][3].setPolygon(place53);
+                Map.getInstance().getMap()[5][4].setPolygon(place54);
+                Map.getInstance().getMap()[5][5].setPolygon(place55);
+                Map.getInstance().getMap()[5][6].setPolygon(place56);
+                Map.getInstance().getMap()[5][7].setPolygon(place57);
+                Map.getInstance().getMap()[5][8].setPolygon(place58);
+                Map.getInstance().getMap()[5][9].setPolygon(place59);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         try {
-
             for (int i = 1; i <= 5; i++) {
                 for (int j = 1; j <= 9; j++) {
-                    final Polyline polyline = Map.getMap()[i][j].getPolygon();
+                    Cell cell = Map.getInstance().getMap()[i][j];
+                    final Polyline polyline = cell.getPolygon();
                     try {
                         polyline.setOnMouseEntered(event -> {
-                            polyline.setFill(Color.GREEN);
+                            polyline.setFill(Color.rgb(0, 0, 0, 0.35));
                         });
-                        polyline.setOnMouseClicked(mouseEvent -> {
-                            System.out.println("selected this: " + polyline.toString());
+                        polyline.setOnMouseExited(event -> {
+                            polyline.setFill(Color.rgb(0, 0, 0, 0.15));
+                        });
+                        polyline.setOnMouseClicked(event -> {
+                            if (me.getSelectedCard() == null) {
+                                displayMessage("select a card first");
+                                System.err.println("no selected card");
+                                return;
+                            }
+                            if (cell.getCardInCell() != null) {
+                                displayMessage("destination is not empty");
+                                return;
+                            }
+                            if (me.isSelectedCardDeployed()) {
+                                BattleMenu.getBattleManager().move((Deployable) me.getSelectedCard(), cell.getX1Coordinate(), cell.getX2Coordinate());
+                            } else if (!me.isSelectedCardDeployed()) {
+                                BattleMenu.insert(me.getSelectedCard(), cell.getX1Coordinate(), cell.getX2Coordinate());
+                            }
                         });
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         BattleManager battle = BattleMenu.getBattleManager();
         try {
-
-
             battle.initialTheGame();
             for (int i = 0; i < 6; i++) {
                 if (me.getHand().get(i) != null) {
                     if (me.getHand().get(i).getType() == CardType.minion) {
-                        DisplayableDeployable face = new DisplayableDeployable((Deployable) me.getHand().get(i));
-                        ((Deployable) me.getHand().get(i)).setFace(face);
-                        columnHands[i].getStackPane().getChildren().add(face);
-                        face.setTranslateY(95.0);
-                        //
-                        face.setOnMouseClicked(event -> {
-                            System.out.println("clicked!");
-                            if (battle.getCurrentPlayer() == me)
-                                me.selectACard(face.getDeployable().getId());
-                            else
-                                System.out.println("not my turn");
-                        });
-                        //
+                        showMinionInHand((Deployable) me.getHand().get(i), i, battle);
                     }
+                    if (me.getHand().get(i).getType() == CardType.spell) {
 
-
+                    }
                     columnHands[i].getManaCost().setText(me.getHand().get(i).getManaCost() + "");
                 }
             }
-
             username.setText(me.getAccount().getUsername());
             opponentUsername.setText(opponent.getAccount().getUsername());
             generalSpellManaCost.setText("" + me.getHero().getHeroSpell().getManaCost());
             opponentGeneralSpellManaCost.setText("" + opponent.getHero().getHeroSpell().getManaCost());
             generalCoolDown.setText("" + me.getHero().getHeroSpell().getManaCost());
-            opponentGeneralCooldown.setText("" + opponent.getHero().getHeroSpell().getManaCost());
+            opponentGeneralCoolDown.setText("" + opponent.getHero().getHeroSpell().getManaCost());
             battle.getPlayer1().generateDeckArrangement();
             battle.getPlayer2().generateDeckArrangement();
             battle.setCurrentPlayer(BattleMenu.getBattleManager().getPlayer2());
             battle.applyItemFunctions(BattleMenu.getBattleManager().getCurrentPlayer().getHero(), FunctionType.GameStart);
             battle.setCurrentPlayer(BattleMenu.getBattleManager().getPlayer1());
             battle.applyItemFunctions(BattleMenu.getBattleManager().getCurrentPlayer().getHero(), FunctionType.GameStart);
-            initHeroes(battle, motherFuckinPane);
+            initHeroes(battle, mainPane);
             refreshTheStatusOfMap(battle);
             manas.add(mana1);
             manas.add(mana2);
@@ -321,17 +353,20 @@ public class BattlePageController implements Initializable {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        Platform.runLater(this::updateNextCard);
         replace.setOnAction(event -> {
-            if (isMyTrun() && battle.getCurrentPlayer().getSelectedCard() != null) {
+            if (isMyTurn() && battle.getCurrentPlayer().getSelectedCard() != null) {
                 BattleMenu.replaceCardInHand(battle.getCurrentPlayer().getSelectedCard().getId());
             }
         });
         endTurn.setOnAction(event -> {
             BattleMenu.doAllThingsInEndingOfTheTurns();
-            if (isMyTrun()) {
+            opponentMana.setText(opponent.getMana() + " / 9");
+            if (isMyTurn()) {
                 battle.setCurrentPlayer(battle.getOtherPlayer());
             }
             if (battle.getCurrentPlayer().isAi()) {
+                System.err.println("ai is playing");
                 ((Ai) battle.getCurrentPlayer()).play();
                 battle.setCurrentPlayer(battle.getOtherPlayer());
             }
@@ -348,11 +383,28 @@ public class BattlePageController implements Initializable {
         graveYard.setOnAction(event -> {
             GraveYardController.getInstance().setAsScene();
         });
-
-
     }
 
-    public void initHeroes(BattleManager battleManager, Pane motherFuckinPane) {
+    private void showMinionInHand(Deployable deployable, int index, BattleManager battle) {
+        DisplayableDeployable face = new DisplayableDeployable(deployable);
+        deployable.setFace(face);
+        columnHands[index].getStackPane().getChildren().add(face);
+        //
+        face.setTranslateY(-10);
+        face.setOnMouseClicked(event -> {
+            System.out.println("clicked! on a card");
+            if (battle.getCurrentPlayer() == me)
+                me.selectACard(face.getDeployable().getId());
+            else {
+                displayMessage("not my turn");
+                System.out.println("not my turn");
+            }
+        });
+        //
+        columnHands[index].getManaCost().setText(deployable.getManaCost() + "");
+    }
+
+    public void initHeroes(BattleManager battleManager, Pane mainPane) {
         Hero hero1 = battleManager.getPlayer1().getHero();
         Hero hero2 = battleManager.getPlayer2().getHero();
         hero1.getCell().setCardInCell(hero1);
@@ -363,7 +415,7 @@ public class BattlePageController implements Initializable {
         DisplayableDeployable faceHero2 = new DisplayableDeployable(hero2);
         hero1.setFace(faceHero1);
         hero2.setFace(faceHero2);
-        motherFuckinPane.getChildren().addAll(faceHero1, faceHero2);
+        mainPane.getChildren().addAll(faceHero1, faceHero2);
         faceHero1.updateStats();
         faceHero2.updateStats();
 
@@ -376,13 +428,9 @@ public class BattlePageController implements Initializable {
             setOnMouseDeployable(hero2, battleManager);
             faceHero2.updateStats();
         });
-
-
     }
 
-    public static void setOnMouseDeployable(Deployable card, BattleManager battleManager) {
-        Player me = BattlePageController.getInstance().me;
-        Player opponent = BattlePageController.getInstance().opponent;
+    public void setOnMouseDeployable(Deployable card, BattleManager battleManager) {
         if (battleManager.getCurrentPlayer() == me) {
             if (me.getSelectedCard() != null && me.getSelectedCard().getType() == CardType.spell) {
                 BattleMenu.insert(me.getSelectedCard(), card.getCell().getX1Coordinate(), card.getCell().getX2Coordinate());
@@ -390,19 +438,19 @@ public class BattlePageController implements Initializable {
                 me.selectACard(card.getUniqueId());
             }
         } else {
+            if (opponent == null) {
+                System.err.println("null opponent");
+                return;
+            }
             if (opponent.isSelectedCardDeployed()) {
                 battleManager.attack((Deployable) opponent.getSelectedCard(), card);
             }
         }
     }
 
-    private boolean isMyTrun() {
+    private boolean isMyTurn() {
         return BattleMenu.getBattleManager().getCurrentPlayer().
                 getAccount().getUsername().equals(me.getAccount().getUsername());
-    }
-
-    public static BattlePageController getBattlePageController() {
-        return battlePageController;
     }
 
     public Player getMe() {
@@ -464,7 +512,7 @@ public class BattlePageController implements Initializable {
                 opponentMana.setText("0 / 0");
             }
             generalCoolDown.setText("" + me.getHero().getHeroSpell().getCoolDownRemaining());
-            opponentGeneralCooldown.setText("" + opponent.getHero().getHeroSpell().getCoolDownRemaining());
+            opponentGeneralCoolDown.setText("" + opponent.getHero().getHeroSpell().getCoolDownRemaining());
             deckSize.setText("Deck: " + me.deckSize() + "/20");
         } catch (Exception e) {
             e.printStackTrace();

@@ -8,12 +8,12 @@ import view.Output;
 public class CollectionMenu extends Menu {
     public static void showAllDecks() {
         try {
-            Account.getMainAccount().getTheMainDeck().show();
+            Account.getMainAccount().getMainDeck().show();
         } catch (NullPointerException e) {
             System.err.println("main deck not initialized yet");
         }
         for (Deck deck : Account.getMainAccount().getDecks()) {
-            if (deck != Account.getMainAccount().getTheMainDeck())
+            if (deck != Account.getMainAccount().getMainDeck())
                 deck.show();
         }
     }

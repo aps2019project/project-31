@@ -2,12 +2,10 @@ package controller;
 
 import constants.*;
 import constants.GameMode;
-import javafx.application.Platform;
 import model.*;
 import view.Input;
 import view.Output;
 
-import java.rmi.ServerError;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -56,7 +54,6 @@ public class BattleMenu extends Menu {
                                                        GameMode gameMode, int storyNumber) {
         Player player1 = new Player(account, false);
 
-
         Deck theAiDeck = null;
         switch (battleManagerMode) {
             case Story:
@@ -75,11 +72,8 @@ public class BattleMenu extends Menu {
                     System.err.println("story number invalid");
                     return;
                 }
-
-
                 System.out.println(theAiDeck.getDeckName());
                 System.out.println(theAiDeck.getCards().get(0).toString());
-
                 break;
             case CustomGame:
                 theAiDeck = SinglePlayer.getCustomGameDeck();
@@ -91,7 +85,6 @@ public class BattleMenu extends Menu {
         }
         SinglePlayer.makeAIAccount(theAiDeck);
         makeInstanceOfBattleManager(player1, SinglePlayer.getAiPlayer(), numberOfFlags, maxNumberOfHavingFlag, gameMode);
-
     }
 
 
@@ -110,7 +103,6 @@ public class BattleMenu extends Menu {
         }
         player1.setBattle(battleManager);
         player2.setBattle(battleManager);
-
     }
 
 
@@ -126,7 +118,6 @@ public class BattleMenu extends Menu {
                 Collections.shuffle(Shop.getAllCollectibles());
                 battleManager.putFlagOnMap(Shop.getAllCollectibles().get(0));
             }
-
         }
         //    battleManager.refreshTheStatusOfMap();
 
@@ -150,7 +141,6 @@ public class BattleMenu extends Menu {
         battleManager.setCurrentPlayer(battleManager.getPlayer2());
         //  initHeroes();
         while (true) {
-
             isPlayer1Turn = !isPlayer1Turn;
             battleManager.setCurrentPlayer(battleManager.getOtherPlayer());
             doAllAtTheBeginningOfTurnThings();
@@ -177,7 +167,7 @@ public class BattleMenu extends Menu {
     public static void doAllThingsInEndingOfTheTurns() {
         battleManager.makeIsMovedAndStunnedAndStuffFalse();
         battleManager.applyItemFunctions(battleManager.getPlayer1().getHero(), FunctionType.Passive);
-        battleManager.getCurrentPlayer().placeNextCardToHand();
+        battleManager.getCurrentPlayer().placeNextCardToHand();//this should just be called just after inserting cards from hand to battle!!
         battleManager.getCurrentPlayer().endOfTurnBuffsAndFunctions();
         battleManager.getOtherPlayer().endOfTurnBuffsAndFunctions();
         battleManager.checkTheEndSituation();
@@ -196,24 +186,24 @@ public class BattleMenu extends Menu {
         ArrayList<Deployable> validCards = new ArrayList<>();
         for (String number : strNumbers) {
             int cardId = Integer.parseInt(number);
-            if (Map.findCellByCardId(cardId).getCardInCell() != null &&
-                    Map.findCellByCardId(opponentCardId).getCardInCell() != null &&
-                    BattleManager.isAttackTypeValidForAttack(Map.findCellByCardId(cardId).getCardInCell(),
-                            Map.findCellByCardId(opponentCardId).getCardInCell())) {
-                if (Map.findCellByCardId(cardId).getCardInCell().isCombo())
-                    validCards.add(Map.findCellByCardId(cardId).getCardInCell());
+            if (Map.getInstance().findCellByCardId(cardId).getCardInCell() != null &&
+                    Map.getInstance().findCellByCardId(opponentCardId).getCardInCell() != null &&
+                    BattleManager.isAttackTypeValidForAttack(Map.getInstance().findCellByCardId(cardId).getCardInCell(),
+                            Map.getInstance().findCellByCardId(opponentCardId).getCardInCell())) {
+                if (Map.getInstance().findCellByCardId(cardId).getCardInCell().isCombo())
+                    validCards.add(Map.getInstance().findCellByCardId(cardId).getCardInCell());
             }
         }
-        BattleMenu.getBattleManager().comboAtack(Map.findCellByCardId(opponentCardId).getCardInCell(), validCards);
+        BattleMenu.getBattleManager().comboAttack(Map.getInstance().findCellByCardId(opponentCardId).getCardInCell(), validCards);
     }
 
     public static void attack(int uniqueCardId) {
         Card selectedCard = BattleMenu.getBattleManager().getCurrentPlayer().getSelectedCard();
         if (selectedCard != null && battleManager.getCurrentPlayer().isSelectedCardDeployed()) {
-            if (Map.findCellByCardId(uniqueCardId) != null &&
-                    Map.findCellByCardId(uniqueCardId).getCardInCell() != null)
+            if (Map.getInstance().findCellByCardId(uniqueCardId) != null &&
+                    Map.getInstance().findCellByCardId(uniqueCardId).getCardInCell() != null)
                 battleManager.attack((Deployable) selectedCard
-                        , Map.findCellByCardId(uniqueCardId).getCardInCell());
+                        , Map.getInstance().findCellByCardId(uniqueCardId).getCardInCell());
             else
                 Output.enemyNotExist();
         } else {
@@ -228,20 +218,16 @@ public class BattleMenu extends Menu {
 
     public static boolean insert(Card card, int x1, int x2) {
         if (card == null) {
+            System.err.println("insert(method) -> card is null");
             return false;
         }
         if (battleManager.cardInHandByCardId(card.getId()) != null) {
-
-
             if (card.getManaCost() > battleManager.getCurrentPlayer().getMana()) {
-                Output.notHaveEnoughMana();
                 System.err.println("Not enough mana");
                 return false;
             }
-
             if (card.getType() == CardType.minion) {
-
-                battleManager.playMinion((Minion) card, x1, x2);
+                battleManager.playMinion((Minion) card, x1, x2, battleManager);
             }
             if (card.getType() == CardType.spell) {
                 card.setAccount(battleManager.getCurrentPlayer().getAccount());
@@ -257,7 +243,6 @@ public class BattleMenu extends Menu {
                 }
             }
         } else {
-            Output.notInHand();
             System.err.println("Minion not in hand");
             return false;
         }
@@ -292,7 +277,6 @@ public class BattleMenu extends Menu {
                     Output.print(deployable.infoToString());
             }
         }
-
     }
 
     public static void showSelectedCardInfo() {
@@ -343,7 +327,7 @@ public class BattleMenu extends Menu {
             if (deployable != null)
                 System.out.println(deployable.shortVersionString());
         }
-        for (Cell[] cells : Map.getMap()) {
+        for (Cell[] cells : Map.getInstance().getMap()) {
             for (Cell cell : cells) {
                 if (cell != null && cell.getItem() != null) {
                     System.out.println(cell.getItem().toString() + " coordination:  " + cell.getX1Coordinate() + "," + cell.getX2Coordinate());

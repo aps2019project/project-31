@@ -1,10 +1,5 @@
 package model;
 
-import constants.CardType;
-import controller.BattleMenu;
-import controller.BattlePageController;
-import javafx.application.Platform;
-import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Polyline;
 
 public class Cell {
@@ -23,19 +18,7 @@ public class Cell {
     }
 
     public void setPolygon(Polyline polygon) {
-
         this.polygon = polygon;
-        Platform.runLater(() -> {
-            polygon.setOnMouseClicked(mouseEvent -> {
-                Player me = BattlePageController.getInstance().getMe();
-                if (me.selectedCard != null && me.isSelectedCardDeployed() && this.cardInCell == null) {
-                    BattleMenu.getBattleManager().move((Deployable) me.selectedCard, x1Coordinate, x2Coordinate);
-                } else if (me.selectedCard != null && !me.isSelectedCardDeployed()) {
-                    BattleMenu.insert(me.selectedCard, x1Coordinate, x2Coordinate);
-                    BattlePageController.getInstance().removeFromHand(((Deployable) me.selectedCard).face);
-                }
-            });
-        });
     }
 
     public Item getItem() {
@@ -63,7 +46,6 @@ public class Cell {
         hasFlag = false;
         item = null;
         this.polygon = polygon;
-
     }
 
     public Cell(int x1Coordinate, int x2Coordinate, Deployable cardInCell) {
@@ -75,7 +57,6 @@ public class Cell {
         hasFlag = false;
         item = null;
     }
-
 
     public void setIsHolyTurns(int isHolyTurns) {
         this.isHolyTurns = isHolyTurns;
@@ -107,7 +88,6 @@ public class Cell {
 
     public void setCardInCell(Deployable cardInCell) {
         this.cardInCell = cardInCell;
-
     }
 
     public void decreaseOnFire() {
@@ -119,7 +99,6 @@ public class Cell {
         if (onPoisonTurns > 0)
             onPoisonTurns--;
     }
-
 
     public int getX1Coordinate() {
         return x1Coordinate;
@@ -144,7 +123,7 @@ public class Cell {
     public Double[] calculateCenter() {
         Double[] coordinates = new Double[2];
         double x = 0, y = 0;
-        x += polygon.getPoints().get(0) + polygon.getPoints().get(7);
+        x += polygon.getPoints().get(0) + polygon.getPoints().get(2);
         y += polygon.getPoints().get(1);
         coordinates[0] = (x / 2) + polygon.getLayoutX() - 100;
         coordinates[1] = (y) + polygon.getLayoutY() - 100;
@@ -153,4 +132,7 @@ public class Cell {
         return coordinates;
     }
 
+    public Double[] getCenter(){
+        return calculateCenter();
+    }
 }

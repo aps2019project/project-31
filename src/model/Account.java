@@ -27,7 +27,7 @@ public class Account {
     private ArrayList<Card> collection = new ArrayList<>();
     private int daric = 0;
     private ArrayList<Deck> decks = new ArrayList<>();
-    private Deck theMainDeck;
+    private Deck mainDeck;
     private String username;
     private String password;
     private ArrayList<MatchHistory> matchHistories = new ArrayList<>();
@@ -62,10 +62,6 @@ public class Account {
 
     public String getPassword() {
         return password;
-    }
-
-    public Deck getTheMAinDeck() {
-        return theMainDeck;
     }
 
     public void setPassword(String password) {
@@ -144,8 +140,8 @@ public class Account {
         decks.add(deck);
     }
 
-    public Deck getTheMainDeck() {
-        return theMainDeck;
+    public Deck getMainDeck() {
+        return mainDeck;
     }
 
     public ArrayList<MatchHistory> getMatchHistories() {
@@ -209,8 +205,8 @@ public class Account {
         return allAccounts;
     }
 
-    public void setTheMainDeck(Deck theMainDeck) {
-        this.theMainDeck = theMainDeck;
+    public void setMainDeck(Deck mainDeck) {
+        this.mainDeck = mainDeck;
     }
 
     public void createDeck(String name) {
@@ -279,7 +275,7 @@ public class Account {
         if (editingDeck == null)
             return;
         if (editingDeck.checkIfValid())
-            setTheMainDeck(editingDeck);
+            setMainDeck(editingDeck);
     }
 
     public void showDeckByName(String deckName) {

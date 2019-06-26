@@ -234,6 +234,10 @@ public class CollectionController implements Initializable {
             updateEditingDeck();
         });
         setAsMainButton.setOnAction(event -> {
+            if(Account.getEditingDeck() == null){
+               displayMessage("select a deck");
+               return;
+            }
             if (!Account.getEditingDeck().checkIfValid()) {
                 displayMessage("deck is not valid!!");
                 return;
@@ -251,12 +255,12 @@ public class CollectionController implements Initializable {
 
     public void showAllDecks() {
         try {
-            Account.getMainAccount().getTheMainDeck().show();
+            Account.getMainAccount().getMainDeck().show();
         } catch (NullPointerException e) {
             System.err.println("main deck not initialized yet");
         }
         for (Deck deck : Account.getMainAccount().getDecks()) {
-            if (deck != Account.getMainAccount().getTheMainDeck())
+            if (deck != Account.getMainAccount().getMainDeck())
                 deck.show();
         }
     }
