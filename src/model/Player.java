@@ -249,15 +249,33 @@ public class Player {
         return false;
     }
 
+    public boolean addCardTohand(Card card) {
+        if (hand.size() < 6) {
+            hand.add(card);
+            return true;
+        }
+        return false;
+    }
+
     public void placeNextCardToHand() {
-        if (nextCard != null && hand.size() < 6) {
-            hand.add(nextCard);
+        boolean hasAdded = false;
+        if (nextCard != null) {
+            hasAdded = addCardTohand(nextCard);
         }
+
+        if (currentDeck.getCards().size() > 0 && hasAdded) {
+            changeNextCard();
+        }
+    }
+
+    public void changeNextCard() {
         Collections.shuffle(currentDeck.getCards());
-        if (currentDeck.getCards().size() > 0) {
-            nextCard = currentDeck.getCards().get(0);
-            currentDeck.getCards().remove(0);
-        }
+        nextCard = currentDeck.getCards().get(0);
+        currentDeck.getCards().remove(0);
+    }
+
+    public void initNextcard() {
+        changeNextCard();
     }
 
     public boolean doesPlayerHaveDeployable(Deployable card) {

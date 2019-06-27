@@ -78,7 +78,6 @@ public class BattleManager {
 
     public boolean playMinion(Minion minion, int x1, int x2, BattleManager battle) {
         if (!checkCoordinates(x1, x2)) {
-            System.err.println("Invalid Coordinates");
             return false;
         }
         Minion theMinion = minion.duplicateDeployed(Map.getInstance().getCell(x1, x2), currentPlayer.account);
@@ -855,6 +854,7 @@ public class BattleManager {
                 card.cell.setCardInCell(null);
                 card.cell = Map.getInstance().getCell(x1, x2);
                 card.setMoved(true);
+                card.cell.setCardInCell(card);
                 if (card.cell.getItem() != null && card.item != null)
                     Map.getInstance().getCell(x1, x2).setCardInCell(card);
                 Platform.runLater(() -> {

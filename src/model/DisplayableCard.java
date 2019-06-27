@@ -109,6 +109,7 @@ public class DisplayableCard extends StackPane {
             imageView.resize(400, 600);
             this.getChildren().add(imageView);
             if (imagePath.equals("")) {
+                getChildren().remove(imageView); // to zamine bazi o in harfa ? :)
                 if (!((Item) card).isCollectible)
                     imagePath = getClass().
                             getResource("/gifs/Items/" + card.getName() + "/actionbar.gif")
@@ -118,8 +119,8 @@ public class DisplayableCard extends StackPane {
                         .toExternalForm();
                 mainIcon = new ImageView(new Image(imagePath));
                 mainIcon.setTranslateY(-50);
-                mainIcon.setScaleX(2);
-                mainIcon.setScaleY(2);
+                mainIcon.setScaleX(1.3);
+                mainIcon.setScaleY(1.3);
                 getChildren().addAll(mainIcon);
             }
         }
