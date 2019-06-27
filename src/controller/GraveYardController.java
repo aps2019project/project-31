@@ -6,8 +6,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import model.DisplayableDeployable;
 import model.Initializer;
 
 import java.awt.*;
@@ -26,23 +28,37 @@ public class GraveYardController implements Initializable {
     public Label username;
     public Label opponentUsername;
     public GridPane gridPanePlayer1;
+    public ListView player2List;
+    public ListView player1List;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-       /* username.setText(BattlePageController.getInstance().getMe().getAccount().getUsername());
-        opponentUsername.setText(BattlePageController.getInstance().getOpponent().getAccount().getUsername());*/
+        username.setText(BattlePageController.getInstance().getMe().getAccount().getUsername());
+        opponentUsername.setText(BattlePageController.getInstance().getOpponent().getAccount().getUsername());
         backToBattle.setOnAction(event -> {
             BattlePageController.getInstance().setAsScene();
         });
-
+        player1Profile = BattlePageController.getInstance().player1Profile;
+        player2Profile = BattlePageController.getInstance().player2Profile;
     }
+
+    public void updateGraveYard() {
+        for (DisplayableDeployable displayableDeployable : BattlePageController.getInstance().getMe().getGraveYard()) {
+            if (!player1List.getItems().contains(displayableDeployable))
+                player1List.getItems().add(displayableDeployable);
+        }
+        for (DisplayableDeployable displayableDeployable : BattlePageController.getInstance().getOpponent().getGraveYard()) {
+            if (!player2List.getItems().contains(displayableDeployable))
+                player2List.getItems().add(displayableDeployable);
+        }
+    }
+
     public static GraveYardController getInstance() {
         if (graveYard == null) {
             graveYard = new GraveYardController();
         }
         return graveYard;
     }
-
 
     public void setAsScene() {
         if (scene == null) {

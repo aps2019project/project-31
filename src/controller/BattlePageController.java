@@ -11,6 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -22,6 +23,7 @@ import java.awt.*;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
@@ -100,6 +102,12 @@ public class BattlePageController implements Initializable {
     public Button setting;
     public VBox messageBox;
     public Label myMana;
+    public ImageView player2Profile;
+    public ImageView player1Profile;
+    public AnchorPane profile1Stack;
+    public AnchorPane profile2Stack;
+    public ImageView profPic1;
+    public ImageView profPic2;
 
 //    private StackPane showingGraveYard; // for showing it: lastStackPane = showingGraveYard; showingGraveYard is a designed scene
 
@@ -529,8 +537,13 @@ public class BattlePageController implements Initializable {
         } else {
             usualMana = 9;
         }
-        opponentMana.setText("" + (usualMana + opponent.getManaChangerInTurn()[battleManager.getTurn()]) + " / " + usualMana);
-        myMana.setText("" + (usualMana + me.getManaChangerInTurn()[battleManager.getTurn()]) + " / " + usualMana);
+        if(me == battleManager.getCurrentPlayer()){
+            myMana.setText(me.getMana() + " / " + usualMana);
+            opponentMana.setText(opponent.getMana() + " / " + usualMana);
+        }
+//        opponentMana.setText("" + (usualMana + opponent.getManaChangerInTurn()[battleManager.getTurn()]) + " / " + usualMana);
+//        myMana.setText("" + (usualMana + me.getManaChangerInTurn()[battleManager.getTurn()]) + " / " + usualMana);
+        /////getManaChangerInTurn[] has bug
     }
 }
 

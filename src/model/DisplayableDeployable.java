@@ -48,6 +48,7 @@ public class DisplayableDeployable extends StackPane {
             imagePath = getClass().getResource("/gifs/Hero/" + deployable.getName()).toExternalForm();
 
         }
+
         idle = new ImageView(new Image(imagePath + "/idle.gif"));
         idle.setScaleY(SCALE);
         idle.setScaleX(SCALE);

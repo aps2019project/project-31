@@ -850,7 +850,7 @@ public class BattleManager {
                     Map.getInstance().getCell(x1, x2).setCardInCell(card);
                 Platform.runLater(() -> {
                     BattlePageController.getInstance().refreshTheStatusOfMap(this);
-                });
+                })  ;
                 Output.movedSuccessfully(card);
             } else {
                 Output.invalidTargetForMove();
