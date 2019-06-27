@@ -1,6 +1,7 @@
 package model;
 
 import constants.CardType;
+import controller.BattlePageController;
 import javafx.animation.Animation;
 import javafx.animation.AnimationTimer;
 import javafx.beans.property.DoubleProperty;
@@ -8,9 +9,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
@@ -30,16 +29,14 @@ public class DisplayableDeployable extends StackPane {
     ImageView currentStance;
     Label healthLabel;
     Label attackLabel;
-    VBox stats;
+    CardInfo stats;
     ImageView attackIcon;
     ImageView healthIcon;
     double SCALE = 1.2;
 
     public DisplayableDeployable(Deployable deployable) {
         this.setAlignment(Pos.CENTER);
-        setOnMouseClicked(mouseEvent -> {
-            BattleManager.currentPlayer.setSelectedCard(deployable);
-        });
+
         String imagePath;
         this.deployable = deployable;
         if (deployable.getType() == CardType.minion) {
@@ -96,6 +93,7 @@ public class DisplayableDeployable extends StackPane {
         healthIcon.setScaleY(0.5);
 
         currentStance = idle;
+
         this.getChildren().addAll(idle, healthIcon, attackIcon, healthLabel, attackLabel);
 
     }
@@ -144,8 +142,8 @@ public class DisplayableDeployable extends StackPane {
         double amountX = (deployable.getCell().calculateCenter()[0] - getTranslateX()) / 15;
         double amountY = (deployable.getCell().calculateCenter()[1] - getTranslateY()) / 15;
         if (deployable.getName().equals("Kaveh")) {
-            amountX -= 30/15;
-            amountY -= 40/15;
+            amountX -= 30 / 15;
+            amountY -= 40 / 15;
         }
         if (amountX < 0.5 && amountY < 0.5) return;
         if (isMoving) return;
@@ -209,4 +207,12 @@ public class DisplayableDeployable extends StackPane {
         moveToCurrentCell();
     }
 
+    public void showInfo() {
+
+        stats = new CardInfo(deployable);
+    }
+
+    public void removeInfo() {
+        stats = null;
+    }
 }
