@@ -142,9 +142,7 @@ public class BattlePageController implements Initializable {
     private ArrayList<ImageView> manas = new ArrayList<>();
     private ColumnOfHand[] columnHands = new ColumnOfHand[6];
 
-    public BattlePageController() {
-        System.err.println("HLLLO");
-    }
+    public BattlePageController() { }
 
     public void setAsScene() {
         if (scene == null) {
@@ -197,8 +195,8 @@ public class BattlePageController implements Initializable {
         if (me.getNextCard().getType() == CardType.spell) {
             //
         }
-        nextCardField.getChildren().get(1).setTranslateX(30);
-        nextCardField.getChildren().get(1).setTranslateY(10);
+       /* nextCardField.getChildren().get(1).setTranslateX(30);
+        nextCardField.getChildren().get(1).setTranslateY(10);*/
     }
 
     public void removeMinionFromHand(DisplayableDeployable face, BattleManager battle) {
@@ -311,10 +309,8 @@ public class BattlePageController implements Initializable {
                             if (me.isSelectedCardDeployed()) {
                                 BattleMenu.getBattleManager().move((Deployable) me.getSelectedCard(),
                                         cell.getX1Coordinate(), cell.getX2Coordinate());
-                                System.out.println("moved!");
+                                System.out.println("we called move method dude!");
                             } else if (!me.isSelectedCardDeployed()) {
-                                BattleMenu.insert(me.getSelectedCard(), cell.getX1Coordinate(), cell.getX2Coordinate());
-                            } else if (me.getSelectedCard() != null && me.getSelectedCard().getType() == CardType.spell) {
                                 BattleMenu.insert(me.getSelectedCard(), cell.getX1Coordinate(), cell.getX2Coordinate());
                             }
                         });
@@ -510,11 +506,8 @@ public class BattlePageController implements Initializable {
                 if (cell.getItem() != null) {
                     try {
                         String imagePath = getClass().getResource("/gifs/Items/" + cell.getItem().getName() + "/actionbar.gif").toExternalForm();
-                        ImageView flag = new ImageView(new Image(imagePath,
-                                30, 30, false, true));
-                        flag.setTranslateY(cell.calculateCenter()[0]);
-                        flag.setTranslateY(cell.calculateCenter()[1]);
-                        mainPane.getChildren().add(flag);
+                        DisplayableCard displayableCard = new DisplayableCard(cell.getItem(),imagePath);
+                        mainPane.getChildren().add(displayableCard);
                     } catch (NullPointerException e) {
                         System.err.println("The item gif not found");
 

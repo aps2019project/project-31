@@ -78,7 +78,7 @@ public class BattleManager {
 
     public boolean playMinion(Minion minion, int x1, int x2, BattleManager battle) {
         if (!checkCoordinates(x1, x2)) {
-            System.err.println("Invalid Coordinates");
+            System.out.println("x1 is:" + x1 + " ,x2 is:" + x2);
             return false;
         }
         Minion theMinion = minion.duplicateDeployed(Map.getInstance().getCell(x1, x2), currentPlayer.account);
@@ -774,6 +774,7 @@ public class BattleManager {
                 if (i != 0 || j != 0) {
                     if (x1 + i >= 1 && x1 + i <= Map.MAP_X1_LENGTH && x2 + j >= 1 &&
                             x2 + j <= Map.MAP_X2_LENGTH && Map.getInstance().getCardInCell(x1 + i, x2 + j) != null) {
+                        System.out.println("in battle manager 777, current player is: "+currentPlayer.getAccount().getUsername());
                         if (Map.getInstance().getCardInCell(x1 + i, x2 + j).getAccount().equals(currentPlayer.getAccount())) {
                             return true;
                         }
@@ -856,6 +857,7 @@ public class BattleManager {
                 card.cell.setCardInCell(null);
                 card.cell = Map.getInstance().getCell(x1, x2);
                 card.setMoved(true);
+                card.cell.setCardInCell(card);
                 if (card.cell.getItem() != null && card.item != null)
                     Map.getInstance().getCell(x1, x2).setCardInCell(card);
                 Platform.runLater(() -> {
