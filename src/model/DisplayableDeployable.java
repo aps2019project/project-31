@@ -29,10 +29,10 @@ public class DisplayableDeployable extends StackPane {
     ImageView currentStance;
     Label healthLabel;
     Label attackLabel;
-    CardInfo stats;
     ImageView attackIcon;
     ImageView healthIcon;
     double SCALE = 1.2;
+    VBox infoBox;
 
     public DisplayableDeployable(Deployable deployable) {
         this.setAlignment(Pos.CENTER);
@@ -92,9 +92,14 @@ public class DisplayableDeployable extends StackPane {
         healthIcon.setScaleX(0.5);
         healthIcon.setScaleY(0.5);
 
+        infoBox = new VBox();
+        infoBox.setOpacity(0);
+        infoBox.setOnMouseEntered(mouseEvent -> infoBox.setOpacity(1));
+        infoBox.setOnMouseExited(mouseEvent -> infoBox.setOpacity(0));
+
         currentStance = idle;
 
-        this.getChildren().addAll(idle, healthIcon, attackIcon, healthLabel, attackLabel);
+        this.getChildren().addAll(idle, healthIcon, attackIcon, healthLabel, attackLabel,infoBox);
 
     }
 
@@ -189,7 +194,7 @@ public class DisplayableDeployable extends StackPane {
 
 
     public void updateStats() {
-        attackLabel.setText(deployable.getCurrentAttack() + "");
+        attackLabel.setText(deployable.theActualDamage() + "");
         if (deployable.getCurrentHealth() < deployable.maxHealth) {
             healthLabel.setTextFill(Color.RED);
         } else if (deployable.getCurrentHealth() > deployable.maxHealth) {
@@ -197,22 +202,21 @@ public class DisplayableDeployable extends StackPane {
         } else {
             healthLabel.setTextFill(Color.WHITE);
         }
-        healthLabel.setText(deployable.getCurrentHealth() + "");
+        healthLabel.setText(deployable.theActualHealth() + "");
+        infoBox.getChildren().removeAll(infoBox.getChildren());
+        Label label1 = new Label("stats:");
+        label1.setFont(Font.font(12));
+        label1.setTextFill(Color.CYAN);
+        infoBox.getChildren().add(label1);
         for (Buff buff : deployable.getBuffs()) {
             Label label = new Label(buff.buffType + "");
             label.setFont(Font.font(12));
             label.setTextFill(Color.CYAN);
+            infoBox.getChildren().add(label);
         }
         moveToCurrentCell();
         moveToCurrentCell();
     }
 
-    public void showInfo() {
 
-        stats = new CardInfo(deployable);
-    }
-
-    public void removeInfo() {
-        stats = null;
-    }
 }

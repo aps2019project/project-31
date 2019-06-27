@@ -107,8 +107,6 @@ public class BattleManager {
                 BattlePageController.getInstance().setOnMouseDeployable(theMinion, this);
                 face.updateStats();
             });
-            face.setOnMouseEntered(event -> face.showInfo());
-            face.setOnMouseExited(event -> face.removeInfo());
         });
         currentPlayer.removeFromHand(minion);
         applyOnSpawnFunction(theMinion);
@@ -897,6 +895,8 @@ public class BattleManager {
         player.getCardsOnBattleField().remove(enemy);
 
     }
+
+
 
     public void comboAttack(Deployable enemy, ArrayList<Deployable> comboAttackers) {
         attack(comboAttackers.get(0), enemy);

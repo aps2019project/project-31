@@ -197,8 +197,8 @@ public class BattlePageController implements Initializable {
         if (me.getNextCard().getType() == CardType.spell) {
             //
         }
-        nextCardField.getChildren().get(1).setTranslateX(30);
-        nextCardField.getChildren().get(1).setTranslateY(10);
+//        nextCardField.getCinserhildren().get(1).setTranslateX(30);
+  //      nextCardField.getChildren().get(1).setTranslateY(10);
     }
 
     public void removeMinionFromHand(DisplayableDeployable face, BattleManager battle) {

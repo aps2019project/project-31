@@ -245,6 +245,12 @@ public class BattleMenu extends Menu {
                     battleManager.compileFunction(function, x1, x2);
                 }
             }
+            if (card.getName() == "Eagle"){
+                System.out.println("found eagle");
+                for (Buff buff: ((Deployable) card).getBuffs()){
+                    System.out.println(buff.getBuffType());
+                }
+            }
         } else {
             System.err.println("Minion not in hand");
             return false;

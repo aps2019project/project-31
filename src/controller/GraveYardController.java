@@ -9,6 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import model.BattleManager;
 import model.DisplayableDeployable;
 import model.Initializer;
 
@@ -73,5 +74,7 @@ public class GraveYardController implements Initializable {
             }
         }
         Initializer.setCurrentScene(scene);
+        gridPanePlayer1.getChildren().addAll(BattleMenu.getBattleManager().getPlayer1().getGraveYard());
+        gridPanePlayer2.getChildren().addAll(BattleMenu.getBattleManager().getPlayer2().getGraveYard());
     }
 }
