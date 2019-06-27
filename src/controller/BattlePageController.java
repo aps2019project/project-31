@@ -449,6 +449,11 @@ public class BattlePageController implements Initializable {
         if (battleManager.getCurrentPlayer() == me) {
             if (me.getSelectedCard() != null && me.getSelectedCard().getType() == CardType.spell) {
                 BattleMenu.insert(me.getSelectedCard(), card.getCell().getX1Coordinate(), card.getCell().getX2Coordinate());
+            } else if (me.getSelectedCard() != null &&
+                    me.getSelectedCard().getType() != CardType.spell &&
+                    !card.getAccount().equals(me.getAccount())  ) {
+                System.err.println(me.getSelectedCard().getName() + " attacked " + card.getName());
+                battleManager.attack((Deployable) me.getSelectedCard(), card);
             } else {
                 me.selectACard(card.getUniqueId());
             }
@@ -460,6 +465,7 @@ public class BattlePageController implements Initializable {
             if (opponent.isSelectedCardDeployed()) {
                 battleManager.attack((Deployable) opponent.getSelectedCard(), card);
             }
+
         }
     }
 
@@ -537,7 +543,7 @@ public class BattlePageController implements Initializable {
         } else {
             usualMana = 9;
         }
-        if(me == battleManager.getCurrentPlayer()){
+        if (me == battleManager.getCurrentPlayer()) {
             myMana.setText(me.getMana() + " / " + usualMana);
             opponentMana.setText(opponent.getMana() + " / " + usualMana);
         }

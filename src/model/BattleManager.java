@@ -105,6 +105,7 @@ public class BattleManager {
             }
             face.setOnMouseClicked(event -> {
                 BattlePageController.getInstance().setOnMouseDeployable(theMinion, this);
+                face.updateStats();
             });
         });
         currentPlayer.removeFromHand(minion);
