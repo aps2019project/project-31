@@ -314,6 +314,8 @@ public class BattlePageController implements Initializable {
                                 System.out.println("moved!");
                             } else if (!me.isSelectedCardDeployed()) {
                                 BattleMenu.insert(me.getSelectedCard(), cell.getX1Coordinate(), cell.getX2Coordinate());
+                            } else if (me.getSelectedCard() != null && me.getSelectedCard().getType() == CardType.spell) {
+                                BattleMenu.insert(me.getSelectedCard(), cell.getX1Coordinate(), cell.getX2Coordinate());
                             }
                         });
                     } catch (Exception e) {
@@ -365,7 +367,7 @@ public class BattlePageController implements Initializable {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        Platform.runLater(this::updateNextCard);
+        updateNextCard();
         replace.setOnAction(event -> {
             if (isMyTurn() && battle.getCurrentPlayer().getSelectedCard() != null) {
                 BattleMenu.replaceCardInHand(battle.getCurrentPlayer().getSelectedCard().getId());
@@ -449,16 +451,10 @@ public class BattlePageController implements Initializable {
         if (battleManager.getCurrentPlayer() == me) {
             if (me.getSelectedCard() != null && me.getSelectedCard().getType() == CardType.spell) {
                 BattleMenu.insert(me.getSelectedCard(), card.getCell().getX1Coordinate(), card.getCell().getX2Coordinate());
+            } else if (me.getSelectedCard() != null && card.doesBelongToPlayer(opponent)) {
+                battleManager.attack((Deployable) me.getSelectedCard(), card);
             } else {
                 me.selectACard(card.getUniqueId());
-            }
-        } else {
-            if (opponent == null) {
-                System.err.println("null opponent");
-                return;
-            }
-            if (opponent.isSelectedCardDeployed()) {
-                battleManager.attack((Deployable) opponent.getSelectedCard(), card);
             }
         }
     }
@@ -519,9 +515,9 @@ public class BattlePageController implements Initializable {
                         flag.setTranslateY(cell.calculateCenter()[0]);
                         flag.setTranslateY(cell.calculateCenter()[1]);
                         mainPane.getChildren().add(flag);
-                    }catch (NullPointerException e){
+                    } catch (NullPointerException e) {
                         System.err.println("The item gif not found");
-                        e.printStackTrace();
+
                     }
                 }
             }
