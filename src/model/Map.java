@@ -24,6 +24,7 @@ public class Map {
     }
 
     public void createTheMap() {
+        getInstance();
         map = new Cell[MAP_X1_LENGTH + 1][MAP_X2_LENGTH + 1];
         for (int i = 0; i <= MAP_X1_LENGTH; i++) {
             for (int j = 0; j <= MAP_X2_LENGTH; j++) {
@@ -102,6 +103,16 @@ public class Map {
                     cell.getCardInCell().applyPoison();
                 cell.decreaseOnFire();
                 cell.decreaseOnPoison();
+            }
+        }
+    }
+
+    public void refreshHasFlagInMap() {
+        for (Cell[] cells : map) {
+            for (Cell cell : cells) {
+                if (cell.getItem() == null)
+                    cell.setHasFlag(false);
+                else cell.setHasFlag(true);
             }
         }
     }

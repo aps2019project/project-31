@@ -114,7 +114,9 @@ public class BattleManager {
         currentPlayer.decreaseMana(theMinion.manaCost);
         BattlePageController.getInstance().removeMinionFromHand(((Deployable) BattlePageController.getInstance().getMe().selectedCard).face, battle);
         currentPlayer.selectedCard = null;
-        //refreshTheStatusOfMap();
+        Platform.runLater(() -> {
+            BattlePageController.getInstance().refreshTheStatusOfMap(this);
+        });
         return true;
 
     }
@@ -808,7 +810,9 @@ public class BattleManager {
         currentPlayer.selectedCard = null;
         if (!spell.equals(currentPlayer.getHero().heroSpell))
             currentPlayer.hand.remove(spell);
-        // refreshTheStatusOfMap();
+        Platform.runLater(() -> {
+            BattlePageController.getInstance().refreshTheStatusOfMap(this);
+        });
         return true;
     }
 
@@ -826,13 +830,17 @@ public class BattleManager {
                     deployable.setItem(null);
             }
         }
-        // refreshTheStatusOfMap();
+        Platform.runLater(() -> {
+            BattlePageController.getInstance().refreshTheStatusOfMap(this);
+        });
         return true;
     }
 
 
     public void move(Deployable card, int x1, int x2) {
-        //  refreshTheStatusOfMap();
+        Platform.runLater(() -> {
+            BattlePageController.getInstance().refreshTheStatusOfMap(this);
+        });
         if (card.cell == null) {
             System.err.println("the cell is null in the move method");
             return;
@@ -852,7 +860,7 @@ public class BattleManager {
                     Map.getInstance().getCell(x1, x2).setCardInCell(card);
                 Platform.runLater(() -> {
                     BattlePageController.getInstance().refreshTheStatusOfMap(this);
-                })  ;
+                });
                 Output.movedSuccessfully(card);
             } else {
                 Output.invalidTargetForMove();
@@ -894,7 +902,9 @@ public class BattleManager {
         for (int i = 1; i < comboAttackers.size(); i++) {
             dealAttackDamageAndDoOtherStuff(comboAttackers.get(i), enemy);
         }
-        //  refreshTheStatusOfMap();
+        Platform.runLater(() -> {
+            BattlePageController.getInstance().refreshTheStatusOfMap(this);
+        });
 
     }
 
@@ -910,7 +920,9 @@ public class BattleManager {
             if (isAttackTypeValidForAttack(card, enemy))
                 Output.enemyNotThere();
         }
-        //   refreshTheStatusOfMap();
+        Platform.runLater(() -> {
+            BattlePageController.getInstance().refreshTheStatusOfMap(this);
+        });
     }
 
     private boolean canAttack(Deployable card, Deployable enemy) {
@@ -964,7 +976,9 @@ public class BattleManager {
                 compileFunction(function, card.cell.getX1Coordinate(), card.cell.getX2Coordinate(), enemy);
             }
         }
-        //   refreshTheStatusOfMap();
+        Platform.runLater(() -> {
+            BattlePageController.getInstance().refreshTheStatusOfMap(this);
+        });
     }
 
     private void applyOnSpawnFunction(Deployable card) {
@@ -973,7 +987,9 @@ public class BattleManager {
                 compileFunction(function, card.cell.getX1Coordinate(), card.cell.getX2Coordinate());
             }
         }
-        //   refreshTheStatusOfMap();
+        Platform.runLater(() -> {
+            BattlePageController.getInstance().refreshTheStatusOfMap(this);
+        });
     }
 
     public void applyItemFunctions(Deployable card, FunctionType functionType) {
@@ -998,7 +1014,9 @@ public class BattleManager {
             System.err.println(e.getMessage());
             e.printStackTrace();
         }
-        //    refreshTheStatusOfMap();
+        Platform.runLater(() -> {
+            BattlePageController.getInstance().refreshTheStatusOfMap(this);
+        });
     }
 
     public void applyItemOnAttackDefendFunctions(Deployable card, FunctionType functionType, Player player) {
@@ -1010,7 +1028,9 @@ public class BattleManager {
             if (function.getFunctionType() == functionType)
                 compileFunction(function, card.cell.getX1Coordinate(), card.cell.getX2Coordinate());
         }
-        //  refreshTheStatusOfMap();
+        Platform.runLater(() -> {
+            BattlePageController.getInstance().refreshTheStatusOfMap(this);
+        });
     }
 
     private void applyOnDefendFunction(Deployable enemy, Deployable card) {
@@ -1020,7 +1040,9 @@ public class BattleManager {
             }
 
         }
-        //  refreshTheStatusOfMap();
+        Platform.runLater(() -> {
+            BattlePageController.getInstance().refreshTheStatusOfMap(this);
+        });
     }
 
     private void counterAttack(Deployable attacker, Deployable counterAttacker) {
@@ -1029,7 +1051,9 @@ public class BattleManager {
             if (attacker.currentHealth <= 0)
                 killTheThing(attacker);
         }
-        //     refreshTheStatusOfMap();
+        Platform.runLater(() -> {
+            BattlePageController.getInstance().refreshTheStatusOfMap(this);
+        });
 
     }
 
@@ -1263,14 +1287,19 @@ public class BattleManager {
         }
     }
 
-    public void putFlagOnMap(Item item) {
+    public void putItemOnMap(Item item) {
         Random random = new Random();
         int x1 = random.nextInt(5) + 1;
         int x2 = random.nextInt(9) + 1;
-        if (Map.getInstance().getCell(x1, x2).getCardInCell() != null)
+        if (Map.getInstance().getCell(x1, x2).getCardInCell() != null) {
             Map.getInstance().getCell(x1, x2).getCardInCell().setItem(item);
-        else
+
+        } else {
             Map.getInstance().getCell(x1, x2).setItem(item);
-        //    refreshTheStatusOfMap();
+        }
+        Platform.runLater(() -> {
+            BattlePageController.getInstance().refreshTheStatusOfMap(this);
+        });
+
     }
 }

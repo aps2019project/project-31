@@ -104,7 +104,6 @@ public class LoginPageController implements Initializable {
             login();
         });
 
-
         infoButton.setOnAction(actionEvent -> {
             Image image = new Image(getClass().getResource("/images/Credits.jpg").toExternalForm());
             ImageView imageView = new ImageView(image);
