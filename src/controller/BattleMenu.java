@@ -119,7 +119,7 @@ public class BattleMenu extends Menu {
         for (int theTurn : battleManager.getTurnsAppearingTheCollectibleFlags()) {
             if (theTurn == battleManager.getTurn()) {
                 Collections.shuffle(Shop.getAllCollectibles());
-                battleManager.putFlagOnMap(Shop.getAllCollectibles().get(0));
+                battleManager.putItemOnMap(Shop.getAllCollectibles().get(0));
             }
         }
         //    battleManager.refreshTheStatusOfMap();

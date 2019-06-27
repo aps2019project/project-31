@@ -125,14 +125,12 @@ public class Cell {
     public Double[] calculateCenter() {
         Double[] coordinates = new Double[2];
         double x = 0, y = 0;
-        System.out.println(Arrays.toString(polygon.getPoints().toArray()));
-        System.out.println(polygon.getLayoutX() + " " + polygon.getLayoutY());
+
         x += polygon.getPoints().get(0) + polygon.getPoints().get(2);
         y += polygon.getPoints().get(1);
         coordinates[0] = (x / 2) + polygon.getLayoutX() - 40;
         coordinates[1] = (y) + polygon.getLayoutY() - 20;
-        System.out.println("x average is : " + coordinates[0]);
-        System.out.println("y average is : " + coordinates[1]);
+
         return coordinates;
     }
 

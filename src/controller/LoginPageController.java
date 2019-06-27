@@ -91,14 +91,18 @@ public class LoginPageController implements Initializable {
         mainContainer.setScaleX(scaleX);
         mainContainer.setScaleY(scaleX);
 
+        System.out.println(Shop.getAllCollectibles().get(3).isCollectible());
 
+        DisplayableDeployable minion =new DisplayableDeployable(Shop.getAllMinions().get(25));
+        infoVBox.getChildren().add(minion);
+        minion.setOnMouseEntered(event -> minion.showInfo());
+        minion.setOnMouseExited(event -> minion.removeInfo());
         exitButton.setOnAction(actionEvent -> {
             Initializer.getPrimaryStage().close();
         });
         loginButton.setOnAction(actionEvent -> {
             login();
         });
-
 
         infoButton.setOnAction(actionEvent -> {
             Image image = new Image(getClass().getResource("/images/Credits.jpg").toExternalForm());

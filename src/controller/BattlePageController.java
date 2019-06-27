@@ -314,6 +314,8 @@ public class BattlePageController implements Initializable {
                                 System.out.println("moved!");
                             } else if (!me.isSelectedCardDeployed()) {
                                 BattleMenu.insert(me.getSelectedCard(), cell.getX1Coordinate(), cell.getX2Coordinate());
+                            } else if (me.getSelectedCard() != null && me.getSelectedCard().getType() == CardType.spell) {
+                                BattleMenu.insert(me.getSelectedCard(), cell.getX1Coordinate(), cell.getX2Coordinate());
                             }
                         });
                     } catch (Exception e) {
@@ -365,7 +367,7 @@ public class BattlePageController implements Initializable {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        Platform.runLater(this::updateNextCard);
+        updateNextCard();
         replace.setOnAction(event -> {
             if (isMyTurn() && battle.getCurrentPlayer().getSelectedCard() != null) {
                 BattleMenu.replaceCardInHand(battle.getCurrentPlayer().getSelectedCard().getId());
@@ -457,15 +459,6 @@ public class BattlePageController implements Initializable {
             } else {
                 me.selectACard(card.getUniqueId());
             }
-        } else {
-            if (opponent == null) {
-                System.err.println("null opponent");
-                return;
-            }
-            if (opponent.isSelectedCardDeployed()) {
-                battleManager.attack((Deployable) opponent.getSelectedCard(), card);
-            }
-
         }
     }
 
@@ -506,20 +499,6 @@ public class BattlePageController implements Initializable {
             System.out.println("mohem nis :)");
         }
         try {
-            if (me == battleManager.getCurrentPlayer()) {
-                for (int i = 0; i < battleManager.getCurrentPlayer().getMana(); i++) {
-                    manas.get(i).setImage
-                            (new javafx.scene.image.Image(new FileInputStream("@assets/ui/icon_mana@2x.png")));
-                }
-            } else {
-                for (ImageView imageView : manas) {
-                    imageView.setImage(new Image(new FileInputStream("@assets/ui/icon_mana_inactive.png")));
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        try {
             updateManaViewers(battleManager);
             generalCoolDown.setText("" + me.getHero().getHeroSpell().getCoolDownRemaining());
             opponentGeneralCoolDown.setText("" + opponent.getHero().getHeroSpell().getCoolDownRemaining());
@@ -527,6 +506,24 @@ public class BattlePageController implements Initializable {
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("migam ke mohem nis");
+        }
+
+        for (Cell[] cells : Map.getInstance().getMap()) {
+            for (Cell cell : cells) {
+                if (cell.getItem() != null) {
+                    try {
+                        String imagePath = getClass().getResource("/gifs/Items/" + cell.getItem().getName() + "/actionbar.gif").toExternalForm();
+                        ImageView flag = new ImageView(new Image(imagePath,
+                                30, 30, false, true));
+                        flag.setTranslateY(cell.calculateCenter()[0]);
+                        flag.setTranslateY(cell.calculateCenter()[1]);
+                        mainPane.getChildren().add(flag);
+                    } catch (NullPointerException e) {
+                        System.err.println("The item gif not found");
+
+                    }
+                }
+            }
         }
         /*if(battleController.getMe().hand.get(0)!=null)
         {

@@ -248,4 +248,12 @@ public class Deployable extends Card {
                 "  unique card id: " + uniqueId + "  HP: " + theActualHealth() + "  AP: " + theActualDamage();
     }
 
+    public boolean doesBelongToPlayer(Player player) {
+        for (Deployable deployable : player.cardsOnBattleField) {
+            if (deployable == this)
+                return true;
+        }
+        return false;
+    }
+
 }
