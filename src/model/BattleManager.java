@@ -110,7 +110,8 @@ public class BattleManager {
         currentPlayer.removeFromHand(minion);
         applyOnSpawnFunction(theMinion);
         currentPlayer.decreaseMana(theMinion.manaCost);
-        BattlePageController.getInstance().removeMinionFromHand(((Deployable) BattlePageController.getInstance().getMe().selectedCard).face, battle);
+        if (!currentPlayer.isAi())
+            BattlePageController.getInstance().removeMinionFromHand(((Deployable) BattlePageController.getInstance().getMe().selectedCard).face, battle);
         currentPlayer.selectedCard = null;
         Platform.runLater(() -> {
             BattlePageController.getInstance().refreshTheStatusOfMap(this);
@@ -897,7 +898,6 @@ public class BattleManager {
     }
 
 
-
     public void comboAttack(Deployable enemy, ArrayList<Deployable> comboAttackers) {
         attack(comboAttackers.get(0), enemy);
         for (int i = 1; i < comboAttackers.size(); i++) {
@@ -913,6 +913,8 @@ public class BattleManager {
         if (canAttack(card, enemy) && !card.account.getUsername().equals(enemy.account.getUsername())) {
             dealAttackDamageAndDoOtherStuff(card, enemy);
             counterAttack(card, enemy);
+            /*enemy.getFace().attack();
+            card.getFace().getHit();*/
         } else {
             if (card.isAttacked)
                 Output.hasAttackedBefore(card);

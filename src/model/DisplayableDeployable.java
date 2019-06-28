@@ -20,7 +20,7 @@ public class DisplayableDeployable extends StackPane {
     }
 
     Deployable deployable;
-    boolean isMoving = false;
+    volatile boolean isMoving = false;
     ImageView idle;
     ImageView run;
     ImageView attack;
@@ -99,7 +99,7 @@ public class DisplayableDeployable extends StackPane {
 
         currentStance = idle;
 
-        this.getChildren().addAll(idle, healthIcon, attackIcon, healthLabel, attackLabel,infoBox);
+        this.getChildren().addAll(idle, healthIcon, attackIcon, healthLabel, attackLabel, infoBox);
 
     }
 
@@ -116,6 +116,7 @@ public class DisplayableDeployable extends StackPane {
     }
 
     public void action(ImageView action, double duration) {
+
         getChildren().remove(currentStance);
         if (action.equals(death)) {
             currentStance = null;
@@ -125,9 +126,10 @@ public class DisplayableDeployable extends StackPane {
         action.setScaleX(SCALE);
         getChildren().add(action);
         final ImageView temp = action;
-
+        isMoving = true;
         new AnimationTimer() {
             long time = 0;
+
 
             @Override
             public void handle(long l) {
@@ -137,6 +139,7 @@ public class DisplayableDeployable extends StackPane {
                     if (currentStance != null)
                         getChildren().add(currentStance);
                     updateStats();
+                    isMoving = false;
                     stop();
                 }
             }

@@ -74,6 +74,8 @@ public class GraveYardController implements Initializable {
             }
         }
         Initializer.setCurrentScene(scene);
+        gridPanePlayer1.getChildren().removeAll(gridPanePlayer1.getChildren());
+        gridPanePlayer2.getChildren().removeAll(gridPanePlayer2.getChildren());
         gridPanePlayer1.getChildren().addAll(BattleMenu.getBattleManager().getPlayer1().getGraveYard());
         gridPanePlayer2.getChildren().addAll(BattleMenu.getBattleManager().getPlayer2().getGraveYard());
     }

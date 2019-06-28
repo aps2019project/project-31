@@ -142,7 +142,8 @@ public class BattlePageController implements Initializable {
     private ArrayList<ImageView> manas = new ArrayList<>();
     private ColumnOfHand[] columnHands = new ColumnOfHand[6];
 
-    public BattlePageController() { }
+    public BattlePageController() {
+    }
 
     public void setAsScene() {
         if (scene == null) {
@@ -453,9 +454,11 @@ public class BattlePageController implements Initializable {
                 BattleMenu.insert(me.getSelectedCard(), card.getCell().getX1Coordinate(), card.getCell().getX2Coordinate());
             } else if (me.getSelectedCard() != null &&
                     me.getSelectedCard().getType() != CardType.spell &&
-                    !card.getAccount().equals(me.getAccount())  ) {
+                    !card.getAccount().equals(me.getAccount())) {
                 System.err.println(me.getSelectedCard().getName() + " attacked " + card.getName());
                 battleManager.attack((Deployable) me.getSelectedCard(), card);
+                ((Deployable) me.getSelectedCard()).getFace().attack();
+                card.getFace().getHit();
             } else {
                 me.selectACard(card.getUniqueId());
             }
@@ -484,10 +487,12 @@ public class BattlePageController implements Initializable {
         Player player1 = battleManager.getPlayer1();
         Player player2 = battleManager.getPlayer2();
         for (Deployable card : player1.getCardsOnBattleField()) {
-            card.getFace().updateStats();
+            if (card.getFace() != null)
+                card.getFace().updateStats();
         }
         for (Deployable card : player2.getCardsOnBattleField()) {
-            card.getFace().updateStats();
+            if (card.getFace() != null)
+                card.getFace().updateStats();
         }
 
         try {
@@ -508,13 +513,16 @@ public class BattlePageController implements Initializable {
             System.out.println("migam ke mohem nis");
         }
 
-        for (Cell[] cells : Map.getInstance().getMap()) {
+        /*for (Cell[] cells : Map.getInstance().getMap()) {
             for (Cell cell : cells) {
-                if (cell.getItem() != null) {
+                if (cell.getItem() != null && cell.getDisplayableItem() == null) {
                     try {
-                        DisplayableCard displayableCard = new DisplayableCard(cell.getItem(),"");
-                        displayableCard.setTranslateX(cell.calculateCenter()[0]-displayableCard.getTranslateX());
-                        displayableCard.setTranslateY(cell.calculateCenter()[1]-displayableCard.getTranslateY());
+                        DisplayableCard displayableCard = new DisplayableCard(cell.getItem(), "");
+                        displayableCard.setScaleX(0.2);
+                        displayableCard.setScaleY(0.2);
+                        cell.setDisplayableItem(displayableCard);
+                        displayableCard.setTranslateX(cell.calculateCenter()[0]);
+                        displayableCard.setTranslateY(cell.calculateCenter()[1]);
                         mainPane.getChildren().add(displayableCard);
                     } catch (NullPointerException e) {
                         System.err.println("The item gif not found");
@@ -522,7 +530,7 @@ public class BattlePageController implements Initializable {
                     }
                 }
             }
-        }
+        }*/
         /*if(battleController.getMe().hand.get(0)!=null)
         {
 

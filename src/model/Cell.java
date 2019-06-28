@@ -15,6 +15,16 @@ public class Cell {
     private Item item;
     private Polyline polygon;
 
+    public DisplayableCard getDisplayableItem() {
+        return displayableItem;
+    }
+
+    public void setDisplayableItem(DisplayableCard displayableItem) {
+        this.displayableItem = displayableItem;
+    }
+
+    private DisplayableCard displayableItem;
+
     public Polyline getPolygon() {
         return polygon;
     }
