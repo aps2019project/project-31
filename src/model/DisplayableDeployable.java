@@ -38,9 +38,11 @@ public class DisplayableDeployable extends StackPane {
         String imagePath;
         this.deployable = deployable;
         if (deployable.getType() == CardType.minion) {
-            imagePath = getClass().getResource("/gifs/Minion/" + deployable.getName()).toExternalForm();
+            imagePath = getClass().getResource("/gifs/Minion/" + (deployable.getName().
+                    matches("custom(.*)") ? "" : deployable.getName())).toExternalForm();
         } else {
-            imagePath = getClass().getResource("/gifs/Hero/" + deployable.getName()).toExternalForm();
+            imagePath = getClass().getResource("/gifs/Hero/" + (deployable.getName().
+                    matches("custom(.*)") ? "" : deployable.getName())).toExternalForm();
 
         }
 
