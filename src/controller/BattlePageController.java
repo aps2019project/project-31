@@ -158,6 +158,8 @@ public class BattlePageController implements Initializable {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        } else {
+            isInGraveYard = false;
         }
 
         Initializer.setCurrentScene(scene);

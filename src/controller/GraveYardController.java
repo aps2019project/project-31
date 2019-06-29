@@ -43,7 +43,7 @@ public class GraveYardController implements Initializable {
         backToBattle.setOnAction(event -> {
 
             BattlePageController.getInstance().setAsScene();
-            BattlePageController.getInstance().setInGraveYard(false);
+
         });
         player1Profile = BattlePageController.getInstance().player1Profile;
         player2Profile = BattlePageController.getInstance().player2Profile;
