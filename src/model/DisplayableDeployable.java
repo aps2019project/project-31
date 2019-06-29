@@ -48,19 +48,23 @@ public class DisplayableDeployable extends StackPane {
         idle.setScaleY(SCALE);
         idle.setScaleX(SCALE);
 
-        attack = new ImageView(new Image(imagePath + "/attack.gif"));
+        attack = new ImageView(new Image(imagePath + (deployable.getName().
+                matches("custom(.*)") ? "custom/attack.gif" : "/death.gif")));
         attack.setScaleY(SCALE);
         attack.setScaleX(SCALE);
 
-        death = new ImageView(new Image(imagePath + "/death.gif"));
+        death = new ImageView(new Image(imagePath + (deployable.getName().
+                matches("custom(.*)") ? "custom/death.gif" : "/death.gif")));
         death.setScaleY(SCALE);
         death.setScaleX(SCALE);
 
-        hit = new ImageView(new Image(imagePath + "/hit.gif"));
+        hit = new ImageView(new Image(imagePath + (deployable.getName().
+                matches("custom(.*)") ? "custom/hit.gif" : "/hit.gif")));
         hit.setScaleY(SCALE);
         hit.setScaleX(SCALE);
 
-        run = new ImageView(new Image(imagePath + "/run.gif"));
+        run = new ImageView(new Image(imagePath + (deployable.getName().
+                matches("custom(.*)") ? "custom/death" : "/run.gif")));
         run.setScaleY(SCALE);
         run.setScaleX(SCALE);
 
@@ -156,7 +160,6 @@ public class DisplayableDeployable extends StackPane {
             amountY -= 40 / 15;
         }
         if (Math.abs(amountX) < 0.5 && Math.abs(amountY) < 0.5) {
-            System.out.println("really?");
             return;
         }
         if (isMoving) return;
