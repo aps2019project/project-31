@@ -230,11 +230,17 @@ public class BattleMenu extends Menu {
                 return false;
             }
             if (card.getType() == CardType.minion) {
+                if (!battleManager.checkCoordinates(x1, x2)) {
+                    Output.invalidInsertionTarget();
+                    System.err.println("Invalid Coordinates");
+                    return false;
+
+                }
                 battleManager.playMinion((Minion) card, x1, x2, battleManager);
             }
             if (card.getType() == CardType.spell) {
                 card.setAccount(battleManager.getCurrentPlayer().getAccount());
-                battleManager.playSpell((Spell) card, x1, x2);
+                battleManager.playSpell((Spell) card, x1, x2, battleManager);
             }
             if (card.getType() == CardType.item) {
                 card.setAccount(battleManager.getCurrentPlayer().getAccount());

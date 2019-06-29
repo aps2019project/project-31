@@ -111,7 +111,8 @@ public class BattleManager {
         applyOnSpawnFunction(theMinion);
         currentPlayer.decreaseMana(theMinion.manaCost);
         if (!currentPlayer.isAi())
-            BattlePageController.getInstance().removeMinionFromHand(((Deployable) BattlePageController.getInstance().getMe().selectedCard).face, battle);
+            BattlePageController.getInstance().removeMinionFromHand(((Deployable) BattlePageController
+                    .getInstance().getMe().selectedCard).face, battle);
         currentPlayer.selectedCard = null;
         Platform.runLater(() -> {
             BattlePageController.getInstance().refreshTheStatusOfMap(this);
@@ -801,7 +802,7 @@ public class BattleManager {
         return false;
     }
 
-    public boolean playSpell(Spell spell, int x1, int x2) {
+    public boolean playSpell(Spell spell, int x1, int x2, BattleManager battle) {
         for (Function function : spell.functions) {
             compileFunction(function, x1, x2);
         }
@@ -809,7 +810,10 @@ public class BattleManager {
         currentPlayer.selectedCard = null;
         if (!spell.equals(currentPlayer.getHero().heroSpell))
             currentPlayer.hand.remove(spell);
+
         Platform.runLater(() -> {
+            if (!currentPlayer.isAi())
+                BattlePageController.getInstance().removeSpellFromHand(spell.getFace(), battle);
             BattlePageController.getInstance().refreshTheStatusOfMap(this);
         });
         return true;

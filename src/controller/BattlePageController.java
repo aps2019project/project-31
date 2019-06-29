@@ -2,14 +2,12 @@ package controller;
 
 import constants.CardType;
 import constants.FunctionType;
-import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
@@ -20,14 +18,15 @@ import javafx.scene.shape.Polyline;
 import model.*;
 
 import java.awt.*;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class BattlePageController implements Initializable {
+    public static final double SCALE = 0.25;
+    public static final int OFFSET_X = -60;
+    public static final int OFFSET_Y = -90;
     private static Scene scene;
     private static BattlePageController battlePageController;
 
@@ -195,23 +194,48 @@ public class BattlePageController implements Initializable {
         }
         if (me.getNextCard().getType() == CardType.spell) {
             //
+            DisplayableCard displayableCard = new DisplayableCard(me.getNextCard(), "");
+            displayableCard.setScaleX(SCALE);
+            displayableCard.setScaleY(SCALE);
+            displayableCard.setTranslateY(OFFSET_Y);
+            displayableCard.setTranslateX(OFFSET_X);
+            nextCardField.getChildren().add(displayableCard);
         }
       /*  nextCardField.getChildren().get(1).setTranslateX(30);
         nextCardField.getChildren().get(1).setTranslateY(10);*/
+    }
+
+    public void removeSpellFromHand(DisplayableCard card, BattleManager battle){
+        for (int i = 0; i < 6; i++) {
+            ColumnOfHand column = columnHands[i];
+            if (column.stackPane.getChildren().remove(card)) {
+                updateNextCard(battle, i);
+                return;
+            }
+        }
+    }
+
+    private void updateNextCard(BattleManager battle, int i) {
+        if (nextCardField.getChildren().size() >= 2) {
+            if (nextCardField.getChildren().get(1) instanceof DisplayableDeployable
+                            /*((DisplayableDeployable) nextCardField.getChildren().get(1)
+                    ).getDeployable().getType() == CardType.minion*/) {
+                showMinionInHand(((DisplayableDeployable) nextCardField.getChildren().get(1)).getDeployable(), i, battle);
+                nextCardField.getChildren().remove(1);
+            } else {
+                showSpellInHand(((DisplayableCard) nextCardField.getChildren().get(1)).getCard(), i, battle);
+                nextCardField.getChildren().remove(1);
+            }
+            //if(type == spell)
+        }
+        updateManaViewers(battle);
     }
 
     public void removeMinionFromHand(DisplayableDeployable face, BattleManager battle) {
         for (int i = 0; i < 6; i++) {
             ColumnOfHand column = columnHands[i];
             if (column.stackPane.getChildren().remove(face)) {
-                if (nextCardField.getChildren().size() >= 2) {
-                    if (((DisplayableDeployable) nextCardField.getChildren().get(1)).getDeployable().getType() == CardType.minion) {
-                        showMinionInHand(((DisplayableDeployable) nextCardField.getChildren().get(1)).getDeployable(), i, battle);
-                        nextCardField.getChildren().remove(1);
-                    }
-                    //if(type == spell)
-                }
-                updateManaViewers(battle);
+                updateNextCard(battle, i);
                 return;
             }
         }
@@ -335,7 +359,7 @@ public class BattlePageController implements Initializable {
                         showMinionInHand((Deployable) me.getHand().get(i), i, battle);
                     }
                     if (me.getHand().get(i).getType() == CardType.spell) {
-
+                        showSpellInHand(me.getHand().get(i), i, battle);
                     }
                     columnHands[i].getManaCost().setText(me.getHand().get(i).getManaCost() + "");
                 }
@@ -399,6 +423,27 @@ public class BattlePageController implements Initializable {
         });
         graveYard.setOnAction(event -> {
             GraveYardController.getInstance().setAsScene();
+        });
+    }
+
+    private void showSpellInHand(Card card, int i, BattleManager battle) {
+        DisplayableCard face = new DisplayableCard(card, "");
+        face.setScaleX(SCALE);
+        face.setScaleY(SCALE);
+        face.setTranslateX(OFFSET_X);
+        face.setTranslateY(OFFSET_Y);
+        ((Spell) card).setFace(face);
+        System.out.println("Showing " + card.getName() + " in column" + i);
+        columnHands[i].getStackPane().getChildren().add(face);
+        face.setOnMouseClicked(event -> {
+            System.out.println("clicked! on a card");
+            if (battle.getCurrentPlayer() == me) {
+                System.out.println(card.getId());
+                me.selectACard(card.getId());
+            } else {
+                displayMessage("not my turn");
+                System.out.println("not my turn");
+            }
         });
     }
 

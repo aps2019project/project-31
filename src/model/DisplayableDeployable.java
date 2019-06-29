@@ -149,7 +149,7 @@ public class DisplayableDeployable extends StackPane {
     public void moveToCurrentCell() {
         double amountX = (deployable.getCell().calculateCenter()[0] - getTranslateX()) / 15;
         double amountY = (deployable.getCell().calculateCenter()[1] - getTranslateY()) / 15;
-        if (deployable.getName().equals("Kaveh")) {
+        if (deployable.getName().equals("Kaveh") || deployable.getId() == 209) {
             amountX -= 30 / 15;
             amountY -= 40 / 15;
         }

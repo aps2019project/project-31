@@ -24,7 +24,7 @@ public class Ai extends Player {
                     ") goes to   " + (deployable.getCell().getX1Coordinate() - x1Moves) + " , " +
                     (deployable.getCell().getX2Coordinate() - x2Moves));
         }
-        outerLoop:
+        /*outerLoop:
         for (int i = 0; i < hand.size(); i++) {
             for (int k = 1; k <= Map.MAP_X1_LENGTH; k++) {
                 for (int j = 1; j < Map.MAP_X2_LENGTH; j++) {
@@ -34,7 +34,7 @@ public class Ai extends Player {
                     //needs to be fixed
                 }
             }
-        }
+        }*/
         for (int i = 0; i < cardsOnBattleField.size(); i++) {
             for (int j = 0; j < getOtherPlayer().cardsOnBattleField.size(); j++) {
                 battle.attack(cardsOnBattleField.get(i), getOtherPlayer().cardsOnBattleField.get(j));

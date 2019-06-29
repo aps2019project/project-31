@@ -24,7 +24,6 @@ public class DisplayableCard extends StackPane {
 
 
     public DisplayableCard(Card card, String imagePath) {
-        this.setPrefSize(452, 592);
         this.setAlignment(Pos.CENTER);
         this.card = card;
         this.imagePath = imagePath;

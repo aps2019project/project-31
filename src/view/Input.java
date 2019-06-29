@@ -181,13 +181,15 @@ public class Input {
         }
         pattern = Pattern.compile("use special power \\((\\d+),(\\d+)\\)");
         matcher = pattern.matcher(input);
-        if (matcher.matches() ) {
-            if (player.getHero().getHeroSpell().getCoolDownRemaining() == 0){
-            int x1 = Integer.parseInt(matcher.group(1));
-            int x2 = Integer.parseInt(matcher.group(2));
-            BattleMenu.getBattleManager().playSpell(player.getHero().getHeroSpell(), x1, x2);
-            BattleMenu.getBattleManager().getCurrentPlayer().getHero().getHeroSpell().setCoolDownRemaining
-                    (BattleMenu.getBattleManager().getCurrentPlayer().getHero().getHeroSpell().getCooldown());}else{
+        if (matcher.matches()) {
+            if (player.getHero().getHeroSpell().getCoolDownRemaining() == 0) {
+                int x1 = Integer.parseInt(matcher.group(1));
+                int x2 = Integer.parseInt(matcher.group(2));
+                BattleMenu.getBattleManager().playSpell(player.getHero().
+                        getHeroSpell(), x1, x2, BattleMenu.getBattleManager());
+                BattleMenu.getBattleManager().getCurrentPlayer().getHero().getHeroSpell().setCoolDownRemaining
+                        (BattleMenu.getBattleManager().getCurrentPlayer().getHero().getHeroSpell().getCooldown());
+            } else {
                 System.out.println("cooldown!");
             }
         }
