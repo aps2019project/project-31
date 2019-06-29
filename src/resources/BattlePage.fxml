@@ -443,9 +443,9 @@
          <right>
             <VBox prefHeight="398.0" prefWidth="134.0" BorderPane.alignment="CENTER">
                <children>
-                  <StackPane prefHeight="169.0" prefWidth="134.0">
+                  <StackPane prefHeight="192.0" prefWidth="134.0">
                      <children>
-                        <Pane fx:id="opponentSpecialPane" prefHeight="147.0" prefWidth="134.0">
+                        <Pane fx:id="opponentSpecialPane" prefHeight="155.0" prefWidth="134.0">
                            <children>
                               <ImageView fx:id="opponentSpecialSpell" fitHeight="89.0" fitWidth="95.0" layoutX="18.0" layoutY="18.0" pickOnBounds="true" preserveRatio="true" />
                               <ImageView fx:id="opponentSpecial" fitHeight="111.0" fitWidth="113.0" layoutX="9.0" layoutY="7.0">
@@ -470,16 +470,16 @@
                         </Pane>
                      </children>
                   </StackPane>
-                  <StackPane prefHeight="87.0" prefWidth="123.0">
+                  <StackPane prefHeight="116.0" prefWidth="134.0">
                      <children>
-                        <Label id="OpponentHand" fx:id="opponentHand" alignment="CENTER" prefHeight="50.0" prefWidth="125.0" stylesheets="@style/buttonOne.css" text="Hand: 6/6" textFill="WHITE">
+                        <Label id="OpponentHand" fx:id="opponentHand" alignment="CENTER" prefHeight="49.0" prefWidth="120.0" stylesheets="@style/buttonOne.css" text="Hand: 6/6" textFill="WHITE">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Label>
                      </children>
                   </StackPane>
-                  <HBox prefHeight="52.0" prefWidth="134.0">
+                  <HBox prefHeight="124.0" prefWidth="134.0">
                      <children>
                         <Label id="opponentMana" fx:id="opponentMana" alignment="CENTER" prefHeight="47.0" prefWidth="85.0" stylesheets="@style/buttonOne.css" text="9 / 9" textFill="WHITE">
                            <font>
@@ -493,8 +493,8 @@
                         </ImageView>
                      </children>
                   </HBox>
-                  <VBox fx:id="messageBox" prefHeight="200.0" prefWidth="100.0" />
-                  <Button id="secondButton" fx:id="infoButton" mnemonicParsing="false" prefHeight="22.0" prefWidth="115.0" stylesheets="@style/buttonOne.css" text="info" />
+                  <VBox fx:id="messageBox" prefHeight="201.0" prefWidth="134.0" />
+                  <Button id="secondButton" fx:id="infoButton" mnemonicParsing="false" prefHeight="26.0" prefWidth="118.0" stylesheets="@style/buttonOne.css" text="info" />
                </children>
             </VBox>
          </right>
