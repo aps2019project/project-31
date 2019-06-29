@@ -4,10 +4,7 @@ package controller;
 import com.gilecode.yagson.YaGson;
 import com.gilecode.yagson.YaGsonBuilder;
 import constants.CardType;
-import model.Card;
-import model.Minion;
 import model.*;
-import view.Input;
 import view.Output;
 
 import java.io.BufferedReader;
