@@ -90,10 +90,14 @@ public class CollectionController implements Initializable {
             updateDeckOf(CardType.spell, spellsList1);
 
             if (Account.getEditingDeck().getHero() != null)
-                ShopController.getInstance().initializeShopItems(new ArrayList<>(Collections.singletonList(Account.getEditingDeck().getHero())), heroesList1, 0.3, -210);
+                ShopController.getInstance().
+                        initializeShopItems(new ArrayList<>(Collections.
+                                singletonList(Account.getEditingDeck().getHero())), heroesList1, 0.3, -210);
             else heroesList1.getItems().clear();
             if (Account.getEditingDeck().getItem() != null)
-                ShopController.getInstance().initializeShopItems(new ArrayList<>(Collections.singletonList(Account.getEditingDeck().getItem())), usablesList1, 0.3, -210);
+                ShopController.getInstance().
+                        initializeShopItems(new ArrayList<>(Collections.
+                                singletonList(Account.getEditingDeck().getItem())), usablesList1, 0.3, -210);
             else usablesList1.getItems().clear();
         } catch (Exception ex) {
             ex.printStackTrace();
