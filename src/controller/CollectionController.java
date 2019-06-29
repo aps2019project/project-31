@@ -70,11 +70,11 @@ public class CollectionController implements Initializable {
         Initializer.setCurrentScene(scene);
     }
 
-    private void updateCollection() {
-        ShopController.getInstance().updateCollectionOf(CardType.hero, heroesList);
-        ShopController.getInstance().updateCollectionOf(CardType.minion, minionsList);
-        ShopController.getInstance().updateCollectionOf(CardType.spell, spellsList);
-        ShopController.getInstance().updateCollectionOf(CardType.item, usablesList);
+    private void updateCollection(double scale, int translateY) {
+        ShopController.getInstance().updateCollectionOf(CardType.hero, heroesList, scale, translateY);
+        ShopController.getInstance().updateCollectionOf(CardType.minion, minionsList, scale, translateY);
+        ShopController.getInstance().updateCollectionOf(CardType.spell, spellsList, scale, translateY);
+        ShopController.getInstance().updateCollectionOf(CardType.item, usablesList, scale, translateY);
     }
 
     private void updateEditingDeck() {
@@ -90,10 +90,10 @@ public class CollectionController implements Initializable {
             updateDeckOf(CardType.spell, spellsList1);
 
             if (Account.getEditingDeck().getHero() != null)
-                ShopController.getInstance().initializeShopItems(new ArrayList<>(Collections.singletonList(Account.getEditingDeck().getHero())), heroesList1, 0.3, -210);
+                ShopController.getInstance().initializeShopItems(new ArrayList<>(Collections.singletonList(Account.getEditingDeck().getHero())), heroesList1, 0.4, -40);
             else heroesList1.getItems().clear();
             if (Account.getEditingDeck().getItem() != null)
-                ShopController.getInstance().initializeShopItems(new ArrayList<>(Collections.singletonList(Account.getEditingDeck().getItem())), usablesList1, 0.3, -210);
+                ShopController.getInstance().initializeShopItems(new ArrayList<>(Collections.singletonList(Account.getEditingDeck().getItem())), usablesList1, 0.7, 0);
             else usablesList1.getItems().clear();
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -114,12 +114,12 @@ public class CollectionController implements Initializable {
         }
         ArrayList<Card> cards = Account.getMainAccount().getSpecificCardsOf(cardType, Account.getEditingDeck().getCards());
         listView.getItems().clear();
-        ShopController.getInstance().initializeShopItems(cards, listView, 0.3, -210);
+        ShopController.getInstance().initializeShopItems(cards, listView, 0.4, -40);
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        updateCollection();
+        updateCollection(0.4, -10);
         updateDeckList();
         addNewDeckButton.setOnAction(event -> {
             if (newDeckName.getText() == null) {
