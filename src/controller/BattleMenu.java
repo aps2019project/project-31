@@ -109,6 +109,7 @@ public class BattleMenu extends Menu {
     public static void doAllAtTheBeginningOfTurnThings() {
         for (Deployable deployable : battleManager.getCurrentPlayer().getCardsOnBattleField()) {
             deployable.setMoved(false);
+            deployable.setAttacked(false);
         }
 
         battleManager.assignManaToPlayers();

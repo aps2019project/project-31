@@ -920,11 +920,12 @@ public class BattleManager {
             /*enemy.getFace().attack();
             card.getFace().getHit();*/
         } else {
+            System.out.println("loook at the next line! why not attack ??");
             if (card.isAttacked)
                 Output.hasAttackedBefore(card);
             if (card.isStunned())
                 Output.isStunned();
-            if (isAttackTypeValidForAttack(card, enemy))
+            if (!isAttackTypeValidForAttack(card, enemy))
                 Output.enemyNotThere();
         }
         Platform.runLater(() -> {
@@ -960,13 +961,12 @@ public class BattleManager {
             enemy.currentHealth -= card.theActualDamage();
         } else
             enemy.currentHealth -= enemy.theActualDamageReceived(card.theActualDamage());
-        if (enemy.currentHealth <= 0) {
-            killTheThing(enemy);
-        }
+
         applyOnAttackFunction(card, enemy);
         applyOnDefendFunction(enemy, card);
         applyItemOnAttackDefendFunctions(card, FunctionType.OnAttack, currentPlayer);
         applyItemOnAttackDefendFunctions(enemy, FunctionType.OnDefend, getOtherPlayer());
+        card.isAttacked = true;
     }
 
     private boolean ignoreHolyBuff(Card card) {
@@ -1057,6 +1057,9 @@ public class BattleManager {
             attacker.currentHealth -= attacker.theActualDamageReceived(counterAttacker.theActualDamage());
             if (attacker.currentHealth <= 0)
                 killTheThing(attacker);
+            if (counterAttacker.currentHealth <= 0) {
+                killTheThing(counterAttacker);
+            }
         }
         Platform.runLater(() -> {
             BattlePageController.getInstance().refreshTheStatusOfMap(this);

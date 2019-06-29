@@ -249,7 +249,7 @@ public class Player {
         return false;
     }
 
-    public boolean addCardTohand(Card card) {
+    public boolean addCardToHand(Card card) {
         if (hand.size() < 6) {
             hand.add(card);
             return true;
@@ -260,7 +260,7 @@ public class Player {
     public void placeNextCardToHand() {
         boolean hasAdded = false;
         if (nextCard != null) {
-            hasAdded = addCardTohand(nextCard);
+            hasAdded = addCardToHand(nextCard);
         }
 
         if (currentDeck.getCards().size() > 0 && hasAdded) {
