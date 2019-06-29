@@ -8,6 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.image.ImageView;
+import model.BattleManager;
 import model.DisplayableDeployable;
 import model.Initializer;
 
@@ -25,11 +26,11 @@ public class GraveYardController implements Initializable {
     public ImageView player1Profile;
     public Label username;
     public Label opponentUsername;
-    public ListView <DisplayableDeployable> player2List;
-    public ListView <DisplayableDeployable> player1List;
+    public ListView<DisplayableDeployable> player2List;
+    public ListView<DisplayableDeployable> player1List;
 
-    public static GraveYardController getInstance(){
-        if(graveYard == null)
+    public static GraveYardController getInstance() {
+        if (graveYard == null)
             return graveYard = new GraveYardController();
         return graveYard;
     }
@@ -40,7 +41,9 @@ public class GraveYardController implements Initializable {
         username.setText(BattlePageController.getInstance().getMe().getAccount().getUsername());
         opponentUsername.setText(BattlePageController.getInstance().getOpponent().getAccount().getUsername());
         backToBattle.setOnAction(event -> {
+
             BattlePageController.getInstance().setAsScene();
+            BattlePageController.getInstance().setInGraveYard(false);
         });
         player1Profile = BattlePageController.getInstance().player1Profile;
         player2Profile = BattlePageController.getInstance().player2Profile;

@@ -15,7 +15,7 @@ public class Initializer extends Application {
         return battleMenu;
     }
 
-    public static boolean isThisFirstGame = true;
+
 
     public static void setPrimaryStage(Stage primaryStage) {
         Initializer.primaryStage = primaryStage;

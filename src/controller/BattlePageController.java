@@ -137,22 +137,27 @@ public class BattlePageController implements Initializable {
     public Label opponentGeneralCoolDown;
     public Label generalSpellManaCost;
     public Label opponentGeneralSpellManaCost;
-
+    private boolean isInGraveYard = false;
     private ArrayList<ImageView> manas = new ArrayList<>();
     private ColumnOfHand[] columnHands = new ColumnOfHand[6];
 
     public BattlePageController() {
     }
 
+    public void setInGraveYard(boolean inGraveYard) {
+        isInGraveYard = inGraveYard;
+    }
+
     public void setAsScene() {
+        if (!isInGraveYard) {
+            try {
+                Parent root = FXMLLoader.load(getClass().getResource("/BattlePage.fxml"));
+                Double screenWidth = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
+                scene = new Scene(root);
 
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("/BattlePage.fxml"));
-            Double screenWidth = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
-            scene = new Scene(root);
-
-        } catch (IOException e) {
-            e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
         Initializer.setCurrentScene(scene);
@@ -308,6 +313,7 @@ public class BattlePageController implements Initializable {
             MainMenuController.getInstance().setAsScene();
         });
         graveYard.setOnAction(event -> {
+            isInGraveYard = true;
             GraveYardController.getInstance().setAsScene();
         });
     }

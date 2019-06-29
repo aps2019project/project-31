@@ -1132,7 +1132,7 @@ public class BattleManager {
             BattlePageController.deleteBattlePage();
         });
         BattleMenu.deleteBattleManager();
-        Initializer.isThisFirstGame = false;
+
     }
 
     public void player2Won() {
