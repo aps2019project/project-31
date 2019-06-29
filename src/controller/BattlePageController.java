@@ -186,14 +186,14 @@ public class BattlePageController implements Initializable {
     }
 
     public void updateNextCard() {
-        me.placeNextCardToHand();//it happens if there is space in hand
         if (nextCardField.getChildren().size() > 1)
             nextCardField.getChildren().remove(1);
         if (me.getNextCard().getType() == CardType.minion) {
             nextCardField.getChildren().add(new DisplayableDeployable((Deployable) me.getNextCard()));
+            nextCardField.getChildren().get(1).setTranslateX(30);
+            nextCardField.getChildren().get(1).setTranslateY(10);
         }
         if (me.getNextCard().getType() == CardType.spell) {
-            //
             DisplayableCard displayableCard = new DisplayableCard(me.getNextCard(), "");
             displayableCard.setScaleX(SCALE);
             displayableCard.setScaleY(SCALE);
@@ -201,41 +201,40 @@ public class BattlePageController implements Initializable {
             displayableCard.setTranslateX(OFFSET_X);
             nextCardField.getChildren().add(displayableCard);
         }
-      /*  nextCardField.getChildren().get(1).setTranslateX(30);
-        nextCardField.getChildren().get(1).setTranslateY(10);*/
     }
 
-    public void removeSpellFromHand(DisplayableCard card, BattleManager battle){
+    public void removeSpellFromHand(DisplayableCard card, BattleManager battle) {
         for (int i = 0; i < 6; i++) {
             ColumnOfHand column = columnHands[i];
             if (column.stackPane.getChildren().remove(card)) {
-                updateNextCard(battle, i);
                 return;
             }
         }
     }
 
-    private void updateNextCard(BattleManager battle, int i) {
-        if (nextCardField.getChildren().size() >= 2) {
-            if (nextCardField.getChildren().get(1) instanceof DisplayableDeployable
-                            /*((DisplayableDeployable) nextCardField.getChildren().get(1)
-                    ).getDeployable().getType() == CardType.minion*/) {
-                showMinionInHand(((DisplayableDeployable) nextCardField.getChildren().get(1)).getDeployable(), i, battle);
-                nextCardField.getChildren().remove(1);
-            } else {
-                showSpellInHand(((DisplayableCard) nextCardField.getChildren().get(1)).getCard(), i, battle);
-                nextCardField.getChildren().remove(1);
+    private void putNextCardInHand(BattleManager battle) {
+        me.placeNextCardToHand(); //does the same thing in battle manager
+        for (int i = 0; i < 6; i++) {
+            if (columnHands[i].stackPane.getChildren().size() == 1) {
+                if (nextCardField.getChildren().size() >= 2) {
+                    if (nextCardField.getChildren().get(1) instanceof DisplayableDeployable) {
+                        showMinionInHand(((DisplayableDeployable) nextCardField.getChildren().get(1)).getDeployable(), i, battle);
+                        nextCardField.getChildren().remove(1);
+                        System.err.println("yello");
+                    } else {
+                        showSpellInHand(((DisplayableCard) nextCardField.getChildren().get(1)).getCard(), i, battle);
+                        nextCardField.getChildren().remove(1);
+                    }
+                }
             }
-            //if(type == spell)
         }
         updateManaViewers(battle);
     }
 
-    public void removeMinionFromHand(DisplayableDeployable face, BattleManager battle) {
+    public void removeMinionFromHand(DisplayableDeployable face) {
         for (int i = 0; i < 6; i++) {
             ColumnOfHand column = columnHands[i];
             if (column.stackPane.getChildren().remove(face)) {
-                updateNextCard(battle, i);
                 return;
             }
         }
@@ -399,6 +398,8 @@ public class BattlePageController implements Initializable {
             }
         });
         endTurn.setOnAction(event -> {
+            putNextCardInHand(battle);
+            updateNextCard();
             BattleMenu.doAllThingsInEndingOfTheTurns();
             if (isMyTurn()) {
                 battle.setCurrentPlayer(battle.getOtherPlayer());
