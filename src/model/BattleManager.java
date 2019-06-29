@@ -6,6 +6,7 @@ import constants.CardType;
 import constants.FunctionType;
 import constants.GameMode;
 import controller.BattleMenu;
+import controller.MainMenuController;
 import javafx.application.Platform;
 import view.Output;
 
@@ -107,6 +108,7 @@ public class BattleManager {
                 face.updateStats();
             });
         });
+        theMinion.isMoved = false;
         currentPlayer.removeFromHand(minion);
         applyOnSpawnFunction(theMinion);
         currentPlayer.decreaseMana(theMinion.manaCost);
@@ -894,6 +896,7 @@ public class BattleManager {
         }
 
         enemy.cell.setCardInCell(null);
+        System.out.println("we killed this poor thing");
         BattlePageController.getInstance().mainPane.getChildren().remove(enemy.getFace());
 
         player.addCardToGraveYard(new DisplayableDeployable(enemy));
@@ -1055,11 +1058,13 @@ public class BattleManager {
     private void counterAttack(Deployable attacker, Deployable counterAttacker) {
         if (!counterAttacker.isDisarmed() && isAttackTypeValidForCounterAttack(attacker, counterAttacker)) {
             attacker.currentHealth -= attacker.theActualDamageReceived(counterAttacker.theActualDamage());
-            if (attacker.currentHealth <= 0)
-                killTheThing(attacker);
-            if (counterAttacker.currentHealth <= 0) {
-                killTheThing(counterAttacker);
-            }
+        } else {
+            System.out.println("counter attack doesn't work");
+        }
+        if (attacker.currentHealth <= 0)
+            killTheThing(attacker);
+        if (counterAttacker.currentHealth <= 0) {
+            killTheThing(counterAttacker);
         }
         Platform.runLater(() -> {
             BattlePageController.getInstance().refreshTheStatusOfMap(this);
@@ -1108,6 +1113,12 @@ public class BattleManager {
         player2.getAccount().addMatchHistories(matchHistory);
         BattleMenu.setGameFinished(true);
         Output.print(player1.getAccount().getUsername() + " won");
+        Platform.runLater(() -> {
+            MainMenuController.getInstance().setAsScene();
+            BattlePageController.deleteBattlePage();
+        });
+        BattleMenu.deleteBattleManager();
+
 
     }
 
@@ -1120,6 +1131,11 @@ public class BattleManager {
         player2.getAccount().incrementWins();
         BattleMenu.setGameFinished(true);
         Output.print(player2.getAccount().getUsername() + " won");
+        Platform.runLater(() -> {
+            MainMenuController.getInstance().setAsScene();
+            BattlePageController.deleteBattlePage();
+        });
+        BattleMenu.deleteBattleManager();
     }
 
     public void draw() {
@@ -1132,6 +1148,11 @@ public class BattleManager {
         //player2.getAccount().incrementDraw();
         Output.print("draw");
         BattleMenu.setGameFinished(true);
+        Platform.runLater(() -> {
+            MainMenuController.getInstance().setAsScene();
+            BattlePageController.deleteBattlePage();
+        });
+        BattleMenu.deleteBattleManager();
     }
 
     public Player getOtherPlayer() {

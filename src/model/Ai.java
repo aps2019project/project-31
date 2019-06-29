@@ -36,9 +36,9 @@ public class Ai extends Player {
                 }
             }
         }
-        for (int i = 0; i < cardsOnBattleField.size(); i++) {
+        for (int i = 0; i < opponent.cardsOnBattleField.size(); i++) {
             for (int j = 0; j < me.cardsOnBattleField.size(); j++) {
-                battle.attack(cardsOnBattleField.get(i), getOtherPlayer().cardsOnBattleField.get(j));
+                battle.attack(opponent.cardsOnBattleField.get(i), me.cardsOnBattleField.get(j));
             }
 
             System.out.println("me is :" + me.account.getUsername());
