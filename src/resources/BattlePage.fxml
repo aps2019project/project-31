@@ -484,6 +484,7 @@
                      </children>
                   </HBox>
                   <VBox fx:id="messageBox" prefHeight="200.0" prefWidth="100.0" />
+                  <Button id="secondButton" fx:id="infoButton" mnemonicParsing="false" prefHeight="22.0" prefWidth="115.0" stylesheets="@style/buttonOne.css" text="info" />
                </children>
             </VBox>
          </right>

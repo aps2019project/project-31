@@ -46,7 +46,8 @@ public class DisplayableDeployable extends StackPane {
 
         }
 
-        idle = new ImageView(new Image(imagePath + "/idle.gif"));
+        idle = new ImageView(new Image(imagePath + (deployable.getName().
+                matches("custom(.*)") ? "custom/idle.gif" : "/idle.gif")));
         idle.setScaleY(SCALE);
         idle.setScaleX(SCALE);
 
@@ -66,7 +67,7 @@ public class DisplayableDeployable extends StackPane {
         hit.setScaleX(SCALE);
 
         run = new ImageView(new Image(imagePath + (deployable.getName().
-                matches("custom(.*)") ? "custom/death" : "/run.gif")));
+                matches("custom(.*)") ? "custom/run" : "/run.gif")));
         run.setScaleY(SCALE);
         run.setScaleX(SCALE);
 
