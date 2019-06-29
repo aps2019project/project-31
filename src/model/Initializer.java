@@ -15,6 +15,8 @@ public class Initializer extends Application {
         return battleMenu;
     }
 
+
+
     public static void setPrimaryStage(Stage primaryStage) {
         Initializer.primaryStage = primaryStage;
     }

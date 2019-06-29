@@ -15,6 +15,7 @@ public class Ai extends Player {
 
     public void considerAllMoves() {
         Player me = BattlePageController.getInstance().getMe();
+        Player opponent = BattlePageController.getInstance().getOpponent();
         for (Deployable deployable : getCardsOnBattleField()) {
             int x2Moves = coefficient(deployable.cell.getX2Coordinate() - me.getHero().cell.getX2Coordinate());
             int x1Moves = coefficient(deployable.cell.getX1Coordinate() - me.getHero().cell.getX1Coordinate());
@@ -24,22 +25,25 @@ public class Ai extends Player {
                     ") goes to   " + (deployable.getCell().getX1Coordinate() - x1Moves) + " , " +
                     (deployable.getCell().getX2Coordinate() - x2Moves));
         }
-        /*outerLoop:
+        outerLoop:
         for (int i = 0; i < hand.size(); i++) {
             for (int k = 1; k <= Map.MAP_X1_LENGTH; k++) {
                 for (int j = 1; j < Map.MAP_X2_LENGTH; j++) {
-                    if (hand.get(i) != null && BattleMenu.insert(hand.get(i), k, j)) {
+                    if (i < hand.size() && hand.get(i) != null && BattleMenu.insert(hand.get(i), k, j)) {
 
                     }
                     //needs to be fixed
                 }
             }
-        }*/
-        for (int i = 0; i < cardsOnBattleField.size(); i++) {
-            for (int j = 0; j < getOtherPlayer().cardsOnBattleField.size(); j++) {
-                battle.attack(cardsOnBattleField.get(i), getOtherPlayer().cardsOnBattleField.get(j));
-            }
         }
+        for (int i = 0; i < opponent.cardsOnBattleField.size(); i++) {
+            for (int j = 0; j < me.cardsOnBattleField.size(); j++) {
+                battle.attack(opponent.cardsOnBattleField.get(i), me.cardsOnBattleField.get(j));
+            }
+
+            System.out.println("me is :" + me.account.getUsername());
+        }
+        this.placeNextCardToHand();
     }
 
     public Player getOtherPlayer() {

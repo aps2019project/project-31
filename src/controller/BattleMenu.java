@@ -105,15 +105,20 @@ public class BattleMenu extends Menu {
         player2.setBattle(battleManager);
     }
 
+    public static void deleteBattleManager() {
+        battleManager = null;
+        Map.getInstance().makeANewMap();
+    }
 
     public static void doAllAtTheBeginningOfTurnThings() {
         for (Deployable deployable : battleManager.getCurrentPlayer().getCardsOnBattleField()) {
             deployable.setMoved(false);
+            deployable.setAttacked(false);
         }
 
         battleManager.assignManaToPlayers();
 
-        if(BattlePageController.getInstance().nextCardField.getChildren().size() <= 1)
+        if (BattlePageController.getInstance().nextCardField.getChildren().size() <= 1)
             BattlePageController.getInstance().updateNextCard();
 
         for (int theTurn : battleManager.getTurnsAppearingTheCollectibleFlags()) {
@@ -125,7 +130,8 @@ public class BattleMenu extends Menu {
         //    battleManager.refreshTheStatusOfMap();
 
     }
-//    92 + 15 = 107
+
+    //    92 + 15 = 107
     public BattleMenu(int id, String title) {
         super(id, title);
     }
@@ -182,6 +188,7 @@ public class BattleMenu extends Menu {
         battleManager.getPlayer1().getHero().getHeroSpell().decrementCooldonwRemaining();
         battleManager.getPlayer2().getHero().getHeroSpell().decrementCooldonwRemaining();
         //    battleManager.refreshTheStatusOfMap();
+        BattleMenu.showGlimpseOfMap(BattleMenu.getBattleManager());
     }
 
 
@@ -251,9 +258,9 @@ public class BattleMenu extends Menu {
                     battleManager.compileFunction(function, x1, x2);
                 }
             }
-            if (card.getName() == "Eagle"){
+            if (card.getName() == "Eagle") {
                 System.out.println("found eagle");
-                for (Buff buff: ((Deployable) card).getBuffs()){
+                for (Buff buff : ((Deployable) card).getBuffs()) {
                     System.out.println(buff.getBuffType());
                 }
             }

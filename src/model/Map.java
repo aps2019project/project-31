@@ -33,6 +33,16 @@ public class Map {
         }
     }
 
+    public void makeANewMap() {
+        Cell[][] newMap = new Cell[MAP_X1_LENGTH + 1][MAP_X2_LENGTH + 1];
+        for (int i = 0; i <= MAP_X1_LENGTH; i++) {
+            for (int j = 0; j <= MAP_X2_LENGTH; j++) {
+                newMap[i][j] = new Cell(i, j, null, map[i][j].getPolygon());
+            }
+        }
+        map = newMap;
+    }
+
     public int getDistance(Cell cell1, Cell cell2) {
         if (cell1 == null || cell2 == null)
             return 100000;

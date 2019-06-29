@@ -6,6 +6,7 @@ import constants.CardType;
 import constants.FunctionType;
 import constants.GameMode;
 import controller.BattleMenu;
+import controller.MainMenuController;
 import javafx.application.Platform;
 import view.Output;
 
@@ -107,12 +108,13 @@ public class BattleManager {
                 face.updateStats();
             });
         });
+        theMinion.isMoved = false;
         currentPlayer.removeFromHand(minion);
         applyOnSpawnFunction(theMinion);
         currentPlayer.decreaseMana(theMinion.manaCost);
         if (!currentPlayer.isAi())
             BattlePageController.getInstance().removeMinionFromHand(((Deployable) BattlePageController
-                    .getInstance().getMe().selectedCard).face, battle);
+                    .getInstance().getMe().selectedCard).face);
         currentPlayer.selectedCard = null;
         Platform.runLater(() -> {
             BattlePageController.getInstance().refreshTheStatusOfMap(this);
@@ -894,6 +896,7 @@ public class BattleManager {
         }
 
         enemy.cell.setCardInCell(null);
+        System.out.println("we killed this poor thing");
         BattlePageController.getInstance().mainPane.getChildren().remove(enemy.getFace());
 
         player.addCardToGraveYard(new DisplayableDeployable(enemy));
@@ -920,11 +923,12 @@ public class BattleManager {
             /*enemy.getFace().attack();
             card.getFace().getHit();*/
         } else {
+            System.out.println("loook at the next line! why not attack ??");
             if (card.isAttacked)
                 Output.hasAttackedBefore(card);
             if (card.isStunned())
                 Output.isStunned();
-            if (isAttackTypeValidForAttack(card, enemy))
+            if (!isAttackTypeValidForAttack(card, enemy))
                 Output.enemyNotThere();
         }
         Platform.runLater(() -> {
@@ -960,13 +964,12 @@ public class BattleManager {
             enemy.currentHealth -= card.theActualDamage();
         } else
             enemy.currentHealth -= enemy.theActualDamageReceived(card.theActualDamage());
-        if (enemy.currentHealth <= 0) {
-            killTheThing(enemy);
-        }
+
         applyOnAttackFunction(card, enemy);
         applyOnDefendFunction(enemy, card);
         applyItemOnAttackDefendFunctions(card, FunctionType.OnAttack, currentPlayer);
         applyItemOnAttackDefendFunctions(enemy, FunctionType.OnDefend, getOtherPlayer());
+        card.isAttacked = true;
     }
 
     private boolean ignoreHolyBuff(Card card) {
@@ -1055,8 +1058,13 @@ public class BattleManager {
     private void counterAttack(Deployable attacker, Deployable counterAttacker) {
         if (!counterAttacker.isDisarmed() && isAttackTypeValidForCounterAttack(attacker, counterAttacker)) {
             attacker.currentHealth -= attacker.theActualDamageReceived(counterAttacker.theActualDamage());
-            if (attacker.currentHealth <= 0)
-                killTheThing(attacker);
+        } else {
+            System.out.println("counter attack doesn't work");
+        }
+        if (attacker.currentHealth <= 0)
+            killTheThing(attacker);
+        if (counterAttacker.currentHealth <= 0) {
+            killTheThing(counterAttacker);
         }
         Platform.runLater(() -> {
             BattlePageController.getInstance().refreshTheStatusOfMap(this);
@@ -1096,39 +1104,43 @@ public class BattleManager {
     }
 
     public void player1Won() {
-        MatchHistory matchHistory = new MatchHistory(player2.getAccount().getUsername(), "win");
-        player1.getAccount().addMatchHistories(matchHistory);
-        //player1.account.addDaric();
-        matchHistory = new MatchHistory(player1.getAccount().getUsername(), "lose");
-        player1.getAccount().incrementWins();
-        player2.getAccount().incrementLosses();
-        player2.getAccount().addMatchHistories(matchHistory);
+        gameEnded(player1, player2, false);
+    }
+
+    private void gameEnded(Player winner, Player loser, boolean isDraw) {
+        if (!isDraw) {
+            MatchHistory matchHistory = new MatchHistory(loser.getAccount().getUsername(), "lose");
+            loser.getAccount().addMatchHistories(matchHistory);
+            MatchHistory matchHistory2 = new MatchHistory(winner.getAccount().getUsername(), "win");
+            loser.getAccount().addMatchHistories(matchHistory2);
+            winner.getAccount().incrementWins();
+            loser.getAccount().incrementLosses();
+        } else {
+            MatchHistory matchHistory = new MatchHistory(player2.getAccount().getUsername(), "draw");
+            player1.getAccount().addMatchHistories(matchHistory);
+            matchHistory = new MatchHistory(player1.getAccount().getUsername(), "draw");
+            player2.getAccount().addMatchHistories(matchHistory);
+            //player1.getAccount().incrementDraw();
+            //player2.getAccount().incrementDraw();
+        }
         BattleMenu.setGameFinished(true);
-        Output.print(player1.getAccount().getUsername() + " won");
+        if (winner != null)
+            Output.print(winner.getAccount().getUsername() + " won");
+        else System.out.println("draw");
+        Platform.runLater(() -> {
+            MainMenuController.getInstance().setAsScene();
+            BattlePageController.deleteBattlePage();
+        });
+        BattleMenu.deleteBattleManager();
 
     }
 
     public void player2Won() {
-        MatchHistory matchHistory = new MatchHistory(player2.getAccount().getUsername(), "lose");
-        player1.getAccount().addMatchHistories(matchHistory);
-        matchHistory = new MatchHistory(player1.getAccount().getUsername(), "win");
-        player2.getAccount().addMatchHistories(matchHistory);
-        player1.getAccount().incrementLosses();
-        player2.getAccount().incrementWins();
-        BattleMenu.setGameFinished(true);
-        Output.print(player2.getAccount().getUsername() + " won");
+        gameEnded(player2, player1, false);
     }
 
     public void draw() {
-        MatchHistory matchHistory = new MatchHistory(player2.getAccount().getUsername(), "draw");
-        player1.getAccount().addMatchHistories(matchHistory);
-        matchHistory = new MatchHistory(player1.getAccount().getUsername(), "draw");
-        player2.getAccount().addMatchHistories(matchHistory);
-        //player1.getAccount().incrementDraw();
-
-        //player2.getAccount().incrementDraw();
-        Output.print("draw");
-        BattleMenu.setGameFinished(true);
+        gameEnded(player1, player2, true);
     }
 
     public Player getOtherPlayer() {
