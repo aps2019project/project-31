@@ -138,8 +138,10 @@ public class DisplayableDeployable extends StackPane {
                 if (time == 0) time = l;
                 if (l - time > duration * Math.pow(10, 9)) {
                     getChildren().remove(temp);
-                    if (currentStance != null)
+                    if (currentStance != null) {
+                        getChildren().remove(currentStance);
                         getChildren().add(currentStance);
+                    }
                     updateStats();
                     isMoving = false;
                     stop();
