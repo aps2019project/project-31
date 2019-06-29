@@ -5,18 +5,22 @@ import constants.FunctionType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polyline;
+import javafx.scene.text.Font;
+import javafx.stage.Stage;
 import model.*;
 
 import java.awt.*;
@@ -147,6 +151,8 @@ public class BattlePageController implements Initializable {
     private boolean isInGraveYard = false;
     private ArrayList<ImageView> manas = new ArrayList<>();
     private ColumnOfHand[] columnHands = new ColumnOfHand[6];
+    @FXML
+    private Button infoButton;
 
     public BattlePageController() {
     }
@@ -273,6 +279,24 @@ public class BattlePageController implements Initializable {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        infoButton.setOnAction(actionEvent -> {
+            if (me.getSelectedCard() != null) {
+                Group groupe = new Group();
+                VBox group = new VBox();
+                groupe.getChildren().add(group);
+                Stage smallStage = new Stage();
+                Label label = new Label(me.getSelectedCard().toString());
+                label.setFont(Font.font(20));
+                for (Function function : me.getSelectedCard().getFunctions()) {
+                    if (function == null) return;
+                    Label label1 = new Label(function.getFunction() + " on " + function.getTarget());
+                    label1.setFont(Font.font(20));
+                    group.getChildren().add(label1);
+                }
+                group.getChildren().add(label);
+                smallStage.show();
+            }
+        });
 
         specialSpell.setImage(new Image(getClass().getResource("/gifs/Bloodbound/warbird.gif").toExternalForm()));
         specialSpell.setScaleX(0.5);
