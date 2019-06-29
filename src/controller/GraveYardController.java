@@ -25,11 +25,18 @@ public class GraveYardController implements Initializable {
     public ImageView player1Profile;
     public Label username;
     public Label opponentUsername;
-    public ListView player2List;
-    public ListView player1List;
+    public ListView <DisplayableDeployable> player2List;
+    public ListView <DisplayableDeployable> player1List;
+
+    public static GraveYardController getInstance(){
+        if(graveYard == null)
+            return graveYard = new GraveYardController();
+        return graveYard;
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        graveYard = this;
         username.setText(BattlePageController.getInstance().getMe().getAccount().getUsername());
         opponentUsername.setText(BattlePageController.getInstance().getOpponent().getAccount().getUsername());
         backToBattle.setOnAction(event -> {
@@ -40,21 +47,11 @@ public class GraveYardController implements Initializable {
     }
 
     public void updateGraveYard() {
-        for (DisplayableDeployable displayableDeployable : BattlePageController.getInstance().getMe().getGraveYard()) {
-            if (!player1List.getItems().contains(displayableDeployable))
-                player1List.getItems().add(displayableDeployable);
-        }
-        for (DisplayableDeployable displayableDeployable : BattlePageController.getInstance().getOpponent().getGraveYard()) {
-            if (!player2List.getItems().contains(displayableDeployable))
-                player2List.getItems().add(displayableDeployable);
-        }
-    }
-
-    public static GraveYardController getInstance() {
-        if (graveYard == null) {
-            graveYard = new GraveYardController();
-        }
-        return graveYard;
+        GraveYardController.getInstance().player1List.getItems().clear();
+        GraveYardController.getInstance().player2List.getItems().clear();
+        System.err.println(BattleMenu.getBattleManager().getPlayer1().getGraveYard().size() + " " + BattleMenu.getBattleManager().getPlayer2().getGraveYard().size());
+        GraveYardController.getInstance().player1List.getItems().addAll(BattleMenu.getBattleManager().getPlayer1().getGraveYard());
+        GraveYardController.getInstance().player2List.getItems().addAll(BattleMenu.getBattleManager().getPlayer2().getGraveYard());
     }
 
     public void setAsScene() {
@@ -69,11 +66,8 @@ public class GraveYardController implements Initializable {
                 e.printStackTrace();
             }
         }
+        updateGraveYard();
         Initializer.setCurrentScene(scene);
-        player1List.getItems().clear();
-        player2List.getItems().clear();
-        player1List.getItems().addAll(BattleMenu.getBattleManager().getPlayer1().getGraveYard());
-        player2List.getItems().addAll(BattleMenu.getBattleManager().getPlayer2().getGraveYard());
 //        gridPanePlayer1.getChildren().removeAll(gridPanePlayer1.getChildren());
 //        gridPanePlayer2.getChildren().removeAll(gridPanePlayer2.getChildren());
 //        gridPanePlayer1.getChildren().addAll(BattleMenu.getBattleManager().getPlayer1().getGraveYard());

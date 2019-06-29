@@ -268,7 +268,6 @@ public class BattlePageController implements Initializable {
             }
         }
 
-
         BattleManager battle = BattleMenu.getBattleManager();
         battle.initialTheGame();
 
@@ -277,9 +276,7 @@ public class BattlePageController implements Initializable {
         }
         atStartThings(battle);
         BattleMenu.doAllAtTheBeginningOfTurnThings();
-        replace.setOnAction(event ->
-
-        {
+        replace.setOnAction(event -> {
             if (isMyTurn() && battle.getCurrentPlayer().getSelectedCard() != null) {
                 BattleMenu.replaceCardInHand(battle.getCurrentPlayer().getSelectedCard().getId());
             }

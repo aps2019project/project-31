@@ -127,15 +127,12 @@ public class Player {
     }
 
     public void addCardToGraveYard(DisplayableDeployable card) {
-
         graveYard.add(card);
     }
-
 
     public Account getAccount() {
         return account;
     }
-
 
     public Deck getCurrentDeck() {
         return currentDeck;
