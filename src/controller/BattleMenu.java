@@ -107,6 +107,7 @@ public class BattleMenu extends Menu {
 
     public static void deleteBattleManager() {
         battleManager = null;
+        Map.getInstance().makeANewMap();
     }
 
     public static void doAllAtTheBeginningOfTurnThings() {
