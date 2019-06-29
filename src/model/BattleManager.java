@@ -204,7 +204,8 @@ public class BattleManager {
                 deployables.remove(currentPlayer.getHero());
                 deployables.remove(getOtherPlayer().getHero());
                 Random random = new Random();
-                targetCards.add(deployables.get(random.nextInt(deployables.size())));
+                targetCards.add(deployables.get(deployables.size() == 0 ?
+                        0 :random.nextInt(deployables.size())));
             }
 
             if (target.matches("(.*)" + TargetStrings.RANDOM_UNIT + "(.*)")) {
@@ -212,7 +213,8 @@ public class BattleManager {
                 deployables.addAll(getOtherPlayer().getCardsOnBattleField());
                 deployables.addAll(currentPlayer.getCardsOnBattleField());
                 Random random = new Random();
-                targetCards.add(deployables.get(random.nextInt(deployables.size())));
+                targetCards.add(deployables.get(deployables.size() == 0 ?
+                        0 :random.nextInt(deployables.size())));
             }
 
             if (target.matches("(.*)" + TargetStrings.RANDOM_RANGED_HYBRID + "(.*)")) {
@@ -230,7 +232,8 @@ public class BattleManager {
                     }
                 }
                 Random random = new Random();
-                targetCards.add(deployables.get(random.nextInt(deployables.size())));
+                targetCards.add(deployables.get(deployables.size() == 0 ?
+                        0 :random.nextInt(deployables.size())));
             }
 
             if (target.matches("(.*)" + TargetStrings.ALLIED_GENERAL_RANGED_HYBRID + "(.*)")) {
@@ -378,7 +381,8 @@ public class BattleManager {
                 ArrayList<Card> cardsToPickFrom = new ArrayList<>();
                 addSurroundingCards(cardsToPickFrom, x1, x2);
                 Random random = new Random();
-                targetCards.add(cardsToPickFrom.get(random.nextInt(cardsToPickFrom.size())));
+                targetCards.add(cardsToPickFrom.get(cardsToPickFrom.size() == 0 ?
+                        0 :random.nextInt(cardsToPickFrom.size())));
 
             }
 
@@ -390,7 +394,8 @@ public class BattleManager {
                     }
                 }
                 Random random = new Random();
-                targetCards.add(cardsToPickFrom.get(random.nextInt(cardsToPickFrom.size())));
+                targetCards.add(cardsToPickFrom.get(cardsToPickFrom.size() == 0 ?
+                        0 : random.nextInt(cardsToPickFrom.size())));
 
 
             }

@@ -6,6 +6,8 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import view.Input;
 
+import java.util.Random;
+
 public class Initializer extends Application {
     private static Stage primaryStage;
     private static Scene currentScene;
