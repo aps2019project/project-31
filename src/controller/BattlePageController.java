@@ -1,13 +1,16 @@
 package controller;
 
+import com.sun.javafx.property.adapter.PropertyDescriptor;
 import constants.CardType;
 import constants.FunctionType;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
@@ -129,7 +132,11 @@ public class BattlePageController implements Initializable {
     public Label manaCost2;
     public Label manaCost3;
     public Label manaCost4;
+    @FXML
+    private ImageView opponentSpecial;
     public Label manaCost5;
+    @FXML
+    private ImageView special;
     public Label manaCost6;
 
     public Label opponentHealth;
@@ -205,7 +212,7 @@ public class BattlePageController implements Initializable {
         nextCardField.getChildren().get(1).setTranslateY(10);*/
     }
 
-    public void removeSpellFromHand(DisplayableCard card, BattleManager battle){
+    public void removeSpellFromHand(DisplayableCard card, BattleManager battle) {
         for (int i = 0; i < 6; i++) {
             ColumnOfHand column = columnHands[i];
             if (column.stackPane.getChildren().remove(card)) {
@@ -309,6 +316,14 @@ public class BattlePageController implements Initializable {
             e.printStackTrace();
         }
 
+        special.setImage(new Image(getClass().getResource("/gifs/Bloodbound/warbird.gif").toExternalForm()));
+        special.setScaleX(0.5);
+        special.setScaleY(0.5);
+        opponentSpecial.setImage(
+                new Image(getClass().getResource("/gifs/Bloodbound/conscript.gif").toExternalForm()));
+        opponentSpecial.setScaleY(0.85);
+        opponentSpecial.setScaleX(0.85);
+
         try {
             for (int i = 1; i <= 5; i++) {
                 for (int j = 1; j <= 9; j++) {
@@ -364,6 +379,7 @@ public class BattlePageController implements Initializable {
                     columnHands[i].getManaCost().setText(me.getHand().get(i).getManaCost() + "");
                 }
             }
+
             username.setText(me.getAccount().getUsername());
             opponentUsername.setText(opponent.getAccount().getUsername());
             generalSpellManaCost.setText("" + me.getHero().getHeroSpell().getManaCost());

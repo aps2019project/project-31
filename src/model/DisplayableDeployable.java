@@ -106,12 +106,14 @@ public class DisplayableDeployable extends StackPane {
     public void run() {
         this.getChildren().remove(currentStance);
         currentStance = run;
+        getChildren().remove(currentStance);
         getChildren().add(currentStance);
     }
 
     public void setIdle() {
         getChildren().remove(currentStance);
         currentStance = idle;
+        getChildren().remove(currentStance);
         getChildren().add(currentStance);
     }
 
