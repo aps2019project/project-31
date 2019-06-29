@@ -114,7 +114,7 @@ public class BattleManager {
         currentPlayer.decreaseMana(theMinion.manaCost);
         if (!currentPlayer.isAi())
             BattlePageController.getInstance().removeMinionFromHand(((Deployable) BattlePageController
-                    .getInstance().getMe().selectedCard).face, battle);
+                    .getInstance().getMe().selectedCard).face);
         currentPlayer.selectedCard = null;
         Platform.runLater(() -> {
             BattlePageController.getInstance().refreshTheStatusOfMap(this);
