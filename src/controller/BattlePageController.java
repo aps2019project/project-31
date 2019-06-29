@@ -145,16 +145,16 @@ public class BattlePageController implements Initializable {
     }
 
     public void setAsScene() {
-        if (scene == null) {
-            try {
-                Parent root = FXMLLoader.load(getClass().getResource("/BattlePage.fxml"));
-                Double screenWidth = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
-                scene = new Scene(root);
 
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/BattlePage.fxml"));
+            Double screenWidth = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
+            scene = new Scene(root);
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+
         Initializer.setCurrentScene(scene);
     }
 
