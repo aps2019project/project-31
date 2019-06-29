@@ -242,6 +242,11 @@ public class Player {
             selectedCard = battle.getCurrentPlayer().getHero();
             return true;
         }
+        if (getHero().getHeroSpell().getId() == cardId){
+            System.err.println("Selected Hero spell!");
+            selectedCard = getHero().heroSpell;
+            return true;
+        }
         System.err.println("card not selected");
         return false;
     }

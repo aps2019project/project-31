@@ -204,7 +204,8 @@ public class BattleManager {
                 deployables.remove(currentPlayer.getHero());
                 deployables.remove(getOtherPlayer().getHero());
                 Random random = new Random();
-                targetCards.add(deployables.get(random.nextInt(deployables.size())));
+                targetCards.add(deployables.get(deployables.size() == 0 ?
+                        0 : random.nextInt(deployables.size())));
             }
 
             if (target.matches("(.*)" + TargetStrings.RANDOM_UNIT + "(.*)")) {
@@ -212,7 +213,8 @@ public class BattleManager {
                 deployables.addAll(getOtherPlayer().getCardsOnBattleField());
                 deployables.addAll(currentPlayer.getCardsOnBattleField());
                 Random random = new Random();
-                targetCards.add(deployables.get(random.nextInt(deployables.size())));
+                targetCards.add(deployables.get(deployables.size() == 0 ?
+                        0 : random.nextInt(deployables.size())));
             }
 
             if (target.matches("(.*)" + TargetStrings.RANDOM_RANGED_HYBRID + "(.*)")) {
@@ -230,7 +232,8 @@ public class BattleManager {
                     }
                 }
                 Random random = new Random();
-                targetCards.add(deployables.get(random.nextInt(deployables.size())));
+                targetCards.add(deployables.get(deployables.size() == 0 ?
+                        0 : random.nextInt(deployables.size())));
             }
 
             if (target.matches("(.*)" + TargetStrings.ALLIED_GENERAL_RANGED_HYBRID + "(.*)")) {
@@ -378,7 +381,8 @@ public class BattleManager {
                 ArrayList<Card> cardsToPickFrom = new ArrayList<>();
                 addSurroundingCards(cardsToPickFrom, x1, x2);
                 Random random = new Random();
-                targetCards.add(cardsToPickFrom.get(random.nextInt(cardsToPickFrom.size())));
+                targetCards.add(cardsToPickFrom.get(cardsToPickFrom.size() == 0 ?
+                        0 : random.nextInt(cardsToPickFrom.size())));
 
             }
 
@@ -390,7 +394,8 @@ public class BattleManager {
                     }
                 }
                 Random random = new Random();
-                targetCards.add(cardsToPickFrom.get(random.nextInt(cardsToPickFrom.size())));
+                targetCards.add(cardsToPickFrom.get(cardsToPickFrom.size() == 0 ?
+                        0 : random.nextInt(cardsToPickFrom.size())));
 
 
             }
@@ -587,6 +592,8 @@ public class BattleManager {
         if (function.getFunction().matches("(.*)" + FunctionStrings.DISPEL + "(.*)")) {
             for (Card card : targetCards) {
                 ArrayList<Buff> toRemove = new ArrayList<>();
+                if (card == null)
+                    continue;
                 if (card.getAccount().equals(currentPlayer.getAccount())) {
                     for (Buff buff : ((Deployable) card).getBuffs()) {
                         if (!buff.isBeneficial()) {
@@ -805,13 +812,18 @@ public class BattleManager {
     }
 
     public boolean playSpell(Spell spell, int x1, int x2, BattleManager battle) {
+        if (!spell.equals(currentPlayer.getHero().heroSpell)) {
+            currentPlayer.hand.remove(spell);
+        } else if (currentPlayer.getHero().getHeroSpell().getCoolDownRemaining() != 0) {
+            System.out.println("cool down!");
+            return false;
+        }
         for (Function function : spell.functions) {
             compileFunction(function, x1, x2);
         }
         currentPlayer.decreaseMana(spell.manaCost);
         currentPlayer.selectedCard = null;
-        if (!spell.equals(currentPlayer.getHero().heroSpell))
-            currentPlayer.hand.remove(spell);
+
 
         Platform.runLater(() -> {
             if (!currentPlayer.isAi())
@@ -1132,7 +1144,7 @@ public class BattleManager {
             BattlePageController.deleteBattlePage();
         });
         BattleMenu.deleteBattleManager();
-        Initializer.isThisFirstGame = false;
+
     }
 
     public void player2Won() {

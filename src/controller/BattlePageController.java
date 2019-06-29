@@ -1,13 +1,16 @@
 package controller;
 
+import com.sun.javafx.property.adapter.PropertyDescriptor;
 import constants.CardType;
 import constants.FunctionType;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
@@ -129,7 +132,11 @@ public class BattlePageController implements Initializable {
     public Label manaCost2;
     public Label manaCost3;
     public Label manaCost4;
+    @FXML
+    private ImageView opponentSpecial;
     public Label manaCost5;
+    @FXML
+    private ImageView special;
     public Label manaCost6;
 
     public Label opponentHealth;
@@ -137,15 +144,19 @@ public class BattlePageController implements Initializable {
     public Label opponentGeneralCoolDown;
     public Label generalSpellManaCost;
     public Label opponentGeneralSpellManaCost;
-
+    private boolean isInGraveYard = false;
     private ArrayList<ImageView> manas = new ArrayList<>();
     private ColumnOfHand[] columnHands = new ColumnOfHand[6];
 
     public BattlePageController() {
     }
 
+    public void setInGraveYard(boolean inGraveYard) {
+        isInGraveYard = inGraveYard;
+    }
+
     public void setAsScene() {
-        if (scene == null) {
+        if (!isInGraveYard) {
             try {
                 Parent root = FXMLLoader.load(getClass().getResource("/BattlePage.fxml"));
                 Double screenWidth = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
@@ -154,7 +165,10 @@ public class BattlePageController implements Initializable {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        } else {
+            isInGraveYard = false;
         }
+
         Initializer.setCurrentScene(scene);
     }
 
@@ -260,6 +274,19 @@ public class BattlePageController implements Initializable {
             e.printStackTrace();
         }
 
+        special.setImage(new Image(getClass().getResource("/gifs/Bloodbound/warbird.gif").toExternalForm()));
+        special.setScaleX(0.5);
+        special.setScaleY(0.5);
+        opponentSpecial.setImage(
+                new Image(getClass().getResource("/gifs/Bloodbound/conscript.gif").toExternalForm()));
+        opponentSpecial.setScaleY(0.85);
+        opponentSpecial.setScaleX(0.85);
+        special.setOnMouseClicked(mouseEvent -> {
+            me.selectACard(me.getHero().getHeroSpell().getId());
+            System.out.println(opponent.getHero().getId());
+            System.out.println(me.getHero().getHeroSpell().getId());
+        });
+
         for (int i = 1; i <= 5; i++) {
             for (int j = 1; j <= 9; j++) {
                 Cell cell = Map.getInstance().getMap()[i][j];
@@ -308,6 +335,7 @@ public class BattlePageController implements Initializable {
             MainMenuController.getInstance().setAsScene();
         });
         graveYard.setOnAction(event -> {
+            isInGraveYard = true;
             GraveYardController.getInstance().setAsScene();
         });
     }
