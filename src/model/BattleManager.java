@@ -205,7 +205,7 @@ public class BattleManager {
                 deployables.remove(getOtherPlayer().getHero());
                 Random random = new Random();
                 targetCards.add(deployables.get(deployables.size() == 0 ?
-                        0 :random.nextInt(deployables.size())));
+                        0 : random.nextInt(deployables.size())));
             }
 
             if (target.matches("(.*)" + TargetStrings.RANDOM_UNIT + "(.*)")) {
@@ -214,7 +214,7 @@ public class BattleManager {
                 deployables.addAll(currentPlayer.getCardsOnBattleField());
                 Random random = new Random();
                 targetCards.add(deployables.get(deployables.size() == 0 ?
-                        0 :random.nextInt(deployables.size())));
+                        0 : random.nextInt(deployables.size())));
             }
 
             if (target.matches("(.*)" + TargetStrings.RANDOM_RANGED_HYBRID + "(.*)")) {
@@ -233,7 +233,7 @@ public class BattleManager {
                 }
                 Random random = new Random();
                 targetCards.add(deployables.get(deployables.size() == 0 ?
-                        0 :random.nextInt(deployables.size())));
+                        0 : random.nextInt(deployables.size())));
             }
 
             if (target.matches("(.*)" + TargetStrings.ALLIED_GENERAL_RANGED_HYBRID + "(.*)")) {
@@ -382,7 +382,7 @@ public class BattleManager {
                 addSurroundingCards(cardsToPickFrom, x1, x2);
                 Random random = new Random();
                 targetCards.add(cardsToPickFrom.get(cardsToPickFrom.size() == 0 ?
-                        0 :random.nextInt(cardsToPickFrom.size())));
+                        0 : random.nextInt(cardsToPickFrom.size())));
 
             }
 
@@ -810,13 +810,18 @@ public class BattleManager {
     }
 
     public boolean playSpell(Spell spell, int x1, int x2, BattleManager battle) {
+        if (!spell.equals(currentPlayer.getHero().heroSpell)) {
+            currentPlayer.hand.remove(spell);
+        } else if (currentPlayer.getHero().getHeroSpell().getCoolDownRemaining() != 0) {
+            System.out.println("cool down!");
+            return false;
+        }
         for (Function function : spell.functions) {
             compileFunction(function, x1, x2);
         }
         currentPlayer.decreaseMana(spell.manaCost);
         currentPlayer.selectedCard = null;
-        if (!spell.equals(currentPlayer.getHero().heroSpell))
-            currentPlayer.hand.remove(spell);
+
 
         Platform.runLater(() -> {
             if (!currentPlayer.isAi())

@@ -281,6 +281,11 @@ public class BattlePageController implements Initializable {
                 new Image(getClass().getResource("/gifs/Bloodbound/conscript.gif").toExternalForm()));
         opponentSpecial.setScaleY(0.85);
         opponentSpecial.setScaleX(0.85);
+        special.setOnMouseClicked(mouseEvent -> {
+            me.selectACard(me.getHero().getHeroSpell().getId());
+            System.out.println(me.getHero().getId());
+            System.out.println(me.getHero().getHeroSpell().getId());
+        });
 
         for (int i = 1; i <= 5; i++) {
             for (int j = 1; j <= 9; j++) {
