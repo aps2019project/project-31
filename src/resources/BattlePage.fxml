@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
@@ -15,7 +23,7 @@
 <?import javafx.scene.shape.Polyline?>
 <?import javafx.scene.text.Font?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.BattlePageController">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.BattlePageController">
    <children>
       <ImageView fitHeight="720.0" fitWidth="1080.0">
          <image>
@@ -386,13 +394,14 @@
                <children>
                   <StackPane prefHeight="130.0" prefWidth="170.0">
                      <children>
-                        <Pane>
+                        <Pane fx:id="specialPane">
                            <children>
                               <ImageView fx:id="special" fitHeight="111.0" fitWidth="113.0" layoutX="9.0" layoutY="7.0">
                                  <image>
                                     <Image url="@assets/ui/dialogue_border@2x.png" />
                                  </image>
                               </ImageView>
+                              <ImageView fx:id="specialSpell" fitHeight="85.0" fitWidth="87.0" layoutX="24.0" layoutY="19.0" pickOnBounds="true" preserveRatio="true" />
                               <Label id="generalCoolDown" fx:id="generalCoolDown" alignment="CENTER" layoutX="31.0" layoutY="-14.0" prefHeight="52.0" prefWidth="62.0" stylesheets="@style/labels.css" text="2">
                                  <font>
                                     <Font size="24.0" />
@@ -436,8 +445,9 @@
                <children>
                   <StackPane prefHeight="169.0" prefWidth="134.0">
                      <children>
-                        <Pane prefHeight="147.0" prefWidth="134.0">
+                        <Pane fx:id="opponentSpecialPane" prefHeight="147.0" prefWidth="134.0">
                            <children>
+                              <ImageView fx:id="opponentSpecialSpell" fitHeight="89.0" fitWidth="95.0" layoutX="18.0" layoutY="18.0" pickOnBounds="true" preserveRatio="true" />
                               <ImageView fx:id="opponentSpecial" fitHeight="111.0" fitWidth="113.0" layoutX="9.0" layoutY="7.0">
                                  <image>
                                     <Image url="@assets/ui/dialogue_border@2x.png" />

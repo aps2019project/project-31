@@ -1,6 +1,5 @@
 package controller;
 
-import com.sun.javafx.property.adapter.PropertyDescriptor;
 import constants.CardType;
 import constants.FunctionType;
 import javafx.fxml.FXML;
@@ -132,12 +131,13 @@ public class BattlePageController implements Initializable {
     public Label manaCost2;
     public Label manaCost3;
     public Label manaCost4;
-    @FXML
-    private ImageView opponentSpecial;
     public Label manaCost5;
-    @FXML
-    private ImageView special;
     public Label manaCost6;
+
+    public ImageView special;
+    public ImageView opponentSpecial;
+    public ImageView specialSpell;
+    public ImageView opponentSpecialSpell;
 
     public Label opponentHealth;
     public Label opponentUsername;
@@ -274,14 +274,14 @@ public class BattlePageController implements Initializable {
             e.printStackTrace();
         }
 
-        special.setImage(new Image(getClass().getResource("/gifs/Bloodbound/warbird.gif").toExternalForm()));
-        special.setScaleX(0.5);
-        special.setScaleY(0.5);
-        opponentSpecial.setImage(
+        specialSpell.setImage(new Image(getClass().getResource("/gifs/Bloodbound/warbird.gif").toExternalForm()));
+        specialSpell.setScaleX(0.5);
+        specialSpell.setScaleY(0.5);
+        opponentSpecialSpell.setImage(
                 new Image(getClass().getResource("/gifs/Bloodbound/conscript.gif").toExternalForm()));
-        opponentSpecial.setScaleY(0.85);
-        opponentSpecial.setScaleX(0.85);
-        special.setOnMouseClicked(mouseEvent -> {
+        opponentSpecialSpell.setScaleY(0.85);
+        opponentSpecialSpell.setScaleX(0.85);
+        specialSpell.setOnMouseClicked(mouseEvent -> {
             me.selectACard(me.getHero().getHeroSpell().getId());
             System.out.println(opponent.getHero().getId());
             System.out.println(me.getHero().getHeroSpell().getId());
