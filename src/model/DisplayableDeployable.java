@@ -218,7 +218,6 @@ public class DisplayableDeployable extends StackPane {
             infoBox.getChildren().add(label);
         }
         moveToCurrentCell();
-        moveToCurrentCell();
     }
 
 

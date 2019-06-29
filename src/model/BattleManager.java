@@ -1058,13 +1058,13 @@ public class BattleManager {
     private void counterAttack(Deployable attacker, Deployable counterAttacker) {
         if (!counterAttacker.isDisarmed() && isAttackTypeValidForCounterAttack(attacker, counterAttacker)) {
             attacker.currentHealth -= attacker.theActualDamageReceived(counterAttacker.theActualDamage());
-            if (attacker.currentHealth <= 0)
-                killTheThing(attacker);
-            if (counterAttacker.currentHealth <= 0) {
-                killTheThing(counterAttacker);
-            }
         } else {
             System.out.println("counter attack doesn't work");
+        }
+        if (attacker.currentHealth <= 0)
+            killTheThing(attacker);
+        if (counterAttacker.currentHealth <= 0) {
+            killTheThing(counterAttacker);
         }
         Platform.runLater(() -> {
             BattlePageController.getInstance().refreshTheStatusOfMap(this);
@@ -1115,7 +1115,10 @@ public class BattleManager {
         Output.print(player1.getAccount().getUsername() + " won");
         Platform.runLater(() -> {
             MainMenuController.getInstance().setAsScene();
+            BattlePageController.deleteBattlePage();
         });
+        BattleMenu.deleteBattleManager();
+
 
     }
 
@@ -1130,7 +1133,9 @@ public class BattleManager {
         Output.print(player2.getAccount().getUsername() + " won");
         Platform.runLater(() -> {
             MainMenuController.getInstance().setAsScene();
+            BattlePageController.deleteBattlePage();
         });
+        BattleMenu.deleteBattleManager();
     }
 
     public void draw() {
@@ -1145,7 +1150,9 @@ public class BattleManager {
         BattleMenu.setGameFinished(true);
         Platform.runLater(() -> {
             MainMenuController.getInstance().setAsScene();
+            BattlePageController.deleteBattlePage();
         });
+        BattleMenu.deleteBattleManager();
     }
 
     public Player getOtherPlayer() {
