@@ -8,8 +8,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
-import model.BattleManager;
 import model.DisplayableDeployable;
 import model.Initializer;
 
@@ -23,12 +21,10 @@ public class GraveYardController implements Initializable {
     private static GraveYardController graveYard;
 
     public Button backToBattle;
-    public GridPane gridPanePlayer2;
     public ImageView player2Profile;
     public ImageView player1Profile;
     public Label username;
     public Label opponentUsername;
-    public GridPane gridPanePlayer1;
     public ListView player2List;
     public ListView player1List;
 
@@ -74,9 +70,13 @@ public class GraveYardController implements Initializable {
             }
         }
         Initializer.setCurrentScene(scene);
-        gridPanePlayer1.getChildren().removeAll(gridPanePlayer1.getChildren());
-        gridPanePlayer2.getChildren().removeAll(gridPanePlayer2.getChildren());
-        gridPanePlayer1.getChildren().addAll(BattleMenu.getBattleManager().getPlayer1().getGraveYard());
-        gridPanePlayer2.getChildren().addAll(BattleMenu.getBattleManager().getPlayer2().getGraveYard());
+        player1List.getItems().clear();
+        player2List.getItems().clear();
+        player1List.getItems().addAll(BattleMenu.getBattleManager().getPlayer1().getGraveYard());
+        player2List.getItems().addAll(BattleMenu.getBattleManager().getPlayer2().getGraveYard());
+//        gridPanePlayer1.getChildren().removeAll(gridPanePlayer1.getChildren());
+//        gridPanePlayer2.getChildren().removeAll(gridPanePlayer2.getChildren());
+//        gridPanePlayer1.getChildren().addAll(BattleMenu.getBattleManager().getPlayer1().getGraveYard());
+//        gridPanePlayer2.getChildren().addAll(BattleMenu.getBattleManager().getPlayer2().getGraveYard());
     }
 }

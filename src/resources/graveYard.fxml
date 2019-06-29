@@ -31,11 +31,6 @@
             </Pane>
          </children>
       </StackPane>
-      <StackPane prefHeight="500.0" prefWidth="500.0">
-         <children>
-            <Button id="graveYard" fx:id="backToBattle" mnemonicParsing="false" prefHeight="58.0" prefWidth="180.0" stylesheets="@style/buttonOne.css" text="Back" translateY="-300.0" />
-         </children>
-      </StackPane>
       <StackPane>
          <children>
             <Pane>
@@ -78,5 +73,10 @@
             <Font size="36.0" />
          </font>
       </Label>
+      <StackPane prefHeight="500.0" prefWidth="500.0">
+         <children>
+            <Button id="graveYard" fx:id="backToBattle" mnemonicParsing="false" prefHeight="58.0" prefWidth="180.0" stylesheets="@style/buttonOne.css" text="Back" translateY="-300.0" />
+         </children>
+      </StackPane>
    </children>
 </StackPane>
