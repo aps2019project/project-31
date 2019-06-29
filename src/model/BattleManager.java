@@ -592,6 +592,8 @@ public class BattleManager {
         if (function.getFunction().matches("(.*)" + FunctionStrings.DISPEL + "(.*)")) {
             for (Card card : targetCards) {
                 ArrayList<Buff> toRemove = new ArrayList<>();
+                if (card == null)
+                    continue;
                 if (card.getAccount().equals(currentPlayer.getAccount())) {
                     for (Buff buff : ((Deployable) card).getBuffs()) {
                         if (!buff.isBeneficial()) {

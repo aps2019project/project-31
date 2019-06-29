@@ -155,7 +155,10 @@ public class DisplayableDeployable extends StackPane {
             amountX -= 30 / 15;
             amountY -= 40 / 15;
         }
-        if (amountX < 0.5 && amountY < 0.5) return;
+        if (Math.abs(amountX) < 0.5 && Math.abs(amountY) < 0.5) {
+            System.out.println("really?");
+            return;
+        }
         if (isMoving) return;
         run();
         isMoving = true;

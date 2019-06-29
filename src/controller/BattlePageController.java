@@ -283,7 +283,7 @@ public class BattlePageController implements Initializable {
         opponentSpecial.setScaleX(0.85);
         special.setOnMouseClicked(mouseEvent -> {
             me.selectACard(me.getHero().getHeroSpell().getId());
-            System.out.println(me.getHero().getId());
+            System.out.println(opponent.getHero().getId());
             System.out.println(me.getHero().getHeroSpell().getId());
         });
 

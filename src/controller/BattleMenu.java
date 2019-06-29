@@ -231,6 +231,15 @@ public class BattleMenu extends Menu {
             System.err.println("insert(method) -> card is null");
             return false;
         }
+        if (battleManager.getCurrentPlayer().getHero().getHeroSpell().getId() == card.getId()){
+            if (card.getManaCost() > battleManager.getCurrentPlayer().getMana()) {
+                System.err.println("Not enough mana");
+                return false;
+            }
+            System.out.println("Using hero spell " + card.getName());
+            battleManager.playSpell((Spell) card, x1, x2, battleManager);
+            return true;
+        }
         if (battleManager.cardInHandByCardId(card.getId()) != null) {
             if (card.getManaCost() > battleManager.getCurrentPlayer().getMana()) {
                 System.err.println("Not enough mana");
