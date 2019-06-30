@@ -9,6 +9,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -280,22 +281,22 @@ public class BattlePageController implements Initializable {
             e.printStackTrace();
         }
         infoButton.setOnAction(actionEvent -> {
-            if (me.getSelectedCard() != null) {
-                Group groupe = new Group();
-                VBox group = new VBox();
-                groupe.getChildren().add(group);
-                Stage smallStage = new Stage();
-                Label label = new Label(me.getSelectedCard().toString());
-                label.setFont(Font.font(20));
-                for (Function function : me.getSelectedCard().getFunctions()) {
-                    if (function == null) return;
-                    Label label1 = new Label(function.getFunction() + " on " + function.getTarget());
-                    label1.setFont(Font.font(20));
-                    group.getChildren().add(label1);
-                }
-                group.getChildren().add(label);
-                smallStage.show();
+            if (me.getSelectedCard() == null)
+            {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setHeaderText("Select a card first!");
+                alert.show();
+                return;
             }
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setHeaderText(me.getSelectedCard().getName() + ":");
+            StringBuilder context = new StringBuilder(me.getSelectedCard().toString() + "\n function: \n");
+            for (Function function: me.getSelectedCard().getFunctions()){
+                context.append(function.getFunction()).append(": ").append(function.getTarget());
+            }
+            alert.setContentText(context.toString());
+            alert.setResizable(true);
+            alert.show();
         });
 
         special.setImage(new Image(getClass().getResource("/gifs/Bloodbound/warbird.gif").toExternalForm()));
