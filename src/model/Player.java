@@ -242,7 +242,7 @@ public class Player {
             selectedCard = battle.getCurrentPlayer().getHero();
             return true;
         }
-        if (getHero().getHeroSpell().getId() == cardId){
+        if (getHero().getHeroSpell().getId() == cardId) {
             System.err.println("Selected Hero spell!");
             selectedCard = getHero().heroSpell;
             return true;
@@ -309,8 +309,8 @@ public class Player {
     }
 
     public void endOfTurnBuffsAndFunctions() {
-        applyPassiveAndPoisonBuffs();
         buffsChangesAtTheEndOfTurn();
+        applyPassiveAndPoisonBuffs();
 
     }
 
@@ -336,9 +336,10 @@ public class Player {
 
     public void buffsChangesAtTheEndOfTurn() {
         for (Deployable card : cardsOnBattleField) {
+            if (card == null)
+                break;
             for (int i = 0; i < card.buffs.size(); i++) {
-                if (card == null)
-                    break;
+
                 card.buffs.get(i).decreaseTurnsLeft();
                 if (!card.buffs.get(i).isContinuous() && card.buffs.get(i).getTurnsLeft() <= 0) {
                     card.buffs.remove(i);

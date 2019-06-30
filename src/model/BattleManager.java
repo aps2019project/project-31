@@ -362,6 +362,10 @@ public class BattleManager {
                 }
             }
 
+            if (target.matches("(.*)" + TargetStrings.SELF + "(.*)")) {
+                targetCards.add(Map.getInstance().getCardInCell(x1, x2));
+            }
+
             if (target.matches("(.*)" + TargetStrings.SURROUNDING_ALLIED_MINIONS + "(.*)")) {
                 for (int i = x1 - 1; i < x1 + 2; i++) {
                     for (int j = x2 - 1; j < x2 + 2; j++) {
@@ -702,6 +706,7 @@ public class BattleManager {
             }
 
             if (matcher.group(1).matches("pwhealth\\d+for(\\d+|continuous)")) {
+
                 int amount = Integer.parseInt(matcher.group(1).replaceFirst("pwhealth", "")
                         .replaceFirst("for(.*)", ""));
                 if (matcher.group(1).replaceFirst("pwhealth\\d+for", "").matches(CONTINUOUS)) {
@@ -763,8 +768,11 @@ public class BattleManager {
 
     private void addBuffs(ArrayList<Card> targetCards, Buff buff) {
         for (Card card : targetCards) {
-            if (card != null)
+            if (card != null) {
                 ((Deployable) card).addBuff(buff);
+                System.out.println("Applying buff: " + buff.getBuffType() + " to " +
+                        card.getName());
+            }
         }
     }
 
@@ -1008,6 +1016,7 @@ public class BattleManager {
     private void applyOnSpawnFunction(Deployable card) {
         for (Function function : card.functions) {
             if (function.getFunctionType() == FunctionType.OnSpawn) {
+                System.out.println("Doing on spawn:" + card.getName());
                 compileFunction(function, card.cell.getX1Coordinate(), card.cell.getX2Coordinate());
             }
         }
@@ -1075,9 +1084,9 @@ public class BattleManager {
         } else {
             System.out.println("counter attack doesn't work");
         }
-        if (attacker.currentHealth <= 0)
+        if (attacker.theActualHealth() <= 0)
             killTheThing(attacker);
-        if (counterAttacker.currentHealth <= 0) {
+        if (counterAttacker.theActualHealth() <= 0) {
             killTheThing(counterAttacker);
         }
         Platform.runLater(() -> {
