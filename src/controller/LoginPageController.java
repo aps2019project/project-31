@@ -91,8 +91,6 @@ public class LoginPageController implements Initializable {
         mainContainer.setScaleX(scaleX);
         mainContainer.setScaleY(scaleX);
 
-        System.out.println(Shop.getAllCollectibles().get(3).isCollectible());
-
         exitButton.setOnAction(actionEvent -> {
             Initializer.getPrimaryStage().close();
         });

@@ -155,7 +155,7 @@ public class deckAssembler {
         int hey = scanner.nextInt();
         String path;
         if (hey==1) {
-            path = System.getProperty("user.dir") + "/Sources/StoryDecks/storyDecks.txt";
+            path = System.getProperty("user.dir") + "/Sources/StoryDecks/storyDecks2.txt";
         }else {
             path = System.getProperty("user.dir") + "/Sources/CustomDecks/CustomDecks.txt";
         }

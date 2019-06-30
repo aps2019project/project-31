@@ -38,29 +38,36 @@ public class DisplayableDeployable extends StackPane {
         String imagePath;
         this.deployable = deployable;
         if (deployable.getType() == CardType.minion) {
-            imagePath = getClass().getResource("/gifs/Minion/" + deployable.getName()).toExternalForm();
+            imagePath = getClass().getResource("/gifs/Minion/" + (deployable.getName().
+                    matches("custom(.*)") ? "" : deployable.getName())).toExternalForm();
         } else {
-            imagePath = getClass().getResource("/gifs/Hero/" + deployable.getName()).toExternalForm();
+            imagePath = getClass().getResource("/gifs/Hero/" + (deployable.getName().
+                    matches("custom(.*)") ? "" : deployable.getName())).toExternalForm();
 
         }
 
-        idle = new ImageView(new Image(imagePath + "/idle.gif"));
+        idle = new ImageView(new Image(imagePath + (deployable.getName().
+                matches("custom(.*)") ? "custom/idle.gif" : "/idle.gif")));
         idle.setScaleY(SCALE);
         idle.setScaleX(SCALE);
 
-        attack = new ImageView(new Image(imagePath + "/attack.gif"));
+        attack = new ImageView(new Image(imagePath + (deployable.getName().
+                matches("custom(.*)") ? "custom/attack.gif" : "/death.gif")));
         attack.setScaleY(SCALE);
         attack.setScaleX(SCALE);
 
-        death = new ImageView(new Image(imagePath + "/death.gif"));
+        death = new ImageView(new Image(imagePath + (deployable.getName().
+                matches("custom(.*)") ? "custom/death.gif" : "/death.gif")));
         death.setScaleY(SCALE);
         death.setScaleX(SCALE);
 
-        hit = new ImageView(new Image(imagePath + "/hit.gif"));
+        hit = new ImageView(new Image(imagePath + (deployable.getName().
+                matches("custom(.*)") ? "custom/hit.gif" : "/hit.gif")));
         hit.setScaleY(SCALE);
         hit.setScaleX(SCALE);
 
-        run = new ImageView(new Image(imagePath + "/run.gif"));
+        run = new ImageView(new Image(imagePath + (deployable.getName().
+                matches("custom(.*)") ? "custom/run" : "/run.gif")));
         run.setScaleY(SCALE);
         run.setScaleX(SCALE);
 
@@ -104,12 +111,14 @@ public class DisplayableDeployable extends StackPane {
     public void run() {
         this.getChildren().remove(currentStance);
         currentStance = run;
+        getChildren().remove(currentStance);
         getChildren().add(currentStance);
     }
 
     public void setIdle() {
         getChildren().remove(currentStance);
         currentStance = idle;
+        getChildren().remove(currentStance);
         getChildren().add(currentStance);
     }
 
@@ -134,8 +143,10 @@ public class DisplayableDeployable extends StackPane {
                 if (time == 0) time = l;
                 if (l - time > duration * Math.pow(10, 9)) {
                     getChildren().remove(temp);
-                    if (currentStance != null)
+                    if (currentStance != null) {
+                        getChildren().remove(currentStance);
                         getChildren().add(currentStance);
+                    }
                     updateStats();
                     isMoving = false;
                     stop();
@@ -151,7 +162,9 @@ public class DisplayableDeployable extends StackPane {
             amountX -= 30 / 15;
             amountY -= 40 / 15;
         }
-        if (amountX < 0.5 && amountY < 0.5) return;
+        if (Math.abs(amountX) < 0.5 && Math.abs(amountY) < 0.5) {
+            return;
+        }
         if (isMoving) return;
         run();
         isMoving = true;

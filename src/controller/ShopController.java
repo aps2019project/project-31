@@ -48,9 +48,6 @@ public class ShopController implements Initializable {
     public TabPane collectionTabPane;
     public Label daricView;
 
-    public ShopController() {
-    }
-
     public static ShopController getInstance() {
         if (shop == null) {
             shop = new ShopController();
@@ -63,7 +60,7 @@ public class ShopController implements Initializable {
             try {
                 Parent root = FXMLLoader.load(getClass().getResource("/Shop.fxml"));
                 Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-                Double screenWidth = screen.getWidth();
+                Double screenWidth = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
                 scene = new Scene(root, screenWidth * 2 / 3, screenWidth * 4 / 9);
 
             } catch (IOException e) {
@@ -79,6 +76,7 @@ public class ShopController implements Initializable {
             if (event.getDeltaY() != 0)
                 event.consume();
         });
+
         listView.getItems().clear();
         for (Object card : cards) {
             displayableCard1 = new DisplayableCard((Card) card, "");
@@ -91,18 +89,15 @@ public class ShopController implements Initializable {
             displayableCard1.setMaxSize(0, 0);
             displayableCard1.setBorder(Border.EMPTY);
 
-//            listView.setMaxSize(700, 400);
-//            listView.setFixedCellSize(200);
-
             listView.getItems().add(displayableCard1);
         }
     }
 
-    public void updateCollection() {
-        updateCollectionOf(CardType.hero, heroesList1);
-        updateCollectionOf(CardType.minion, minionsList1);
-        updateCollectionOf(CardType.spell, spellsList1);
-        updateCollectionOf(CardType.item, usablesList1);
+    public void updateCollection(double scale, int translateY) {
+        updateCollectionOf(CardType.hero, heroesList1, scale, translateY);
+        updateCollectionOf(CardType.minion, minionsList1, scale, translateY);
+        updateCollectionOf(CardType.spell, spellsList1, scale, translateY);
+        updateCollectionOf(CardType.item, usablesList1, scale, translateY);
     }
 
     public void updateDaricView() {
@@ -112,14 +107,14 @@ public class ShopController implements Initializable {
         daricView.setText(Integer.toString(Account.getMainAccount().getDaric()));
     }
 
-    public void updateCollectionOf(CardType cardType, ListView<DisplayableCard> listView) {
+    public void updateCollectionOf(CardType cardType, ListView<DisplayableCard> listView, double scale, int translateY) {
         if (Account.getMainAccount() == null || listView == null) {
             System.err.println(Account.getMainAccount());
             return;
         }
         ArrayList<Card> cards = Account.getMainAccount().getSpecificCardsOf(cardType, Account.getMainAccount().getCollection());
         listView.getItems().clear();
-        initializeShopItems(cards, listView, 0.3, -210);
+        initializeShopItems(cards, listView, scale, translateY);
     }
 
     public void displayMessage(String massage) {
@@ -143,7 +138,7 @@ public class ShopController implements Initializable {
         }
         Account.getMainAccount().decreaseDaric(card.getPrice());
         Account.getMainAccount().getCollection().add(card);
-        updateCollection();
+        updateCollection(0.4, -80);
         updateDaricView();
         displayMessage("" + card.getName() + " bought successfully");
     }
@@ -185,7 +180,7 @@ public class ShopController implements Initializable {
         }
         Account.getMainAccount().addDaric(card.getPrice());
         Account.getMainAccount().getCollection().remove(theCard);
-        updateCollection();
+        updateCollection(0.4, -80);
         updateDaricView();
         displayMessage("" + card.getName() + " sold successfully");
     }
@@ -227,15 +222,15 @@ public class ShopController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        initializeShopItems(Shop.getAllHeroes(), heroesList, 0.6, -100);
-        initializeShopItems(Shop.getAllMinions(), minionsList, 0.6, -100);
-        initializeShopItems(Shop.getAllSpells(), spellsList, 0.6, -100);
-        initializeShopItems(Shop.getAllUsables(), usablesList, 0.6, -100);
-        updateCollection();
+        initializeShopItems(Shop.getAllHeroes(), heroesList, 0.6, -10);
+        initializeShopItems(Shop.getAllMinions(), minionsList, 0.6, -10);
+        initializeShopItems(Shop.getAllSpells(), spellsList, 0.6, -10);
+        initializeShopItems(Shop.getAllUsables(), usablesList, 0.6, -10);
+        updateCollection(0.4, -80);
         updateDaricView();
         shopBackButton.setOnAction(event -> {
             MainMenuController.getInstance().setAsScene();
-            updateCollection();
+            updateCollection(0.4, -80);
         });
         buyButton.setOnAction(event -> {
             if (Account.getMainAccount() == null) {
@@ -243,9 +238,10 @@ public class ShopController implements Initializable {
                 return;
             }
             Tab tab = tabPane.getSelectionModel().getSelectedItem();
-            ListView listView = (ListView) tab.getContent();
             DisplayableCard displayableCard = null;
+            ListView listView = (ListView) tab.getContent();
             Card card = null;
+
             if (listView != null) {
                 displayableCard = (DisplayableCard) listView.getSelectionModel().getSelectedItem();
             }
@@ -254,7 +250,7 @@ public class ShopController implements Initializable {
                 buyCard(displayableCard.getCard());
                 selectTab(collectionTabPane, card);
             }
-            updateCollection();
+            updateCollection(0.4, -80);
         });
         sellButton.setOnAction(event -> {
             if (Account.getMainAccount() == null) {
@@ -270,7 +266,7 @@ public class ShopController implements Initializable {
             if (displayableCard != null) {
                 sellCard(displayableCard.getCard());
             }
-            updateCollection();
+            updateCollection(0.4, -80);
         });
         findButton.setOnAction(event -> search());
         searchText.setOnAction(event -> search());

@@ -2,12 +2,16 @@ package controller;
 
 import constants.CardType;
 import constants.FunctionType;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
@@ -15,6 +19,8 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polyline;
+import javafx.scene.text.Font;
+import javafx.stage.Stage;
 import model.*;
 
 import java.awt.*;
@@ -132,6 +138,11 @@ public class BattlePageController implements Initializable {
     public Label manaCost5;
     public Label manaCost6;
 
+    public ImageView special;
+    public ImageView opponentSpecial;
+    public ImageView specialSpell;
+    public ImageView opponentSpecialSpell;
+
     public Label opponentHealth;
     public Label opponentUsername;
     public Label opponentGeneralCoolDown;
@@ -140,6 +151,8 @@ public class BattlePageController implements Initializable {
     private boolean isInGraveYard = false;
     private ArrayList<ImageView> manas = new ArrayList<>();
     private ColumnOfHand[] columnHands = new ColumnOfHand[6];
+    @FXML
+    private Button infoButton;
 
     public BattlePageController() {
     }
@@ -266,6 +279,38 @@ public class BattlePageController implements Initializable {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        infoButton.setOnAction(actionEvent -> {
+            if (me.getSelectedCard() == null) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setHeaderText("Select a card first!");
+                alert.show();
+                return;
+            }
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setHeaderText(me.getSelectedCard().getName() + ":");
+            StringBuilder context = new StringBuilder(me.getSelectedCard().toString() + "\n function: \n");
+            for (Function function : me.getSelectedCard().getFunctions()) {
+                context.append(function.getFunctionType()).
+                        append(" ").append(function.getFunction()).
+                        append(": ").append(function.getTarget());
+            }
+            alert.setContentText(context.toString());
+            alert.setResizable(true);
+            alert.show();
+        });
+
+        specialSpell.setImage(new Image(getClass().getResource("/gifs/Bloodbound/warbird.gif").toExternalForm()));
+        specialSpell.setScaleX(0.5);
+        specialSpell.setScaleY(0.5);
+        opponentSpecialSpell.setImage(
+                new Image(getClass().getResource("/gifs/Bloodbound/conscript.gif").toExternalForm()));
+        opponentSpecialSpell.setScaleY(0.85);
+        opponentSpecialSpell.setScaleX(0.85);
+        specialSpell.setOnMouseClicked(mouseEvent -> {
+            me.selectACard(me.getHero().getHeroSpell().getId());
+            System.out.println(opponent.getHero().getId());
+            System.out.println(me.getHero().getHeroSpell().getId());
+        });
 
         for (int i = 1; i <= 5; i++) {
             for (int j = 1; j <= 9; j++) {

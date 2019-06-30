@@ -20,6 +20,7 @@ public class Deployable extends Card {
     protected ArrayList<Pair<Deployable, Integer>> accumulatingAttacks = new ArrayList<>();
     protected int maxHealth;
     protected Item item;
+    protected int damageTaken = 0;
 
     public Deployable(int price, int manaCost,
                       String cardText, ArrayList<Function> functions,
@@ -38,6 +39,7 @@ public class Deployable extends Card {
         this.attackType = attackType;
         this.isCombo = isCombo;
         this.maxHealth = maxHealth;
+
     }
 
     public DisplayableDeployable getFace() {
@@ -185,7 +187,7 @@ public class Deployable extends Card {
                     extraDamageDueToBuff += buff.getEffectOfWeaknessOrPowerOnAttack();
             }
         }
-        return currentAttack + extraDamageDueToBuff;
+        return currentAttack + extraDamageDueToBuff - damageTaken;
     }
 
     public boolean isDisarmed() {
@@ -217,7 +219,7 @@ public class Deployable extends Card {
     }
 
     public void takeDamage(int damage) {
-        currentHealth -= damage;
+        damageTaken -= damage;
     }
 
     @Override

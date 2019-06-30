@@ -204,7 +204,8 @@ public class BattleManager {
                 deployables.remove(currentPlayer.getHero());
                 deployables.remove(getOtherPlayer().getHero());
                 Random random = new Random();
-                targetCards.add(deployables.get(random.nextInt(deployables.size())));
+                targetCards.add(deployables.get(deployables.size() == 0 ?
+                        0 : random.nextInt(deployables.size())));
             }
 
             if (target.matches("(.*)" + TargetStrings.RANDOM_UNIT + "(.*)")) {
@@ -212,7 +213,8 @@ public class BattleManager {
                 deployables.addAll(getOtherPlayer().getCardsOnBattleField());
                 deployables.addAll(currentPlayer.getCardsOnBattleField());
                 Random random = new Random();
-                targetCards.add(deployables.get(random.nextInt(deployables.size())));
+                targetCards.add(deployables.get(deployables.size() == 0 ?
+                        0 : random.nextInt(deployables.size())));
             }
 
             if (target.matches("(.*)" + TargetStrings.RANDOM_RANGED_HYBRID + "(.*)")) {
@@ -230,7 +232,8 @@ public class BattleManager {
                     }
                 }
                 Random random = new Random();
-                targetCards.add(deployables.get(random.nextInt(deployables.size())));
+                targetCards.add(deployables.get(deployables.size() == 0 ?
+                        0 : random.nextInt(deployables.size())));
             }
 
             if (target.matches("(.*)" + TargetStrings.ALLIED_GENERAL_RANGED_HYBRID + "(.*)")) {
@@ -359,6 +362,10 @@ public class BattleManager {
                 }
             }
 
+            if (target.matches("(.*)" + TargetStrings.SELF + "(.*)")) {
+                targetCards.add(Map.getInstance().getCardInCell(x1, x2));
+            }
+
             if (target.matches("(.*)" + TargetStrings.SURROUNDING_ALLIED_MINIONS + "(.*)")) {
                 for (int i = x1 - 1; i < x1 + 2; i++) {
                     for (int j = x2 - 1; j < x2 + 2; j++) {
@@ -378,7 +385,8 @@ public class BattleManager {
                 ArrayList<Card> cardsToPickFrom = new ArrayList<>();
                 addSurroundingCards(cardsToPickFrom, x1, x2);
                 Random random = new Random();
-                targetCards.add(cardsToPickFrom.get(random.nextInt(cardsToPickFrom.size())));
+                targetCards.add(cardsToPickFrom.get(cardsToPickFrom.size() == 0 ?
+                        0 : random.nextInt(cardsToPickFrom.size())));
 
             }
 
@@ -390,7 +398,8 @@ public class BattleManager {
                     }
                 }
                 Random random = new Random();
-                targetCards.add(cardsToPickFrom.get(random.nextInt(cardsToPickFrom.size())));
+                targetCards.add(cardsToPickFrom.get(cardsToPickFrom.size() == 0 ?
+                        0 : random.nextInt(cardsToPickFrom.size())));
 
 
             }
@@ -587,6 +596,8 @@ public class BattleManager {
         if (function.getFunction().matches("(.*)" + FunctionStrings.DISPEL + "(.*)")) {
             for (Card card : targetCards) {
                 ArrayList<Buff> toRemove = new ArrayList<>();
+                if (card == null)
+                    continue;
                 if (card.getAccount().equals(currentPlayer.getAccount())) {
                     for (Buff buff : ((Deployable) card).getBuffs()) {
                         if (!buff.isBeneficial()) {
@@ -617,10 +628,12 @@ public class BattleManager {
         Pattern pattern = Pattern.compile(FunctionStrings.DEAL_DAMAGE + "(\\d+)");
         Matcher matcher = pattern.matcher(function.getFunction());
         if (matcher.matches()) {
+            System.out.println("dealing damage!");
             int amount = Integer.parseInt(matcher.group(1));
             for (Card card : targetCards) {
                 if (card != null)
                     ((Deployable) card).takeDamage(amount);
+                System.out.println("Dealt damage!");
             }
         }
     }
@@ -693,6 +706,7 @@ public class BattleManager {
             }
 
             if (matcher.group(1).matches("pwhealth\\d+for(\\d+|continuous)")) {
+
                 int amount = Integer.parseInt(matcher.group(1).replaceFirst("pwhealth", "")
                         .replaceFirst("for(.*)", ""));
                 if (matcher.group(1).replaceFirst("pwhealth\\d+for", "").matches(CONTINUOUS)) {
@@ -754,8 +768,11 @@ public class BattleManager {
 
     private void addBuffs(ArrayList<Card> targetCards, Buff buff) {
         for (Card card : targetCards) {
-            if (card != null)
+            if (card != null) {
                 ((Deployable) card).addBuff(buff);
+                System.out.println("Applying buff: " + buff.getBuffType() + " to " +
+                        card.getName());
+            }
         }
     }
 
@@ -805,13 +822,18 @@ public class BattleManager {
     }
 
     public boolean playSpell(Spell spell, int x1, int x2, BattleManager battle) {
+        if (!spell.equals(currentPlayer.getHero().heroSpell)) {
+            currentPlayer.hand.remove(spell);
+        } else if (currentPlayer.getHero().getHeroSpell().getCoolDownRemaining() != 0) {
+            System.out.println("cool down!");
+            return false;
+        }
         for (Function function : spell.functions) {
             compileFunction(function, x1, x2);
         }
         currentPlayer.decreaseMana(spell.manaCost);
         currentPlayer.selectedCard = null;
-        if (!spell.equals(currentPlayer.getHero().heroSpell))
-            currentPlayer.hand.remove(spell);
+
 
         Platform.runLater(() -> {
             if (!currentPlayer.isAi())
@@ -994,6 +1016,7 @@ public class BattleManager {
     private void applyOnSpawnFunction(Deployable card) {
         for (Function function : card.functions) {
             if (function.getFunctionType() == FunctionType.OnSpawn) {
+                System.out.println("Doing on spawn:" + card.getName());
                 compileFunction(function, card.cell.getX1Coordinate(), card.cell.getX2Coordinate());
             }
         }
@@ -1061,9 +1084,9 @@ public class BattleManager {
         } else {
             System.out.println("counter attack doesn't work");
         }
-        if (attacker.currentHealth <= 0)
+        if (attacker.theActualHealth() <= 0)
             killTheThing(attacker);
-        if (counterAttacker.currentHealth <= 0) {
+        if (counterAttacker.theActualHealth() <= 0) {
             killTheThing(counterAttacker);
         }
         Platform.runLater(() -> {
