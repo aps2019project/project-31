@@ -6,14 +6,26 @@
     -fx-background-color: rgba(0, 0, 0, 0.2);
     -fx-padding: 0, 0, 0, 0;
     -fx-border-width: 0;
-    -fx-border-height: 0;;
+    -fx-border-height: 0;
 }
 
 .list-cell:selected {
     -fx-background-color: rgba(0, 0, 0, 0.1);
 }
 
-.list-view .scroll-bar:vertical {
-    -fx-opacity: 0;
-    -fx-padding: -7;
+.scroll-bar {
+    -fx-color: rgba(0, 255, 255, 0.4);
+    -fx-background-color: rgba(0, 255, 255, 0.2);
+}
+
+.scroll-bar :hover {
+    -fx-color: rgba(0, 255, 255, 0.5);
+}
+
+.scroll-bar :selected {
+    -fx-color: rgba(0, 255, 255, 0.5);
+}
+
+.scroll-bar :horizontal{
+    -fx-background-color: rgba(0, 0, 0, 0);
 }

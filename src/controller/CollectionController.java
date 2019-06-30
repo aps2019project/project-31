@@ -59,8 +59,8 @@ public class CollectionController implements Initializable {
         if (true) {
             try {
                 Parent root = FXMLLoader.load(getClass().getResource("/collection.fxml"));
-                Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-                Double screenWidth = screen.getWidth();
+//                Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+                Double screenWidth = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
                 scene = new Scene(root, screenWidth * 2 / 3, screenWidth * 4 / 9);
 
             } catch (IOException e) {
@@ -119,7 +119,7 @@ public class CollectionController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        updateCollection(0.4, -10);
+        updateCollection(0.5, -10);
         updateDeckList();
         addNewDeckButton.setOnAction(event -> {
             if (newDeckName.getText() == null) {
