@@ -447,7 +447,7 @@ public class BattlePageController implements Initializable {
             updateManaViewers(battleManager);
             generalCoolDown.setText("" + me.getHero().getHeroSpell().getCoolDownRemaining());
             opponentGeneralCoolDown.setText("" + opponent.getHero().getHeroSpell().getCoolDownRemaining());
-            deckSize.setText("Deck: " + me.deckSize() + "/20");
+            deckSize.setText("Deck: " + me.deckSize() + 1 + "/18");
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("migam ke mohem nis");
