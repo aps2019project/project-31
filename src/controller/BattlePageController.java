@@ -280,8 +280,7 @@ public class BattlePageController implements Initializable {
             e.printStackTrace();
         }
         infoButton.setOnAction(actionEvent -> {
-            if (me.getSelectedCard() == null)
-            {
+            if (me.getSelectedCard() == null) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setHeaderText("Select a card first!");
                 alert.show();
@@ -290,8 +289,10 @@ public class BattlePageController implements Initializable {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setHeaderText(me.getSelectedCard().getName() + ":");
             StringBuilder context = new StringBuilder(me.getSelectedCard().toString() + "\n function: \n");
-            for (Function function: me.getSelectedCard().getFunctions()){
-                context.append(function.getFunction()).append(": ").append(function.getTarget());
+            for (Function function : me.getSelectedCard().getFunctions()) {
+                context.append(function.getFunctionType()).
+                        append(" ").append(function.getFunction()).
+                        append(": ").append(function.getTarget());
             }
             alert.setContentText(context.toString());
             alert.setResizable(true);

@@ -38,6 +38,7 @@ public class Deployable extends Card {
         this.attackType = attackType;
         this.isCombo = isCombo;
         this.maxHealth = maxHealth;
+
     }
 
     public DisplayableDeployable getFace() {

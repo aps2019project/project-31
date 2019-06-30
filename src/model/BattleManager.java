@@ -624,10 +624,12 @@ public class BattleManager {
         Pattern pattern = Pattern.compile(FunctionStrings.DEAL_DAMAGE + "(\\d+)");
         Matcher matcher = pattern.matcher(function.getFunction());
         if (matcher.matches()) {
+            System.out.println("dealing damage!");
             int amount = Integer.parseInt(matcher.group(1));
             for (Card card : targetCards) {
                 if (card != null)
                     ((Deployable) card).takeDamage(amount);
+                System.out.println("Dealt damage!");
             }
         }
     }
