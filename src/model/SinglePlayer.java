@@ -16,18 +16,22 @@ public class SinglePlayer extends BattleManager {
     private static ArrayList<Deck> customGameDecks = new ArrayList<>();
     private static Deck customGameDeck;
 
+    public static ArrayList<Deck> getCustomGameDecks() {
+        return customGameDecks;
+    }
+
     public SinglePlayer(Player player1, Player player2, int maxNumberOfFlags, int maxTurnsOfHavingFlag, GameMode gameMode) {
         super(player1, player2, maxNumberOfFlags, maxTurnsOfHavingFlag, gameMode);
     }
 
     public static void loadCustomDecks() {
         YaGson yaGson = new YaGsonBuilder().create();
-        String path = System.getProperty("user.dir") + "/Sources/StoryDecks/CustomDecks.txt";
+        String path = System.getProperty("user.dir") + "/Sources/CustomDecks/CustomDecks.txt";
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(path))) {
             String line = bufferedReader.readLine();
             customGameDecks.add(yaGson.fromJson(line, Deck.class));
         } catch (IOException e) {
-
+            e.printStackTrace();
         }
     }
 
