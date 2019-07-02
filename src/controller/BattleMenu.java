@@ -76,6 +76,7 @@ public class BattleMenu extends Menu {
                 System.out.println(theAiDeck.getCards().get(0).toString());
                 break;
             case CustomGame:
+                SinglePlayer.setCustomGameDeck(SinglePlayer.getCustomGameDecks().get(0));
                 theAiDeck = SinglePlayer.getCustomGameDeck();
                 if (theAiDeck == null) {
                     System.err.println("story number invalid");

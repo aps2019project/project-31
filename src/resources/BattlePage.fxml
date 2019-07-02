@@ -224,7 +224,7 @@
                                  </padding>
                               </Button>
                               <Button id="friendsButton" layoutX="110.0" layoutY="82.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="120.0" stylesheets="@style/buttonOne.css" text="Friends" />
-                              <Button id="settingButton" fx:id="setting" layoutX="-7.0" layoutY="82.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="119.0" stylesheets="@style/buttonOne.css" text="Concede" />
+                              <Button id="settingButton" fx:id="concede" layoutX="-7.0" layoutY="82.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="119.0" stylesheets="@style/buttonOne.css" text="Concede" />
                            </children>
                         </Pane>
                      </children>

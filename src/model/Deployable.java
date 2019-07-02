@@ -88,10 +88,7 @@ public class Deployable extends Card {
     }
 
     public void healUp(int amount) {
-        currentHealth += amount;
-        if (currentHealth > maxHealth) {
-            currentHealth = maxHealth;
-        }
+        damageTaken -= amount;
     }
 
     public void increaseAttack(int amount) {
