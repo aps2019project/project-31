@@ -104,7 +104,6 @@ public class BattlePageController implements Initializable {
     public Polyline place17;
     public Polyline place18;
     public Polyline place19;
-    public Button setting;
     public VBox messageBox;
     public Label myMana;
     public ImageView player2Profile;
@@ -113,6 +112,7 @@ public class BattlePageController implements Initializable {
     public AnchorPane profile2Stack;
     public ImageView profPic1;
     public ImageView profPic2;
+    public Button concede;
 
 //    private StackPane showingGraveYard; // for showing it: lastStackPane = showingGraveYard; showingGraveYard is a designed scene
 
@@ -280,45 +280,12 @@ public class BattlePageController implements Initializable {
             e.printStackTrace();
         }
         infoButton.setOnAction(actionEvent -> {
-            if (me.getSelectedCard() == null) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setHeaderText("Select a card first!");
-                alert.show();
-                return;
-            }
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setHeaderText(me.getSelectedCard().getName() + ":");
-            StringBuilder context = new StringBuilder(me.getSelectedCard().toString() + "\n function: \n");
-            for (Function function : me.getSelectedCard().getFunctions()) {
-                context.append(function.getFunctionType()).
-                        append(" ").append(function.getFunction()).
-                        append(": ").append(function.getTarget());
-            }
-            alert.setContentText(context.toString());
-            alert.setResizable(true);
-            alert.show();
+            infoButton();
         });
 
-        specialSpell.setImage(new Image(getClass().getResource("/gifs/Bloodbound/warbird.gif").toExternalForm()));
-        specialSpell.setScaleX(0.5);
-        specialSpell.setScaleY(0.5);
-        opponentSpecialSpell.setImage(
-                new Image(getClass().getResource("/gifs/Bloodbound/conscript.gif").toExternalForm()));
-        opponentSpecialSpell.setScaleY(0.85);
-        opponentSpecialSpell.setScaleX(0.85);
-        specialSpell.setOnMouseClicked(mouseEvent -> {
-            me.selectACard(me.getHero().getHeroSpell().getId());
-            System.out.println(opponent.getHero().getId());
-            System.out.println(me.getHero().getHeroSpell().getId());
-        });
+        initHeroesSpecialPowers();
 
-        for (int i = 1; i <= 5; i++) {
-            for (int j = 1; j <= 9; j++) {
-                Cell cell = Map.getInstance().getMap()[i][j];
-                final Polyline polyline = cell.getPolygon();
-                setOnMouseForPolygon(cell, polyline);
-            }
-        }
+       setOnActionForEveryCell();
 
         BattleManager battle = BattleMenu.getBattleManager();
         battle.initialTheGame();
@@ -334,25 +301,9 @@ public class BattlePageController implements Initializable {
             }
         });
         endTurn.setOnAction(event -> {
-            putNextCardInHand(battle);
-            updateNextCard();
-            BattleMenu.doAllThingsInEndingOfTheTurns();
-            if (isMyTurn()) {
-                battle.setCurrentPlayer(battle.getOtherPlayer());
-            }
-            BattleMenu.doAllAtTheBeginningOfTurnThings();
-            if (battle.getCurrentPlayer().isAi()) {
-                System.err.println("ai is playing");
-                ((Ai) battle.getCurrentPlayer()).play();
-                battle.setCurrentPlayer(battle.getOtherPlayer());
-                BattleMenu.doAllThingsInEndingOfTheTurns();
-                BattleMenu.doAllAtTheBeginningOfTurnThings();
-            }
-            updateManaViewers(battle);
+            endTurn(battle);
         });
-        setting.setOnAction(event ->
-
-        {
+        concede.setOnAction(event -> {
             if (me == battle.getPlayer1())
                 battle.player2Won();
             else
@@ -364,7 +315,46 @@ public class BattlePageController implements Initializable {
             GraveYardController.getInstance().setAsScene();
         });
     }
-
+    private void setOnActionForEveryCell(){
+        for (int i = 1; i <= Map.MAP_X1_LENGTH; i++) {
+            for (int j = 1; j <= Map.MAP_X2_LENGTH; j++) {
+                Cell cell = Map.getInstance().getMap()[i][j];
+                final Polyline polyline = cell.getPolygon();
+                setOnMouseForPolygon(cell, polyline);
+            }
+        }
+    }
+    private void endTurn(BattleManager battle){
+        putNextCardInHand(battle);
+        updateNextCard();
+        BattleMenu.doAllThingsInEndingOfTheTurns();
+        if (isMyTurn()) {
+            battle.setCurrentPlayer(battle.getOtherPlayer());
+        }
+        BattleMenu.doAllAtTheBeginningOfTurnThings();
+        if (battle.getCurrentPlayer().isAi()) {
+            System.err.println("ai is playing");
+            ((Ai) battle.getCurrentPlayer()).play();
+            battle.setCurrentPlayer(battle.getOtherPlayer());
+            BattleMenu.doAllThingsInEndingOfTheTurns();
+            BattleMenu.doAllAtTheBeginningOfTurnThings();
+        }
+        updateManaViewers(battle);
+    }
+    private void initHeroesSpecialPowers(){
+        specialSpell.setImage(new Image(getClass().getResource("/gifs/Bloodbound/warbird.gif").toExternalForm()));
+        specialSpell.setScaleX(0.5);
+        specialSpell.setScaleY(0.5);
+        opponentSpecialSpell.setImage(
+                new Image(getClass().getResource("/gifs/Bloodbound/conscript.gif").toExternalForm()));
+        opponentSpecialSpell.setScaleY(0.85);
+        opponentSpecialSpell.setScaleX(0.85);
+        specialSpell.setOnMouseClicked(mouseEvent -> {
+            me.selectACard(me.getHero().getHeroSpell().getId());
+            System.out.println(opponent.getHero().getId());
+            System.out.println(me.getHero().getHeroSpell().getId());
+        });
+    }
     private void showSpellInHand(Card card, int i, BattleManager battle) {
         DisplayableCard face = new DisplayableCard(card, "");
         face.setScaleX(SCALE);
@@ -385,7 +375,25 @@ public class BattlePageController implements Initializable {
             }
         });
     }
-
+    private void infoButton(){
+        if (me.getSelectedCard() == null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText("Select a card first!");
+            alert.show();
+            return;
+        }
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setHeaderText(me.getSelectedCard().getName() + ":");
+        StringBuilder context = new StringBuilder(me.getSelectedCard().toString() + "\n function: \n");
+        for (Function function : me.getSelectedCard().getFunctions()) {
+            context.append(function.getFunctionType()).
+                    append(" ").append(function.getFunction()).
+                    append(": ").append(function.getTarget());
+        }
+        alert.setContentText(context.toString());
+        alert.setResizable(true);
+        alert.show();
+    }
     private void showMinionInHand(Deployable deployable, int index, BattleManager battle) {
         DisplayableDeployable face = new DisplayableDeployable(deployable);
         deployable.setFace(face);

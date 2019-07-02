@@ -2,7 +2,7 @@ package model;
 
 import controller.BattleMenu;
 import controller.BattlePageController;
-import javafx.application.Platform;
+
 
 public class Ai extends Player {
     public Ai(Account account) {
@@ -29,10 +29,7 @@ public class Ai extends Player {
         for (int i = 0; i < hand.size(); i++) {
             for (int k = 1; k <= Map.MAP_X1_LENGTH; k++) {
                 for (int j = 1; j < Map.MAP_X2_LENGTH; j++) {
-                    if (i < hand.size() && hand.get(i) != null && BattleMenu.insert(hand.get(i), k, j)) {
-
-                    }
-                    //needs to be fixed
+                    if (i < hand.size() && hand.get(i) != null && BattleMenu.insert(hand.get(i), k, j)) ;
                 }
             }
         }
@@ -40,14 +37,9 @@ public class Ai extends Player {
             for (int j = 0; j < me.cardsOnBattleField.size(); j++) {
                 battle.attack(opponent.cardsOnBattleField.get(i), me.cardsOnBattleField.get(j));
             }
-
-            System.out.println("me is :" + me.account.getUsername());
         }
         this.placeNextCardToHand();
-    }
 
-    public Player getOtherPlayer() {
-        return BattleManager.player2;
     }
 
     public int coefficient(int a) {

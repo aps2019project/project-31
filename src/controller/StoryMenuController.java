@@ -29,31 +29,22 @@ public class StoryMenuController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        Thread startTheGame = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Initializer.getBattleMenu().runTheGame();
-            }
-        });
         backButton.setOnAction(event -> PlayMenuController.getInstance().setAsScene());
         story1.setOnMouseClicked(event -> {
               BattleMenu.setBattleManagerForSinglePLayer(BattleManagerMode.Story, Account.getMainAccount(), 100,
                     100, GameMode.DeathMatch, 1);
-         //   startTheGame.start();
             BattlePageController.getInstance().setAsScene();
 
         });
         story2.setOnMouseClicked(event -> {
             BattleMenu.setBattleManagerForSinglePLayer(BattleManagerMode.Story, Account.getMainAccount(), 100,
                     100, GameMode.Flag, 2);
-         //   startTheGame.start();
             BattlePageController.getInstance().setAsScene();
 
         });
         story3.setOnMouseClicked(event -> {
                BattleMenu.setBattleManagerForSinglePLayer(BattleManagerMode.Story, Account.getMainAccount(), 100,
                     100, GameMode.Domination, 3);
-          //  startTheGame.start();
             BattlePageController.getInstance().setAsScene();
 
         });
