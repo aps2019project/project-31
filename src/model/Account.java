@@ -7,10 +7,12 @@ import controller.CollectionMenu;
 import view.Output;
 
 import java.io.*;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class Account {
+
     private static ArrayList<Account> allAccounts = new ArrayList<>();
 
     public static Deck getEditingDeck() {
@@ -46,6 +48,22 @@ public class Account {
         } catch (IOException e) {
             System.err.println("File Exception");
         }
+    }
+
+    public Socket getSocket() {
+        return socket;
+    }
+
+    public void setSocket(Socket socket) {
+        this.socket = socket;
+    }
+
+    public String getAuthToken() {
+        return authToken;
+    }
+
+    public void setAuthToken(String authToken) {
+        this.authToken = authToken;
     }
 
     public void incrementWins() {
