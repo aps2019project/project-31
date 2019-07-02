@@ -23,45 +23,43 @@ public class Server extends Thread {
             server = new ServerSocket(port);
             while (true) {
                 Socket socket = server.accept();
-                new Thread() {
-                    @Override
-                    public void run() {
-                        try {
-                            DataInputStream inputStream = new DataInputStream(socket.getInputStream());
-                            DataOutputStream outputStream = new DataOutputStream(socket.getOutputStream());
-                            while (true) {
+                new Thread(() -> {
+                    try {
+                        DataInputStream inputStream = new DataInputStream(socket.getInputStream());
+                        DataOutputStream outputStream = new DataOutputStream(socket.getOutputStream());
+                        while (true) {
 
-                                String command = inputStream.readUTF();
-                                Pattern pattern = Pattern.compile(ServerStrings.LOGIN);
-                                Matcher matcher = pattern.matcher(command);
-                                if (matcher.matches())
-                                {
-                                    String username = matcher.group(1);
-                                    String password = matcher.group(2);
-                                    Account account = Account.findAccount(username);
-                                    if (account == null ||
-                                        !account.getPassword().equals(password)){
-                                        outputStream.writeUTF(ServerStrings.LOGINERROR);
-                                        continue;
-                                    }
-                                    outputStream.writeUTF(ServerStrings.LOGINSUCCESS);
-                                    YaGson yaGson = new YaGsonBuilder().create();
-                                    ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
-                                    byte[] bytes = yaGson.toJson(account).getBytes();
-                                    out.write(bytes.length);
-                                    for (byte b: bytes){
-                                        out.writeByte(b);
-                                    }
-                                    break;
-
+                            String command = inputStream.readUTF();
+                            Pattern pattern = Pattern.compile(ServerStrings.LOGIN);
+                            Matcher matcher = pattern.matcher(command);
+                            if (matcher.matches())
+                            {
+                                String username = matcher.group(1);
+                                String password = matcher.group(2);
+                                Account account = Account.findAccount(username);
+                                if (account == null ||
+                                    !account.getPassword().equals(password)){
+                                    outputStream.writeUTF(ServerStrings.LOGINERROR);
+                                    continue;
                                 }
-                            }
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+                                outputStream.writeUTF(ServerStrings.LOGINSUCCESS);
+                                YaGson yaGson = new YaGsonBuilder().create();
+                                ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+                                byte[] bytes = yaGson.toJson(account).getBytes();
+                                out.writeInt(bytes.length);
+                                for (byte b: bytes){
+                                    out.writeByte(b);
+                                }
+                                new User(socket,account).start();
+                                break;
 
+                            }
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
-                }.start();
+
+                }).start();
             }
         } catch (Exception e) {
             e.printStackTrace();
