@@ -6,11 +6,13 @@ public class MatchHistory {
     private String opponent;
     private String outcome;
     private Date time;
+    private GameRecord gameRecord;
 
-    public MatchHistory(String opponent, String outcome) {
+    public MatchHistory(String opponent, String outcome, GameRecord gameRecord) {
         this.opponent = opponent;
         this.outcome = outcome;
         this.time = new Date();
+        this.gameRecord = gameRecord;
     }
 
     public void showMatchHistory() {

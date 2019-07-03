@@ -181,7 +181,7 @@ public class BattleMenu extends Menu {
         battleManager.getCurrentPlayer().endOfTurnBuffsAndFunctions();
         battleManager.getOtherPlayer().endOfTurnBuffsAndFunctions();
         battleManager.checkTheEndSituation();
-        if (BattleManager.getGameMode() == GameMode.Flag) {
+        if (battleManager.getGameMode() == GameMode.Flag) {
             battleManager.getPlayer1().handleNumberOfTurnHavingFlagAtTheEndOfTurn();
             battleManager.getPlayer2().handleNumberOfTurnHavingFlagAtTheEndOfTurn();
         }
@@ -290,11 +290,11 @@ public class BattleMenu extends Menu {
     }
 
     public static void showGameInfo() {
-        if (BattleManager.getGameMode() == GameMode.DeathMatch) {
+        if (battleManager.getGameMode() == GameMode.DeathMatch) {
             Output.print("Game Mode: Death Match\nPlayer1 Hero health: " + battleManager.getPlayer1().getHero().
                     getCurrentHealth() + "\nPlayer2 Hero health: " + battleManager.getPlayer2().getHero().
                     getCurrentHealth());
-        } else if (BattleManager.getGameMode() == GameMode.Flag && BattleManager.flagPosition()[0] != -1) {
+        } else if (battleManager.getGameMode() == GameMode.Flag && BattleManager.flagPosition()[0] != -1) {
             Output.print("Game Mode: Flag\nFlag Position: " + BattleManager.flagPosition()[0] + " , " +
                     BattleManager.flagPosition()[1]);
         } else {

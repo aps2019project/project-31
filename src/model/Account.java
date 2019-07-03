@@ -50,7 +50,7 @@ public class Account {
         }
     }
 
-    public Socket getSocket() {
+  /*  public Socket getSocket() {
         return socket;
     }
 
@@ -64,7 +64,7 @@ public class Account {
 
     public void setAuthToken(String authToken) {
         this.authToken = authToken;
-    }
+    }*/
 
     public void incrementWins() {
         winLoseDraw[0]++;

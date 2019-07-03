@@ -20,7 +20,7 @@ import java.util.regex.Pattern;
 public class BattleManager {
     public static final int PERMANENT = 100;
     public static final String CONTINUOUS = "continuous";
-    protected static GameMode gameMode;
+    protected GameMode gameMode;
     protected static Player currentPlayer;
     protected static Player player1;
     protected static Player player2;
@@ -29,6 +29,7 @@ public class BattleManager {
     protected int turn = 1;
     private int[] turnsAppearingTheCollectibleFlags = {2, 3, 5, 8, 11, 12, 15, 18, 20, 21, 24, 27, 31, 32, 36, 37,
             40, 43, 46, 49};
+    protected GameRecord gameRecord;
 
     public int getTurn() {
         return turn;
@@ -39,7 +40,8 @@ public class BattleManager {
         this.maxTurnsOfHavingFlag = maxTurnsOfHavingFlag;
         setPlayer1(player1);
         setPlayer2(player2);
-        BattleManager.gameMode = gameMode;
+        this.gameMode = gameMode;
+        gameRecord = new GameRecord(player1, player2, maxNumberOfFlags, maxTurnsOfHavingFlag, gameMode);
     }
 
 
@@ -73,7 +75,7 @@ public class BattleManager {
     }
 
 
-    public static GameMode getGameMode() {
+    public GameMode getGameMode() {
         return gameMode;
     }
 
@@ -1132,16 +1134,16 @@ public class BattleManager {
 
     private void gameEnded(Player winner, Player loser, boolean isDraw) {
         if (!isDraw) {
-            MatchHistory matchHistory = new MatchHistory(loser.getAccount().getUsername(), "lose");
+            MatchHistory matchHistory = new MatchHistory(loser.getAccount().getUsername(), "lose", gameRecord);
             loser.getAccount().addMatchHistories(matchHistory);
-            MatchHistory matchHistory2 = new MatchHistory(winner.getAccount().getUsername(), "win");
+            MatchHistory matchHistory2 = new MatchHistory(winner.getAccount().getUsername(), "win", gameRecord);
             loser.getAccount().addMatchHistories(matchHistory2);
             winner.getAccount().incrementWins();
             loser.getAccount().incrementLosses();
         } else {
-            MatchHistory matchHistory = new MatchHistory(player2.getAccount().getUsername(), "draw");
+            MatchHistory matchHistory = new MatchHistory(player2.getAccount().getUsername(), "draw", gameRecord);
             player1.getAccount().addMatchHistories(matchHistory);
-            matchHistory = new MatchHistory(player1.getAccount().getUsername(), "draw");
+            matchHistory = new MatchHistory(player1.getAccount().getUsername(), "draw", gameRecord);
             player2.getAccount().addMatchHistories(matchHistory);
             //player1.getAccount().incrementDraw();
             //player2.getAccount().incrementDraw();
