@@ -282,7 +282,7 @@ public class BattlePageController implements Initializable {
         if (!battle.isThisRecordedGame())
             playTheActualGame(battle);
         else {
-            System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+            System.out.println("we are at 285 battle page");
             gameRecord = Account.getMainAccount().getSelectedGameRecord();
             recordTheGame(battle);
         }
@@ -338,6 +338,7 @@ public class BattlePageController implements Initializable {
     }
 
     private void recordTheGame(BattleManager battle) {
+        System.out.println(gameRecord.getGame());
         setPolygonsInMap();
         initPlayers();
         initHeroesSpecialPowers();
@@ -451,7 +452,7 @@ public class BattlePageController implements Initializable {
         columnHands[index].getManaCost().setText(deployable.getManaCost() + "");
     }
 
-    public void initHeroes(BattleManager battleManager, Pane mainPane) {
+    public void initHeroes(BattleManager battleManager ) {
         Hero hero1 = battleManager.getPlayer1().getHero();
         Hero hero2 = battleManager.getPlayer2().getHero();
         hero1.getCell().setCardInCell(hero1);
@@ -619,7 +620,7 @@ public class BattlePageController implements Initializable {
         battle.applyItemFunctions(BattleMenu.getBattleManager().getCurrentPlayer().getHero(), FunctionType.GameStart);
         battle.setCurrentPlayer(BattleMenu.getBattleManager().getPlayer1());
         battle.applyItemFunctions(BattleMenu.getBattleManager().getCurrentPlayer().getHero(), FunctionType.GameStart);
-        initHeroes(battle, mainPane);
+        initHeroes(battle);
         me.initNextcard();
         opponent.initNextcard();
         refreshTheStatusOfMap(battle);

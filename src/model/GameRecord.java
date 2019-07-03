@@ -44,9 +44,13 @@ public class GameRecord {
 
     public void showTheWholeGame() { //WOW!!!!
         String[] actions = game.split("\\+");
-
+        Platform.runLater(() -> {
+            BattlePageController.getInstance().initHeroes(battleManager);
+        });
+        Map.getInstance().getCell(3, 1).setCardInCell(battleManager.getPlayer1().getHero());
+        Map.getInstance().getCell(3, 9).setCardInCell(battleManager.getPlayer2().getHero());
         for (String action : actions) {
-            System.out.println("HAVAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAR");
+
             if (action.startsWith("E"))
                 battleManager.showThatGameEnded();
             if (action.startsWith("T")) {
@@ -143,4 +147,7 @@ public class GameRecord {
         battleManager.assignManaToPlayers();
     }
 
+    public String getGame() {
+        return game;
+    }
 }
