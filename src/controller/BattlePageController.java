@@ -2,6 +2,7 @@ package controller;
 
 import constants.CardType;
 import constants.FunctionType;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -329,12 +330,17 @@ public class BattlePageController implements Initializable {
                 battle.player2Won();
             else
                 battle.player1Won();
-            MainMenuController.getInstance().setAsScene();
+
         });
         graveYard.setOnAction(event -> {
             isInGraveYard = true;
             GraveYardController.getInstance().setAsScene();
         });
+    }
+
+    public void showThatGameEnded() {
+        MainMenuController.getInstance().setAsScene();
+        BattlePageController.deleteBattlePage();
     }
 
     private void recordTheGame(BattleManager battle) {
@@ -452,7 +458,7 @@ public class BattlePageController implements Initializable {
         columnHands[index].getManaCost().setText(deployable.getManaCost() + "");
     }
 
-    public void initHeroes(BattleManager battleManager ) {
+    public void initHeroes(BattleManager battleManager) {
         Hero hero1 = battleManager.getPlayer1().getHero();
         Hero hero2 = battleManager.getPlayer2().getHero();
         hero1.getCell().setCardInCell(hero1);
@@ -527,7 +533,7 @@ public class BattlePageController implements Initializable {
         }*/
         for (Cell[] cells : Map.getInstance().getMap()) {
             for (Cell cell : cells) {
-                if (cell != null && cell.getCardInCell() != null && cell.getCardInCell().getFace()!= null)
+                if (cell != null && cell.getCardInCell() != null && cell.getCardInCell().getFace() != null)
                     cell.getCardInCell().getFace().updateStats();
             }
         }

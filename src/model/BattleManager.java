@@ -1186,7 +1186,7 @@ public class BattleManager {
         if (!isThisRecordedGame)
             gameRecord.addAction("E");
         else {
-            showThatGameEnded();
+            BattlePageController.getInstance().showThatGameEnded();
         }
         if (!isDraw) {
             MatchHistory matchHistory = new MatchHistory(loser.getAccount().getUsername(), "lose", gameRecord);
@@ -1208,17 +1208,10 @@ public class BattleManager {
         if (winner != null)
             Output.print(winner.getAccount().getUsername() + " won");
         else System.out.println("draw");
-        showThatGameEnded();
+        BattlePageController.getInstance().showThatGameEnded();
 
         BattleMenu.deleteBattleManagerAndMakeMap();
-
-    }
-
-    public void showThatGameEnded() {
-        Platform.runLater(() -> {
-            MainMenuController.getInstance().setAsScene();
-            BattlePageController.deleteBattlePage();
-        });
+        BattlePageController.getInstance().showThatGameEnded();
     }
 
     public void player2Won() {

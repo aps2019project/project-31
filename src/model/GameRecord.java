@@ -38,7 +38,7 @@ public class GameRecord {
         BattleManager battleManager = new BattleManager(player1, player2, maxNumberOfFlags, maxTurnsOfHavingFlag, gameMode);
         BattleMenu.setBattleManager(battleManager);
         this.battleManager = battleManager;
-        BattleMenu.showGlimpseOfMap();
+
     }
 
 
@@ -52,7 +52,7 @@ public class GameRecord {
         for (String action : actions) {
 
             if (action.startsWith("E"))
-                battleManager.showThatGameEnded();
+                BattlePageController.getInstance().showThatGameEnded();
             if (action.startsWith("T")) {
                 formalEndTurn();
             }
@@ -66,7 +66,7 @@ public class GameRecord {
                 BattlePageController.getInstance().refreshTheStatusOfMap(battleManager);
             });
             try {
-                Thread.sleep(500);
+                Thread.sleep(2000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
