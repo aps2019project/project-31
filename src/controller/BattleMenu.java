@@ -110,7 +110,7 @@ public class BattleMenu extends Menu {
         BattleMenu.battleManager = battleManager;
     }
 
-    public static void deleteBattleManager() {
+    public static void deleteBattleManagerAndMakeMap() {
         battleManager = null;
         Map.getInstance().makeANewMap();
     }
@@ -178,7 +178,7 @@ public class BattleMenu extends Menu {
 
 
     public static void doAllThingsInEndingOfTheTurns() {
-        battleManager.makeIsMovedAndStunnedAndStuffFalse();
+        battleManager.makeIsMovedAndIsAttackedFalse();
         battleManager.applyItemFunctions(battleManager.getPlayer1().getHero(), FunctionType.Passive);
         battleManager.getCurrentPlayer().placeNextCardToHand();//this should just be called just after inserting cards from hand to battle!!
         battleManager.getCurrentPlayer().endOfTurnBuffsAndFunctions();

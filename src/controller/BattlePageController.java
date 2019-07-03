@@ -310,7 +310,11 @@ public class BattlePageController implements Initializable {
             }
         });
         endTurn.setOnAction(event -> {
-            endTurn(battle);
+            try {
+                endTurn(battle);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         });
         concede.setOnAction(event -> {
             if (me == battle.getPlayer1())
@@ -342,8 +346,9 @@ public class BattlePageController implements Initializable {
         }
     }
 
-    private void endTurn(BattleManager battle) {
-        battle.getGameRecord().addAction("E");
+    private void endTurn(BattleManager battle) throws InterruptedException {
+        battle.getGameRecord().addAction("T");
+        Thread.sleep(300);
         putNextCardInHand(battle);
         updateNextCard();
         BattleMenu.doAllThingsInEndingOfTheTurns();

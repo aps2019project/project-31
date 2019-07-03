@@ -137,7 +137,7 @@ public class BattleManager {
         Platform.runLater(() -> {
             BattlePageController.getInstance().refreshTheStatusOfMap(this);
         });
-        if (isThisRecordedGame)
+        if (!isThisRecordedGame)
             gameRecord.addAction(whoIsCurrentPlayer() + "I" + theMinion.id + x1 + x2);
         return true;
     }
@@ -875,7 +875,7 @@ public class BattleManager {
                 BattlePageController.getInstance().removeSpellFromHand(spell.getFace(), this);
             BattlePageController.getInstance().refreshTheStatusOfMap(this);
         });
-        if (isThisRecordedGame)
+        if (!isThisRecordedGame)
             gameRecord.addAction(whoIsCurrentPlayer() + "I" + spell.id + x1 + x2);
         return true;
     }
@@ -921,6 +921,8 @@ public class BattleManager {
     }
 
     public void doTheActualMove_noTarof(Deployable card, int x1, int x2) {
+        if (!isThisRecordedGame)
+            gameRecord.addAction(whoIsCurrentPlayer() + "M" + card.cell.getX1Coordinate() + card.cell.getX2Coordinate() + x1 + x2);
         if (!card.hasFlag && Map.getInstance().getCell(x1, x2).doesHaveFlag()) {
             if (gameMode == GameMode.Domination)
                 currentPlayer.numberOfFlags++;
@@ -933,8 +935,7 @@ public class BattleManager {
         card.cell.setCardInCell(card);
         if (card.cell.getItem() != null && card.item != null)
             Map.getInstance().getCell(x1, x2).setCardInCell(card);
-        if (isThisRecordedGame)
-            gameRecord.addAction(whoIsCurrentPlayer() + "M" + card.cell.getX1Coordinate() + card.cell.getX2Coordinate() + x1 + x2);
+
         Platform.runLater(() -> {
             BattlePageController.getInstance().refreshTheStatusOfMap(this);
         });
@@ -984,7 +985,7 @@ public class BattleManager {
     public void doTheActualAttack_noTarof(Deployable card, Deployable enemy) {
         dealAttackDamageAndDoOtherStuff(card, enemy);
         counterAttack(card, enemy);
-        if (isThisRecordedGame)
+        if (!isThisRecordedGame)
             gameRecord.addAction(whoIsCurrentPlayer() + "A" + card.cell.getX1Coordinate() +
                     card.cell.getX2Coordinate() + enemy.cell.getX1Coordinate() + enemy.cell.getX2Coordinate());
     }
@@ -1181,6 +1182,12 @@ public class BattleManager {
     }
 
     private void gameEnded(Player winner, Player loser, boolean isDraw) {
+        System.out.println(gameRecord.game);
+        if (!isThisRecordedGame)
+            gameRecord.addAction("E");
+        else {
+            showThatGameEnded();
+        }
         if (!isDraw) {
             MatchHistory matchHistory = new MatchHistory(loser.getAccount().getUsername(), "lose", gameRecord);
             loser.getAccount().addMatchHistories(matchHistory);
@@ -1196,16 +1203,22 @@ public class BattleManager {
             //player1.getAccount().incrementDraw();
             //player2.getAccount().incrementDraw();
         }
+
         BattleMenu.setGameFinished(true);
         if (winner != null)
             Output.print(winner.getAccount().getUsername() + " won");
         else System.out.println("draw");
+        showThatGameEnded();
+
+        BattleMenu.deleteBattleManagerAndMakeMap();
+
+    }
+
+    public void showThatGameEnded() {
         Platform.runLater(() -> {
             MainMenuController.getInstance().setAsScene();
             BattlePageController.deleteBattlePage();
         });
-        BattleMenu.deleteBattleManager();
-
     }
 
     public void player2Won() {
@@ -1364,7 +1377,7 @@ public class BattleManager {
         }
     }
 
-    public void makeIsMovedAndStunnedAndStuffFalse() {
+    public void makeIsMovedAndIsAttackedFalse() {
         for (Deployable deployable : player1.getCardsOnBattleField()) {
             if (deployable != null) {
                 deployable.setAttacked(false);
