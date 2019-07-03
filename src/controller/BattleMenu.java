@@ -93,13 +93,13 @@ public class BattleMenu extends Menu {
                                                     int maxTurnsHavingFlag, GameMode gameMode) {
         switch (gameMode) {
             case DeathMatch:
-                battleManager = new BattleManager(player1, player2, 100, 100, GameMode.DeathMatch,false);
+                battleManager = new BattleManager(player1, player2, 100, 100, GameMode.DeathMatch, false);
                 break;
             case Flag:
-                battleManager = new BattleManager(player1, player2, 100, maxTurnsHavingFlag, GameMode.Flag,false);
+                battleManager = new BattleManager(player1, player2, 100, maxTurnsHavingFlag, GameMode.Flag, false);
                 break;
             case Domination:
-                battleManager = new BattleManager(player1, player2, numberOfFlags, 100, GameMode.Domination,false);
+                battleManager = new BattleManager(player1, player2, numberOfFlags, 100, GameMode.Domination, false);
                 break;
         }
         player1.setBattle(battleManager);
@@ -130,7 +130,8 @@ public class BattleMenu extends Menu {
 
 
     }
-    public static void isTimeToPutItem(){
+
+    public static void isTimeToPutItem() {
         for (int theTurn : battleManager.getTurnsAppearingTheCollectibleItem()) {
             if (theTurn == battleManager.getTurn()) {
                 Collections.shuffle(Shop.getAllCollectibles());
@@ -138,6 +139,7 @@ public class BattleMenu extends Menu {
             }
         }
     }
+
     public BattleMenu(int id, String title) {
         super(id, title);
     }
@@ -191,7 +193,7 @@ public class BattleMenu extends Menu {
         BattleMenu.showGlimpseOfMap();
     }
 
-    public static void flagModeSitAndAddTurnAndHeroSpellSit(){
+    public static void flagModeSitAndAddTurnAndHeroSpellSit() {
         if (battleManager.getGameMode() == GameMode.Flag) {
             battleManager.getPlayer1().handleNumberOfTurnHavingFlagAtTheEndOfTurn();
             battleManager.getPlayer2().handleNumberOfTurnHavingFlagAtTheEndOfTurn();
@@ -200,6 +202,7 @@ public class BattleMenu extends Menu {
         battleManager.getPlayer1().getHero().getHeroSpell().decrementCooldonwRemaining();
         battleManager.getPlayer2().getHero().getHeroSpell().decrementCooldonwRemaining();
     }
+
     public static void prepareComboAttack(String[] strNumbers, int opponentCardId) {
         ArrayList<Deployable> validCards = new ArrayList<>();
         for (String number : strNumbers) {
@@ -244,7 +247,7 @@ public class BattleMenu extends Menu {
             battleManager.useItem((Item) card, x1, x2);
             battleManager.getGameRecord().addAction(battleManager.whoIsCurrentPlayer() + "I" + card.getId() + x1 + x2);
         }
-        if (battleManager.getCurrentPlayer().getHero().getHeroSpell().getId() == card.getId()){
+        if (battleManager.getCurrentPlayer().getHero().getHeroSpell().getId() == card.getId()) {
             if (card.getManaCost() > battleManager.getCurrentPlayer().getMana()) {
                 System.err.println("Not enough mana");
                 return false;
@@ -339,13 +342,16 @@ public class BattleMenu extends Menu {
     public static void replaceCardInHand(int cardId) {
         for (Card card : battleManager.getCurrentPlayer().getHand()) {
             if (card != null && card.getId() == cardId) {
-                Card tempCard = card;
+                int index = battleManager.getCurrentPlayer().getHand().indexOf(card);
+                battleManager.getCurrentPlayer().generateCardInReplace();
+                BattlePageController.getInstance().removeCardFromHand(card, battleManager);
                 battleManager.getCurrentPlayer().getHand().remove(card);
-                battleManager.getCurrentPlayer().getCurrentDeck().addCard(tempCard);
+                battleManager.getCurrentPlayer().getCurrentDeck().addCard(card);
+
                 battleManager.getCurrentPlayer().getHand().add(battleManager.getCurrentPlayer().getCardInReplace());
                 battleManager.getCurrentPlayer().getCurrentDeck().getCards().remove
                         (battleManager.getCurrentPlayer().getCardInReplace());
-                battleManager.getCurrentPlayer().generateCardInReplace();
+                BattlePageController.getInstance().showCardInHand(card, index, battleManager);
                 return;
             }
         }
@@ -378,8 +384,8 @@ public class BattleMenu extends Menu {
                 }
             }
         }
-        System.out.println("player 1 have this much flag :"+ battleManager.getPlayer1().getNumberOfFlags());
-        System.out.println("player 2 have this much flag :"+ battleManager.getPlayer2().getNumberOfFlags());
+        System.out.println("player 1 have this much flag :" + battleManager.getPlayer1().getNumberOfFlags());
+        System.out.println("player 2 have this much flag :" + battleManager.getPlayer2().getNumberOfFlags());
     }
 }
 

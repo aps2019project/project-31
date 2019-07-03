@@ -243,6 +243,13 @@ public class BattlePageController implements Initializable {
         }
     }
 
+    public void removeCardFromHand(Card card, BattleManager battle) {
+        if (card.getType() == CardType.minion)
+            removeMinionFromHand(((Minion) card).getFace());
+        else if (card.getType() == CardType.spell)
+            removeSpellFromHand(((Spell) card).getFace(), battle);
+    }
+
     private void putNextCardInHand(BattleManager battle) {
         me.placeNextCardToHand(); //does the same thing in battle manager
         for (int i = 0; i < 6; i++) {
@@ -492,6 +499,13 @@ public class BattlePageController implements Initializable {
         });
         //
         columnHands[index].getManaCost().setText(deployable.getManaCost() + "");
+    }
+
+    public void showCardInHand(Card card, int index, BattleManager battle) {
+        if (card.getType() == CardType.minion)
+            showMinionInHand(((Deployable) card), index, battle);
+        else if (card.getType() == CardType.spell)
+            showSpellInHand(card, index, battle);
     }
 
     public void initHeroes(BattleManager battleManager) {

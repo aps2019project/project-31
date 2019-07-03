@@ -489,14 +489,14 @@
                   </StackPane>
                   <StackPane prefHeight="116.0" prefWidth="134.0">
                      <children>
-                        <Label id="OpponentHand" fx:id="opponentHand" alignment="CENTER" prefHeight="49.0" prefWidth="120.0" stylesheets="@style/buttonOne.css" text="Hand: 6/6" textFill="WHITE">
+                        <Label id="OpponentHand" fx:id="opponentHand" alignment="CENTER" prefHeight="49.0" prefWidth="120.0" stylesheets="@style/buttonOne.css" text="Hand: 6/6" textFill="WHITE" translateY="20.0">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Label>
                      </children>
                   </StackPane>
-                  <HBox prefHeight="124.0" prefWidth="134.0">
+                  <HBox prefHeight="124.0" prefWidth="134.0" translateY="20.0">
                      <children>
                         <Label id="opponentMana" fx:id="opponentMana" alignment="CENTER" prefHeight="47.0" prefWidth="85.0" stylesheets="@style/buttonOne.css" text="9 / 9" textFill="WHITE">
                            <font>
