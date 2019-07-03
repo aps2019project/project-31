@@ -64,7 +64,7 @@ public class GameRecord {
                 checkIfInsert(action);
             if (action.contains("M"))
                 checkIfMove(action);
-            BattlePageController.getInstance().refreshPartly();
+            BattlePageController.getInstance().refreshTheStatusOfMap(battleManager);
             try {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {

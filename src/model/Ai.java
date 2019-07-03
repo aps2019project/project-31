@@ -35,7 +35,8 @@ public class Ai extends Player {
         }
         for (int i = 0; i < opponent.cardsOnBattleField.size(); i++) {
             for (int j = 0; j < me.cardsOnBattleField.size(); j++) {
-                battle.attack(opponent.cardsOnBattleField.get(i), me.cardsOnBattleField.get(j));
+                if (!battle.isTheGameFinished)
+                    battle.attack(opponent.cardsOnBattleField.get(i), me.cardsOnBattleField.get(j));
             }
         }
         this.placeNextCardToHand();

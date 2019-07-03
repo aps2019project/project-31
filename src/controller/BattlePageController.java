@@ -322,6 +322,7 @@ public class BattlePageController implements Initializable {
             }
         });
         concede.setOnAction(event -> {
+            concede.setText("Concede");
             if (me == battle.getPlayer1())
                 battle.player2Won();
             else
@@ -355,10 +356,13 @@ public class BattlePageController implements Initializable {
     }
     public void showThatGameEnded() {
         MainMenuController.getInstance().setAsScene();
+        BattleMenu.deleteBattleManagerAndMakeMap();
         BattlePageController.deleteBattlePage();
     }
 
     private void recordTheGame(BattleManager battle) {
+        concede.setText("Exit");
+        concede.setOnAction(event -> showThatGameEnded());
         System.out.println(gameRecord.getGame());
         setPolygonsInMap();
         initPlayers();
@@ -558,7 +562,7 @@ public class BattlePageController implements Initializable {
                 updateManaViewers(battleManager);
                 generalCoolDown.setText("" + me.getHero().getHeroSpell().getCoolDownRemaining());
                 opponentGeneralCoolDown.setText("" + opponent.getHero().getHeroSpell().getCoolDownRemaining());
-                deckSize.setText("Deck: " + me.deckSize() + 1 + "/18");
+                deckSize.setText("Deck: " + (me.deckSize() + 1) + "/18");
             } catch (Exception e) {
                 e.printStackTrace();
                 System.out.println("migam ke mohem nis");

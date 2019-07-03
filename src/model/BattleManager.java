@@ -6,7 +6,6 @@ import constants.CardType;
 import constants.FunctionType;
 import constants.GameMode;
 import controller.BattleMenu;
-import controller.MainMenuController;
 
 import view.Output;
 
@@ -31,6 +30,7 @@ public class BattleManager {
             40, 43, 46, 49};
     protected GameRecord gameRecord;
     protected boolean isThisRecordedGame;
+    protected boolean isTheGameFinished = false;
 
     public int getTurn() {
         return turn;
@@ -44,6 +44,7 @@ public class BattleManager {
         this.gameMode = gameMode;
         gameRecord = new GameRecord(player1, player2, maxNumberOfFlags, maxTurnsOfHavingFlag, gameMode);
         this.isThisRecordedGame = isThisRecordedGame;
+        isTheGameFinished = false;
     }
 
     public BattleManager(Player player1, Player player2, int maxNumberOfFlags, int maxTurnsOfHavingFlag, GameMode gameMode) {
@@ -53,6 +54,7 @@ public class BattleManager {
         setPlayer2(player2);
         this.gameMode = gameMode;
         this.isThisRecordedGame = true;
+        isTheGameFinished = false;
     }
 
 
@@ -857,7 +859,7 @@ public class BattleManager {
         currentPlayer.selectedCard = null;
 
 
-        BattlePageController.getInstance().removeASpellFromHand(currentPlayer,isThisRecordedGame,spell,this);
+        BattlePageController.getInstance().removeASpellFromHand(currentPlayer, isThisRecordedGame, spell, this);
         BattlePageController.getInstance().refreshTheStatusOfMap(this);
         if (!isThisRecordedGame)
             gameRecord.addAction(whoIsCurrentPlayer() + "I" + spell.id + x1 + x2);
@@ -1166,6 +1168,7 @@ public class BattleManager {
     }
 
     private void gameEnded(Player winner, Player loser, boolean isDraw) {
+        isTheGameFinished = true;
         if (!isThisRecordedGame)
             gameRecord.addAction("E");
         System.out.println(gameRecord.game);
@@ -1193,7 +1196,6 @@ public class BattleManager {
             Output.print(winner.getAccount().getUsername() + " won");
         else System.out.println("draw");
 
-        BattleMenu.deleteBattleManagerAndMakeMap();
         BattlePageController.getInstance().showThatGameEnded();
     }
 
