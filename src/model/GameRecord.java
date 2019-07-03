@@ -42,7 +42,9 @@ public class GameRecord {
 
     public void showTheWholeGame() { //WOW!!!!
         String[] actions = game.split("\\+");
-        BattlePageController.getInstance().kalakRashti_initHeroes(battleManager);
+
+
+        BattlePageController.getInstance().initHeroes(battleManager);
 
         Map.getInstance().getCell(3, 1).setCardInCell(battleManager.getPlayer1().getHero());
         Map.getInstance().getCell(3, 9).setCardInCell(battleManager.getPlayer2().getHero());
@@ -62,7 +64,7 @@ public class GameRecord {
                 checkIfInsert(action);
             if (action.contains("M"))
                 checkIfMove(action);
-            BattlePageController.getInstance().kalakRashti_refreshMap();
+            BattlePageController.getInstance().refreshPartly();
             try {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {

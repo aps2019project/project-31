@@ -333,18 +333,31 @@ public class BattlePageController implements Initializable {
             GraveYardController.getInstance().setAsScene();
         });
     }
-
+    public void addFaceToBattlePage(Minion theMinion,BattleManager battle){
+        DisplayableDeployable face = new DisplayableDeployable(theMinion);
+        theMinion.setFace(face);
+        face.updateStats();
+        if (BattlePageController.getInstance() != null) {
+            if (BattlePageController.getInstance().mainPane == null) {
+                System.err.println("main pane is null");
+                return;
+            }
+            BattlePageController.getInstance().mainPane.getChildren().add(face);
+        }
+        face.setOnMouseClicked(event -> {
+            BattlePageController.getInstance().setOnMouseDeployable(theMinion, battle);
+            face.updateStats();
+        });
+    }
+    public void removeASpellFromHand(Player currentPlayer, boolean isThisRecordedGame,Spell spell,BattleManager battleManager){
+        if (!currentPlayer.isAi() && !isThisRecordedGame)
+            BattlePageController.getInstance().removeSpellFromHand(spell.getFace(), battleManager);
+    }
     public void showThatGameEnded() {
         MainMenuController.getInstance().setAsScene();
         BattlePageController.deleteBattlePage();
     }
 
-    public void kalakRashti_refreshMap() {
-        refreshPartly();
-    }
-    public void kalakRashti_initHeroes(BattleManager battleManager){
-        initHeroes(battleManager);
-    }
     private void recordTheGame(BattleManager battle) {
         System.out.println(gameRecord.getGame());
         setPolygonsInMap();
