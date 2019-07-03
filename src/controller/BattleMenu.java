@@ -132,11 +132,10 @@ public class BattleMenu extends Menu {
                 battleManager.putItemOnMap(Shop.getAllCollectibles().get(0));
             }
         }
-        //    battleManager.refreshTheStatusOfMap();
+
 
     }
 
-    //    92 + 15 = 107
     public BattleMenu(int id, String title) {
         super(id, title);
     }

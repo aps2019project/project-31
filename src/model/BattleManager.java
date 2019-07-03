@@ -45,7 +45,8 @@ public class BattleManager {
         gameRecord = new GameRecord(player1, player2, maxNumberOfFlags, maxTurnsOfHavingFlag, gameMode);
         this.isThisRecordedGame = isThisRecordedGame;
     }
-    public BattleManager(Player player1, Player player2, int maxNumberOfFlags, int maxTurnsOfHavingFlag, GameMode gameMode ) {
+
+    public BattleManager(Player player1, Player player2, int maxNumberOfFlags, int maxTurnsOfHavingFlag, GameMode gameMode) {
         this.maxNumberOfFlags = maxNumberOfFlags;
         this.maxTurnsOfHavingFlag = maxTurnsOfHavingFlag;
         setPlayer1(player1);
@@ -53,7 +54,6 @@ public class BattleManager {
         this.gameMode = gameMode;
         this.isThisRecordedGame = true;
     }
-
 
 
     public static void setPlayer1(Player player1) {
@@ -66,6 +66,10 @@ public class BattleManager {
 
     public boolean isThisRecordedGame() {
         return isThisRecordedGame;
+    }
+
+    public GameRecord getGameRecord() {
+        return gameRecord;
     }
 
     public int getMaxNumberOfFlags() {
@@ -907,30 +911,34 @@ public class BattleManager {
         }
         if (Map.getInstance().getDistance(Map.getInstance().getCell(x1, x2), card.cell) <= Map.getInstance().getMaxMoveRange()) {
             if (Map.getInstance().getCell(x1, x2).getCardInCell() == null && !card.isMoved && !card.isStunned()) {
-                if (!card.hasFlag && Map.getInstance().getCell(x1, x2).doesHaveFlag()) {
-                    if (gameMode == GameMode.Domination)
-                        currentPlayer.numberOfFlags++;
-                    card.setHasFlag(true);
-                    Map.getInstance().getCell(x1, x2).setHasFlag(false);
-                }
-                card.cell.setCardInCell(null);
-                card.cell = Map.getInstance().getCell(x1, x2);
-                card.setMoved(true);
-                card.cell.setCardInCell(card);
-                if (card.cell.getItem() != null && card.item != null)
-                    Map.getInstance().getCell(x1, x2).setCardInCell(card);
-                if (isThisRecordedGame)
-                    gameRecord.addAction(whoIsCurrentPlayer() + "M" + card.cell.getX1Coordinate() + card.cell.getX2Coordinate() + x1 + x2);
-                Platform.runLater(() -> {
-                    BattlePageController.getInstance().refreshTheStatusOfMap(this);
-                });
-                Output.movedSuccessfully(card);
+                doTheActualMove_noTarof(card, x1, x2);
             } else {
                 Output.invalidTargetForMove();
             }
         } else {
             Output.tooFarToMove();
         }
+    }
+
+    public void doTheActualMove_noTarof(Deployable card, int x1, int x2) {
+        if (!card.hasFlag && Map.getInstance().getCell(x1, x2).doesHaveFlag()) {
+            if (gameMode == GameMode.Domination)
+                currentPlayer.numberOfFlags++;
+            card.setHasFlag(true);
+            Map.getInstance().getCell(x1, x2).setHasFlag(false);
+        }
+        card.cell.setCardInCell(null);
+        card.cell = Map.getInstance().getCell(x1, x2);
+        card.setMoved(true);
+        card.cell.setCardInCell(card);
+        if (card.cell.getItem() != null && card.item != null)
+            Map.getInstance().getCell(x1, x2).setCardInCell(card);
+        if (isThisRecordedGame)
+            gameRecord.addAction(whoIsCurrentPlayer() + "M" + card.cell.getX1Coordinate() + card.cell.getX2Coordinate() + x1 + x2);
+        Platform.runLater(() -> {
+            BattlePageController.getInstance().refreshTheStatusOfMap(this);
+        });
+        Output.movedSuccessfully(card);
     }
 
     public void killTheThing(Deployable enemy) {
@@ -973,13 +981,17 @@ public class BattleManager {
 
     }
 
+    public void doTheActualAttack_noTarof(Deployable card, Deployable enemy) {
+        dealAttackDamageAndDoOtherStuff(card, enemy);
+        counterAttack(card, enemy);
+        if (isThisRecordedGame)
+            gameRecord.addAction(whoIsCurrentPlayer() + "A" + card.cell.getX1Coordinate() +
+                    card.cell.getX2Coordinate() + enemy.cell.getX1Coordinate() + enemy.cell.getX2Coordinate());
+    }
+
     public void attack(Deployable card, Deployable enemy) {
         if (canAttack(card, enemy) && !card.account.getUsername().equals(enemy.account.getUsername())) {
-            dealAttackDamageAndDoOtherStuff(card, enemy);
-            counterAttack(card, enemy);
-            if (isThisRecordedGame)
-                gameRecord.addAction(whoIsCurrentPlayer() + "A" + card.cell.getX1Coordinate() +
-                        card.cell.getX2Coordinate() + enemy.cell.getX1Coordinate() + enemy.cell.getX2Coordinate());
+            doTheActualAttack_noTarof(card, enemy);
             /*enemy.getFace().attack();
             card.getFace().getHit();*/
         } else {

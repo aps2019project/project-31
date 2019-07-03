@@ -276,7 +276,7 @@ public class BattlePageController implements Initializable {
         if (!battle.isThisRecordedGame())
             playTheActualGame(battle);
         else {
-            recordTheGame();
+            recordTheGame(battle);
         }
     }
 
@@ -324,11 +324,14 @@ public class BattlePageController implements Initializable {
             GraveYardController.getInstance().setAsScene();
         });
     }
-    private void recordTheGame(){
 
-
+    private void recordTheGame(BattleManager battle) {
+        setPolygonsInMap();
+        initHeroesSpecialPowers();
+        atStartThings(battle);
 
     }
+
     private void setOnActionForEveryCell() {
         for (int i = 1; i <= Map.MAP_X1_LENGTH; i++) {
             for (int j = 1; j <= Map.MAP_X2_LENGTH; j++) {
@@ -340,6 +343,7 @@ public class BattlePageController implements Initializable {
     }
 
     private void endTurn(BattleManager battle) {
+        battle.getGameRecord().addAction("E");
         putNextCardInHand(battle);
         updateNextCard();
         BattleMenu.doAllThingsInEndingOfTheTurns();
