@@ -21,7 +21,7 @@ public class SinglePlayer extends BattleManager {
     }
 
     public SinglePlayer(Player player1, Player player2, int maxNumberOfFlags, int maxTurnsOfHavingFlag, GameMode gameMode) {
-        super(player1, player2, maxNumberOfFlags, maxTurnsOfHavingFlag, gameMode);
+        super(player1, player2, maxNumberOfFlags, maxTurnsOfHavingFlag, gameMode,false);
     }
 
     public static void loadCustomDecks() {

@@ -186,7 +186,7 @@ public class Input {
                 int x1 = Integer.parseInt(matcher.group(1));
                 int x2 = Integer.parseInt(matcher.group(2));
                 BattleMenu.getBattleManager().playSpell(player.getHero().
-                        getHeroSpell(), x1, x2, BattleMenu.getBattleManager());
+                        getHeroSpell(), x1, x2);
                 BattleMenu.getBattleManager().getCurrentPlayer().getHero().getHeroSpell().setCoolDownRemaining
                         (BattleMenu.getBattleManager().getCurrentPlayer().getHero().getHeroSpell().getCooldown());
             } else {

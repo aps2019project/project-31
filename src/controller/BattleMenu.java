@@ -93,17 +93,21 @@ public class BattleMenu extends Menu {
                                                     int maxTurnsHavingFlag, GameMode gameMode) {
         switch (gameMode) {
             case DeathMatch:
-                battleManager = new BattleManager(player1, player2, 100, 100, GameMode.DeathMatch);
+                battleManager = new BattleManager(player1, player2, 100, 100, GameMode.DeathMatch,false);
                 break;
             case Flag:
-                battleManager = new BattleManager(player1, player2, 100, maxTurnsHavingFlag, GameMode.Flag);
+                battleManager = new BattleManager(player1, player2, 100, maxTurnsHavingFlag, GameMode.Flag,false);
                 break;
             case Domination:
-                battleManager = new BattleManager(player1, player2, numberOfFlags, 100, GameMode.Domination);
+                battleManager = new BattleManager(player1, player2, numberOfFlags, 100, GameMode.Domination,false);
                 break;
         }
         player1.setBattle(battleManager);
         player2.setBattle(battleManager);
+    }
+
+    public static void setBattleManager(BattleManager battleManager) {
+        BattleMenu.battleManager = battleManager;
     }
 
     public static void deleteBattleManager() {
@@ -238,7 +242,7 @@ public class BattleMenu extends Menu {
                 return false;
             }
             System.out.println("Using hero spell " + card.getName());
-            battleManager.playSpell((Spell) card, x1, x2, battleManager);
+            battleManager.playSpell((Spell) card, x1, x2);
             return true;
         }
         if (battleManager.cardInHandByCardId(card.getId()) != null) {
@@ -253,21 +257,17 @@ public class BattleMenu extends Menu {
                     return false;
 
                 }
-                battleManager.playMinion((Minion) card, x1, x2, battleManager);
+                battleManager.playMinion((Minion) card, x1, x2);
             }
             if (card.getType() == CardType.spell) {
                 card.setAccount(battleManager.getCurrentPlayer().getAccount());
-                battleManager.playSpell((Spell) card, x1, x2, battleManager);
+                battleManager.playSpell((Spell) card, x1, x2);
             }
             if (card.getType() == CardType.item) {
                 card.setAccount(battleManager.getCurrentPlayer().getAccount());
                 battleManager.useItem((Item) card, x1, x2);
             }
-            for (Function function : card.getFunctions()) {
-                if (function.getFunctionType() == FunctionType.OnSpawn) {
-                    battleManager.compileFunction(function, x1, x2);
-                }
-            }
+
             if (card.getName() == "Eagle") {
                 System.out.println("found eagle");
                 for (Buff buff : ((Deployable) card).getBuffs()) {

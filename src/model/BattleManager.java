@@ -30,19 +30,30 @@ public class BattleManager {
     private int[] turnsAppearingTheCollectibleFlags = {2, 3, 5, 8, 11, 12, 15, 18, 20, 21, 24, 27, 31, 32, 36, 37,
             40, 43, 46, 49};
     protected GameRecord gameRecord;
+    protected boolean isThisRecordedGame;
 
     public int getTurn() {
         return turn;
     }
 
-    public BattleManager(Player player1, Player player2, int maxNumberOfFlags, int maxTurnsOfHavingFlag, GameMode gameMode) {
+    public BattleManager(Player player1, Player player2, int maxNumberOfFlags, int maxTurnsOfHavingFlag, GameMode gameMode, boolean isThisRecordedGame) {
         this.maxNumberOfFlags = maxNumberOfFlags;
         this.maxTurnsOfHavingFlag = maxTurnsOfHavingFlag;
         setPlayer1(player1);
         setPlayer2(player2);
         this.gameMode = gameMode;
         gameRecord = new GameRecord(player1, player2, maxNumberOfFlags, maxTurnsOfHavingFlag, gameMode);
+        this.isThisRecordedGame = isThisRecordedGame;
     }
+    public BattleManager(Player player1, Player player2, int maxNumberOfFlags, int maxTurnsOfHavingFlag, GameMode gameMode ) {
+        this.maxNumberOfFlags = maxNumberOfFlags;
+        this.maxTurnsOfHavingFlag = maxTurnsOfHavingFlag;
+        setPlayer1(player1);
+        setPlayer2(player2);
+        this.gameMode = gameMode;
+        this.isThisRecordedGame = true;
+    }
+
 
 
     public static void setPlayer1(Player player1) {
@@ -53,6 +64,9 @@ public class BattleManager {
         BattleManager.player2 = player2;
     }
 
+    public boolean isThisRecordedGame() {
+        return isThisRecordedGame;
+    }
 
     public int getMaxNumberOfFlags() {
         return maxNumberOfFlags;
@@ -79,10 +93,7 @@ public class BattleManager {
         return gameMode;
     }
 
-    public boolean playMinion(Minion minion, int x1, int x2, BattleManager battle) {
-        if (!checkCoordinates(x1, x2)) {
-            return false;
-        }
+    public boolean playMinion(Minion minion, int x1, int x2) {
         Minion theMinion = minion.duplicateDeployed(Map.getInstance().getCell(x1, x2), currentPlayer.account);
         Map.getInstance().putCardInCell(theMinion, x1, x2);
         if (Map.getInstance().getCell(x1, x2).doesHaveFlag()) {
@@ -93,6 +104,7 @@ public class BattleManager {
         }
         Output.insertionSuccessful(theMinion, x1, x2);
         applyItemFunctions(theMinion, FunctionType.OnSpawn);
+        onSpawnFunctions(minion, x1, x2);
         currentPlayer.addCardToBattlefield(theMinion);
         Platform.runLater(() -> {
             DisplayableDeployable face = new DisplayableDeployable(theMinion);
@@ -121,8 +133,16 @@ public class BattleManager {
         Platform.runLater(() -> {
             BattlePageController.getInstance().refreshTheStatusOfMap(this);
         });
+        if (isThisRecordedGame)
+            gameRecord.addAction(whoIsCurrentPlayer() + "I" + theMinion.id + x1 + x2);
         return true;
+    }
 
+    public String whoIsCurrentPlayer() {
+        if (currentPlayer == player1)
+            return "1";
+        else
+            return "2";
     }
 
     public void addTurn() {
@@ -823,13 +843,22 @@ public class BattleManager {
         return false;
     }
 
-    public boolean playSpell(Spell spell, int x1, int x2, BattleManager battle) {
+    public void onSpawnFunctions(Card card, int x1, int x2) {
+        for (Function function : card.getFunctions()) {
+            if (function.getFunctionType() == FunctionType.OnSpawn) {
+                compileFunction(function, x1, x2);
+            }
+        }
+    }
+
+    public boolean playSpell(Spell spell, int x1, int x2) {
         if (!spell.equals(currentPlayer.getHero().heroSpell)) {
             currentPlayer.hand.remove(spell);
         } else if (currentPlayer.getHero().getHeroSpell().getCoolDownRemaining() != 0) {
             System.out.println("cool down!");
             return false;
         }
+        onSpawnFunctions(spell, x1, x2);
         for (Function function : spell.functions) {
             compileFunction(function, x1, x2);
         }
@@ -839,9 +868,11 @@ public class BattleManager {
 
         Platform.runLater(() -> {
             if (!currentPlayer.isAi())
-                BattlePageController.getInstance().removeSpellFromHand(spell.getFace(), battle);
+                BattlePageController.getInstance().removeSpellFromHand(spell.getFace(), this);
             BattlePageController.getInstance().refreshTheStatusOfMap(this);
         });
+        if (isThisRecordedGame)
+            gameRecord.addAction(whoIsCurrentPlayer() + "I" + spell.id + x1 + x2);
         return true;
     }
 
@@ -888,6 +919,8 @@ public class BattleManager {
                 card.cell.setCardInCell(card);
                 if (card.cell.getItem() != null && card.item != null)
                     Map.getInstance().getCell(x1, x2).setCardInCell(card);
+                if (isThisRecordedGame)
+                    gameRecord.addAction(whoIsCurrentPlayer() + "M" + card.cell.getX1Coordinate() + card.cell.getX2Coordinate() + x1 + x2);
                 Platform.runLater(() -> {
                     BattlePageController.getInstance().refreshTheStatusOfMap(this);
                 });
@@ -944,6 +977,9 @@ public class BattleManager {
         if (canAttack(card, enemy) && !card.account.getUsername().equals(enemy.account.getUsername())) {
             dealAttackDamageAndDoOtherStuff(card, enemy);
             counterAttack(card, enemy);
+            if (isThisRecordedGame)
+                gameRecord.addAction(whoIsCurrentPlayer() + "A" + card.cell.getX1Coordinate() +
+                        card.cell.getX2Coordinate() + enemy.cell.getX1Coordinate() + enemy.cell.getX2Coordinate());
             /*enemy.getFace().attack();
             card.getFace().getHit();*/
         } else {

@@ -272,6 +272,15 @@ public class BattlePageController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         battlePageController = this;
+        BattleManager battle = BattleMenu.getBattleManager();
+        if (!battle.isThisRecordedGame())
+            playTheActualGame(battle);
+        else {
+            recordTheGame();
+        }
+    }
+
+    private void playTheActualGame(BattleManager battle) {
         initPlayers();
         try {
             makeColumnHands();
@@ -285,9 +294,9 @@ public class BattlePageController implements Initializable {
 
         initHeroesSpecialPowers();
 
-       setOnActionForEveryCell();
+        setOnActionForEveryCell();
 
-        BattleManager battle = BattleMenu.getBattleManager();
+
         battle.initialTheGame();
 
         for (int i = 0; i < HAND_CAPACITY; i++) {
@@ -315,7 +324,12 @@ public class BattlePageController implements Initializable {
             GraveYardController.getInstance().setAsScene();
         });
     }
-    private void setOnActionForEveryCell(){
+    private void recordTheGame(){
+
+
+
+    }
+    private void setOnActionForEveryCell() {
         for (int i = 1; i <= Map.MAP_X1_LENGTH; i++) {
             for (int j = 1; j <= Map.MAP_X2_LENGTH; j++) {
                 Cell cell = Map.getInstance().getMap()[i][j];
@@ -324,7 +338,8 @@ public class BattlePageController implements Initializable {
             }
         }
     }
-    private void endTurn(BattleManager battle){
+
+    private void endTurn(BattleManager battle) {
         putNextCardInHand(battle);
         updateNextCard();
         BattleMenu.doAllThingsInEndingOfTheTurns();
@@ -341,7 +356,8 @@ public class BattlePageController implements Initializable {
         }
         updateManaViewers(battle);
     }
-    private void initHeroesSpecialPowers(){
+
+    private void initHeroesSpecialPowers() {
         specialSpell.setImage(new Image(getClass().getResource("/gifs/Bloodbound/warbird.gif").toExternalForm()));
         specialSpell.setScaleX(0.5);
         specialSpell.setScaleY(0.5);
@@ -355,6 +371,7 @@ public class BattlePageController implements Initializable {
             System.out.println(me.getHero().getHeroSpell().getId());
         });
     }
+
     private void showSpellInHand(Card card, int i, BattleManager battle) {
         DisplayableCard face = new DisplayableCard(card, "");
         face.setScaleX(SCALE);
@@ -375,7 +392,8 @@ public class BattlePageController implements Initializable {
             }
         });
     }
-    private void infoButton(){
+
+    private void infoButton() {
         if (me.getSelectedCard() == null) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setHeaderText("Select a card first!");
@@ -394,6 +412,7 @@ public class BattlePageController implements Initializable {
         alert.setResizable(true);
         alert.show();
     }
+
     private void showMinionInHand(Deployable deployable, int index, BattleManager battle) {
         DisplayableDeployable face = new DisplayableDeployable(deployable);
         deployable.setFace(face);
