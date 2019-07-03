@@ -7,6 +7,7 @@ import controller.BattlePageController;
 import controller.Shop;
 import javafx.application.Platform;
 
+import java.util.Collections;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -147,13 +148,12 @@ public class GameRecord {
         battleManager.applyItemFunctions(battleManager.getPlayer1().getHero(), FunctionType.Passive);
         battleManager.getCurrentPlayer().endOfTurnBuffsAndFunctions();
         battleManager.getOtherPlayer().endOfTurnBuffsAndFunctions();
-        battleManager.addTurn();
-        battleManager.getPlayer1().getHero().getHeroSpell().decrementCooldonwRemaining();
-        battleManager.getPlayer2().getHero().getHeroSpell().decrementCooldonwRemaining();
+        BattleMenu.flagModeSitAndAddTurnAndHeroSpellSit();
     }
 
     private void doThingsAtBeginningOfTurn() {
         battleManager.assignManaToPlayers();
+    //     BattleMenu.isTimeToPutItem(); different kind of item put on map (than the one that actually happened)
     }
 
     public String getGame() {

@@ -126,16 +126,18 @@ public class BattleMenu extends Menu {
         if (BattlePageController.getInstance().nextCardField.getChildren().size() <= 1)
             BattlePageController.getInstance().updateNextCard();
 
+        isTimeToPutItem();
+
+
+    }
+    public static void isTimeToPutItem(){
         for (int theTurn : battleManager.getTurnsAppearingTheCollectibleItem()) {
             if (theTurn == battleManager.getTurn()) {
                 Collections.shuffle(Shop.getAllCollectibles());
                 battleManager.putItemOnMap(Shop.getAllCollectibles().get(0));
             }
         }
-
-
     }
-
     public BattleMenu(int id, String title) {
         super(id, title);
     }
@@ -184,6 +186,11 @@ public class BattleMenu extends Menu {
         battleManager.getCurrentPlayer().endOfTurnBuffsAndFunctions();
         battleManager.getOtherPlayer().endOfTurnBuffsAndFunctions();
         battleManager.checkTheEndSituation();
+        //    battleManager.refreshTheStatusOfMap();
+        BattleMenu.showGlimpseOfMap();
+    }
+
+    public static void flagModeSitAndAddTurnAndHeroSpellSit(){
         if (battleManager.getGameMode() == GameMode.Flag) {
             battleManager.getPlayer1().handleNumberOfTurnHavingFlagAtTheEndOfTurn();
             battleManager.getPlayer2().handleNumberOfTurnHavingFlagAtTheEndOfTurn();
@@ -191,11 +198,7 @@ public class BattleMenu extends Menu {
         battleManager.addTurn();
         battleManager.getPlayer1().getHero().getHeroSpell().decrementCooldonwRemaining();
         battleManager.getPlayer2().getHero().getHeroSpell().decrementCooldonwRemaining();
-        //    battleManager.refreshTheStatusOfMap();
-        BattleMenu.showGlimpseOfMap();
     }
-
-
     public static void prepareComboAttack(String[] strNumbers, int opponentCardId) {
         ArrayList<Deployable> validCards = new ArrayList<>();
         for (String number : strNumbers) {
