@@ -4,8 +4,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.shape.Polyline;
 
 
-
-
 public class Cell {
     private int x1Coordinate;
     private int x2Coordinate;
@@ -154,7 +152,13 @@ public class Cell {
         y += polygon.getPoints().get(1);
         coordinates[0] = (x / 2) + polygon.getLayoutX() - 40;
         coordinates[1] = (y) + polygon.getLayoutY() - 20;
-
+        if (x2Coordinate == 9) {
+            coordinates[1] += 45;
+        }
+        if (x2Coordinate == 8 && x1Coordinate == 2) {
+            coordinates[1] += 40;
+            coordinates[0] -= 60;
+        }
         return coordinates;
     }
 
