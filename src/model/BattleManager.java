@@ -7,6 +7,7 @@ import constants.FunctionType;
 import constants.GameMode;
 import controller.BattleMenu;
 
+import controller.MainMenuController;
 import javafx.application.Platform;
 import view.Output;
 
@@ -27,7 +28,7 @@ public class BattleManager {
     protected final int maxNumberOfFlags;
     protected final int maxTurnsOfHavingFlag;
     protected int turn = 1;
-    private int[] turnsAppearingTheCollectibleFlags = {2, 3, 5, 8, 11, 12, 15, 18, 20, 21, 24, 27, 31, 32, 36, 37,
+    private int[] turnsAppearingTheCollectibleItem = {2, 3, 5, 8, 11, 12, 15, 18, 20, 21, 24, 27, 31, 32, 36, 37,
             40, 43, 46, 49};
     protected GameRecord gameRecord;
     protected boolean isThisRecordedGame;
@@ -103,12 +104,7 @@ public class BattleManager {
     public boolean playMinion(Minion minion, int x1, int x2) {
         Minion theMinion = minion.duplicateDeployed(Map.getInstance().getCell(x1, x2), currentPlayer.account);
         Map.getInstance().putCardInCell(theMinion, x1, x2);
-        if (Map.getInstance().getCell(x1, x2).doesHaveFlag()) {
-            Map.getInstance().getCell(x1, x2).setHasFlag(false);
-            theMinion.setHasFlag(true);
-            if (gameMode == GameMode.Domination)
-                currentPlayer.numberOfFlags++;
-        }
+
         Output.insertionSuccessful(theMinion, x1, x2);
         applyItemFunctions(theMinion, FunctionType.OnSpawn);
         onSpawnFunctions(minion, x1, x2);
@@ -125,6 +121,7 @@ public class BattleManager {
                     .getInstance().getMe().selectedCard).face);
         currentPlayer.selectedCard = null;
         removeItemIfThereIsSomething(theMinion);
+        removeFlagIfThereIsSomething(theMinion, x1, x2);
         BattlePageController.getInstance().refreshTheStatusOfMap(this);
 
         if (!isThisRecordedGame)
@@ -604,8 +601,8 @@ public class BattleManager {
         }
     }
 
-    public int[] getTurnsAppearingTheCollectibleFlags() {
-        return turnsAppearingTheCollectibleFlags;
+    public int[] getTurnsAppearingTheCollectibleItem() {
+        return turnsAppearingTheCollectibleItem;
     }
 
     private void handleDispel(Function function, ArrayList<Card> targetCards) {
@@ -910,12 +907,7 @@ public class BattleManager {
     public void doTheActualMove_noTarof(Deployable card, int x1, int x2) {
         if (!isThisRecordedGame)
             gameRecord.addAction(whoIsCurrentPlayer() + "M" + card.cell.getX1Coordinate() + card.cell.getX2Coordinate() + x1 + x2);
-        if (!card.hasFlag && Map.getInstance().getCell(x1, x2).doesHaveFlag()) {
-            if (gameMode == GameMode.Domination)
-                currentPlayer.numberOfFlags++;
-            card.setHasFlag(true);
-            Map.getInstance().getCell(x1, x2).setHasFlag(false);
-        }
+        removeFlagIfThereIsSomething(card, x1, x2);
         card.cell.setCardInCell(null);
         card.cell = Map.getInstance().getCell(x1, x2);
         card.setMoved(true);
@@ -927,12 +919,23 @@ public class BattleManager {
         Output.movedSuccessfully(card);
     }
 
+    public void removeFlagIfThereIsSomething(Deployable card, int x1, int x2) {
+        if (!card.hasFlag && Map.getInstance().getCell(x1, x2).doesHaveFlag()) {
+            if (gameMode == GameMode.Domination)
+                currentPlayer.numberOfFlags++;
+            card.setHasFlag(true);
+            Map.getInstance().getCell(x1, x2).setHasFlag(false);
+            BattlePageController.getInstance().removeFlagInGround(card.cell);
+        }
+    }
+
     public void removeItemIfThereIsSomething(Deployable card) {
         if (card.cell.getItem() != null && card.item == null) {
             card.item = card.cell.getItem();
             card.cell.setItem(null);
             BattlePageController.getInstance().removeItemInGround(card.cell);
         }
+
     }
 
     public void killTheThing(Deployable enemy) {
@@ -946,6 +949,9 @@ public class BattleManager {
             if (gameMode == GameMode.Flag)
                 getOtherPlayer().numberOfTurnsHavingFlag = 0;
             enemy.cell.setHasFlag(true);
+        }
+        if (enemy.item != null && enemy.cell.getItem() == null) {
+            enemy.cell.setItem(enemy.item);
         }
         applyItemFunctions(enemy, FunctionType.OnDeath);
         for (Function function : enemy.functions) {
@@ -1268,18 +1274,26 @@ public class BattleManager {
     }
 
     private void generateFlags() {
-        Random random = new Random();
         if (gameMode == GameMode.Flag) {
             Map.getInstance().getCell(3, 5).setHasFlag(true);
         }
         if (gameMode == GameMode.Domination) {
             for (int i = 0; i < maxNumberOfFlags; i++) {
-                int x1 = random.nextInt(5) + 1;
-                int x2 = random.nextInt(5) + 3;
-                Map.getInstance().getCell(x1, x2).setHasFlag(true);
+                putARandomFlagOnMap();
             }
         }
 
+    }
+
+    private void putARandomFlagOnMap() {
+        Random random = new Random();
+        int x1 = random.nextInt(5) + 1;
+        int x2 = random.nextInt(9) + 1;
+        if (Map.getInstance().getCell(x1, x1).hasFlag()) {
+            putARandomFlagOnMap();
+        } else {
+            Map.getInstance().getCell(x1, x2).setHasFlag(true);
+        }
     }
 
     private static void initialTheHands() {
@@ -1383,16 +1397,14 @@ public class BattleManager {
         int x2 = random.nextInt(9) + 1;
         if (Map.getInstance().getCell(x1, x2).getCardInCell() != null) {
             Map.getInstance().getCell(x1, x2).getCardInCell().setItem(item);
-            Platform.runLater(()-> {
+            Platform.runLater(() -> {
                 BattlePageController.getInstance().displayMessage("Item put on Minion!!!");
             });
-            System.out.println("item was put on someones minion with coordination: "+x1+" , "+x2);
+            System.out.println("item was put on someones minion with coordination: " + x1 + " , " + x2);
         } else {
             Map.getInstance().getCell(x1, x2).setItem(item);
         }
 
         BattlePageController.getInstance().refreshTheStatusOfMap(this);
-
-
     }
 }

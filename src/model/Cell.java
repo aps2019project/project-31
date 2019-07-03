@@ -16,6 +16,7 @@ public class Cell {
     private boolean hasFlag;
     private Item item;
     private Polyline polygon;
+    private ImageView displayableFlag;
     private ImageView displayableItem;
 
     public ImageView getDisplayableItem() {
@@ -24,6 +25,18 @@ public class Cell {
 
     public void setDisplayableItem(ImageView itemIcon) {
         this.displayableItem = itemIcon;
+    }
+
+    public ImageView getDisplayableFlag() {
+        return displayableFlag;
+    }
+
+    public boolean hasFlag() {
+        return hasFlag;
+    }
+
+    public void setDisplayableFlag(ImageView displayableFlag) {
+        this.displayableFlag = displayableFlag;
     }
 
     public Polyline getPolygon() {

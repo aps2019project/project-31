@@ -25,6 +25,7 @@ public class Hero extends Deployable {
         this.attack = attack;
         this.health = health;
         this.heroSpell = heroSpell;
+        hasFlag = false;
     }
 
 

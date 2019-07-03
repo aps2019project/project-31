@@ -117,13 +117,4 @@ public class Map {
         }
     }
 
-    public void refreshHasFlagInMap() {
-        for (Cell[] cells : map) {
-            for (Cell cell : cells) {
-                if (cell.getItem() == null)
-                    cell.setHasFlag(false);
-                else cell.setHasFlag(true);
-            }
-        }
-    }
 }

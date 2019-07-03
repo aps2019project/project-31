@@ -24,6 +24,7 @@ import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.ResourceBundle;
 
 public class BattlePageController implements Initializable {
@@ -583,7 +584,31 @@ public class BattlePageController implements Initializable {
                 System.out.println("migam ke mohem nis");
             }
             showItems();
+            showFlag();
         }
+
+    }
+
+    public void showFlag() {
+
+        for (Cell[] cells : Map.getInstance().getMap()) {
+            for (Cell cell : cells) {
+                if (cell.hasFlag() && cell.getDisplayableFlag() == null) {
+                    ImageView flag;
+                    String imagePath = getClass().getResource("/gifs/flag.gif").toExternalForm();
+                    flag = new ImageView(new Image(imagePath));
+                    flag.setTranslateY(-50);
+                    flag.setScaleX(1.3);
+                    flag.setScaleY(1.3);
+                    cell.setDisplayableFlag(flag);
+                    flag.setTranslateX(cell.calculateCenter()[0]+15);
+                    flag.setTranslateY(cell.calculateCenter()[1]+35);
+                    mainPane.getChildren().add(flag);
+                }
+
+            }
+        }
+
 
     }
 
@@ -611,6 +636,11 @@ public class BattlePageController implements Initializable {
     public void removeItemInGround(Cell cell) {
         if (cell.getDisplayableItem() != null)
             mainPane.getChildren().remove(cell.getDisplayableItem());
+    }
+
+    public void removeFlagInGround(Cell cell) {
+        if (cell.getDisplayableFlag() != null)
+            mainPane.getChildren().remove(cell.getDisplayableFlag());
     }
 
     private void updateManaViewers(BattleManager battleManager) {

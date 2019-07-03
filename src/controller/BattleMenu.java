@@ -126,7 +126,7 @@ public class BattleMenu extends Menu {
         if (BattlePageController.getInstance().nextCardField.getChildren().size() <= 1)
             BattlePageController.getInstance().updateNextCard();
 
-        for (int theTurn : battleManager.getTurnsAppearingTheCollectibleFlags()) {
+        for (int theTurn : battleManager.getTurnsAppearingTheCollectibleItem()) {
             if (theTurn == battleManager.getTurn()) {
                 Collections.shuffle(Shop.getAllCollectibles());
                 battleManager.putItemOnMap(Shop.getAllCollectibles().get(0));
@@ -366,6 +366,15 @@ public class BattleMenu extends Menu {
                 }
             }
         }
+        for (Cell[] cells : Map.getInstance().getMap()) {
+            for (Cell cell : cells) {
+                if (cell.hasFlag()) {
+                    System.out.println("FLAG With coordination:  " + cell.getX1Coordinate() + "," + cell.getX2Coordinate());
+                }
+            }
+        }
+        System.out.println("player 1 have this much flag :"+ battleManager.getPlayer1().getNumberOfFlags());
+        System.out.println("player 2 have this much flag :"+ battleManager.getPlayer2().getNumberOfFlags());
     }
 }
 
