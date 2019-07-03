@@ -2,6 +2,7 @@ package controller;
 
 import constants.CardType;
 import constants.FunctionType;
+import constants.GameMode;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -12,10 +13,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polyline;
 import model.*;
@@ -114,6 +112,10 @@ public class BattlePageController implements Initializable {
     public Button selectItem;
     public Button infoButton;
     public Button comboAttack;
+    public Label flag1;
+    public Label flag2;
+    public Label gameMode;
+    public HBox hboxInTop;
 
 //    private StackPane showingGraveYard; // for showing it: lastStackPane = showingGraveYard; showingGraveYard is a designed scene
 
@@ -563,8 +565,24 @@ public class BattlePageController implements Initializable {
         }
     }
 
+    private void refreshFlagsSituation(BattleManager battle) {
+        if (battle.getGameMode() == GameMode.DeathMatch) {
+            hboxInTop.getChildren().remove(flag1);
+            hboxInTop.getChildren().remove(flag2);
+        }
+        if (battle.getGameMode() == GameMode.Flag) {
+            flag1.setText(me.getNumberOfTurnsHavingFlag() + "");
+            flag2.setText(opponent.getNumberOfTurnsHavingFlag() + "");
+        }
+        if (battle.getGameMode() == GameMode.Domination) {
+            flag1.setText(me.getNumberOfFlags() + "");
+            flag2.setText(opponent.getNumberOfFlags() + "");
+        }
+    }
+
     public void refreshTheStatusOfMap(BattleManager battleManager) {
         refreshPartly();
+        refreshFlagsSituation(battleManager);
         if (!battleManager.isThisRecordedGame()) {
             BattleMenu.getBattleManager().checkTheEndSituation();
             try {
@@ -602,8 +620,8 @@ public class BattlePageController implements Initializable {
                     flag.setScaleX(1.3);
                     flag.setScaleY(1.3);
                     cell.setDisplayableFlag(flag);
-                    flag.setTranslateX(cell.calculateCenter()[0]+15);
-                    flag.setTranslateY(cell.calculateCenter()[1]+35);
+                    flag.setTranslateX(cell.calculateCenter()[0]);
+                    flag.setTranslateY(cell.calculateCenter()[1]);
                     mainPane.getChildren().add(flag);
                 }
 
@@ -702,6 +720,16 @@ public class BattlePageController implements Initializable {
         manas.add(mana7);
         manas.add(mana8);
         manas.add(mana9);
+        setGameMode(battle);
+    }
+
+    private void setGameMode(BattleManager battle) {
+        if (battle.getGameMode() == GameMode.DeathMatch)
+            gameMode.setText("DEATH MATCH");
+        else if (battle.getGameMode() == GameMode.Domination)
+            gameMode.setText("DOMINATION");
+        else if (battle.getGameMode() == GameMode.Flag)
+            gameMode.setText("FLAG");
     }
 
     private void makeColumnHands() {

@@ -186,6 +186,7 @@ public class BattleMenu extends Menu {
         battleManager.getCurrentPlayer().endOfTurnBuffsAndFunctions();
         battleManager.getOtherPlayer().endOfTurnBuffsAndFunctions();
         battleManager.checkTheEndSituation();
+        flagModeSitAndAddTurnAndHeroSpellSit();
         //    battleManager.refreshTheStatusOfMap();
         BattleMenu.showGlimpseOfMap();
     }

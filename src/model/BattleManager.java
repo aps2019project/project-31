@@ -907,13 +907,13 @@ public class BattleManager {
     public void doTheActualMove_noTarof(Deployable card, int x1, int x2) {
         if (!isThisRecordedGame)
             gameRecord.addAction(whoIsCurrentPlayer() + "M" + card.cell.getX1Coordinate() + card.cell.getX2Coordinate() + x1 + x2);
-        removeFlagIfThereIsSomething(card, x1, x2);
+
         card.cell.setCardInCell(null);
         card.cell = Map.getInstance().getCell(x1, x2);
         card.setMoved(true);
         card.cell.setCardInCell(card);
         removeItemIfThereIsSomething(card);
-
+        removeFlagIfThereIsSomething(card, x1, x2);
         BattlePageController.getInstance().refreshTheStatusOfMap(this);
 
         Output.movedSuccessfully(card);
