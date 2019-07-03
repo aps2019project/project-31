@@ -33,6 +33,10 @@ public class Map {
         }
     }
 
+    public void setMap(Cell[][] map) {
+        this.map = map;
+    }
+
     public void makeANewMap() {
         Cell[][] newMap = new Cell[MAP_X1_LENGTH + 1][MAP_X2_LENGTH + 1];
         for (int i = 0; i <= MAP_X1_LENGTH; i++) {

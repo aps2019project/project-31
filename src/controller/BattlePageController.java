@@ -113,6 +113,7 @@ public class BattlePageController implements Initializable {
     public Button concede;
     public Button selectItem;
     public Button infoButton;
+    public Button comboAttack;
 
 //    private StackPane showingGraveYard; // for showing it: lastStackPane = showingGraveYard; showingGraveYard is a designed scene
 
@@ -584,8 +585,8 @@ public class BattlePageController implements Initializable {
                 System.out.println("migam ke mohem nis");
             }
             showItems();
-            showFlag();
         }
+        showFlag();
 
     }
 

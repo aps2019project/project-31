@@ -11,13 +11,14 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class GameRecord {
-    protected String game = " ";
+    protected String game = "";
     protected Player player1;
     protected Player player2;
     protected int maxNumberOfFlags;
     protected int maxTurnsOfHavingFlag;
     protected GameMode gameMode;
     protected BattleManager battleManager;
+    protected Cell[][] map;
 
     public GameRecord(Player player1, Player player2, int maxNumberOfFlags, int maxTurnsOfHavingFlag, GameMode gameMode) {
         this.player1 = player1;
@@ -31,6 +32,14 @@ public class GameRecord {
         game += "+" + action;
     }
 
+    public Cell[][] getMap() {
+        return map;
+    }
+
+    public void setMap(Cell[][] map) {
+        this.map = map;
+    }
+
     public void makeFormalBattleManagerForRecord() { // first thing to show record is to call this!
         BattleMenu.deleteBattleManagerAndMakeMap();
         BattleManager battleManager = new BattleManager(player1, player2, maxNumberOfFlags, maxTurnsOfHavingFlag, gameMode);
@@ -41,8 +50,8 @@ public class GameRecord {
 
 
     public void showTheWholeGame() { //WOW!!!!
+        Map.getInstance().setMap(map);
         String[] actions = game.split("\\+");
-
 
         BattlePageController.getInstance().initHeroes(battleManager);
 

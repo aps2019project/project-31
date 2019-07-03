@@ -429,6 +429,11 @@
                         </Pane>
                      </children>
                   </StackPane>
+                  <Button id="graveYard" fx:id="comboAttack" mnemonicParsing="false" prefHeight="57.0" prefWidth="183.0" stylesheets="@style/buttonOne.css" text="Combo Attack">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Button>
                </children>
             </VBox>
          </left>

@@ -1271,6 +1271,9 @@ public class BattleManager {
         player2.getHero().setAccount(player2.account);
         generateFlags();
         manaAdderItem();
+        if(!isThisRecordedGame){
+            gameRecord.setMap(Map.getInstance().getMap());
+        }
     }
 
     private void generateFlags() {

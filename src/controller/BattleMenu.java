@@ -238,6 +238,7 @@ public class BattleMenu extends Menu {
         if (card.getType() == CardType.item) {
             card.setAccount(battleManager.getCurrentPlayer().getAccount());
             battleManager.useItem((Item) card, x1, x2);
+            battleManager.getGameRecord().addAction(battleManager.whoIsCurrentPlayer() + "I" + card.getId() + x1 + x2);
         }
         if (battleManager.getCurrentPlayer().getHero().getHeroSpell().getId() == card.getId()){
             if (card.getManaCost() > battleManager.getCurrentPlayer().getMana()) {

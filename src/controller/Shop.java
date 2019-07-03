@@ -229,6 +229,10 @@ public class Shop extends Menu {
             if (hero.getHeroSpell() != null && hero.getHeroSpell().getId() == id)
                 return hero.getHeroSpell();
         }
+        for (Card card : allCards){
+            if (card != null && card.getId() == id)
+                return card;
+        }
         return null;
     }
 }
