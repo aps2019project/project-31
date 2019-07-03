@@ -742,8 +742,10 @@ public class BattlePageController implements Initializable {
             gameMode.setText("DEATH MATCH");
         else if (battle.getGameMode() == GameMode.Domination)
             gameMode.setText("DOMINATION");
-        else if (battle.getGameMode() == GameMode.Flag)
+        else if (battle.getGameMode() == GameMode.Flag){
             gameMode.setText("FLAG");
+            gameMode.setTranslateX(45);
+        }
     }
 
     private void makeColumnHands() {
