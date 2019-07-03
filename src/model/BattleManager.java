@@ -871,7 +871,7 @@ public class BattleManager {
 
 
         Platform.runLater(() -> {
-            if (!currentPlayer.isAi())
+            if (!currentPlayer.isAi()&& !isThisRecordedGame)
                 BattlePageController.getInstance().removeSpellFromHand(spell.getFace(), this);
             BattlePageController.getInstance().refreshTheStatusOfMap(this);
         });

@@ -6,8 +6,6 @@ import controller.BattleMenu;
 import controller.BattlePageController;
 import controller.Shop;
 import javafx.application.Platform;
-import view.Input;
-import view.Output;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -44,15 +42,17 @@ public class GameRecord {
 
     public void showTheWholeGame() { //WOW!!!!
         String[] actions = game.split("\\+");
-        Platform.runLater(() -> {
-            BattlePageController.getInstance().initHeroes(battleManager);
-        });
+        BattlePageController.getInstance().kalakRashti_initHeroes(battleManager);
+
         Map.getInstance().getCell(3, 1).setCardInCell(battleManager.getPlayer1().getHero());
         Map.getInstance().getCell(3, 9).setCardInCell(battleManager.getPlayer2().getHero());
         for (String action : actions) {
 
-            if (action.startsWith("E"))
+            if (action.startsWith("E")) {
+                System.out.println("the game ended");
                 BattlePageController.getInstance().showThatGameEnded();
+                System.out.println("the game ended ? wtf ???");
+            }
             if (action.startsWith("T")) {
                 formalEndTurn();
             }
@@ -62,7 +62,7 @@ public class GameRecord {
                 checkIfInsert(action);
             if (action.contains("M"))
                 checkIfMove(action);
-            BattlePageController.getInstance().kalakRashti();
+            BattlePageController.getInstance().kalakRashti_refreshMap();
             try {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {

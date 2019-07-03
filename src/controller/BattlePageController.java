@@ -2,11 +2,9 @@ package controller;
 
 import constants.CardType;
 import constants.FunctionType;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -20,8 +18,6 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polyline;
-import javafx.scene.text.Font;
-import javafx.stage.Stage;
 import model.*;
 
 import java.awt.*;
@@ -342,8 +338,12 @@ public class BattlePageController implements Initializable {
         MainMenuController.getInstance().setAsScene();
         BattlePageController.deleteBattlePage();
     }
-    public void kalakRashti(){
-        refreshTheMinions();
+
+    public void kalakRashti_refreshMap() {
+        refreshPartly();
+    }
+    public void kalakRashti_initHeroes(BattleManager battleManager){
+        initHeroes(battleManager);
     }
     private void recordTheGame(BattleManager battle) {
         System.out.println(gameRecord.getGame());
@@ -520,7 +520,7 @@ public class BattlePageController implements Initializable {
         return manas;
     }
 
-    public void refreshTheMinions(){
+    public void refreshPartly() {
         for (Cell[] cells : Map.getInstance().getMap()) {
             for (Cell cell : cells) {
                 if (cell != null && cell.getCardInCell() != null && cell.getCardInCell().getFace() != null)
@@ -528,59 +528,30 @@ public class BattlePageController implements Initializable {
             }
         }
     }
+
     public void refreshTheStatusOfMap(BattleManager battleManager) {
-        BattleMenu.getBattleManager().checkTheEndSituation();
-       /* for (Deployable card : player1.getCardsOnBattleField()) {
-
-            if (card.getFace() != null)
-                card.getFace().updateStats();
-        }
-        for (Deployable card : player2.getCardsOnBattleField()) {
-            if (card.getFace() != null)
-                card.getFace().updateStats();
-        }*/
-        refreshTheMinions();
-        try {
-            health.setText("" + me.getHero().theActualHealth());
-            opponentHealth.setText("" + opponent.getHero().theActualHealth());
-            opponentHand.setText("Hand: " + opponent.handSize() + " / 6");
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("mohem nis :)");
-        }
-        try {
-            updateManaViewers(battleManager);
-            generalCoolDown.setText("" + me.getHero().getHeroSpell().getCoolDownRemaining());
-            opponentGeneralCoolDown.setText("" + opponent.getHero().getHeroSpell().getCoolDownRemaining());
-            deckSize.setText("Deck: " + me.deckSize() + 1 + "/18");
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("migam ke mohem nis");
-        }
-
-        /*for (Cell[] cells : Map.getInstance().getMap()) {
-            for (Cell cell : cells) {
-                if (cell.getItem() != null && cell.getDisplayableItem() == null) {
-                    try {
-                        DisplayableCard displayableCard = new DisplayableCard(cell.getItem(), "");
-                        displayableCard.setScaleX(0.2);
-                        displayableCard.setScaleY(0.2);
-                        cell.setDisplayableItem(displayableCard);
-                        displayableCard.setTranslateX(cell.calculateCenter()[0]);
-                        displayableCard.setTranslateY(cell.calculateCenter()[1]);
-                        mainPane.getChildren().add(displayableCard);
-                    } catch (NullPointerException e) {
-                        System.err.println("The item gif not found");
-
-                    }
-                }
+        refreshPartly();
+        if(!battleManager.isThisRecordedGame()){
+            BattleMenu.getBattleManager().checkTheEndSituation();
+            try {
+                health.setText("" + me.getHero().theActualHealth());
+                opponentHealth.setText("" + opponent.getHero().theActualHealth());
+                opponentHand.setText("Hand: " + opponent.handSize() + " / 6");
+            } catch (Exception e) {
+                e.printStackTrace();
+                System.out.println("mohem nis :)");
             }
-        }*/
-        /*if(battleController.getMe().hand.get(0)!=null)
-        {
+            try {
+                updateManaViewers(battleManager);
+                generalCoolDown.setText("" + me.getHero().getHeroSpell().getCoolDownRemaining());
+                opponentGeneralCoolDown.setText("" + opponent.getHero().getHeroSpell().getCoolDownRemaining());
+                deckSize.setText("Deck: " + me.deckSize() + 1 + "/18");
+            } catch (Exception e) {
+                e.printStackTrace();
+                System.out.println("migam ke mohem nis");
+            }
 
-        }*/
-        // next card , cards in hand , all deployedCard in battle with their attack and health should be refreshed too
+        }
 
     }
 
