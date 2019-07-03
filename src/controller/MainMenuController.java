@@ -12,6 +12,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import model.Account;
+import model.GameRecord;
 import model.Initializer;
 
 import java.awt.*;
@@ -75,7 +76,9 @@ public class MainMenuController implements Initializable {
         });
         matchHistories.setOnAction(event -> {
             int size = Account.getMainAccount().getMatchHistories().size();
-            Account.getMainAccount().getMatchHistories().get(size-1).getGameRecord().makeFormalBattleManagerForRecord();
+            GameRecord gameRecord = Account.getMainAccount().getMatchHistories().get(size-1).getGameRecord();
+            gameRecord.makeFormalBattleManagerForRecord();
+            Account.getMainAccount().setSelectedGameRecord(gameRecord);
             BattlePageController.getInstance().setAsScene();
         });
         playButton.setOnAction(event -> PlayMenuController.getInstance().setAsScene());

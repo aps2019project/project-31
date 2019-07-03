@@ -34,7 +34,7 @@ public class Account {
     private String password;
     private ArrayList<MatchHistory> matchHistories = new ArrayList<>();
     private int[] winLoseDraw = new int[3];
-
+    private GameRecord selectedGameRecord;
 
     public static void loadAllAccounts() {
         YaGson yaGson = new YaGsonBuilder().create();
@@ -65,6 +65,14 @@ public class Account {
     public void setAuthToken(String authToken) {
         this.authToken = authToken;
     }*/
+
+    public GameRecord getSelectedGameRecord() {
+        return selectedGameRecord;
+    }
+
+    public void setSelectedGameRecord(GameRecord selectedGameRecord) {
+        this.selectedGameRecord = selectedGameRecord;
+    }
 
     public void incrementWins() {
         winLoseDraw[0]++;

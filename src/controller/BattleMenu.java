@@ -192,7 +192,7 @@ public class BattleMenu extends Menu {
         battleManager.getPlayer1().getHero().getHeroSpell().decrementCooldonwRemaining();
         battleManager.getPlayer2().getHero().getHeroSpell().decrementCooldonwRemaining();
         //    battleManager.refreshTheStatusOfMap();
-        BattleMenu.showGlimpseOfMap(BattleMenu.getBattleManager());
+        BattleMenu.showGlimpseOfMap();
     }
 
 
@@ -347,7 +347,7 @@ public class BattleMenu extends Menu {
         System.err.println("you don't have this card in your hand.");
     }
 
-    public static void showGlimpseOfMap(BattleManager battleManager) {
+    public static void showGlimpseOfMap() {
         System.out.println("Player 1 minions are:\n");
         for (Deployable deployable : battleManager.getPlayer1().getCardsOnBattleField()) {
             if (deployable != null)

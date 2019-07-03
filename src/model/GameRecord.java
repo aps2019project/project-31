@@ -6,6 +6,8 @@ import controller.BattleMenu;
 import controller.BattlePageController;
 import controller.Shop;
 import javafx.application.Platform;
+import view.Input;
+import view.Output;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -36,6 +38,7 @@ public class GameRecord {
         BattleManager battleManager = new BattleManager(player1, player2, maxNumberOfFlags, maxTurnsOfHavingFlag, gameMode);
         BattleMenu.setBattleManager(battleManager);
         this.battleManager = battleManager;
+        BattleMenu.showGlimpseOfMap();
     }
 
 
@@ -43,10 +46,11 @@ public class GameRecord {
         String[] actions = game.split("\\+");
 
         for (String action : actions) {
+            System.out.println("HAVAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAR");
             if (action.startsWith("E"))
                 battleManager.showThatGameEnded();
             if (action.startsWith("T")) {
-
+                formalEndTurn();
             }
             if (action.contains("A"))
                 checkIfAttack(action);

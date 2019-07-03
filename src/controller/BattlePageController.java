@@ -153,6 +153,7 @@ public class BattlePageController implements Initializable {
     private ColumnOfHand[] columnHands = new ColumnOfHand[6];
     @FXML
     private Button infoButton;
+    private GameRecord gameRecord;
 
     public BattlePageController() {
     }
@@ -163,19 +164,23 @@ public class BattlePageController implements Initializable {
 
     public void setAsScene() {
         if (!isInGraveYard) {
-            try {
-                Parent root = FXMLLoader.load(getClass().getResource("/BattlePage.fxml"));
-                Double screenWidth = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
-                scene = new Scene(root);
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            loadTheScene();
         } else {
             isInGraveYard = false;
         }
 
         Initializer.setCurrentScene(scene);
+    }
+
+    private void loadTheScene() {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/BattlePage.fxml"));
+            Double screenWidth = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
+            scene = new Scene(root);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void deleteBattlePage() {
@@ -273,9 +278,12 @@ public class BattlePageController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         battlePageController = this;
         BattleManager battle = BattleMenu.getBattleManager();
+
         if (!battle.isThisRecordedGame())
             playTheActualGame(battle);
         else {
+            System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+            gameRecord = Account.getMainAccount().getSelectedGameRecord();
             recordTheGame(battle);
         }
     }
@@ -331,9 +339,10 @@ public class BattlePageController implements Initializable {
 
     private void recordTheGame(BattleManager battle) {
         setPolygonsInMap();
+        initPlayers();
         initHeroesSpecialPowers();
         atStartThings(battle);
-
+        gameRecord.showTheWholeGame();
     }
 
     private void setOnActionForEveryCell() {
@@ -506,7 +515,7 @@ public class BattlePageController implements Initializable {
         BattleMenu.getBattleManager().checkTheEndSituation();
         Player player1 = battleManager.getPlayer1();
         Player player2 = battleManager.getPlayer2();
-        for (Deployable card : player1.getCardsOnBattleField()) {
+       /* for (Deployable card : player1.getCardsOnBattleField()) {
 
             if (card.getFace() != null)
                 card.getFace().updateStats();
@@ -514,8 +523,13 @@ public class BattlePageController implements Initializable {
         for (Deployable card : player2.getCardsOnBattleField()) {
             if (card.getFace() != null)
                 card.getFace().updateStats();
+        }*/
+        for (Cell[] cells : Map.getInstance().getMap()) {
+            for (Cell cell : cells) {
+                if (cell != null && cell.getCardInCell() != null && cell.getCardInCell().getFace()!= null)
+                    cell.getCardInCell().getFace().updateStats();
+            }
         }
-
         try {
             health.setText("" + me.getHero().theActualHealth());
             opponentHealth.setText("" + opponent.getHero().theActualHealth());
