@@ -219,4 +219,16 @@ public class Shop extends Menu {
             }
         }
     }
+
+    public static Card findCardById(int id) {
+        for (Card card : allCards) {
+            if (card != null && card.getId() == id)
+                return card;
+        }
+        for (Hero hero : allHeroes) {
+            if (hero.getHeroSpell() != null && hero.getHeroSpell().getId() == id)
+                return hero.getHeroSpell();
+        }
+        return null;
+    }
 }

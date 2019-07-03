@@ -4,6 +4,7 @@ import constants.FunctionType;
 import constants.GameMode;
 import controller.BattleMenu;
 import controller.BattlePageController;
+import controller.Shop;
 import javafx.application.Platform;
 
 import java.util.regex.Matcher;
@@ -64,26 +65,54 @@ public class GameRecord {
         }
     }
 
+    private Deployable deployableInCell(String sX1, String sX2) {
+        int x1 = Integer.parseInt(sX1);
+        int x2 = Integer.parseInt(sX2);
+        Cell deployableCell = Map.getInstance().getCell(x1, x2);
+        return deployableCell.getCardInCell();
+    }
+
     private void checkIfAttack(String action) {
         Pattern pattern = Pattern.compile("\\dA(\\d)(\\d)(\\d)(\\d)");
         Matcher matcher = pattern.matcher(action);
         if (matcher.matches()) {
-            int x1 = Integer.parseInt(matcher.group(1));
-            int x2 = Integer.parseInt(matcher.group(2));
-            int x_1 = Integer.parseInt(matcher.group(3));
-            int x_2 = Integer.parseInt(matcher.group(4));
-            Cell attackerCell = Map.getInstance().getCell(x1, x2);
-            Cell enemyCell = Map.getInstance().getCell(x_1, x_2);
-            battleManager.doTheActualAttack_noTarof(attackerCell.getCardInCell(),enemyCell.getCardInCell());
+            battleManager.doTheActualAttack_noTarof(deployableInCell(matcher.group(1), matcher.group(2)),
+                    deployableInCell(matcher.group(3), matcher.group(4)));
         }
     }
 
     private void checkIfMove(String action) {
-
+        Pattern pattern = Pattern.compile("\\dM(\\d)(\\d)(\\d)(\\d)");
+        Matcher matcher = pattern.matcher(action);
+        if (matcher.matches()) {
+            battleManager.doTheActualMove_noTarof(deployableInCell(matcher.group(1), matcher.group(2)),
+                    Integer.parseInt(matcher.group(3)), Integer.parseInt(matcher.group(4)));
+        }
     }
 
     private void checkIfInsert(String action) {
-
+        Pattern pattern = Pattern.compile("\\dI(\\d\\d\\d)(\\d)(\\d)");
+        Matcher matcher = pattern.matcher(action);
+        if (matcher.matches()) {
+            int id = Integer.parseInt(matcher.group(1));
+            int x1 = Integer.parseInt(matcher.group(2));
+            int x2 = Integer.parseInt(matcher.group(3));
+            Card card = Shop.findCardById(id);
+            switch (card.getType()) {
+                case minion:
+                    battleManager.playMinion((Minion) card, x1, x2);
+                    break;
+                case spell:
+                    battleManager.playSpell((Spell) card, x1, x2);
+                    break;
+                case herospell:
+                    battleManager.playSpell((Spell) card, x1, x2);
+                    break;
+                case item:
+                    battleManager.useItem((Item) card, x1, x2);
+                    break;
+            }
+        }
     }
 
     private void formalEndTurn() {

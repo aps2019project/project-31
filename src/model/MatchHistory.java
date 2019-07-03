@@ -19,6 +19,10 @@ public class MatchHistory {
         System.out.println("Opponent: " + opponent + " , win/lose: " + outcome + " , time: " + figureTime());
     }
 
+    public GameRecord getGameRecord() {
+        return gameRecord;
+    }
+
     private String figureTime() {
         Date now = new Date();
         if (now.getYear() - time.getYear() != 0) {

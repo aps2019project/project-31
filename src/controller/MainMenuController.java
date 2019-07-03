@@ -33,6 +33,7 @@ public class MainMenuController implements Initializable {
     public Button logoutButton;
     public Button saveButton;
     public Button cardMakerButton;
+    public Button matchHistories;
 
 
     public MainMenuController() {
@@ -71,6 +72,11 @@ public class MainMenuController implements Initializable {
         leaderboardButton.setOnAction(event -> {
             LeaderBoardController.getInstance().updateLeaderBoard();
             LeaderBoardController.getInstance().setAsScene();
+        });
+        matchHistories.setOnAction(event -> {
+            int size = Account.getMainAccount().getMatchHistories().size();
+            Account.getMainAccount().getMatchHistories().get(size-1).getGameRecord().makeFormalBattleManagerForRecord();
+            BattlePageController.getInstance().setAsScene();
         });
         playButton.setOnAction(event -> PlayMenuController.getInstance().setAsScene());
         shopButton.setOnAction(event -> ShopController.getInstance().setAsScene());

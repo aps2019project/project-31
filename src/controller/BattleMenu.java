@@ -235,6 +235,10 @@ public class BattleMenu extends Menu {
             System.err.println("insert(method) -> card is null");
             return false;
         }
+        if (card.getType() == CardType.item) {
+            card.setAccount(battleManager.getCurrentPlayer().getAccount());
+            battleManager.useItem((Item) card, x1, x2);
+        }
         if (battleManager.getCurrentPlayer().getHero().getHeroSpell().getId() == card.getId()){
             if (card.getManaCost() > battleManager.getCurrentPlayer().getMana()) {
                 System.err.println("Not enough mana");
@@ -262,10 +266,7 @@ public class BattleMenu extends Menu {
                 card.setAccount(battleManager.getCurrentPlayer().getAccount());
                 battleManager.playSpell((Spell) card, x1, x2);
             }
-            if (card.getType() == CardType.item) {
-                card.setAccount(battleManager.getCurrentPlayer().getAccount());
-                battleManager.useItem((Item) card, x1, x2);
-            }
+
 
             if (card.getName() == "Eagle") {
                 System.out.println("found eagle");
