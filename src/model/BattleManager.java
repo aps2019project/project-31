@@ -7,6 +7,7 @@ import constants.FunctionType;
 import constants.GameMode;
 import controller.BattleMenu;
 
+import javafx.application.Platform;
 import view.Output;
 
 import java.util.*;
@@ -123,7 +124,7 @@ public class BattleManager {
             BattlePageController.getInstance().removeMinionFromHand(((Deployable) BattlePageController
                     .getInstance().getMe().selectedCard).face);
         currentPlayer.selectedCard = null;
-
+        removeItemIfThereIsSomething(theMinion);
         BattlePageController.getInstance().refreshTheStatusOfMap(this);
 
         if (!isThisRecordedGame)
@@ -919,13 +920,19 @@ public class BattleManager {
         card.cell = Map.getInstance().getCell(x1, x2);
         card.setMoved(true);
         card.cell.setCardInCell(card);
-        if (card.cell.getItem() != null && card.item != null)
-            Map.getInstance().getCell(x1, x2).setCardInCell(card);
-
+        removeItemIfThereIsSomething(card);
 
         BattlePageController.getInstance().refreshTheStatusOfMap(this);
 
         Output.movedSuccessfully(card);
+    }
+
+    public void removeItemIfThereIsSomething(Deployable card) {
+        if (card.cell.getItem() != null && card.item == null) {
+            card.item = card.cell.getItem();
+            card.cell.setItem(null);
+            BattlePageController.getInstance().removeItemInGround(card.cell);
+        }
     }
 
     public void killTheThing(Deployable enemy) {
@@ -1376,7 +1383,10 @@ public class BattleManager {
         int x2 = random.nextInt(9) + 1;
         if (Map.getInstance().getCell(x1, x2).getCardInCell() != null) {
             Map.getInstance().getCell(x1, x2).getCardInCell().setItem(item);
-
+            Platform.runLater(()-> {
+                BattlePageController.getInstance().displayMessage("Item put on Minion!!!");
+            });
+            System.out.println("item was put on someones minion with coordination: "+x1+" , "+x2);
         } else {
             Map.getInstance().getCell(x1, x2).setItem(item);
         }

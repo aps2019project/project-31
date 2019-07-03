@@ -1,8 +1,10 @@
 package model;
 
+import javafx.scene.image.ImageView;
 import javafx.scene.shape.Polyline;
 
-import java.util.Arrays;
+
+
 
 public class Cell {
     private int x1Coordinate;
@@ -14,16 +16,15 @@ public class Cell {
     private boolean hasFlag;
     private Item item;
     private Polyline polygon;
+    private ImageView displayableItem;
 
-    public DisplayableCard getDisplayableItem() {
+    public ImageView getDisplayableItem() {
         return displayableItem;
     }
 
-    public void setDisplayableItem(DisplayableCard displayableItem) {
-        this.displayableItem = displayableItem;
+    public void setDisplayableItem(ImageView itemIcon) {
+        this.displayableItem = itemIcon;
     }
-
-    private DisplayableCard displayableItem;
 
     public Polyline getPolygon() {
         return polygon;

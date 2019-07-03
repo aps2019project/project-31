@@ -110,6 +110,8 @@ public class BattlePageController implements Initializable {
     public ImageView profPic1;
     public ImageView profPic2;
     public Button concede;
+    public Button selectItem;
+    public Button infoButton;
 
 //    private StackPane showingGraveYard; // for showing it: lastStackPane = showingGraveYard; showingGraveYard is a designed scene
 
@@ -148,8 +150,6 @@ public class BattlePageController implements Initializable {
     private boolean isInGraveYard = false;
     private ArrayList<ImageView> manas = new ArrayList<>();
     private ColumnOfHand[] columnHands = new ColumnOfHand[6];
-    @FXML
-    private Button infoButton;
     private GameRecord gameRecord;
 
     public BattlePageController() {
@@ -285,6 +285,16 @@ public class BattlePageController implements Initializable {
         }
     }
 
+    private void selectItem() {
+        if (me.getSelectedCard() == null) {
+            displayMessage("select a minion first");
+        } else if (me.getSelectedCard().getType() != CardType.hero && me.getSelectedCard().getType() != CardType.minion)
+            displayMessage("select a deployable for selecting collectible item");
+        else if (((Deployable) me.getSelectedCard()).getItem() == null)
+            displayMessage("your deployable doesn't have an item to select");
+        else me.setSelectedCard(((Deployable) me.getSelectedCard()).getItem());
+    }
+
     private void playTheActualGame(BattleManager battle) {
         initPlayers();
         try {
@@ -296,7 +306,7 @@ public class BattlePageController implements Initializable {
         infoButton.setOnAction(actionEvent -> {
             infoButton();
         });
-
+        selectItem.setOnAction(event -> selectItem());
         initHeroesSpecialPowers();
 
         setOnActionForEveryCell();
@@ -334,7 +344,8 @@ public class BattlePageController implements Initializable {
             GraveYardController.getInstance().setAsScene();
         });
     }
-    public void addFaceToBattlePage(Minion theMinion,BattleManager battle){
+
+    public void addFaceToBattlePage(Minion theMinion, BattleManager battle) {
         DisplayableDeployable face = new DisplayableDeployable(theMinion);
         theMinion.setFace(face);
         face.updateStats();
@@ -350,10 +361,12 @@ public class BattlePageController implements Initializable {
             face.updateStats();
         });
     }
-    public void removeASpellFromHand(Player currentPlayer, boolean isThisRecordedGame,Spell spell,BattleManager battleManager){
+
+    public void removeASpellFromHand(Player currentPlayer, boolean isThisRecordedGame, Spell spell, BattleManager battleManager) {
         if (!currentPlayer.isAi() && !isThisRecordedGame)
             BattlePageController.getInstance().removeSpellFromHand(spell.getFace(), battleManager);
     }
+
     public void showThatGameEnded() {
         MainMenuController.getInstance().setAsScene();
         BattleMenu.deleteBattleManagerAndMakeMap();
@@ -507,6 +520,8 @@ public class BattlePageController implements Initializable {
         if (battleManager.getCurrentPlayer() == me) {
             if (me.getSelectedCard() != null && me.getSelectedCard().getType() == CardType.spell) {
                 BattleMenu.insert(me.getSelectedCard(), card.getCell().getX1Coordinate(), card.getCell().getX2Coordinate());
+            } else if (me.getSelectedCard() != null && me.getSelectedCard().getType() == CardType.item) {
+                BattleMenu.insert(me.getSelectedCard(), card.getCell().getX1Coordinate(), card.getCell().getX2Coordinate());
             } else if (me.getSelectedCard() != null &&
                     me.getSelectedCard().getType() != CardType.spell &&
                     !card.getAccount().equals(me.getAccount())) {
@@ -548,7 +563,7 @@ public class BattlePageController implements Initializable {
 
     public void refreshTheStatusOfMap(BattleManager battleManager) {
         refreshPartly();
-        if(!battleManager.isThisRecordedGame()){
+        if (!battleManager.isThisRecordedGame()) {
             BattleMenu.getBattleManager().checkTheEndSituation();
             try {
                 health.setText("" + me.getHero().theActualHealth());
@@ -567,9 +582,35 @@ public class BattlePageController implements Initializable {
                 e.printStackTrace();
                 System.out.println("migam ke mohem nis");
             }
-
+            showItems();
         }
 
+    }
+
+    private void showItems() {
+        for (Cell[] cells : Map.getInstance().getMap()) {
+            for (Cell cell : cells) {
+                if (cell.getItem() != null && cell.getDisplayableItem() == null) {
+                    try {
+                        DisplayableCard displayableCard = new DisplayableCard(cell.getItem(), "");
+                        ImageView itemIcon = displayableCard.getMainIcon();
+                        itemIcon.setScaleX(1);
+                        itemIcon.setScaleY(1);
+                        cell.setDisplayableItem(itemIcon);
+                        itemIcon.setTranslateX(cell.calculateCenter()[0]);
+                        itemIcon.setTranslateY(cell.calculateCenter()[1]);
+                        mainPane.getChildren().add(itemIcon);
+                    } catch (NullPointerException e) {
+                        System.err.println("The item gif not found");
+                    }
+                }
+            }
+        }
+    }
+
+    public void removeItemInGround(Cell cell) {
+        if (cell.getDisplayableItem() != null)
+            mainPane.getChildren().remove(cell.getDisplayableItem());
     }
 
     private void updateManaViewers(BattleManager battleManager) {
@@ -704,7 +745,9 @@ public class BattlePageController implements Initializable {
                     System.err.println("no selected card");
                     return;
                 }
-                if (cell.getCardInCell() != null) {
+                if (cell.getCardInCell() == null && (me.getSelectedCard().getType() == CardType.item)) { // spell can't insert on the ground ?
+                    BattleMenu.insert(me.getSelectedCard(), cell.getX1Coordinate(), cell.getX2Coordinate());
+                } else if (cell.getCardInCell() != null) {
                     displayMessage("destination is not empty");
                     System.out.println("card in this cell is : " + cell.getCardInCell().infoToString());
                     return;

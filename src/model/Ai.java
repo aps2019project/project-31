@@ -40,7 +40,8 @@ public class Ai extends Player {
             }
         }
         this.placeNextCardToHand();
-        battle.getGameRecord().addAction("T");
+        if (battle.getGameRecord()!=null)
+            battle.getGameRecord().addAction("T");
     }
 
     public int coefficient(int a) {
