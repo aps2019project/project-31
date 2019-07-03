@@ -130,7 +130,7 @@ public class BattleManager {
         currentPlayer.removeFromHand(minion);
         applyOnSpawnFunction(theMinion);
         currentPlayer.decreaseMana(theMinion.manaCost);
-        if (!currentPlayer.isAi())
+        if (!currentPlayer.isAi() && !isThisRecordedGame)
             BattlePageController.getInstance().removeMinionFromHand(((Deployable) BattlePageController
                     .getInstance().getMe().selectedCard).face);
         currentPlayer.selectedCard = null;

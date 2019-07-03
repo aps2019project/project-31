@@ -62,9 +62,7 @@ public class GameRecord {
                 checkIfInsert(action);
             if (action.contains("M"))
                 checkIfMove(action);
-            Platform.runLater(() -> {
-                BattlePageController.getInstance().refreshTheStatusOfMap(battleManager);
-            });
+            BattlePageController.getInstance().kalakRashti();
             try {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {

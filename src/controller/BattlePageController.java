@@ -342,7 +342,9 @@ public class BattlePageController implements Initializable {
         MainMenuController.getInstance().setAsScene();
         BattlePageController.deleteBattlePage();
     }
-
+    public void kalakRashti(){
+        refreshTheMinions();
+    }
     private void recordTheGame(BattleManager battle) {
         System.out.println(gameRecord.getGame());
         setPolygonsInMap();
@@ -518,10 +520,16 @@ public class BattlePageController implements Initializable {
         return manas;
     }
 
+    public void refreshTheMinions(){
+        for (Cell[] cells : Map.getInstance().getMap()) {
+            for (Cell cell : cells) {
+                if (cell != null && cell.getCardInCell() != null && cell.getCardInCell().getFace() != null)
+                    cell.getCardInCell().getFace().updateStats();
+            }
+        }
+    }
     public void refreshTheStatusOfMap(BattleManager battleManager) {
         BattleMenu.getBattleManager().checkTheEndSituation();
-        Player player1 = battleManager.getPlayer1();
-        Player player2 = battleManager.getPlayer2();
        /* for (Deployable card : player1.getCardsOnBattleField()) {
 
             if (card.getFace() != null)
@@ -531,12 +539,7 @@ public class BattlePageController implements Initializable {
             if (card.getFace() != null)
                 card.getFace().updateStats();
         }*/
-        for (Cell[] cells : Map.getInstance().getMap()) {
-            for (Cell cell : cells) {
-                if (cell != null && cell.getCardInCell() != null && cell.getCardInCell().getFace() != null)
-                    cell.getCardInCell().getFace().updateStats();
-            }
-        }
+        refreshTheMinions();
         try {
             health.setText("" + me.getHero().theActualHealth());
             opponentHealth.setText("" + opponent.getHero().theActualHealth());
