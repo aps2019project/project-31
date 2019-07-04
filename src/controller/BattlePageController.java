@@ -256,7 +256,6 @@ public class BattlePageController implements Initializable {
                     if (nextCardField.getChildren().get(1) instanceof DisplayableDeployable) {
                         showMinionInHand(((DisplayableDeployable) nextCardField.getChildren().get(1)).getDeployable(), i, battle);
                         nextCardField.getChildren().remove(1);
-                        System.err.println("yello");
                     } else {
                         showSpellInHand(((DisplayableCard) nextCardField.getChildren().get(1)).getCard(), i, battle);
                         nextCardField.getChildren().remove(1);
@@ -473,6 +472,8 @@ public class BattlePageController implements Initializable {
         face.setScaleY(SCALE);
         face.setTranslateX(OFFSET_X);
         face.setTranslateY(OFFSET_Y);
+        columnHands[i].getStackPane().getChildren().get(0).setTranslateX(OFFSET_X);
+        columnHands[i].getStackPane().getChildren().get(0).setTranslateY(OFFSET_Y);
         ((Spell) card).setFace(face);
         System.out.println("Showing " + card.getName() + " in column" + i);
         columnHands[i].getStackPane().getChildren().add(face);
