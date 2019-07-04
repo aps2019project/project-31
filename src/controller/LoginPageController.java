@@ -21,6 +21,8 @@ import javafx.scene.text.Font;
 import model.*;
 
 import java.awt.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -84,6 +86,16 @@ public class LoginPageController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        try {
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(
+                    System.getProperty("user.dir") + "/Sources/ServerResources/config.txt"));
+            int port = Integer.parseInt(bufferedReader.readLine());
+            String host = bufferedReader.readLine();
+            Client client = new Client(host, port);
+            Client.setClient(client);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         Font.loadFont(getClass().getResource("/assets/fonts/Lato-Regular.ttf").toExternalForm(), 10);
         Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
         Double screenWidth = screen.getWidth();
@@ -95,7 +107,12 @@ public class LoginPageController implements Initializable {
             Initializer.getPrimaryStage().close();
         });
         loginButton.setOnAction(actionEvent -> {
-            login();
+
+            try {
+                login();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         });
 
         infoButton.setOnAction(actionEvent -> {
@@ -147,15 +164,16 @@ public class LoginPageController implements Initializable {
         signupButton.setOnAction(actionEvent -> createAccount());
     }
 
-    public void login() {
+    public void login() throws IOException {
         String username = usernameTF.getText();
-        Account account = Account.findAccount(username);
+
+        /*Account account = Account.findAccount(username);
         if (account == null) {
             displayMessage("Incorrect Username!", 17, 2, infoVBox);
             return;
-        }
+        }*/
         String password = passwordField.getText();
-        if (account.getPassword().equals(password)) {
+       /* if (account.getPassword().equals(password)) {
             Account.setMainAccount(account);
             displayMessage("Login Successful! Entering game...", 17, 2, infoVBox);
             //handle entering the next scene
@@ -167,7 +185,22 @@ public class LoginPageController implements Initializable {
         } else {
             displayMessage("Incorrect Password!", 17, 2, infoVBox);
             return;
+        }*/
+        Account account = Client.getClient().attemptLogin(username, password);
+        if (account == null) {
+            displayMessage("Incorrect Username!", 17, 2, infoVBox);
+        }else {
+            Account.setMainAccount(account);
+            displayMessage("Login Successful! Entering game...", 17, 2, infoVBox);
+            //handle entering the next scene
+            MainMenuController.getInstance().setAsScene();
+            usernameTF.clear();
+            passwordField.clear();
+            System.err.println(Account.getMainAccount().getMainDeck().getDeckName());
+
         }
+
+
     }
 
     public void createAccount() {

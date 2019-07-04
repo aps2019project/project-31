@@ -13,6 +13,8 @@ public class Initializer extends Application {
     private static Scene currentScene;
     private static BattleMenu battleMenu = new BattleMenu(1000, "Battle Menu");
 
+
+
     public static BattleMenu getBattleMenu() {
         return battleMenu;
     }
@@ -37,6 +39,12 @@ public class Initializer extends Application {
     }
 
     public static void main(String[] args) {
+        initialiseData();
+        launch(args);
+        Input.start();
+    }
+
+    public static void initialiseData() {
         System.err.println("Loading all accounts...");
         Account.loadAllAccounts();
         System.err.println("Loading custom decks...");
@@ -48,8 +56,6 @@ public class Initializer extends Application {
         System.err.println("Initializing maps ...");
         Map.getInstance().createTheMap();
         System.err.println("cards loaded");
-        launch(args);
-        Input.start();
     }
 
     @Override
