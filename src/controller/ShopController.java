@@ -1,5 +1,6 @@
 package controller;
 
+import Server.ServerStrings;
 import constants.CardType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -140,7 +141,13 @@ public class ShopController implements Initializable {
             }
         }
         try {
-            boolean wasSuccess = Client.getClient().requestCardTransaction(card.getId());
+            boolean wasSuccess = Client.getClient().requestCardBuy(card.getId());
+            if (!wasSuccess){
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setHeaderText(ServerStrings.OUT_OF_STOCK);
+                alert.show();
+                return;
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -167,6 +174,18 @@ public class ShopController implements Initializable {
         if (theCard == null) {
             displayMessage("card not in collection");
             return;
+        }
+        try {
+            boolean wasSuccess = Client.getClient().requestCardSell(card.getId());
+            if (!wasSuccess) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setHeaderText("Unsuccessful");
+                alert.show();
+                return;
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         for (Deck deck : Account.getMainAccount().getDecks()) {
             try {

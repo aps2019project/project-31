@@ -78,8 +78,6 @@ public class Client extends Thread {
             os.writeUTF("play request from user:" + Account.getMainAccount().getUsername());
 
 
-
-
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -95,8 +93,17 @@ public class Client extends Thread {
         return null;
     }
 
-    public boolean requestCardTransaction(int id) throws IOException {
-        os.writeUTF(authToken+ " ");
-        return true;
+    public boolean requestCardBuy(int id) throws IOException {
+        os.writeUTF(authToken + " request to buy card: " + id);
+        String response = is.readUTF();
+        if (response.matches(ServerStrings.BOUGHT)) return true;
+        else return false;
+    }
+
+    public boolean requestCardSell(int id) throws IOException{
+        os.writeUTF(authToken + " request to sell card: " + id);
+        String response = is.readUTF();
+        if (response.matches(ServerStrings.SOLD)) return true;
+        else return false;
     }
 }
