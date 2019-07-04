@@ -234,9 +234,9 @@ public class CollectionController implements Initializable {
             updateEditingDeck();
         });
         setAsMainButton.setOnAction(event -> {
-            if(Account.getEditingDeck() == null){
-               displayMessage("select a deck");
-               return;
+            if (Account.getEditingDeck() == null) {
+                displayMessage("select a deck");
+                return;
             }
             if (!Account.getEditingDeck().checkIfValid()) {
                 displayMessage("deck is not valid!!");

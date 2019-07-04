@@ -489,14 +489,14 @@
                   </StackPane>
                   <StackPane prefHeight="116.0" prefWidth="134.0">
                      <children>
-                        <Label id="OpponentHand" fx:id="opponentHand" alignment="CENTER" prefHeight="49.0" prefWidth="120.0" stylesheets="@style/buttonOne.css" text="Hand: 6/6" textFill="WHITE" translateY="20.0">
+                        <Label id="OpponentHand" fx:id="opponentHand" alignment="CENTER" prefHeight="49.0" prefWidth="120.0" stylesheets="@style/buttonOne.css" text="Hand: 6/6" textFill="WHITE" StackPane.alignment="TOP_CENTER">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Label>
                      </children>
                   </StackPane>
-                  <HBox prefHeight="124.0" prefWidth="134.0" translateY="20.0">
+                  <HBox prefHeight="124.0" prefWidth="134.0">
                      <children>
                         <Label id="opponentMana" fx:id="opponentMana" alignment="CENTER" prefHeight="47.0" prefWidth="85.0" stylesheets="@style/buttonOne.css" text="9 / 9" textFill="WHITE">
                            <font>
@@ -510,9 +510,9 @@
                         </ImageView>
                      </children>
                   </HBox>
-                  <VBox fx:id="messageBox" prefHeight="201.0" prefWidth="144.0" />
-                  <Button id="secondButton" fx:id="selectItem" mnemonicParsing="false" prefHeight="88.0" prefWidth="123.0" stylesheets="@style/buttonOne.css" text="Select Item" />
-                  <Button id="secondButton" fx:id="infoButton" mnemonicParsing="false" prefHeight="26.0" prefWidth="118.0" stylesheets="@style/buttonOne.css" text="info" />
+                  <VBox fx:id="messageBox" prefHeight="187.0" prefWidth="134.0" />
+                  <Button id="secondButton" fx:id="selectItem" mnemonicParsing="false" prefHeight="0.0" prefWidth="134.0" stylesheets="@style/buttonOne.css" text="Select Item" translateX="-5.0" />
+                  <Button id="secondButton" fx:id="infoButton" mnemonicParsing="false" prefHeight="26.0" prefWidth="118.0" stylesheets="@style/buttonOne.css" text="info" translateX="5.0" />
                </children>
             </VBox>
          </right>

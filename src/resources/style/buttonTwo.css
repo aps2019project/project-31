@@ -1,2 +1,18 @@
+.button {
+    -fx-font-family: "Times New Roman";
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+    -fx-background-image: url('../assets/ui/button_close@2x.png');
+    -fx-background-color: rgba(0, 0, 0, 0);
+    -fx-text-fill: white;
+}
 
-
+.button:hover {
+    /*-fx-background-image: url('../assets/ui/button_secondary_glow.png');*/
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+    -fx-background-color: rgba(0, 0, 0, 0);
+    -fx-scale-x: 1.04;
+    -fx-scale-y: 1.04;
+    -fx-cursor: hand;
+}

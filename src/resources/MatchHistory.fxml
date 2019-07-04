@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MatchHistoryController">
+   <children>
+      <ImageView fitHeight="720.0" fitWidth="1080.0" pickOnBounds="true">
+         <image>
+            <Image url="@assets/bnea/color-plate-bg-purple@2x.png" />
+         </image>
+      </ImageView>
+      <BorderPane prefHeight="200.0" prefWidth="200.0">
+         <top>
+            <Pane prefHeight="82.0" prefWidth="1080.0" BorderPane.alignment="CENTER">
+               <children>
+                  <HBox prefHeight="79.0" prefWidth="327.0">
+                     <children>
+                        <Pane>
+                           <children>
+                              <Label fx:id="playerName" alignment="CENTER" prefHeight="73.0" prefWidth="317.0" text="PLAYER">
+                                 <font>
+                                    <Font size="25.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </Pane>
+                     </children>
+                  </HBox>
+               </children>
+            </Pane>
+         </top>
+         <center>
+            <StackPane>
+               <children>
+                  <Pane>
+                     <children>
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#520099" height="538.0" layoutX="128.0" layoutY="14.0" opacity="0.34" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="827.0" BorderPane.alignment="CENTER" />
+                        <ListView fx:id="listView" layoutX="128.0" layoutY="53.0" prefHeight="501.0" prefWidth="827.0" stylesheets="@style/listView.css" />
+                     </children>
+                  </Pane>
+               </children>
+            </StackPane>
+         </center>
+         <right>
+            <VBox>
+               <children>
+                  <Pane prefHeight="102.0" prefWidth="82.0">
+                     <children>
+                        <Button fx:id="backButton" layoutX="36.0" layoutY="3.0" mnemonicParsing="false" prefHeight="77.0" prefWidth="75.0" stylesheets="@style/buttonTwo.css" text=" " BorderPane.alignment="CENTER" />
+                     </children>
+                  </Pane>
+                  <Button id="secondButton" fx:id="replayButton" mnemonicParsing="false" prefHeight="35.0" prefWidth="121.0" stylesheets="@style/buttonOne.css" text="replay" />
+               </children>
+            </VBox>
+         </right>
+      </BorderPane>
+   </children>
+</StackPane>

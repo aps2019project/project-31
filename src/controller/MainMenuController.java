@@ -6,13 +6,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import model.Account;
-import model.GameRecord;
 import model.Initializer;
 
 import java.awt.*;
@@ -75,11 +72,7 @@ public class MainMenuController implements Initializable {
             LeaderBoardController.getInstance().setAsScene();
         });
         matchHistories.setOnAction(event -> {
-            int size = Account.getMainAccount().getMatchHistories().size();
-            GameRecord gameRecord = Account.getMainAccount().getMatchHistories().get(size-1).getGameRecord();
-            gameRecord.makeFormalBattleManagerForRecord();
-            Account.getMainAccount().setSelectedGameRecord(gameRecord);
-            BattlePageController.getInstance().setAsScene();
+            MatchHistoryController.getInstance().setAsScene();
         });
         playButton.setOnAction(event -> PlayMenuController.getInstance().setAsScene());
         shopButton.setOnAction(event -> ShopController.getInstance().setAsScene());
