@@ -23,6 +23,14 @@ public class Shop extends Menu {
     private static ArrayList<Item> allUsables = new ArrayList<>();
     private static HashMap<Integer, Integer> stock = new HashMap<>();
 
+    public static HashMap<Integer, Integer> getStock() {
+        return stock;
+    }
+
+    public static void setStock(HashMap<Integer, Integer> stock) {
+        Shop.stock = stock;
+    }
+
     public static void loadAllCards() {
 
         YaGson yaGson = new YaGsonBuilder().create();
