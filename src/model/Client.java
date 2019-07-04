@@ -3,6 +3,7 @@ package model;
 import Server.ServerStrings;
 import com.gilecode.yagson.YaGson;
 import com.gilecode.yagson.YaGsonBuilder;
+import controller.Shop;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -10,6 +11,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
 import java.util.AbstractCollection;
+import java.util.HashMap;
 
 public class Client extends Thread {
     private Socket socket;
@@ -57,15 +59,15 @@ public class Client extends Thread {
 
             for (int i = 0; i < size; i++) {
                 byte b = dataInputStream.readByte();
-
                 bytes[i] = b;
-
             }
             String s = new String(bytes);
             YaGson yaGson = new YaGsonBuilder().create();
             int auth = Integer.parseInt(dataInputStream.readUTF());
             setAuthToken(auth);
-
+            HashMap<Integer, Integer> stock = yaGson.fromJson(dataInputStream.readUTF(),HashMap.class);
+            Shop.setStock(stock);
+            System.out.println(stock);
             return yaGson.fromJson(s, Account.class);
         } else return null;
 

@@ -2,12 +2,15 @@ package Server;
 
 import com.gilecode.yagson.YaGson;
 import com.gilecode.yagson.YaGsonBuilder;
+import controller.Shop;
 import model.Account;
+import model.Card;
 import model.Initializer;
 
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -18,10 +21,23 @@ public class Server extends Thread {
 
     public static void main(String[] args) {
         try {
+            YaGson yaGson = new YaGsonBuilder().create();
             Initializer.initialiseData();
             BufferedReader bufferedReader = new BufferedReader(new FileReader(
                     System.getProperty("user.dir") + "/Sources/ServerResources/config.txt"));
             port = Integer.parseInt(bufferedReader.readLine());
+
+            bufferedReader = new BufferedReader(new FileReader(
+                    System.getProperty("user.dir") + "/Sources/ServerResources/serverData.txt"));
+            /*for (Card card: Shop.getAllCards()){
+                Shop.getStock().put(card.getId(), 5);
+            }
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(System.getProperty("user.dir") +
+                    "/Sources/ServerResources/serverData.txt"));
+            bufferedWriter.write(yaGson.toJson(Shop.getStock()));
+            bufferedWriter.flush();*/
+            Shop.setStock(yaGson.fromJson(bufferedReader.readLine(), HashMap.class));
+
             server = new ServerSocket(port);
             while (true) {
                 Socket socket = server.accept();
@@ -49,7 +65,7 @@ public class Server extends Thread {
                                 outputStream.writeUTF(ServerStrings.LOGINSUCCESS);
                                 outputStream.flush();
                                 System.out.println(ServerStrings.LOGINSUCCESS);
-                                YaGson yaGson = new YaGsonBuilder().create();
+
                                 byte[] bytes = yaGson.toJson(account).getBytes();
                                 outputStream.writeUTF(bytes.length + "");
                                 outputStream.flush();
@@ -59,8 +75,10 @@ public class Server extends Thread {
                                     outputStream.writeByte(bytes[i]);
                                 }
                                 User user = new User(socket, account);
+                                System.out.println("Sending auth token");
                                 outputStream.writeUTF(user.getAuthToken() + "");
-
+                                System.out.println("sending shop stock");
+                                outputStream.writeUTF(yaGson.toJson(Shop.getStock()));
                                 break;
 
                             }
