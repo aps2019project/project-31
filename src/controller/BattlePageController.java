@@ -416,7 +416,10 @@ public class BattlePageController implements Initializable {
         initPlayers();
         initHeroesSpecialPowers();
         atStartThings(battle);
-        gameRecord.showTheWholeGame();
+        Thread showGame = new Thread(()->{
+
+        });
+        showGame.start();
     }
 
     private void setOnActionForEveryCell() {
