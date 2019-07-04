@@ -29,7 +29,7 @@ public class MatchHistory {
         return gameRecord;
     }
 
-    private String figureTime() {
+    public String figureTime() {
         Date now = new Date();
         if (now.getYear() - time.getYear() != 0) {
             return (now.getYear() - time.getYear()) + " years ago";
@@ -62,5 +62,9 @@ public class MatchHistory {
 
     public Date getTime() {
         return time;
+    }
+
+    public GameMode getGameMode() {
+        return gameMode;
     }
 }
