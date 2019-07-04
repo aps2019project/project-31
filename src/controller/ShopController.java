@@ -237,7 +237,16 @@ public class ShopController implements Initializable {
         });
 
         requestStock.setOnAction(actionEvent -> {
+            if (getCardFromTab() == null){
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setHeaderText("Select a card first!");
+                alert.show();
+                return;
+            }
             String string = Client.getClient().requestCardStock(getCardFromTab().getId());
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setHeaderText(string);
+            alert.show();
         });
 
         buyButton.setOnAction(event -> {
@@ -286,7 +295,7 @@ public class ShopController implements Initializable {
     private Card getCardFromTab() {
         return ((DisplayableCard) ((ListView) tabPane.
                 getSelectionModel().getSelectedItem()
-                .getContent()).getSelectionModel().getSelectedItems()).getCard();
+                .getContent()).getSelectionModel().getSelectedItem()).getCard();
     }
 
     public void selectTab(TabPane tabPane, Card card) {

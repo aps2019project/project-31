@@ -75,7 +75,7 @@ public class Client extends Thread {
 
     public void sendConnectionRequest() {
         try {
-            os.writeUTF("connection request from user:" +);
+            os.writeUTF("connection request from user:" );
 
 
         } catch (IOException e) {
@@ -84,6 +84,12 @@ public class Client extends Thread {
     }
 
     public String requestCardStock(int id) {
+        try {
+            os.writeUTF("request card stock: " + id);
+            return is.readUTF();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return null;
     }
 }
