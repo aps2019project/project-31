@@ -26,6 +26,15 @@ public class Player {
     private boolean isAi;
     protected int[] manaChangerInTurn = new int[200];
     private static int howFuckedUpIAm = 0;
+    private boolean hasReplaced = false;
+
+    public boolean hasReplaced() {
+        return hasReplaced;
+    }
+
+    public void setHasReplaced(boolean hasReplaced) {
+        this.hasReplaced = hasReplaced;
+    }
 
     public Player(Account account, boolean isAi) {
         this.account = account;

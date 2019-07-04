@@ -34,6 +34,7 @@ public class BattleManager {
     protected boolean isThisRecordedGame;
     protected boolean isTheGameFinished = false;
 
+
     public int getTurn() {
         return turn;
     }
@@ -1271,7 +1272,7 @@ public class BattleManager {
         player2.getHero().setAccount(player2.account);
         generateFlags();
         manaAdderItem();
-        if(!isThisRecordedGame){
+        if (!isThisRecordedGame) {
             gameRecord.setMap(Map.getInstance().getMap());
         }
     }

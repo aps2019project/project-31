@@ -3,7 +3,6 @@ package controller;
 import constants.CardType;
 import constants.FunctionType;
 import constants.GameMode;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
@@ -22,7 +21,6 @@ import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.ResourceBundle;
 
 public class BattlePageController implements Initializable {
@@ -332,7 +330,8 @@ public class BattlePageController implements Initializable {
         BattleMenu.doAllAtTheBeginningOfTurnThings();
         replace.setOnAction(event -> {
             if (isMyTurn() && battle.getCurrentPlayer().getSelectedCard() != null) {
-                BattleMenu.replaceCardInHand(battle.getCurrentPlayer().getSelectedCard().getId());
+                BattlePageController.getInstance().replaceCardInHand(battle.getCurrentPlayer().getSelectedCard().getId(), battle);
+
             }
         });
         endTurn.setOnAction(event -> {
@@ -354,6 +353,31 @@ public class BattlePageController implements Initializable {
             isInGraveYard = true;
             GraveYardController.getInstance().setAsScene();
         });
+    }
+
+    public void replaceCardInHand(int cardId, BattleManager battleManager) {
+        for (Card card : BattlePageController.getInstance().me.getHand()) {
+            if (card != null && card.getId() == cardId) {
+                Player me = BattlePageController.getInstance().me;
+                if (me.hasReplaced()) {
+                    displayMessage("you have replaced once this turn!!");
+                    return;
+                }
+                me.generateCardInReplace();
+                BattlePageController.getInstance().removeCardFromHand(card, battleManager);
+                me.getHand().remove(card);
+                me.getCurrentDeck().addCard(card);
+                Card cardInReplace = me.getCardInReplace();
+                me.getHand().add(cardInReplace);
+                me.getCurrentDeck().getCards().remove
+                        (cardInReplace);
+                BattlePageController.getInstance().showCardInHand(cardInReplace, battleManager);
+                me.setHasReplaced(true);
+                return;
+
+            }
+        }
+        System.err.println("you don't have this card in your hand.");
     }
 
     public void addFaceToBattlePage(Minion theMinion, BattleManager battle) {
@@ -488,7 +512,7 @@ public class BattlePageController implements Initializable {
         //
         face.setTranslateY(-10);
         face.setOnMouseClicked(event -> {
-            System.out.println("clicked! on a card");
+            System.out.println("clicked! on " + deployable.getName());
             if (battle.getCurrentPlayer() == me) {
                 System.out.println(face.getDeployable().getId());
                 me.selectACard(face.getDeployable().getId());
@@ -501,7 +525,14 @@ public class BattlePageController implements Initializable {
         columnHands[index].getManaCost().setText(deployable.getManaCost() + "");
     }
 
-    public void showCardInHand(Card card, int index, BattleManager battle) {
+    public void showCardInHand(Card card, BattleManager battle) {
+        int index = 0;
+        for (int i = 0; i < 6; i++) {
+            if (columnHands[i].getStackPane().getChildren().size() < 2) {
+                index = i;
+                break;
+            }
+        }
         if (card.getType() == CardType.minion)
             showMinionInHand(((Deployable) card), index, battle);
         else if (card.getType() == CardType.spell)
@@ -742,7 +773,7 @@ public class BattlePageController implements Initializable {
             gameMode.setText("DEATH MATCH");
         else if (battle.getGameMode() == GameMode.Domination)
             gameMode.setText("DOMINATION");
-        else if (battle.getGameMode() == GameMode.Flag){
+        else if (battle.getGameMode() == GameMode.Flag) {
             gameMode.setText("FLAG");
             gameMode.setTranslateX(45);
         }

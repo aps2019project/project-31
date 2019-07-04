@@ -93,7 +93,7 @@ public class CustomGameController implements Initializable {
                 LoginPageController.getInstance().displayMessage("This is not a number in number of flags", 19, 5, vbox);
                 return;
             }
-            if (numberOfFlags < 17) {
+            if (numberOfFlags < 45) {
                 BattleMenu.setBattleManagerForSinglePLayer(BattleManagerMode.CustomGame, Account.getMainAccount(),
                         numberOfFlags, 100, GameMode.Domination, 1);
                 BattlePageController.getInstance().setAsScene();

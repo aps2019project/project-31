@@ -120,7 +120,7 @@ public class BattleMenu extends Menu {
             deployable.setMoved(false);
             deployable.setAttacked(false);
         }
-
+        battleManager.getCurrentPlayer().setHasReplaced(false);
         battleManager.assignManaToPlayers();
 
         if (BattlePageController.getInstance().nextCardField.getChildren().size() <= 1)
@@ -339,24 +339,6 @@ public class BattleMenu extends Menu {
 
     }*/
 
-    public static void replaceCardInHand(int cardId) {
-        for (Card card : battleManager.getCurrentPlayer().getHand()) {
-            if (card != null && card.getId() == cardId) {
-                int index = battleManager.getCurrentPlayer().getHand().indexOf(card);
-                battleManager.getCurrentPlayer().generateCardInReplace();
-                BattlePageController.getInstance().removeCardFromHand(card, battleManager);
-                battleManager.getCurrentPlayer().getHand().remove(card);
-                battleManager.getCurrentPlayer().getCurrentDeck().addCard(card);
-
-                battleManager.getCurrentPlayer().getHand().add(battleManager.getCurrentPlayer().getCardInReplace());
-                battleManager.getCurrentPlayer().getCurrentDeck().getCards().remove
-                        (battleManager.getCurrentPlayer().getCardInReplace());
-                BattlePageController.getInstance().showCardInHand(card, index, battleManager);
-                return;
-            }
-        }
-        System.err.println("you don't have this card in your hand.");
-    }
 
     public static void showGlimpseOfMap() {
         System.out.println("Player 1 minions are:\n");
