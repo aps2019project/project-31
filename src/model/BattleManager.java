@@ -1178,10 +1178,17 @@ public class BattleManager {
     }
 
     public void player1Won() {
-        gameEnded(player1, player2, false);
+        MatchHistory matchHistory1 = new MatchHistory(player2, player1, "WIN", gameRecord, gameMode);
+        player1.getAccount().addMatchHistories(matchHistory1);
+        MatchHistory matchHistory2 = new MatchHistory(player1, player2, "LOSE", gameRecord, gameMode);
+        player2.getAccount().addMatchHistories(matchHistory2);
+        player1.getAccount().incrementWins();
+        player2.getAccount().incrementLosses();
+        gameEnded(player1);
+
     }
 
-    private void gameEnded(Player winner, Player loser, boolean isDraw) {
+    private void gameEnded(Player winner) {
         isTheGameFinished = true;
         if (!isThisRecordedGame)
             gameRecord.addAction("E");
@@ -1189,22 +1196,6 @@ public class BattleManager {
         if (isThisRecordedGame) {
             BattlePageController.getInstance().showThatGameEnded();
         }
-        if (!isDraw) {
-            MatchHistory matchHistory = new MatchHistory(loser.getAccount().getUsername(), "lose", gameRecord);
-            loser.getAccount().addMatchHistories(matchHistory);
-            MatchHistory matchHistory2 = new MatchHistory(winner.getAccount().getUsername(), "win", gameRecord);
-            loser.getAccount().addMatchHistories(matchHistory2);
-            winner.getAccount().incrementWins();
-            loser.getAccount().incrementLosses();
-        } else {
-            MatchHistory matchHistory = new MatchHistory(player2.getAccount().getUsername(), "draw", gameRecord);
-            player1.getAccount().addMatchHistories(matchHistory);
-            matchHistory = new MatchHistory(player1.getAccount().getUsername(), "draw", gameRecord);
-            player2.getAccount().addMatchHistories(matchHistory);
-            //player1.getAccount().incrementDraw();
-            //player2.getAccount().incrementDraw();
-        }
-
         BattleMenu.setGameFinished(true);
         if (winner != null)
             Output.print(winner.getAccount().getUsername() + " won");
@@ -1214,11 +1205,23 @@ public class BattleManager {
     }
 
     public void player2Won() {
-        gameEnded(player2, player1, false);
+        MatchHistory matchHistory1 = new MatchHistory(player2, player1, "LOSE", gameRecord, gameMode);
+        player1.getAccount().addMatchHistories(matchHistory1);
+        MatchHistory matchHistory2 = new MatchHistory(player1, player2, "WIN", gameRecord, gameMode);
+        player2.getAccount().addMatchHistories(matchHistory2);
+        player1.getAccount().incrementLosses();
+        player2.getAccount().incrementWins();
+        gameEnded(player2);
     }
 
     public void draw() {
-        gameEnded(player1, player2, true);
+        MatchHistory matchHistory1 = new MatchHistory(player2, player1, "DRAW", gameRecord, gameMode);
+        player1.getAccount().addMatchHistories(matchHistory1);
+        MatchHistory matchHistory2 = new MatchHistory(player1, player2, "DRAW", gameRecord, gameMode);
+        player2.getAccount().addMatchHistories(matchHistory2);
+        player1.getAccount().incrementDraw();
+        player2.getAccount().incrementDraw();
+        gameEnded(null);
     }
 
     public Player getOtherPlayer() {
