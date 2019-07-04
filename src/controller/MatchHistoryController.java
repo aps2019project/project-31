@@ -33,7 +33,7 @@ public class MatchHistoryController implements Initializable {
     public void setAsScene() {
         if (true) {
             try {
-                Parent root = FXMLLoader.load(getClass().getResource("/collection.fxml"));
+                Parent root = FXMLLoader.load(getClass().getResource("/MatchHistory.fxml"));
                 Double screenWidth = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
                 scene = new Scene(root, screenWidth * 2 / 3, screenWidth * 4 / 9);
 
@@ -42,21 +42,13 @@ public class MatchHistoryController implements Initializable {
             }
         }
         Initializer.setCurrentScene(scene);
-        playerName.setText(Account.getMainAccount().getUsername());
-        listView.getItems().clear();
-
-        for (MatchHistory matchHistory : Account.getMainAccount().getMatchHistories()) {
-            InfoHBox infoHBox = (InfoHBox) new HBox();
-            infoHBox.setMatchHistory(matchHistory);
-            infoHBox.getChildren().addAll(new Label(matchHistory.getMe().getHero().getName()), new Label(matchHistory.getOpponent().getAccount().getUsername()), new Label(matchHistory.getGameMode().toString()), new Label(matchHistory.getOutcome()), new Label(matchHistory.figureTime()));
-            infoHBox.setBackground(Background.EMPTY);
-            listView.getItems().add(infoHBox);
-        }
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
         instance = this;
+        updateInfo();
         backButton.setOnAction(event -> {
             MainMenuController.getInstance().setAsScene();
         });
@@ -67,5 +59,17 @@ public class MatchHistoryController implements Initializable {
             Account.getMainAccount().setSelectedGameRecord(gameRecord);
             BattlePageController.getInstance().setAsScene();
         });
+    }
+    private void updateInfo(){
+        playerName.setText(Account.getMainAccount().getUsername());
+        listView.getItems().clear();
+
+        for (MatchHistory matchHistory : Account.getMainAccount().getMatchHistories()) {
+            InfoHBox infoHBox = (InfoHBox) new HBox();
+            infoHBox.setMatchHistory(matchHistory);
+            infoHBox.getChildren().addAll(new Label(matchHistory.getMe().getHero().getName()), new Label(matchHistory.getOpponent().getAccount().getUsername()), new Label(matchHistory.getGameMode().toString()), new Label(matchHistory.getOutcome()), new Label(matchHistory.figureTime()));
+            infoHBox.setBackground(Background.EMPTY);
+            listView.getItems().add(infoHBox);
+        }
     }
 }
