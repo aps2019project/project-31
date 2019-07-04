@@ -109,11 +109,25 @@ public class Client extends Thread {
 
     public String requestCardStock(int id) {
         try {
-            os.writeUTF("request card stock: " + id);
+            os.writeUTF(authToken + " request card stock: " + id);
             return is.readUTF();
         } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public boolean requestCardBuy(int id) throws IOException {
+        os.writeUTF(authToken + " request to buy card: " + id);
+        String response = is.readUTF();
+        if (response.matches(ServerStrings.BOUGHT)) return true;
+        else return false;
+    }
+
+    public boolean requestCardSell(int id) throws IOException{
+        os.writeUTF(authToken + " request to sell card: " + id);
+        String response = is.readUTF();
+        if (response.matches(ServerStrings.SOLD)) return true;
+        else return false;
     }
 }

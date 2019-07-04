@@ -1,5 +1,6 @@
 package controller;
 
+import Server.ServerStrings;
 import constants.CardType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -139,6 +140,17 @@ public class ShopController implements Initializable {
                 return;
             }
         }
+        try {
+            boolean wasSuccess = Client.getClient().requestCardBuy(card.getId());
+            if (!wasSuccess){
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setHeaderText(ServerStrings.OUT_OF_STOCK);
+                alert.show();
+                return;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         Account.getMainAccount().decreaseDaric(card.getPrice());
         Account.getMainAccount().getCollection().add(card);
         updateCollection(0.4, -80);
@@ -162,6 +174,18 @@ public class ShopController implements Initializable {
         if (theCard == null) {
             displayMessage("card not in collection");
             return;
+        }
+        try {
+            boolean wasSuccess = Client.getClient().requestCardSell(card.getId());
+            if (!wasSuccess) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setHeaderText("Unsuccessful");
+                alert.show();
+                return;
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         for (Deck deck : Account.getMainAccount().getDecks()) {
             try {
@@ -237,16 +261,16 @@ public class ShopController implements Initializable {
         });
 
         requestStock.setOnAction(actionEvent -> {
-            if (getCardFromTab() == null){
+            try {
+                String string = Client.getClient().requestCardStock(getCardFromTab().getId());
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setHeaderText(string);
+                alert.show();
+            } catch (NullPointerException e) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setHeaderText("Select a card first!");
                 alert.show();
-                return;
             }
-            String string = Client.getClient().requestCardStock(getCardFromTab().getId());
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setHeaderText(string);
-            alert.show();
         });
 
         buyButton.setOnAction(event -> {
