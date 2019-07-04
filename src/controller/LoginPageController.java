@@ -196,8 +196,6 @@ public class LoginPageController implements Initializable {
             MainMenuController.getInstance().setAsScene();
             usernameTF.clear();
             passwordField.clear();
-            System.err.println(Account.getMainAccount().getMainDeck().getDeckName());
-
 
         }
 

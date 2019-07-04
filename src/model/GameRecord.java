@@ -54,8 +54,6 @@ public class GameRecord {
         Map.getInstance().setMap(map);
         String[] actions = game.split("\\+");
 
-        BattlePageController.getInstance().initHeroes(battleManager);
-
         Map.getInstance().getCell(3, 1).setCardInCell(battleManager.getPlayer1().getHero());
         Map.getInstance().getCell(3, 9).setCardInCell(battleManager.getPlayer2().getHero());
         for (String action : actions) {

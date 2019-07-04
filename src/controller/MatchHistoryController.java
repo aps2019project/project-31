@@ -58,6 +58,7 @@ public class MatchHistoryController implements Initializable {
             gameRecord.makeFormalBattleManagerForRecord();
             Account.getMainAccount().setSelectedGameRecord(gameRecord);
             BattlePageController.getInstance().setAsScene();
+            gameRecord.showTheWholeGame();
         });
     }
     private void updateInfo(){
