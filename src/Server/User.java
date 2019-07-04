@@ -3,6 +3,7 @@ package Server;
 import controller.Shop;
 import model.Account;
 import model.Card;
+import model.Deck;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -27,18 +28,70 @@ public class User extends Thread {
                 String command = dataInputStream.readUTF();
                 shopRequestStockHandler(command);
 
+                handleCardBuyingRequest(command);
+
+                handleCardSellingRequest(command);
 
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
+    private void handleCardSellingRequest(String command) throws IOException {
+        Pattern pattern = Pattern.compile(ServerStrings.REQUEST_SELL);
+        Matcher matcher = pattern.matcher(command);
+        if (matcher.matches()) {
+            if (authorise(matcher)) return;
+            Card card = Shop.findCardById(Integer.parseInt(matcher.group(2)));
+            assert card != null;
+            for (Deck deck : this.account.getDecks()) {
+                try {
+                    for (int i = 0; i < deck.getCards().size(); i++)
+                        deck.getCards().remove(card);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                if (deck.getHero() != null)
+                    if (deck.getHero().getName().equalsIgnoreCase(card.getName()))
+                        deck.setHero(null);
+                if (deck.getItem() != null)
+                    if (deck.getItem() != null && deck.getItem().getName().equalsIgnoreCase(card.getName()))
+                        deck.setItem(null);
+            }
+            this.account.addDaric(card.getPrice());
+            this.account.getCollection().remove(card);
+            Shop.getStock().put(card.getId(),Shop.getStock().get(card.getId()) + 1);
+            dataOutputStream.writeUTF(ServerStrings.SOLD);
+        }
+
+    }
+
+    private void handleCardBuyingRequest(String command) throws IOException {
+        Pattern pattern = Pattern.compile(ServerStrings.REQUEST_BUY);
+        Matcher matcher = pattern.matcher(command);
+        if (matcher.matches()) {
+            if (authorise(matcher)) return;
+            Card card = Shop.findCardById(Integer.parseInt(matcher.group(2)));
+            assert card != null;
+            if (Shop.getStock().get(card.getId()) == 0) {
+                dataOutputStream.writeUTF(ServerStrings.OUT_OF_STOCK);
+                return;
+            }
+            this.account.decreaseDaric(card.getPrice());
+            this.account.getCollection().add(card);
+            Shop.getStock().put(card.getId(), Shop.getStock().get(card.getId()) - 1);
+            dataOutputStream.writeUTF(ServerStrings.BOUGHT);
+        }
+    }
+
     private void shopRequestStockHandler(String command) throws IOException {
 
         Pattern pattern = Pattern.compile(ServerStrings.REQUEST_STOCK);
         Matcher matcher = pattern.matcher(command);
         if (matcher.matches()) {
-            Card card = Shop.findCardById(Integer.parseInt(matcher.group(1)));
+            if (authorise(matcher)) return;
+            Card card = Shop.findCardById(Integer.parseInt(matcher.group(2)));
             if (card == null) {
                 dataOutputStream.writeUTF("Invalid card ID!");
             } else {
@@ -48,7 +101,17 @@ public class User extends Thread {
             }
         }
     }
-    private void multiPlayerRequestHandler(){
+
+    private boolean authorise(Matcher matcher) throws IOException {
+        int authToken = Integer.parseInt(matcher.group(1));
+        if (!(authToken == this.authToken)) {
+            dataOutputStream.writeUTF("Error 401: Unauthorized!");
+            return true;
+        }
+        return false;
+    }
+
+    private void multiPlayerRequestHandler() {
 
     }
 
