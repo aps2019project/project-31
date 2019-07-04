@@ -63,19 +63,21 @@ public class Client extends Thread {
                 byte b = is.readByte();
                 bytes[i] = b;
             }
-            String s = new String(bytes);
+            String accountString = new String(bytes);
             YaGson yaGson = new YaGsonBuilder().create();
             int auth = Integer.parseInt(is.readUTF());
             setAuthToken(auth);
             HashMap<Integer, Integer> stock = yaGson.fromJson(is.readUTF(), HashMap.class);
             Shop.setStock(stock);
-            return yaGson.fromJson(s, Account.class);
+            return yaGson.fromJson(accountString, Account.class);
         } else return null;
     }
 
-    public void sendConnectionRequest() {
+    public void sendPlayRequest() {
         try {
-            os.writeUTF("connection request from user:" +);
+            os.writeUTF("play request from user:" + Account.getMainAccount().getUsername());
+
+
 
 
         } catch (IOException e) {
