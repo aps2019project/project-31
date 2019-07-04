@@ -1,28 +1,28 @@
-#playMenuButton:hover{
+#playMenuButton:hover {
     -fx-scale-x: 1.07;
     -fx-scale-y: 1.07;
 }
 
-#mainMenuButton{
+#mainMenuButton {
     -fx-background-image: url('../assets/ui/button_primary_right.png');
     -fx-font-family: "Times New Roman";
-    -fx-background-color: rgba(0,0,0,0);
+    -fx-background-color: rgba(0, 0, 0, 0);
     -fx-pref-width: 170;
     -fx-pref-height: 55;
     -fx-font-size: 20;
     -fx-text-fill: white;
 }
 
-#mainMenuButton:hover{
+#mainMenuButton:hover {
     -fx-background-image: url('../assets/ui/button_primary_right_glow.png');
-    -fx-background-color: rgba(0,0,0,0);
+    -fx-background-color: rgba(0, 0, 0, 0);
     -fx-scale-x: 1.04;
     -fx-scale-y: 1.04;
     -fx-cursor: hand;
 }
 
-#logoutButton{
-    -fx-background-color: rgba(0,0,0,0);
+#logoutButton {
+    -fx-background-color: rgba(0, 0, 0, 0);
     -fx-background-image: url('../assets/ui/button_icon_left.png');
     -fx-background-size: cover;
     -fx-background-repeat: no-repeat;
@@ -32,15 +32,17 @@
     -fx-font-family: "Times New Roman";
     -fx-text-fill: white;
 }
-#logoutButton:hover{
+
+#logoutButton:hover {
     -fx-background-image: url('../assets/ui/button_icon_left_glow.png');
-    -fx-background-color: rgba(0,0,0,0);
+    -fx-background-color: rgba(0, 0, 0, 0);
     -fx-scale-x: 1.04;
     -fx-scale-y: 1.04;
     -fx-cursor: hand;
 }
-#backButton{
-    -fx-background-color: rgba(0,0,0,0);
+
+#backButton {
+    -fx-background-color: rgba(0, 0, 0, 0);
     -fx-background-image: url('../assets/ui/button_icon_left.png');
     -fx-background-size: cover;
     -fx-background-repeat: no-repeat;
@@ -49,32 +51,35 @@
     -fx-font-family: "Times New Roman";
     -fx-text-fill: white;
 }
-#backButton:hover{
+
+#backButton:hover {
     -fx-background-image: url('../assets/ui/button_icon_left_glow.png');
-    -fx-background-color: rgba(0,0,0,0);
-    -fx-scale-x: 1.04;
-    -fx-scale-y: 1.04;
-    -fx-cursor: hand;
-}
- #leftLongButton {
-     -fx-background-color: rgba(0,0,0,0);
-     -fx-background-image: url('../assets/ui/button_primary_left@2x.png');
-     -fx-background-size: cover;
-     -fx-background-repeat: no-repeat;
-     -fx-background-insets: 0;
-     -fx-font-size: 15;
-     -fx-font-family: "Times New Roman";
-     -fx-text-fill: white;
- }
-#leftLongButton:hover{
-    -fx-background-image: url('../assets/ui/button_primary_left_glow@2x.png');
-    -fx-background-color: rgba(0,0,0,0);
+    -fx-background-color: rgba(0, 0, 0, 0);
     -fx-scale-x: 1.04;
     -fx-scale-y: 1.04;
     -fx-cursor: hand;
 }
 
-#leaderBoardHeader{
+#leftLongButton {
+    -fx-background-color: rgba(0, 0, 0, 0);
+    -fx-background-image: url('../assets/ui/button_primary_left@2x.png');
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+    -fx-background-insets: 0;
+    -fx-font-size: 15;
+    -fx-font-family: "Times New Roman";
+    -fx-text-fill: white;
+}
+
+#leftLongButton:hover {
+    -fx-background-image: url('../assets/ui/button_primary_left_glow@2x.png');
+    -fx-background-color: rgba(0, 0, 0, 0);
+    -fx-scale-x: 1.04;
+    -fx-scale-y: 1.04;
+    -fx-cursor: hand;
+}
+
+#leaderBoardHeader {
     -fx-background-image: url('../assets/arena/gauntlet_control_bar_bg.png');
     -fx-background-size: cover;
 }
@@ -84,37 +89,41 @@
     -fx-src: url('../assets/fonts/Lato-Regular.ttf') format('truetype')
 }
 
-#firstButton{
+#firstButton {
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
     -fx-font-family: "Times New Roman";
     -fx-background-image: url('../assets/ui/button_secondary.png');
-    -fx-background-color: rgba(0,0,0,0);
+    -fx-background-color: rgba(0, 0, 0, 0);
     -fx-pref-width: 170;
     -fx-pref-height: 55;
     -fx-font-size: 20;
     -fx-text-fill: white;
 }
 
-#firstButton:hover{
+#firstButton:hover {
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
     -fx-background-image: url('../assets/ui/button_secondary_glow.png');
-    -fx-background-color: rgba(0,0,0,0);
+    -fx-background-color: rgba(0, 0, 0, 0);
     -fx-scale-x: 1.04;
     -fx-scale-y: 1.04;
     -fx-cursor: hand;
 }
 
-#secondButton{
+#secondButton {
     -fx-font-family: "Times New Roman";
     -fx-background-image: url('../assets/ui/button_confirm.png');
-    -fx-background-color: rgba(0,0,0,0);
+    -fx-background-color: rgba(0, 0, 0, 0);
     -fx-background-size: cover;
     -fx-background-repeat: no-repeat;
     -fx-font-size: 20;
     -fx-text-fill: white;
 }
 
-#secondButton:hover{
+#secondButton:hover {
     -fx-background-image: url('../assets/ui/button_confirm_glow.png');
-    -fx-background-color: rgba(0,0,0,0);
+    -fx-background-color: rgba(0, 0, 0, 0);
     -fx-background-size: cover;
     -fx-background-repeat: no-repeat;
     -fx-scale-x: 1.04;
@@ -122,76 +131,80 @@
     -fx-cursor: hand;
 }
 
-#endTurnButton{
+#endTurnButton {
     -fx-font-family: "Times New Roman";
     -fx-background-image: url('../assets/ui/button_end_turn_mine.png');
-    -fx-background-color: rgba(0,0,0,0);
+    -fx-background-color: rgba(0, 0, 0, 0);
     -fx-background-size: cover;
     -fx-background-repeat: no-repeat;
     -fx-text-fill: white;
 }
 
-#endTurnButton:hover{
+#endTurnButton:hover {
     -fx-background-image: url('../assets/ui/button_end_turn_mine_glow.png');
-    -fx-background-color: rgba(0,0,0,0);
+    -fx-background-color: rgba(0, 0, 0, 0);
     -fx-background-size: cover;
     -fx-background-repeat: no-repeat;
     -fx-scale-x: 1.04;
     -fx-scale-y: 1.04;
     -fx-cursor: hand;
 }
-#settingButton{
+
+#settingButton {
     -fx-font-family: "Times New Roman";
     -fx-background-image: url('../assets/ui/button_primary_left.png');
     -fx-background-size: cover;
     -fx-background-repeat: no-repeat;
-    -fx-background-color: rgba(0,0,0,0);
+    -fx-background-color: rgba(0, 0, 0, 0);
     -fx-text-fill: white;
 }
 
-#settingButton:hover{
+#settingButton:hover {
     -fx-background-image: url('../assets/ui/button_primary_left_glow@2x.png');
-    -fx-background-color: rgba(0,0,0,0);
+    -fx-background-color: rgba(0, 0, 0, 0);
     -fx-background-size: cover;
     -fx-background-repeat: no-repeat;
     -fx-scale-x: 1.04;
     -fx-scale-y: 1.04;
     -fx-cursor: hand;
 }
-#friendsButton{
+
+#friendsButton {
     -fx-font-family: "Times New Roman";
     -fx-background-image: url('../assets/ui/button_primary_right.png');
     -fx-background-size: cover;
     -fx-background-repeat: no-repeat;
-    -fx-background-color: rgba(0,0,0,0);
+    -fx-background-color: rgba(0, 0, 0, 0);
     -fx-text-fill: white;
 }
-#friendsButton:hover{
-     -fx-background-image: url('../assets/ui/button_primary_right_glow@2x.png');
-     -fx-background-color: rgba(0,0,0,0);
+
+#friendsButton:hover {
+    -fx-background-image: url('../assets/ui/button_primary_right_glow@2x.png');
+    -fx-background-color: rgba(0, 0, 0, 0);
     -fx-background-size: cover;
     -fx-background-repeat: no-repeat;
-     -fx-scale-x: 1.04;
-     -fx-scale-y: 1.04;
-     -fx-cursor: hand;
- }
-#replaceButton{
-     -fx-font-family: "Times New Roman";
+    -fx-scale-x: 1.04;
+    -fx-scale-y: 1.04;
+    -fx-cursor: hand;
+}
+
+#replaceButton {
+    -fx-font-family: "Times New Roman";
     -fx-background-image: url('../assets/ui/replace_background@2x.png'),
     url('../assets/ui/replace_inner_ring@2x.png'),
     url('../assets/ui/replace_outer_ring_smoke@2x.png');
 
     -fx-background-size: cover, cover, cover, cover, cover;
     -fx-background-repeat: no-repeat, no-repeat, no-repeat, no-repeat;
-    -fx-background-color: rgba(0,0,0,0);
+    -fx-background-color: rgba(0, 0, 0, 0);
 
-     -fx-font-size: 20;
-     -fx-text-fill: white;
+    -fx-font-size: 20;
+    -fx-text-fill: white;
 }
-#replaceButton:hover{
+
+#replaceButton:hover {
     -fx-font-family: "Times New Roman";
-    -fx-background-image:
-    url('../assets/ui/replace_background@2x.png'),
+    -fx-background-image: url('../assets/ui/replace_background@2x.png'),
     url('../assets/ui/replace_inner_ring@2x.png'),
     url('../assets/ui/replace_outer_ring_smoke@2x.png'),
     url('../assets/ui/replace_inner_glow@2x.png'),
@@ -199,74 +212,80 @@
     url('../assets/ui/replace_outer_ring_shine@2x.png');
     -fx-background-size: cover, cover, cover, cover, cover, cover;
     -fx-background-repeat: no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat;
-    -fx-background-color: rgba(0,0,0,0);
+    -fx-background-color: rgba(0, 0, 0, 0);
     -fx-font-size: 20;
     -fx-cursor: hand;
 }
-#DeckSize{
+
+#DeckSize {
     -fx-font-family: "Times New Roman";
     -fx-background-image: url('../assets/ui/button_end_turn_enemy@2x.png');
     /*-fx-background-size: 180 55;*/
-    -fx-background-color: rgba(0,0,0,0);
+    -fx-background-color: rgba(0, 0, 0, 0);
     -fx-background-repeat: no-repeat, no-repeat;
     -fx-background-size: cover, cover;
     /*-fx-font-size: 20;*/
     -fx-text-fill: white;
 }
-#OpponentHand{
+
+#OpponentHand {
     -fx-font-family: "Times New Roman";
     -fx-background-image: url('../assets/ui/gold_main_menu_container@2x.png');
     -fx-background-size: cover;
     -fx-background-repeat: no-repeat;
-    -fx-background-color: rgba(0,0,0,0);
+    -fx-background-color: rgba(0, 0, 0, 0);
     -fx-text-fill: white;
 }
-#opponentMana{
+
+#opponentMana {
     -fx-font-family: "Times New Roman";
     -fx-background-image: url('../images/button_primary_middle@2.png');
     -fx-background-size: cover;
     -fx-background-repeat: no-repeat;
-    -fx-background-color: rgba(0,0,0,0);
+    -fx-background-color: rgba(0, 0, 0, 0);
     -fx-text-fill: white;
 }
 
-#graveYard{
+#graveYard {
     -fx-font-family: "Times New Roman";
     -fx-background-image: url('../assets/ui/button_cancel@2x.png');
     -fx-background-size: cover;
     -fx-background-repeat: no-repeat;
-    -fx-background-color: rgba(0,0,0,0);
+    -fx-background-color: rgba(0, 0, 0, 0);
     -fx-text-fill: white;
 }
-#graveYard:hover{
+
+#graveYard:hover {
     -fx-font-family: "Times New Roman";
     -fx-background-image: url('../assets/ui/button_cancel_glow@2x.png');
     -fx-background-size: cover;
     -fx-background-repeat: no-repeat;
     -fx-scale-x: 1.04;
     -fx-scale-y: 1.04;
-    -fx-background-color: rgba(0,0,0,0);
+    -fx-background-color: rgba(0, 0, 0, 0);
     -fx-cursor: hand;
 }
-#playButton{
+
+#playButton {
     -fx-font-family: "Times New Roman";
     -fx-background-image: url('../assets/ui/button_secondary@2x.png');
     -fx-background-size: 200 80;
-    -fx-background-color: rgba(0,0,0,0);
+    -fx-background-color: rgba(0, 0, 0, 0);
     -fx-font-size: 30;
     -fx-text-fill: white;
 }
-#playButton:hover{
+
+#playButton:hover {
     -fx-font-family: "Times New Roman";
     -fx-background-image: url('../assets/ui/button_secondary_glow@2x.png');
     -fx-background-size: 200 80;
     -fx-scale-x: 1.04;
     -fx-scale-y: 1.04;
-    -fx-background-color: rgba(0,0,0,0);
+    -fx-background-color: rgba(0, 0, 0, 0);
     -fx-font-size: 30;
     -fx-cursor: hand;
 }
 
-#tile:hover{
-    -fx-background-color: rgba(200,0,0,1);
+#tile:hover {
+    -fx-background-color: rgba(200, 0, 0, 1);
 }
