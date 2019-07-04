@@ -12,6 +12,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Shop extends Menu {
     private static ArrayList<Card> allCards = new ArrayList<>();
@@ -20,8 +21,10 @@ public class Shop extends Menu {
     private static ArrayList<Item> allCollectibles = new ArrayList<>();
     private static ArrayList<Hero> allHeroes = new ArrayList<>();
     private static ArrayList<Item> allUsables = new ArrayList<>();
+    private static HashMap<Integer, Integer> stock = new HashMap<>();
 
     public static void loadAllCards() {
+
         YaGson yaGson = new YaGsonBuilder().create();
         System.err.println("loading minions...");
         String path = System.getProperty("user.dir") + "/Sources/Cards/Minions.txt";

@@ -14,6 +14,15 @@ import java.util.AbstractCollection;
 public class Client extends Thread {
     private Socket socket;
     private static Client client;
+    private static int authToken = -1;
+
+    public static int getAuthToken() {
+        return authToken;
+    }
+
+    public static void setAuthToken(int authToken) {
+        Client.authToken = authToken;
+    }
 
     public Socket getSocket() {
         return socket;
@@ -43,19 +52,20 @@ public class Client extends Thread {
         String command = dataInputStream.readUTF();
         if (command.matches(ServerStrings.LOGINSUCCESS)) {
             System.out.println("getting account...");
-            ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
             int size = Integer.parseInt(dataInputStream.readUTF());
             byte[] bytes = new byte[size];
-            bytes = dataInputStream.readNBytes(size);
-            /*for (int i = 0; i < size; i++) {
-                byte b = in.readByte();
 
-                System.out.println(i + ": received byte " + b);
+            for (int i = 0; i < size; i++) {
+                byte b = dataInputStream.readByte();
+
                 bytes[i] = b;
 
-            }*/
+            }
             String s = new String(bytes);
             YaGson yaGson = new YaGsonBuilder().create();
+            int auth = Integer.parseInt(dataInputStream.readUTF());
+            setAuthToken(auth);
+
             return yaGson.fromJson(s, Account.class);
         } else return null;
 
