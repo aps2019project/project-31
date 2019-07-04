@@ -3,7 +3,11 @@ package model;
 import javafx.scene.layout.HBox;
 
 public class InfoHBox extends HBox {
-    private MatchHistory matchHistory;
+    private MatchHistory matchHistory = null;
+
+    public InfoHBox(){
+        super();
+    }
 
     public MatchHistory getMatchHistory() {
         return matchHistory;
