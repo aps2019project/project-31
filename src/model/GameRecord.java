@@ -6,20 +6,20 @@ import controller.BattleMenu;
 import controller.BattlePageController;
 import controller.Shop;
 import javafx.application.Platform;
-import view.Input;
-import view.Output;
 
+import java.util.Collections;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class GameRecord {
-    protected String game = " ";
+    protected String game = "";
     protected Player player1;
     protected Player player2;
     protected int maxNumberOfFlags;
     protected int maxTurnsOfHavingFlag;
     protected GameMode gameMode;
     protected BattleManager battleManager;
+    protected Cell[][] map;
 
     public GameRecord(Player player1, Player player2, int maxNumberOfFlags, int maxTurnsOfHavingFlag, GameMode gameMode) {
         this.player1 = player1;
@@ -33,6 +33,14 @@ public class GameRecord {
         game += "+" + action;
     }
 
+    public Cell[][] getMap() {
+        return map;
+    }
+
+    public void setMap(Cell[][] map) {
+        this.map = map;
+    }
+
     public void makeFormalBattleManagerForRecord() { // first thing to show record is to call this!
         BattleMenu.deleteBattleManagerAndMakeMap();
         BattleManager battleManager = new BattleManager(player1, player2, maxNumberOfFlags, maxTurnsOfHavingFlag, gameMode);
@@ -43,16 +51,20 @@ public class GameRecord {
 
 
     public void showTheWholeGame() { //WOW!!!!
+        Map.getInstance().setMap(map);
         String[] actions = game.split("\\+");
-        Platform.runLater(() -> {
-            BattlePageController.getInstance().initHeroes(battleManager);
-        });
+
+        BattlePageController.getInstance().initHeroes(battleManager);
+
         Map.getInstance().getCell(3, 1).setCardInCell(battleManager.getPlayer1().getHero());
         Map.getInstance().getCell(3, 9).setCardInCell(battleManager.getPlayer2().getHero());
         for (String action : actions) {
 
-            if (action.startsWith("E"))
+            if (action.startsWith("E")) {
+                System.out.println("the game ended");
                 BattlePageController.getInstance().showThatGameEnded();
+                System.out.println("the game ended ? wtf ???");
+            }
             if (action.startsWith("T")) {
                 formalEndTurn();
             }
@@ -62,9 +74,7 @@ public class GameRecord {
                 checkIfInsert(action);
             if (action.contains("M"))
                 checkIfMove(action);
-            Platform.runLater(() -> {
-                BattlePageController.getInstance().refreshTheStatusOfMap(battleManager);
-            });
+            BattlePageController.getInstance().refreshTheStatusOfMap(battleManager);
             try {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
@@ -138,13 +148,12 @@ public class GameRecord {
         battleManager.applyItemFunctions(battleManager.getPlayer1().getHero(), FunctionType.Passive);
         battleManager.getCurrentPlayer().endOfTurnBuffsAndFunctions();
         battleManager.getOtherPlayer().endOfTurnBuffsAndFunctions();
-        battleManager.addTurn();
-        battleManager.getPlayer1().getHero().getHeroSpell().decrementCooldonwRemaining();
-        battleManager.getPlayer2().getHero().getHeroSpell().decrementCooldonwRemaining();
+        BattleMenu.flagModeSitAndAddTurnAndHeroSpellSit();
     }
 
     private void doThingsAtBeginningOfTurn() {
         battleManager.assignManaToPlayers();
+    //     BattleMenu.isTimeToPutItem(); different kind of item put on map (than the one that actually happened)
     }
 
     public String getGame() {

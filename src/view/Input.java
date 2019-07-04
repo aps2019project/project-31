@@ -152,7 +152,7 @@ public class Input {
         }
         if (input.matches("replace card (\\d+)\\s*")) {
             int cardId = Integer.parseInt(input.replace("replace card ", "").trim());
-            BattleMenu.replaceCardInHand(cardId);
+      //      BattleMenu.replaceCardInHand(cardId);
         }
 
         if (input.matches("\\s*end turn\\s*"))

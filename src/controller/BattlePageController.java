@@ -2,11 +2,9 @@ package controller;
 
 import constants.CardType;
 import constants.FunctionType;
-import javafx.application.Platform;
-import javafx.fxml.FXML;
+import constants.GameMode;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -14,14 +12,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polyline;
-import javafx.scene.text.Font;
-import javafx.stage.Stage;
 import model.*;
 
 import java.awt.*;
@@ -114,6 +107,13 @@ public class BattlePageController implements Initializable {
     public ImageView profPic1;
     public ImageView profPic2;
     public Button concede;
+    public Button selectItem;
+    public Button infoButton;
+    public Button comboAttack;
+    public Label flag1;
+    public Label flag2;
+    public Label gameMode;
+    public HBox hboxInTop;
 
 //    private StackPane showingGraveYard; // for showing it: lastStackPane = showingGraveYard; showingGraveYard is a designed scene
 
@@ -152,8 +152,6 @@ public class BattlePageController implements Initializable {
     private boolean isInGraveYard = false;
     private ArrayList<ImageView> manas = new ArrayList<>();
     private ColumnOfHand[] columnHands = new ColumnOfHand[6];
-    @FXML
-    private Button infoButton;
     private GameRecord gameRecord;
 
     public BattlePageController() {
@@ -243,6 +241,13 @@ public class BattlePageController implements Initializable {
         }
     }
 
+    public void removeCardFromHand(Card card, BattleManager battle) {
+        if (card.getType() == CardType.minion)
+            removeMinionFromHand(((Minion) card).getFace());
+        else if (card.getType() == CardType.spell)
+            removeSpellFromHand(((Spell) card).getFace(), battle);
+    }
+
     private void putNextCardInHand(BattleManager battle) {
         me.placeNextCardToHand(); //does the same thing in battle manager
         for (int i = 0; i < 6; i++) {
@@ -289,6 +294,16 @@ public class BattlePageController implements Initializable {
         }
     }
 
+    private void selectItem() {
+        if (me.getSelectedCard() == null) {
+            displayMessage("select a minion first");
+        } else if (me.getSelectedCard().getType() != CardType.hero && me.getSelectedCard().getType() != CardType.minion)
+            displayMessage("select a deployable for selecting collectible item");
+        else if (((Deployable) me.getSelectedCard()).getItem() == null)
+            displayMessage("your deployable doesn't have an item to select");
+        else me.setSelectedCard(((Deployable) me.getSelectedCard()).getItem());
+    }
+
     private void playTheActualGame(BattleManager battle) {
         initPlayers();
         try {
@@ -300,7 +315,7 @@ public class BattlePageController implements Initializable {
         infoButton.setOnAction(actionEvent -> {
             infoButton();
         });
-
+        selectItem.setOnAction(event -> selectItem());
         initHeroesSpecialPowers();
 
         setOnActionForEveryCell();
@@ -315,7 +330,8 @@ public class BattlePageController implements Initializable {
         BattleMenu.doAllAtTheBeginningOfTurnThings();
         replace.setOnAction(event -> {
             if (isMyTurn() && battle.getCurrentPlayer().getSelectedCard() != null) {
-                BattleMenu.replaceCardInHand(battle.getCurrentPlayer().getSelectedCard().getId());
+                BattlePageController.getInstance().replaceCardInHand(battle.getCurrentPlayer().getSelectedCard().getId(), battle);
+
             }
         });
         endTurn.setOnAction(event -> {
@@ -326,6 +342,7 @@ public class BattlePageController implements Initializable {
             }
         });
         concede.setOnAction(event -> {
+            concede.setText("Concede");
             if (me == battle.getPlayer1())
                 battle.player2Won();
             else
@@ -338,12 +355,62 @@ public class BattlePageController implements Initializable {
         });
     }
 
+    public void replaceCardInHand(int cardId, BattleManager battleManager) {
+        for (Card card : BattlePageController.getInstance().me.getHand()) {
+            if (card != null && card.getId() == cardId) {
+                Player me = BattlePageController.getInstance().me;
+                if (me.hasReplaced()) {
+                    displayMessage("you have replaced once this turn!!");
+                    return;
+                }
+                me.generateCardInReplace();
+                BattlePageController.getInstance().removeCardFromHand(card, battleManager);
+                me.getHand().remove(card);
+                me.getCurrentDeck().addCard(card);
+                Card cardInReplace = me.getCardInReplace();
+                me.getHand().add(cardInReplace);
+                me.getCurrentDeck().getCards().remove
+                        (cardInReplace);
+                BattlePageController.getInstance().showCardInHand(cardInReplace, battleManager);
+                me.setHasReplaced(true);
+                return;
+
+            }
+        }
+        System.err.println("you don't have this card in your hand.");
+    }
+
+    public void addFaceToBattlePage(Minion theMinion, BattleManager battle) {
+        DisplayableDeployable face = new DisplayableDeployable(theMinion);
+        theMinion.setFace(face);
+        face.updateStats();
+        if (BattlePageController.getInstance() != null) {
+            if (BattlePageController.getInstance().mainPane == null) {
+                System.err.println("main pane is null");
+                return;
+            }
+            BattlePageController.getInstance().mainPane.getChildren().add(face);
+        }
+        face.setOnMouseClicked(event -> {
+            BattlePageController.getInstance().setOnMouseDeployable(theMinion, battle);
+            face.updateStats();
+        });
+    }
+
+    public void removeASpellFromHand(Player currentPlayer, boolean isThisRecordedGame, Spell spell, BattleManager battleManager) {
+        if (!currentPlayer.isAi() && !isThisRecordedGame)
+            BattlePageController.getInstance().removeSpellFromHand(spell.getFace(), battleManager);
+    }
+
     public void showThatGameEnded() {
         MainMenuController.getInstance().setAsScene();
+        BattleMenu.deleteBattleManagerAndMakeMap();
         BattlePageController.deleteBattlePage();
     }
 
     private void recordTheGame(BattleManager battle) {
+        concede.setText("Exit");
+        concede.setOnAction(event -> showThatGameEnded());
         System.out.println(gameRecord.getGame());
         setPolygonsInMap();
         initPlayers();
@@ -445,7 +512,7 @@ public class BattlePageController implements Initializable {
         //
         face.setTranslateY(-10);
         face.setOnMouseClicked(event -> {
-            System.out.println("clicked! on a card");
+            System.out.println("clicked! on " + deployable.getName());
             if (battle.getCurrentPlayer() == me) {
                 System.out.println(face.getDeployable().getId());
                 me.selectACard(face.getDeployable().getId());
@@ -456,6 +523,20 @@ public class BattlePageController implements Initializable {
         });
         //
         columnHands[index].getManaCost().setText(deployable.getManaCost() + "");
+    }
+
+    public void showCardInHand(Card card, BattleManager battle) {
+        int index = 0;
+        for (int i = 0; i < 6; i++) {
+            if (columnHands[i].getStackPane().getChildren().size() < 2) {
+                index = i;
+                break;
+            }
+        }
+        if (card.getType() == CardType.minion)
+            showMinionInHand(((Deployable) card), index, battle);
+        else if (card.getType() == CardType.spell)
+            showSpellInHand(card, index, battle);
     }
 
     public void initHeroes(BattleManager battleManager) {
@@ -488,6 +569,8 @@ public class BattlePageController implements Initializable {
         if (battleManager.getCurrentPlayer() == me) {
             if (me.getSelectedCard() != null && me.getSelectedCard().getType() == CardType.spell) {
                 BattleMenu.insert(me.getSelectedCard(), card.getCell().getX1Coordinate(), card.getCell().getX2Coordinate());
+            } else if (me.getSelectedCard() != null && me.getSelectedCard().getType() == CardType.item) {
+                BattleMenu.insert(me.getSelectedCard(), card.getCell().getX1Coordinate(), card.getCell().getX2Coordinate());
             } else if (me.getSelectedCard() != null &&
                     me.getSelectedCard().getType() != CardType.spell &&
                     !card.getAccount().equals(me.getAccount())) {
@@ -518,67 +601,110 @@ public class BattlePageController implements Initializable {
         return manas;
     }
 
-    public void refreshTheStatusOfMap(BattleManager battleManager) {
-        BattleMenu.getBattleManager().checkTheEndSituation();
-        Player player1 = battleManager.getPlayer1();
-        Player player2 = battleManager.getPlayer2();
-       /* for (Deployable card : player1.getCardsOnBattleField()) {
-
-            if (card.getFace() != null)
-                card.getFace().updateStats();
-        }
-        for (Deployable card : player2.getCardsOnBattleField()) {
-            if (card.getFace() != null)
-                card.getFace().updateStats();
-        }*/
+    public void refreshPartly() {
         for (Cell[] cells : Map.getInstance().getMap()) {
             for (Cell cell : cells) {
                 if (cell != null && cell.getCardInCell() != null && cell.getCardInCell().getFace() != null)
                     cell.getCardInCell().getFace().updateStats();
             }
         }
-        try {
-            health.setText("" + me.getHero().theActualHealth());
-            opponentHealth.setText("" + opponent.getHero().theActualHealth());
-            opponentHand.setText("Hand: " + opponent.handSize() + " / 6");
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("mohem nis :)");
+    }
+
+    private void refreshFlagsSituation(BattleManager battle) {
+        if (battle.getGameMode() == GameMode.DeathMatch) {
+            hboxInTop.getChildren().remove(flag1);
+            hboxInTop.getChildren().remove(flag2);
         }
-        try {
-            updateManaViewers(battleManager);
-            generalCoolDown.setText("" + me.getHero().getHeroSpell().getCoolDownRemaining());
-            opponentGeneralCoolDown.setText("" + opponent.getHero().getHeroSpell().getCoolDownRemaining());
-            deckSize.setText("Deck: " + me.deckSize() + 1 + "/18");
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("migam ke mohem nis");
+        if (battle.getGameMode() == GameMode.Flag) {
+            flag1.setText(me.getNumberOfTurnsHavingFlag() + "");
+            flag2.setText(opponent.getNumberOfTurnsHavingFlag() + "");
+        }
+        if (battle.getGameMode() == GameMode.Domination) {
+            flag1.setText(me.getNumberOfFlags() + "");
+            flag2.setText(opponent.getNumberOfFlags() + "");
+        }
+    }
+
+    public void refreshTheStatusOfMap(BattleManager battleManager) {
+        refreshPartly();
+        refreshFlagsSituation(battleManager);
+        if (!battleManager.isThisRecordedGame()) {
+            BattleMenu.getBattleManager().checkTheEndSituation();
+            try {
+                health.setText("" + me.getHero().theActualHealth());
+                opponentHealth.setText("" + opponent.getHero().theActualHealth());
+                opponentHand.setText("Hand: " + opponent.handSize() + " / 6");
+            } catch (Exception e) {
+                e.printStackTrace();
+                System.out.println("mohem nis :)");
+            }
+            try {
+                updateManaViewers(battleManager);
+                generalCoolDown.setText("" + me.getHero().getHeroSpell().getCoolDownRemaining());
+                opponentGeneralCoolDown.setText("" + opponent.getHero().getHeroSpell().getCoolDownRemaining());
+                deckSize.setText("Deck: " + (me.deckSize() + 1) + "/18");
+            } catch (Exception e) {
+                e.printStackTrace();
+                System.out.println("migam ke mohem nis");
+            }
+            showItems();
+        }
+        showFlag();
+
+    }
+
+    public void showFlag() {
+
+        for (Cell[] cells : Map.getInstance().getMap()) {
+            for (Cell cell : cells) {
+                if (cell.hasFlag() && cell.getDisplayableFlag() == null) {
+                    ImageView flag;
+                    String imagePath = getClass().getResource("/gifs/flag.gif").toExternalForm();
+                    flag = new ImageView(new Image(imagePath));
+                    flag.setTranslateY(-50);
+                    flag.setScaleX(1.3);
+                    flag.setScaleY(1.3);
+                    cell.setDisplayableFlag(flag);
+                    flag.setTranslateX(cell.calculateCenter()[0]);
+                    flag.setTranslateY(cell.calculateCenter()[1]);
+                    mainPane.getChildren().add(flag);
+                }
+
+            }
         }
 
-        /*for (Cell[] cells : Map.getInstance().getMap()) {
+
+    }
+
+    private void showItems() {
+        for (Cell[] cells : Map.getInstance().getMap()) {
             for (Cell cell : cells) {
                 if (cell.getItem() != null && cell.getDisplayableItem() == null) {
                     try {
                         DisplayableCard displayableCard = new DisplayableCard(cell.getItem(), "");
-                        displayableCard.setScaleX(0.2);
-                        displayableCard.setScaleY(0.2);
-                        cell.setDisplayableItem(displayableCard);
-                        displayableCard.setTranslateX(cell.calculateCenter()[0]);
-                        displayableCard.setTranslateY(cell.calculateCenter()[1]);
-                        mainPane.getChildren().add(displayableCard);
+                        ImageView itemIcon = displayableCard.getMainIcon();
+                        itemIcon.setScaleX(1);
+                        itemIcon.setScaleY(1);
+                        cell.setDisplayableItem(itemIcon);
+                        itemIcon.setTranslateX(cell.calculateCenter()[0]);
+                        itemIcon.setTranslateY(cell.calculateCenter()[1]);
+                        mainPane.getChildren().add(itemIcon);
                     } catch (NullPointerException e) {
                         System.err.println("The item gif not found");
-
                     }
                 }
             }
-        }*/
-        /*if(battleController.getMe().hand.get(0)!=null)
-        {
+        }
+    }
 
-        }*/
-        // next card , cards in hand , all deployedCard in battle with their attack and health should be refreshed too
+    public void removeItemInGround(Cell cell) {
+        if (cell.getDisplayableItem() != null)
+            mainPane.getChildren().remove(cell.getDisplayableItem());
+    }
 
+    public void removeFlagInGround(Cell cell) {
+        if (cell.getDisplayableFlag() != null)
+            mainPane.getChildren().remove(cell.getDisplayableFlag());
     }
 
     private void updateManaViewers(BattleManager battleManager) {
@@ -639,6 +765,18 @@ public class BattlePageController implements Initializable {
         manas.add(mana7);
         manas.add(mana8);
         manas.add(mana9);
+        setGameMode(battle);
+    }
+
+    private void setGameMode(BattleManager battle) {
+        if (battle.getGameMode() == GameMode.DeathMatch)
+            gameMode.setText("DEATH MATCH");
+        else if (battle.getGameMode() == GameMode.Domination)
+            gameMode.setText("DOMINATION");
+        else if (battle.getGameMode() == GameMode.Flag) {
+            gameMode.setText("FLAG");
+            gameMode.setTranslateX(45);
+        }
     }
 
     private void makeColumnHands() {
@@ -713,7 +851,9 @@ public class BattlePageController implements Initializable {
                     System.err.println("no selected card");
                     return;
                 }
-                if (cell.getCardInCell() != null) {
+                if (cell.getCardInCell() == null && (me.getSelectedCard().getType() == CardType.item)) { // spell can't insert on the ground ?
+                    BattleMenu.insert(me.getSelectedCard(), cell.getX1Coordinate(), cell.getX2Coordinate());
+                } else if (cell.getCardInCell() != null) {
                     displayMessage("destination is not empty");
                     System.out.println("card in this cell is : " + cell.getCardInCell().infoToString());
                     return;

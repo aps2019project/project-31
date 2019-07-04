@@ -163,7 +163,6 @@ public class DisplayableCard extends StackPane {
         return card;
     }
 
-
     public boolean equals(Object displayableCard) {
         if (!(displayableCard instanceof DisplayableCard))
             return false;

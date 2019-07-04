@@ -1,18 +1,24 @@
 package model;
 
+import constants.GameMode;
+
 import java.util.Date;
 
 public class MatchHistory {
-    private String opponent;
+    private Player me;
+    private Player opponent;
     private String outcome;
     private Date time;
     private GameRecord gameRecord;
+    private GameMode gameMode;
 
-    public MatchHistory(String opponent, String outcome, GameRecord gameRecord) {
+    public MatchHistory(Player opponent, Player me, String outcome, GameRecord gameRecord, GameMode gameMode) {
         this.opponent = opponent;
         this.outcome = outcome;
         this.time = new Date();
         this.gameRecord = gameRecord;
+        this.me = me;
+        this.gameMode = gameMode;
     }
 
     public void showMatchHistory() {
@@ -39,5 +45,22 @@ public class MatchHistory {
             return (now.getSeconds() - time.getSeconds()) + " seconds ago";
         }
         return ":|";
+    }
+
+
+    public Player getMe() {
+        return me;
+    }
+
+    public Player getOpponent() {
+        return opponent;
+    }
+
+    public String getOutcome() {
+        return outcome;
+    }
+
+    public Date getTime() {
+        return time;
     }
 }

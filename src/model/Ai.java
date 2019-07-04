@@ -35,11 +35,13 @@ public class Ai extends Player {
         }
         for (int i = 0; i < opponent.cardsOnBattleField.size(); i++) {
             for (int j = 0; j < me.cardsOnBattleField.size(); j++) {
-                battle.attack(opponent.cardsOnBattleField.get(i), me.cardsOnBattleField.get(j));
+                if (!battle.isTheGameFinished && i < opponent.cardsOnBattleField.size())
+                    battle.attack(opponent.cardsOnBattleField.get(i), me.cardsOnBattleField.get(j));
             }
         }
         this.placeNextCardToHand();
-        battle.getGameRecord().addAction("T");
+        if (battle.getGameRecord() != null)
+            battle.getGameRecord().addAction("T");
     }
 
     public int coefficient(int a) {

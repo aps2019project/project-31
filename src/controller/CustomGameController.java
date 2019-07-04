@@ -15,6 +15,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import model.Account;
+import model.BattleManager;
 import model.Initializer;
 
 import java.awt.*;
@@ -46,13 +47,12 @@ public class CustomGameController implements Initializable {
         playButtonCustom.setOnAction(event -> {
             if (gameMode.getValue() == null) {
                 LoginPageController.getInstance().displayMessage("Enter the Game Mode!!", 19, 5, vbox);
-            }
-            else if (gameMode.getValue().equals(modes[0])) {
+            } else if (gameMode.getValue().equals(modes[0])) {
                 customGameMode1();
             } else if (gameMode.getValue().equals(modes[1])) {
-               customGameMode2();
+                customGameMode2();
             } else if (gameMode.getValue().equals(modes[2])) {
-               customGameMode3();
+                customGameMode3();
             }
         });
     }
@@ -64,34 +64,40 @@ public class CustomGameController implements Initializable {
     }
 
     private void customGameMode2() {
-        if (numberOfFlagsTextField.getText().length() < 1 || numberOfFlagsLable.getText().equals("")) {
-            LoginPageController.getInstance().displayMessage("Enter the value of Number Of Flags", 19, 5, vbox);
-        } else {
-            int numberOfFlags = 0;
-            try {
-                numberOfFlags = Integer.valueOf(numberOfFlagsTextField.getText());
-            } catch (Exception e) {
-                LoginPageController.getInstance().displayMessage("This is not a number in number of flags", 19, 5, vbox);
-            }
-            BattleMenu.setBattleManagerForSinglePLayer(BattleManagerMode.CustomGame, Account.getMainAccount(),
-                    numberOfFlags, 100, GameMode.Domination, 1);
-            BattlePageController.getInstance().setAsScene();
-        }
-    }
-
-    private void customGameMode3() {
-        if (numberOfTurnWinTextField.getText().length() < 1 || numberOfTurnWinTextField.getText().equals(""))
+        if (numberOfTurnWinTextField.getText().length() < 1 || numberOfTurnWinTextField.getText().equals("")) {
             LoginPageController.getInstance().displayMessage("Enter the value of Winning Turns", 19, 5, vbox);
-        else {
+        } else {
             int numberOfTurnsHavingFlagToWin = 0;
             try {
                 numberOfTurnsHavingFlagToWin = Integer.valueOf(numberOfTurnWinTextField.getText());
             } catch (Exception e) {
                 LoginPageController.getInstance().displayMessage("This is not a number in winning turns", 19, 5, vbox);
+                return;
             }
-            BattleMenu.setBattleManagerForSinglePLayer(BattleManagerMode.CustomGame, Account.getMainAccount(),
-                    100, numberOfTurnsHavingFlagToWin, GameMode.Flag, 1);
-            BattlePageController.getInstance().setAsScene();
+            if (numberOfTurnsHavingFlagToWin < 20) {
+                BattleMenu.setBattleManagerForSinglePLayer(BattleManagerMode.CustomGame, Account.getMainAccount(),
+                        BattleManager.PERMANENT, numberOfTurnsHavingFlagToWin, GameMode.Flag, 1);
+                BattlePageController.getInstance().setAsScene();
+            }else LoginPageController.getInstance().displayMessage("TOO BIG A NUMBER SIR!", 19, 5, vbox);
+        }
+    }
+
+    private void customGameMode3() {
+        if (numberOfFlagsTextField.getText().length() < 1 || numberOfFlagsTextField.getText().equals(""))
+            LoginPageController.getInstance().displayMessage("Enter the value of number of Flags", 19, 5, vbox);
+        else {
+            int numberOfFlags = 0;
+            try {
+                numberOfFlags = Integer.valueOf(numberOfFlagsTextField.getText());
+            } catch (Exception e) {
+                LoginPageController.getInstance().displayMessage("This is not a number in number of flags", 19, 5, vbox);
+                return;
+            }
+            if (numberOfFlags < 45) {
+                BattleMenu.setBattleManagerForSinglePLayer(BattleManagerMode.CustomGame, Account.getMainAccount(),
+                        numberOfFlags, 100, GameMode.Domination, 1);
+                BattlePageController.getInstance().setAsScene();
+            } else LoginPageController.getInstance().displayMessage("TOO BIG A NUMBER SIR!", 19, 5, vbox);
         }
     }
 

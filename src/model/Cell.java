@@ -1,8 +1,8 @@
 package model;
 
+import javafx.scene.image.ImageView;
 import javafx.scene.shape.Polyline;
 
-import java.util.Arrays;
 
 public class Cell {
     private int x1Coordinate;
@@ -14,16 +14,28 @@ public class Cell {
     private boolean hasFlag;
     private Item item;
     private Polyline polygon;
+    private ImageView displayableFlag;
+    private ImageView displayableItem;
 
-    public DisplayableCard getDisplayableItem() {
+    public ImageView getDisplayableItem() {
         return displayableItem;
     }
 
-    public void setDisplayableItem(DisplayableCard displayableItem) {
-        this.displayableItem = displayableItem;
+    public void setDisplayableItem(ImageView itemIcon) {
+        this.displayableItem = itemIcon;
     }
 
-    private DisplayableCard displayableItem;
+    public ImageView getDisplayableFlag() {
+        return displayableFlag;
+    }
+
+    public boolean hasFlag() {
+        return hasFlag;
+    }
+
+    public void setDisplayableFlag(ImageView displayableFlag) {
+        this.displayableFlag = displayableFlag;
+    }
 
     public Polyline getPolygon() {
         return polygon;
@@ -140,7 +152,13 @@ public class Cell {
         y += polygon.getPoints().get(1);
         coordinates[0] = (x / 2) + polygon.getLayoutX() - 40;
         coordinates[1] = (y) + polygon.getLayoutY() - 20;
-
+        if (x2Coordinate == 9) {
+            coordinates[1] += 45;
+        }
+        if (x2Coordinate == 8 && x1Coordinate == 2) {
+            coordinates[1] += 40;
+            coordinates[0] -= 60;
+        }
         return coordinates;
     }
 
