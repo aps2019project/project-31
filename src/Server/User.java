@@ -1,14 +1,12 @@
 package Server;
 
 import controller.Shop;
-import javafx.scene.control.Button;
 import model.Account;
 import model.Card;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.math.BigInteger;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -27,25 +25,31 @@ public class User extends Thread {
         try {
             while (true) {
                 String command = dataInputStream.readUTF();
-                Pattern pattern = Pattern.compile(ServerStrings.REQUEST_STOCK);
-                Matcher matcher = pattern.matcher(command);
-                if (matcher.matches()) {
-                    Card card = Shop.findCardById(Integer.parseInt(matcher.group(1)));
-                    if (card == null) {
-                        dataOutputStream.writeUTF("Invalid card ID!");
-                    } else {
-                        dataOutputStream.writeUTF(card.getName() +
-                                ": " +
-                                Shop.getStock().get(card.getId()));
-                    }
-                    continue;
-                }
+                shopRequestStockHandler(command);
 
 
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    private void shopRequestStockHandler(String command) throws IOException {
+
+        Pattern pattern = Pattern.compile(ServerStrings.REQUEST_STOCK);
+        Matcher matcher = pattern.matcher(command);
+        if (matcher.matches()) {
+            Card card = Shop.findCardById(Integer.parseInt(matcher.group(1)));
+            if (card == null) {
+                dataOutputStream.writeUTF("Invalid card ID!");
+            } else {
+                dataOutputStream.writeUTF(card.getName() +
+                        ": " +
+                        Shop.getStock().get(card.getId()));
+            }
+        }
+    }
+    private void multiPlayerRequestHandler(){
+
     }
 
     public User(Socket socket, Account account) {

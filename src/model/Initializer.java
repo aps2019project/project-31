@@ -13,13 +13,9 @@ public class Initializer extends Application {
     private static Scene currentScene;
     private static BattleMenu battleMenu = new BattleMenu(1000, "Battle Menu");
 
-
-
     public static BattleMenu getBattleMenu() {
         return battleMenu;
     }
-
-
 
     public static void setPrimaryStage(Stage primaryStage) {
         Initializer.primaryStage = primaryStage;
