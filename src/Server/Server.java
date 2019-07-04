@@ -15,6 +15,7 @@ public class Server extends Thread {
     private static ServerSocket server;
     private static int port;
 
+
     public static void main(String[] args) {
         try {
             Initializer.initialiseData();
@@ -34,14 +35,13 @@ public class Server extends Thread {
                             System.out.println(command + " received");
                             Pattern pattern = Pattern.compile(ServerStrings.LOGIN);
                             Matcher matcher = pattern.matcher(command);
-                            if (matcher.matches())
-                            {
+                            if (matcher.matches()) {
                                 String username = matcher.group(1);
                                 System.out.println("client logging in to account " + username);
                                 String password = matcher.group(2);
                                 Account account = Account.findAccount(username);
                                 if (account == null ||
-                                    !account.getPassword().equals(password)){
+                                        !account.getPassword().equals(password)) {
                                     outputStream.writeUTF(ServerStrings.LOGINERROR);
                                     System.out.println(account);
                                     continue;
@@ -50,7 +50,6 @@ public class Server extends Thread {
                                 outputStream.flush();
                                 System.out.println(ServerStrings.LOGINSUCCESS);
                                 YaGson yaGson = new YaGsonBuilder().create();
-                                ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
                                 byte[] bytes = yaGson.toJson(account).getBytes();
                                 outputStream.writeUTF(bytes.length + "");
                                 outputStream.flush();
@@ -58,9 +57,10 @@ public class Server extends Thread {
                                 System.out.println("sending account with " + bytes.length);
                                 for (int i = 0; i < bytes.length; i++) {
                                     outputStream.writeByte(bytes[i]);
-
                                 }
-                                new User(socket,account).start();
+                                User user = new User(socket, account);
+                                outputStream.writeUTF(user.getAuthToken() + "");
+
                                 break;
 
                             }

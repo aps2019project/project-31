@@ -198,6 +198,7 @@ public class LoginPageController implements Initializable {
             passwordField.clear();
             System.err.println(Account.getMainAccount().getMainDeck().getDeckName());
 
+
         }
 
 
