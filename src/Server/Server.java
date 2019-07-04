@@ -79,6 +79,7 @@ public class Server extends Thread {
                                 outputStream.writeUTF(user.getAuthToken() + "");
                                 System.out.println("sending shop stock");
                                 outputStream.writeUTF(yaGson.toJson(Shop.getStock()));
+                                user.start();
                                 break;
 
                             }

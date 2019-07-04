@@ -67,9 +67,12 @@ public class Client extends Thread {
             setAuthToken(auth);
             HashMap<Integer, Integer> stock = yaGson.fromJson(dataInputStream.readUTF(),HashMap.class);
             Shop.setStock(stock);
-            System.out.println(stock);
             return yaGson.fromJson(s, Account.class);
         } else return null;
 
+    }
+
+    public String requestCardStock(int id) {
+        return null;
     }
 }

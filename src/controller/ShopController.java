@@ -1,6 +1,7 @@
 package controller;
 
 import constants.CardType;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
@@ -47,6 +48,8 @@ public class ShopController implements Initializable {
     public ListView<DisplayableCard> usablesList1;
     public TabPane collectionTabPane;
     public Label daricView;
+    @FXML
+    private Button requestStock;
 
     public static ShopController getInstance() {
         if (shop == null) {
@@ -232,6 +235,11 @@ public class ShopController implements Initializable {
             MainMenuController.getInstance().setAsScene();
             updateCollection(0.4, -80);
         });
+
+        requestStock.setOnAction(actionEvent -> {
+            String string = Client.getClient().requestCardStock(getCardFromTab().getId());
+        });
+
         buyButton.setOnAction(event -> {
             if (Account.getMainAccount() == null) {
                 displayMessage("you are not Logged in!");
@@ -273,6 +281,12 @@ public class ShopController implements Initializable {
         collectionButton.setOnAction(event -> {
             CollectionController.getInstance().setAsScene();
         });
+    }
+
+    private Card getCardFromTab() {
+        return ((DisplayableCard) ((ListView) tabPane.
+                getSelectionModel().getSelectedItem()
+                .getContent()).getSelectionModel().getSelectedItems()).getCard();
     }
 
     public void selectTab(TabPane tabPane, Card card) {
