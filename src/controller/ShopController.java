@@ -139,6 +139,11 @@ public class ShopController implements Initializable {
                 return;
             }
         }
+        try {
+            boolean wasSuccess = Client.getClient().requestCardTransaction(card.getId());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         Account.getMainAccount().decreaseDaric(card.getPrice());
         Account.getMainAccount().getCollection().add(card);
         updateCollection(0.4, -80);
@@ -237,16 +242,16 @@ public class ShopController implements Initializable {
         });
 
         requestStock.setOnAction(actionEvent -> {
-            if (getCardFromTab() == null){
+            try {
+                String string = Client.getClient().requestCardStock(getCardFromTab().getId());
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setHeaderText(string);
+                alert.show();
+            } catch (NullPointerException e) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setHeaderText("Select a card first!");
                 alert.show();
-                return;
             }
-            String string = Client.getClient().requestCardStock(getCardFromTab().getId());
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setHeaderText(string);
-            alert.show();
         });
 
         buyButton.setOnAction(event -> {

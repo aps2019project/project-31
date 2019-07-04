@@ -85,11 +85,16 @@ public class Client extends Thread {
 
     public String requestCardStock(int id) {
         try {
-            os.writeUTF("request card stock: " + id);
+            os.writeUTF(authToken + " request card stock: " + id);
             return is.readUTF();
         } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public boolean requestCardTransaction(int id) throws IOException {
+        os.writeUTF(authToken+ " ");
+        return true;
     }
 }
