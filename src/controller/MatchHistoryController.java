@@ -67,7 +67,7 @@ public class MatchHistoryController implements Initializable {
         for (MatchHistory matchHistory : Account.getMainAccount().getMatchHistories()) {
             InfoHBox infoHBox = new InfoHBox();
             infoHBox.setMatchHistory(matchHistory);
-            infoHBox.getChildren().addAll(new Label(matchHistory.getMe().getHero().getName()), new Label(matchHistory.getOpponent().getAccount().getUsername()), new Label(matchHistory.getGameMode().toString()), new Label(matchHistory.getOutcome()), new Label(matchHistory.figureTime()));
+            infoHBox.getChildren().addAll(new Label(matchHistory.getMe().getHero().getName() + "  "), new Label(matchHistory.getOpponent().getAccount().getUsername() + "  "), new Label(matchHistory.getGameMode().toString() + "  "), new Label(matchHistory.getOutcome() + "  "), new Label(matchHistory.figureTime() + "  "));
             infoHBox.setBackground(Background.EMPTY);
             listView.getItems().add(infoHBox);
         }
