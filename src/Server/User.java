@@ -5,14 +5,12 @@ import com.gilecode.yagson.YaGsonBuilder;
 import constants.GameMode;
 import controller.BattleMenu;
 import controller.Shop;
-import javafx.css.Match;
 import model.Account;
 import model.BattleManager;
 import model.Card;
 import model.Deck;
 
 import java.io.*;
-import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -23,8 +21,8 @@ public class User extends Thread {
     private Socket socket;
     private int authToken = -1;
     private Account account;
-    private DataInputStream dataInputStream;
-    private DataOutputStream dataOutputStream;
+    private DataInputStream is;
+    private DataOutputStream os;
     private static User waitingUserMode1;
     private static User waitingUserMode2;
     private static User waitingUserMode3;
@@ -34,7 +32,7 @@ public class User extends Thread {
     public void run() {
         try {
             while (true) {
-                String command = dataInputStream.readUTF();
+                String command = is.readUTF();
                 System.out.println("user received:" + command);
                 shopRequestStockHandler(command);
 
@@ -83,7 +81,7 @@ public class User extends Thread {
             for (Deck deck : account.getDecks()) {
                 if (deck.getDeckName().matches(matcher.group(1))) {
                     account.setMainDeck(deck);
-                    dataOutputStream.writeUTF(ServerStrings.MAIN_DECK_SET);
+                    os.writeUTF(ServerStrings.MAIN_DECK_SET);
                     return;
                 }
             }
@@ -101,7 +99,7 @@ public class User extends Thread {
                 System.out.println(deck.getDeckName());
                 if (deck.getDeckName().equals(deckName)) {
                     deck.deleteCard(Shop.findCardById(cardID));
-                    dataOutputStream.writeUTF(ServerStrings.CARD_DELETED);
+                    os.writeUTF(ServerStrings.CARD_DELETED);
                     return;
                 }
             }
@@ -115,7 +113,7 @@ public class User extends Thread {
         Matcher matcher = pattern.matcher(command);
         if (matcher.matches()) {
             account.deleteDeck(matcher.group(1));
-            dataOutputStream.writeUTF(ServerStrings.DECK_DELETED);
+            os.writeUTF(ServerStrings.DECK_DELETED);
         }
     }
 
@@ -127,7 +125,7 @@ public class User extends Thread {
                 if (deck.getDeckName().equals(matcher.group(2))) {
                     deck.addCard(Shop.findCardById(Integer.parseInt(matcher.group(1))));
                     try {
-                        dataOutputStream.writeUTF(ServerStrings.CARD_ADDED);
+                        os.writeUTF(ServerStrings.CARD_ADDED);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -141,7 +139,7 @@ public class User extends Thread {
 
     private void safetyOutput(String nooope) {
         try {
-            dataOutputStream.writeUTF(nooope);
+            os.writeUTF(nooope);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -153,7 +151,7 @@ public class User extends Thread {
         if (matcher.matches()) {
             this.account.getDecks().add(new Deck(matcher.group(1)));
             try {
-                dataOutputStream.writeUTF(ServerStrings.NEW_DECK_SUCCESS);
+                os.writeUTF(ServerStrings.NEW_DECK_SUCCESS);
                 return;
             } catch (IOException e) {
                 e.printStackTrace();
@@ -167,7 +165,7 @@ public class User extends Thread {
         Matcher matcher = pattern.matcher(command);
         if (matcher.matches()) {
             if (authorise(matcher)) return;
-            dataOutputStream.writeUTF(ServerStrings.CANCELSUCCESSFULLY);
+            os.writeUTF(ServerStrings.CANCELSUCCESSFULLY);
             if (this == waitingUserMode1)
                 waitingUserMode1 = null;
             if (this == waitingUserMode2)
@@ -204,17 +202,17 @@ public class User extends Thread {
             for (int i = 0; i < Integer.min(Account.getAllAccounts().size(), 10); i++) {
                 String ret = "       " + (i + 1) + ".    " +
                         Account.getAllAccounts().get(i).toString();
-                dataOutputStream.writeUTF(ret);
+                os.writeUTF(ret);
                 for (User user : users) {
                     if (user.socket.isConnected()
                             && user.account.equals(Account.getAllAccounts().get(i))) {
-                        dataOutputStream.writeUTF("Online");
+                        os.writeUTF("Online");
                         continue accounts;
                     }
                 }
-                dataOutputStream.writeUTF("Offline");
+                os.writeUTF("Offline");
             }
-            dataOutputStream.writeUTF("end");
+            os.writeUTF("end");
         }
     }
 
@@ -244,7 +242,7 @@ public class User extends Thread {
             this.account.getCollection().remove(card);
             Shop.getStock().put(card.getId(), Shop.getStock().get(card.getId()) + 1);
             updateStockFile();
-            dataOutputStream.writeUTF(ServerStrings.SOLD);
+            os.writeUTF(ServerStrings.SOLD);
         }
 
     }
@@ -257,14 +255,14 @@ public class User extends Thread {
             Card card = Shop.findCardById(Integer.parseInt(matcher.group(2)));
             assert card != null;
             if (Shop.getStock().get(card.getId()) == 0) {
-                dataOutputStream.writeUTF(ServerStrings.OUT_OF_STOCK);
+                os.writeUTF(ServerStrings.OUT_OF_STOCK);
                 return;
             }
             this.account.decreaseDaric(card.getPrice());
             this.account.getCollection().add(card);
             Shop.getStock().put(card.getId(), Shop.getStock().get(card.getId()) - 1);
             updateStockFile();
-            dataOutputStream.writeUTF(ServerStrings.BOUGHT);
+            os.writeUTF(ServerStrings.BOUGHT);
         }
     }
 
@@ -290,9 +288,9 @@ public class User extends Thread {
             if (authorise(matcher)) return;
             Card card = Shop.findCardById(Integer.parseInt(matcher.group(2)));
             if (card == null) {
-                dataOutputStream.writeUTF("Invalid card ID!");
+                os.writeUTF("Invalid card ID!");
             } else {
-                dataOutputStream.writeUTF(card.getName() +
+                os.writeUTF(card.getName() +
                         ": " +
                         Shop.getStock().get(card.getId()));
             }
@@ -334,16 +332,16 @@ public class User extends Thread {
                 findNumberOfHavingFlags(gameMode), gameMode);
         battle = BattleMenu.getBattleManager();
         battleServer = new BattleServer(battle,user1,user2);
-        user1.dataOutputStream.writeUTF(ServerStrings.MULTIPLAYERSUCCESS);
-        Server.sendObject(BattleMenu.getBattleManager(), user1.dataOutputStream);
-        user2.dataOutputStream.writeUTF(ServerStrings.MULTIPLAYERSUCCESS);
-        Server.sendObject(BattleMenu.getBattleManager(), user2.dataOutputStream);
+        user1.os.writeUTF(ServerStrings.MULTIPLAYERSUCCESS);
+        Server.sendObject(BattleMenu.getBattleManager(), user1.os);
+        user2.os.writeUTF(ServerStrings.MULTIPLAYERSUCCESS);
+        Server.sendObject(BattleMenu.getBattleManager(), user2.os);
     }
 
     private boolean authorise(Matcher matcher) throws IOException {
         int authToken = Integer.parseInt(matcher.group(1));
         if (!(authToken == this.authToken)) {
-            dataOutputStream.writeUTF("Error 401: Unauthorized!");
+            os.writeUTF("Error 401: Unauthorized!");
             return true;
         }
         return false;
@@ -390,8 +388,8 @@ public class User extends Thread {
         users.add(this);
         authToken = generateAuthToken();
         try {
-            dataInputStream = new DataInputStream(socket.getInputStream());
-            dataOutputStream = new DataOutputStream(socket.getOutputStream());
+            is = new DataInputStream(socket.getInputStream());
+            os = new DataOutputStream(socket.getOutputStream());
         } catch (IOException e) {
             e.printStackTrace();
         }

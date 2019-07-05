@@ -291,7 +291,6 @@ public class MultiPlayerBattlePageController implements Initializable {
     }
 
     public void updateNextCard() {
-        me.placeNextCardToHand();//it happens if there is space in hand
         if (nextCardField.getChildren().size() > 1)
             nextCardField.getChildren().remove(1);
         if (me.getNextCard().getType() == CardType.minion) {
@@ -326,7 +325,6 @@ public class MultiPlayerBattlePageController implements Initializable {
     }
 
     private void putNextCardInHand(BattleManager battle) {
-        me.placeNextCardToHand(); //does the same thing in battle manager
         for (int i = 0; i < 6; i++) {
             if (columnHands[i].stackPane.getChildren().size() == 1) {
                 if (nextCardField.getChildren().size() >= 2) {
