@@ -49,6 +49,7 @@ public class User extends Thread {
 
                 handleCardAddition(command);
 
+                handleCancelRequest(command);
                 if (handleLogout(command)) break;
 
             }
@@ -100,6 +101,21 @@ public class User extends Thread {
         }
     }
 
+    public void handleCancelRequest(String command) throws IOException {
+        Pattern pattern = Pattern.compile(ServerStrings.CANCELPLAYREQUEST);
+        Matcher matcher = pattern.matcher(command);
+        if (matcher.matches()) {
+            if (authorise(matcher)) return;
+            dataOutputStream.writeUTF(ServerStrings.CANCELSUCCESSFULLY);
+            if (this == waitingUserMode1)
+                waitingUserMode1 = null;
+            if (this == waitingUserMode2)
+                waitingUserMode2 = null;
+            if (this == waitingUserMode3)
+                waitingUserMode3 = null;
+        }
+    }
+
     public boolean handleLogout(String command) {
         Pattern pattern = Pattern.compile(ServerStrings.LOGOUT);
         Matcher matcher = pattern.matcher(command);
@@ -140,6 +156,7 @@ public class User extends Thread {
             dataOutputStream.writeUTF("end");
         }
     }
+
 
     private void handleCardSellingRequest(String command) throws IOException {
         Pattern pattern = Pattern.compile(ServerStrings.REQUEST_SELL);
@@ -225,7 +242,8 @@ public class User extends Thread {
         Pattern pattern = Pattern.compile(ServerStrings.MULTIPLAYERREQUEST);
         Matcher matcher = pattern.matcher(command);
         if (matcher.matches()) {
-            GameMode gameMode = findGameMode(matcher.group(1));
+            if (authorise(matcher)) return;
+            GameMode gameMode = findGameMode(matcher.group(2));
             switch (gameMode) {
                 case Domination:
                     if (waitingUserMode3 == null) {
@@ -244,16 +262,18 @@ public class User extends Thread {
                     } else makeBattle(GameMode.Flag, waitingUserMode2, this);
                     break;
             }
+        } else {
+            System.out.println("ridi tu ferestadan dastur be user");
         }
     }
 
-    private void makeBattle(GameMode gameMode, User user1, User user2) throws IOException {  //////////
-        // //////////// inja buge sag mikhore chon bayad battle menu baraye bazikone 2 om ham battle manageresh
-        // set she
+    private void makeBattle(GameMode gameMode, User user1, User user2) throws IOException {
         BattleMenu.setBattleManagerForMultiPlayer(user1.account, user2.account, findNumberOfFlags(gameMode),
                 findNumberOfHavingFlags(gameMode), gameMode);
         user1.dataOutputStream.writeUTF(ServerStrings.MULTIPLAYERSUCCESS);
-        user1.dataOutputStream.writeUTF(ServerStrings.MULTIPLAYERSUCCESS);
+        Server.sendObject(BattleMenu.getBattleManager(), user1.dataOutputStream);
+        user2.dataOutputStream.writeUTF(ServerStrings.MULTIPLAYERSUCCESS);
+        Server.sendObject(BattleMenu.getBattleManager(), user2.dataOutputStream);
     }
 
     private boolean authorise(Matcher matcher) throws IOException {
@@ -265,10 +285,6 @@ public class User extends Thread {
         return false;
     }
 
-    private void multiPlayerRequestHandler() {
-
-
-    }
 
     private GameMode findGameMode(String gm) {
         if (gm.equals("DeathMatch"))

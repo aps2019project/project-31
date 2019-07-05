@@ -3,7 +3,6 @@ package model;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Polyline;
 
-
 public class Cell {
     private int x1Coordinate;
     private int x2Coordinate;

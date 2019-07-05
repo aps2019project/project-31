@@ -22,9 +22,9 @@ public class BattleManager {
     public static final int PERMANENT = 100;
     public static final String CONTINUOUS = "continuous";
     protected GameMode gameMode;
-    protected static Player currentPlayer;
-    protected static Player player1;
-    protected static Player player2;
+    protected Player currentPlayer;
+    protected Player player1;
+    protected Player player2;
     protected final int maxNumberOfFlags;
     protected final int maxTurnsOfHavingFlag;
     protected int turn = 1;
@@ -60,13 +60,16 @@ public class BattleManager {
         isTheGameFinished = false;
     }
 
-
-    public static void setPlayer1(Player player1) {
-        BattleManager.player1 = player1;
+    public boolean isTheGameFinished() {
+        return isTheGameFinished;
     }
 
-    public static void setPlayer2(Player player2) {
-        BattleManager.player2 = player2;
+    public void setPlayer1(Player player1) {
+        this.player1 = player1;
+    }
+
+    public void setPlayer2(Player player2) {
+        this.player2 = player2;
     }
 
     public boolean isThisRecordedGame() {
@@ -82,7 +85,7 @@ public class BattleManager {
     }
 
     public void setCurrentPlayer(Player currentPlayer) {
-        BattleManager.currentPlayer = currentPlayer;
+        this.currentPlayer = currentPlayer;
     }
 
     public Player getCurrentPlayer() {
@@ -97,13 +100,12 @@ public class BattleManager {
         return player2;
     }
 
-
     public GameMode getGameMode() {
         return gameMode;
     }
 
     public boolean playMinion(Minion minion, int x1, int x2) {
-        Minion theMinion = minion.duplicateDeployed(Map.getInstance().getCell(x1, x2), currentPlayer.account);
+        Minion theMinion = minion.duplicateDeployed(Map.getInstance().getCell(x1, x2), currentPlayer.account, this);
         Map.getInstance().putCardInCell(theMinion, x1, x2);
 
         Output.insertionSuccessful(theMinion, x1, x2);
@@ -141,7 +143,7 @@ public class BattleManager {
         turn++;
     }
 
-    public static int generateUniqueId(int cardId) {
+    public int generateUniqueId(int cardId) {
         int numberOfMinionInBattleField = 0;
         for (Deployable card : player1.cardsOnBattleField) {
             if (card.id == cardId)
@@ -168,6 +170,8 @@ public class BattleManager {
 
     public boolean compileTargetString(ArrayList<Card> targetCards, ArrayList<Cell> targetCells, String target,
                                        int x1, int x2, Deployable attackTarget) {
+        if(isTheGameFinished)
+            return false;
         try {
             Pattern pattern = Pattern.compile(TargetStrings.MINIONS_WITH_DISTANCE + "(\\d+)");
             Matcher matcher = pattern.matcher(target);
@@ -452,6 +456,8 @@ public class BattleManager {
     }
 
     public void compileFunction(Function function, int x1, int x2, Deployable attackTarget) {
+        if(isTheGameFinished)
+            return;
         ArrayList<Cell> targetCells = new ArrayList<>();
         ArrayList<Card> targetCards = new ArrayList<>();
         if (!compileTargetString(targetCards, targetCells, function.getTarget(), x1, x2, attackTarget)) {
@@ -607,6 +613,8 @@ public class BattleManager {
     }
 
     private void handleDispel(Function function, ArrayList<Card> targetCards) {
+        if(isTheGameFinished)
+            return;
         if (function.getFunction().matches("(.*)" + FunctionStrings.DISPEL + "(.*)")) {
             for (Card card : targetCards) {
                 ArrayList<Buff> toRemove = new ArrayList<>();
@@ -639,6 +647,8 @@ public class BattleManager {
     }
 
     private void handleDamage(Function function, ArrayList<Card> targetCards) {
+        if(isTheGameFinished)
+            return;
         Pattern pattern = Pattern.compile(FunctionStrings.DEAL_DAMAGE + "(\\d+)");
         Matcher matcher = pattern.matcher(function.getFunction());
         if (matcher.matches()) {
@@ -653,6 +663,8 @@ public class BattleManager {
     }
 
     private void handleBuffs(Function function, ArrayList<Card> targetCards) {
+        if(isTheGameFinished)
+            return;
         Pattern pattern = Pattern.compile(FunctionStrings.APPLY_BUFF + "(.*)");
         Matcher matcher = pattern.matcher(function.getFunction());
         if (matcher.matches()) {
@@ -887,7 +899,8 @@ public class BattleManager {
 
 
     public void move(Deployable card, int x1, int x2) {
-
+        if(isTheGameFinished)
+            return;
         BattlePageController.getInstance().refreshTheStatusOfMap(this);
 
         if (card.cell == null) {
@@ -940,6 +953,8 @@ public class BattleManager {
     }
 
     public void killTheThing(Deployable enemy) {
+        if(isTheGameFinished)
+            return;
         Player player;
         if (player1.doesPlayerHaveDeployable(enemy))
             player = player1;
@@ -991,6 +1006,8 @@ public class BattleManager {
     }
 
     public void attack(Deployable card, Deployable enemy) {
+        if(isTheGameFinished)
+            return;
         if (canAttack(card, enemy) && !card.account.getUsername().equals(enemy.account.getUsername())) {
             doTheActualAttack_noTarof(card, enemy);
             /*enemy.getFace().attack();
@@ -1182,6 +1199,7 @@ public class BattleManager {
         player1.getAccount().addMatchHistories(matchHistory1);
         MatchHistory matchHistory2 = new MatchHistory(player1, player2, "LOSE", gameRecord, gameMode);
         player2.getAccount().addMatchHistories(matchHistory2);
+
         player1.getAccount().incrementWins();
         player2.getAccount().incrementLosses();
         gameEnded(player1);
@@ -1209,6 +1227,7 @@ public class BattleManager {
         player1.getAccount().addMatchHistories(matchHistory1);
         MatchHistory matchHistory2 = new MatchHistory(player1, player2, "WIN", gameRecord, gameMode);
         player2.getAccount().addMatchHistories(matchHistory2);
+
         player1.getAccount().incrementLosses();
         player2.getAccount().incrementWins();
         gameEnded(player2);
@@ -1219,6 +1238,7 @@ public class BattleManager {
         player1.getAccount().addMatchHistories(matchHistory1);
         MatchHistory matchHistory2 = new MatchHistory(player1, player2, "DRAW", gameRecord, gameMode);
         player2.getAccount().addMatchHistories(matchHistory2);
+
         player1.getAccount().incrementDraw();
         player2.getAccount().incrementDraw();
         gameEnded(null);
@@ -1260,7 +1280,7 @@ public class BattleManager {
     public void isFinishedDueToHavingMostOfFlags() {
         if (2 * player1.getNumberOfFlags() > maxNumberOfFlags)
             player1Won();
-        if (2 * player1.getNumberOfFlags() > maxNumberOfFlags)
+        if (2 * player2.getNumberOfFlags() > maxNumberOfFlags)
             player2Won();
 
     }
@@ -1303,7 +1323,7 @@ public class BattleManager {
         }
     }
 
-    private static void initialTheHands() {
+    private void initialTheHands() {
         for (int i = 0; i < 6; i++) {
             player1.hand.add(player1.currentDeck.getCards().get(i));
             player2.hand.add(player2.currentDeck.getCards().get(i));
@@ -1324,7 +1344,7 @@ public class BattleManager {
         return new int[]{-1, -1};
     }
 
-    public static Deployable findCardByUniqueid(int uniqueCardId) {
+    public Deployable findCardByUniqueid(int uniqueCardId) {
         for (Deployable deployable : player1.getCardsOnBattleField()) {
             if (deployable.uniqueId == uniqueCardId)
                 return deployable;

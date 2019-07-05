@@ -4,7 +4,7 @@ public class ServerStrings {
     public static final String LOGIN = "login username:(.*) password:(.*)";
     public static final String LOGINERROR = "wrong credentials";
     public static final String LOGINSUCCESS = "login successful";
-    public static final String MULTIPLAYERREQUEST = "(DeathMatch|Flag|Domination) request from user:(.*)";
+    public static final String MULTIPLAYERREQUEST = "(\\d+) (DeathMatch|Flag|Domination) request from user:(.*)";
     public static final String MULTIPLAYERSUCCESS = "you have your opponent";
     public static final String MULTIPLAYERFAILED = "you can't play, go home";
     public static final String REQUEST_STOCK = "(\\d+) request card stock: (\\d+)";
@@ -22,4 +22,8 @@ public class ServerStrings {
     public static final String NEW_DECK_SUCCESS = "new deck created!";
     public static final String ADD_CARD_TO_DECK = "add (\\d+) to (.*)";
     public static final String CARD_ADDED = "card added successfuly";
+    public static final String CANCELPLAYREQUEST = "(\\d+) request is canceled";
+    public static final String CANCELSUCCESSFULLY = "canceled successfully";
+
+
 }

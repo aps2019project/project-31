@@ -33,6 +33,7 @@ public class MainMenuController implements Initializable {
     public Button saveButton;
     public Button cardMakerButton;
     public Button matchHistories;
+    public Button chatRoom;
 
 
     public MainMenuController() {
@@ -79,6 +80,9 @@ public class MainMenuController implements Initializable {
         });
         matchHistories.setOnAction(event -> {
             MatchHistoryController.getInstance().setAsScene();
+        });
+        chatRoom.setOnAction(event -> {
+
         });
         playButton.setOnAction(event -> PlayMenuController.getInstance().setAsScene());
         shopButton.setOnAction(event -> ShopController.getInstance().setAsScene());

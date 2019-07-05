@@ -4,10 +4,8 @@ import Server.ServerStrings;
 import com.gilecode.yagson.YaGson;
 import com.gilecode.yagson.YaGsonBuilder;
 import constants.GameMode;
-import controller.BattlePageController;
+import controller.*;
 import controller.LoginPageController;
-import controller.LoginPageController;
-import controller.Shop;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
@@ -65,7 +63,7 @@ public class Client extends Thread {
             System.out.println("getting account...");
             YaGson yaGson = new YaGsonBuilder().create();
 
-            Account account = (Account) receiveObject(yaGson, is);
+            Account account = (Account) receiveObject(is, Account.class);
             int auth = Integer.parseInt(is.readUTF());
             setAuthToken(auth);
             HashMap<Integer, Integer> stock = yaGson.fromJson(is.readUTF(), HashMap.class);
@@ -74,7 +72,8 @@ public class Client extends Thread {
         } else return null;
     }
 
-    public static Object receiveObject(YaGson yaGson, DataInputStream is) throws IOException {
+    public static Object receiveObject(DataInputStream is, Class objectClass) throws IOException {
+        YaGson yaGson = new YaGsonBuilder().create();
         int size = Integer.parseInt(is.readUTF());
         byte[] bytes = new byte[size];
 
@@ -82,33 +81,50 @@ public class Client extends Thread {
             byte b = is.readByte();
             bytes[i] = b;
         }
-        String accountString = new String(bytes);
-        return yaGson.fromJson(accountString, Account.class);
+        String objectString = new String(bytes);
+        return yaGson.fromJson(objectString, objectClass);
 
+    }
+
+    public void sendCancelRequest() {
+
+        try {
+            os.writeUTF(authToken + " request is canceled");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void sendPlayRequest(GameMode gameMode) {
         try {
             switch (gameMode) {
                 case DeathMatch:
-                    os.writeUTF("DeathMatch request from user:" + Account.getMainAccount().getUsername());
+                    os.writeUTF(authToken + " DeathMatch request from user:" + Account.getMainAccount().getUsername());
                     break;
                 case Flag:
-                    os.writeUTF("Flag request from user:" + Account.getMainAccount().getUsername());
+                    os.writeUTF(authToken + " Flag request from user:" + Account.getMainAccount().getUsername());
                     break;
                 case Domination:
-                    os.writeUTF("Domination request from user:" + Account.getMainAccount().getUsername());
+                    os.writeUTF(authToken + " Domination request from user:" + Account.getMainAccount().getUsername());
                     break;
             }
-            String serverReply = is.readUTF();
-            if (serverReply.equals(ServerStrings.MULTIPLAYERSUCCESS)) {
-                receiveBattleManager();
-                BattlePageController.getInstance().setAsScene();
-            } else {
-                // some pop up happens !
+            new Thread(()->{
+                try {
+                     String serverReply = is.readUTF();
+                    if (serverReply.equals(ServerStrings.MULTIPLAYERSUCCESS)) {
+                        BattleManager battle = (BattleManager) receiveObject(this.is, BattleManager.class);
+                        System.out.println("receeeeeeeeeeeeived successfully");
+                        BattleMenu.setBattleManager(battle);
+                        BattlePageController.getInstance().setAsScene();
+                    } else if(serverReply.equals(ServerStrings.CANCELSUCCESSFULLY)) {
+                        System.out.println("we canceled the game honey");
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }).start();
 
 
-            }
 
 
         } catch (IOException e) {
@@ -116,9 +132,6 @@ public class Client extends Thread {
         }
     }
 
-    public void receiveBattleManager() {
-
-    }
 
     public String requestCardStock(int id) {
         try {
@@ -159,17 +172,17 @@ public class Client extends Thread {
         String response = is.readUTF();
         VBox vBox = new VBox();
         vBox.setAlignment(Pos.TOP_CENTER);
-        while (!response.equals("end")){
+        while (!response.equals("end")) {
             HBox hBox = new HBox();
             hBox.setAlignment(Pos.CENTER);
-            hBox.getChildren().add(LoginPageController.getInstance().makeMainLabel(response,17));
+            hBox.getChildren().add(LoginPageController.getInstance().makeMainLabel(response, 17));
             String status = is.readUTF();
-            if (status.matches("Online")){
+            if (status.matches("Online")) {
                 Label label = new Label(status);
                 label.setFont(Font.font(17));
                 label.setTextFill(Color.GREEN);
                 hBox.getChildren().add(label);
-            }else {
+            } else {
                 Label label = new Label(status);
                 label.setFont(Font.font(17));
                 label.setTextFill(Color.RED);

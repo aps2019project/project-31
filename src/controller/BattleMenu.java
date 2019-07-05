@@ -238,6 +238,8 @@ public class BattleMenu extends Menu {
     }
 
     public static boolean insert(Card card, int x1, int x2) {
+        if(battleManager.isTheGameFinished())
+            return false;
         if (card == null) {
             System.err.println("insert(method) -> card is null");
             return false;
