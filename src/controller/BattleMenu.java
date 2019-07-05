@@ -48,7 +48,7 @@ public class BattleMenu extends Menu {
         Player player1 = new Player(player1Acc, false);
         Player player2 = new Player(player2Acc, false);
         generateFlags(gameMode,maxNumberOfHavingFlag);
-        makeInstanceOfBattleManager(player1, player2, numberOfFlags, maxNumberOfHavingFlag, gameMode);
+        makeInstanceOfBattleManager(player1, player2, numberOfFlags, maxNumberOfHavingFlag, gameMode,true);
     }
 
     private static void generateFlags(GameMode gameMode, int maxNumberOfFlags) {
@@ -110,21 +110,21 @@ public class BattleMenu extends Menu {
                 break;
         }
         SinglePlayer.makeAIAccount(theAiDeck);
-        makeInstanceOfBattleManager(player1, SinglePlayer.getAiPlayer(), numberOfFlags, maxNumberOfHavingFlag, gameMode);
+        makeInstanceOfBattleManager(player1, SinglePlayer.getAiPlayer(), numberOfFlags, maxNumberOfHavingFlag, gameMode,false);
     }
 
 
     private static void makeInstanceOfBattleManager(Player player1, Player player2, int numberOfFlags,
-                                                    int maxTurnsHavingFlag, GameMode gameMode) {
+                                                    int maxTurnsHavingFlag, GameMode gameMode,boolean isMulti) {
         switch (gameMode) {
             case DeathMatch:
-                battleManager = new BattleManager(player1, player2, 100, 100, GameMode.DeathMatch, false);
+                battleManager = new BattleManager(player1, player2, 100, 100, GameMode.DeathMatch, false,isMulti);
                 break;
             case Flag:
-                battleManager = new BattleManager(player1, player2, 100, maxTurnsHavingFlag, GameMode.Flag, false);
+                battleManager = new BattleManager(player1, player2, 100, maxTurnsHavingFlag, GameMode.Flag, false,isMulti);
                 break;
             case Domination:
-                battleManager = new BattleManager(player1, player2, numberOfFlags, 100, GameMode.Domination, false);
+                battleManager = new BattleManager(player1, player2, numberOfFlags, 100, GameMode.Domination, false,isMulti);
                 break;
         }
         player1.setBattle(battleManager);
@@ -140,17 +140,20 @@ public class BattleMenu extends Menu {
         Map.getInstance().makeANewMap();
     }
 
-    public static void doAllAtTheBeginningOfTurnThings() {
+    public static void doAllAtTheBeginningOfTurnThings(boolean isMulti) {
         for (Deployable deployable : battleManager.getCurrentPlayer().getCardsOnBattleField()) {
             deployable.setMoved(false);
             deployable.setAttacked(false);
         }
         battleManager.getCurrentPlayer().setHasReplaced(false);
         battleManager.assignManaToPlayers();
-
-        if (SinglePlayerBattlePageController.getInstance().nextCardField.getChildren().size() <= 1)
-            SinglePlayerBattlePageController.getInstance().updateNextCard();
-
+        if(isMulti){
+            if (MultiPlayerBattlePageController.getInstance().nextCardField.getChildren().size() <= 1)
+                MultiPlayerBattlePageController.getInstance().updateNextCard();
+        }else {
+            if (SinglePlayerBattlePageController.getInstance().nextCardField.getChildren().size() <= 1)
+                SinglePlayerBattlePageController.getInstance().updateNextCard();
+        }
         isTimeToPutItem();
 
 
@@ -169,7 +172,7 @@ public class BattleMenu extends Menu {
         super(id, title);
     }
 
-    public void runTheGame() {
+   /* public void runTheGame() {
         battleManager.initialTheGame();
         boolean isPlayer1Turn = false;
         battleManager.getPlayer1().generateDeckArrangement();
@@ -203,7 +206,7 @@ public class BattleMenu extends Menu {
             doAllThingsInEndingOfTheTurns();
             Output.theTurnEnded();
         }
-    }
+    }*/
 
 
     public static void doAllThingsInEndingOfTheTurns() {

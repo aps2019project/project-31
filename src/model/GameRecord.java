@@ -42,7 +42,7 @@ public class GameRecord {
 
     public void makeFormalBattleManagerForRecord() { // first thing to show record is to call this!
         BattleMenu.deleteBattleManagerAndMakeMap();
-        BattleManager battleManager = new BattleManager(player1, player2, maxNumberOfFlags, maxTurnsOfHavingFlag, gameMode);
+        BattleManager battleManager = new BattleManager(player1, player2, maxNumberOfFlags, maxTurnsOfHavingFlag, gameMode,false);
         BattleMenu.setBattleManager(battleManager);
         this.battleManager = battleManager;
 

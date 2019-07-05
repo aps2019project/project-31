@@ -337,7 +337,8 @@ public class SinglePlayerBattlePageController implements Initializable {
             handleHandPlace(i, battle);
         }
         atStartThings(battle);
-        BattleMenu.doAllAtTheBeginningOfTurnThings();
+        BattleMenu.doAllAtTheBeginningOfTurnThings(false);
+        refreshFlagsSituation(battle);
         replace.setOnAction(event -> {
             if (!isMyTurn()) {
                 displayMessage("this is not your turn =");
@@ -462,13 +463,13 @@ public class SinglePlayerBattlePageController implements Initializable {
         if (isMyTurn()) {
             battle.setCurrentPlayer(battle.getOtherPlayer());
         }
-        BattleMenu.doAllAtTheBeginningOfTurnThings();
+        BattleMenu.doAllAtTheBeginningOfTurnThings(false);
         if (battle.getCurrentPlayer().isAi()) {
             System.err.println("ai is playing");
             ((Ai) battle.getCurrentPlayer()).play();
             battle.setCurrentPlayer(battle.getOtherPlayer());
             BattleMenu.doAllThingsInEndingOfTheTurns();
-            BattleMenu.doAllAtTheBeginningOfTurnThings();
+            BattleMenu.doAllAtTheBeginningOfTurnThings(false);
         }
         updateManaViewers(battle);
     }
@@ -669,7 +670,6 @@ public class SinglePlayerBattlePageController implements Initializable {
         if (battleManager.isTheGameFinished())
             return;
         refreshPartly();
-        refreshFlagsSituation(battleManager);
         if (!battleManager.isThisRecordedGame()) {
             BattleMenu.getBattleManager().checkTheEndSituation();
             try {

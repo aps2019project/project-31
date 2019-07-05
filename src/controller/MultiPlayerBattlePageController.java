@@ -335,7 +335,7 @@ public class MultiPlayerBattlePageController implements Initializable {
             handleHandPlace(i, battle);
         }
         atStartThings(battle);
-        BattleMenu.doAllAtTheBeginningOfTurnThings();
+        BattleMenu.doAllAtTheBeginningOfTurnThings(true);
         replace.setOnAction(event -> {
             if (!isMyTurn()) {
                 displayMessage("this is not your turn =");
@@ -460,13 +460,13 @@ public class MultiPlayerBattlePageController implements Initializable {
         if (isMyTurn()) {
             battle.setCurrentPlayer(battle.getOtherPlayer());
         }
-        BattleMenu.doAllAtTheBeginningOfTurnThings();
+        BattleMenu.doAllAtTheBeginningOfTurnThings(true);
         if (battle.getCurrentPlayer().isAi()) {
             System.err.println("ai is playing");
             ((Ai) battle.getCurrentPlayer()).play();
             battle.setCurrentPlayer(battle.getOtherPlayer());
             BattleMenu.doAllThingsInEndingOfTheTurns();
-            BattleMenu.doAllAtTheBeginningOfTurnThings();
+            BattleMenu.doAllAtTheBeginningOfTurnThings(true);
         }
         updateManaViewers(battle);
     }

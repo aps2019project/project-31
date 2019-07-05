@@ -1,5 +1,6 @@
 package model;
 
+import controller.MultiPlayerBattlePageController;
 import controller.SinglePlayerBattlePageController;
 import constants.AttackType;
 import constants.CardType;
@@ -32,13 +33,13 @@ public class BattleManager {
     protected GameRecord gameRecord;
     protected boolean isThisRecordedGame;
     protected boolean isTheGameFinished = false;
- //   private final boolean isMultiPlayer;
+    private final boolean isMultiPlayer;
 
     public int getTurn() {
         return turn;
     }
 
-    public BattleManager(Player player1, Player player2, int maxNumberOfFlags, int maxTurnsOfHavingFlag, GameMode gameMode, boolean isThisRecordedGame) {
+    public BattleManager(Player player1, Player player2, int maxNumberOfFlags, int maxTurnsOfHavingFlag, GameMode gameMode, boolean isThisRecordedGame, boolean isMultiPlayer) {
         this.maxNumberOfFlags = maxNumberOfFlags;
         this.maxTurnsOfHavingFlag = maxTurnsOfHavingFlag;
         setPlayer1(player1);
@@ -47,9 +48,10 @@ public class BattleManager {
         gameRecord = new GameRecord(player1, player2, maxNumberOfFlags, maxTurnsOfHavingFlag, gameMode);
         this.isThisRecordedGame = isThisRecordedGame;
         isTheGameFinished = false;
+        this.isMultiPlayer = isMultiPlayer;
     }
 
-    public BattleManager(Player player1, Player player2, int maxNumberOfFlags, int maxTurnsOfHavingFlag, GameMode gameMode) {
+    public BattleManager(Player player1, Player player2, int maxNumberOfFlags, int maxTurnsOfHavingFlag, GameMode gameMode, boolean isMultiPlayer) {
         this.maxNumberOfFlags = maxNumberOfFlags;
         this.maxTurnsOfHavingFlag = maxTurnsOfHavingFlag;
         setPlayer1(player1);
@@ -57,6 +59,7 @@ public class BattleManager {
         this.gameMode = gameMode;
         this.isThisRecordedGame = true;
         isTheGameFinished = false;
+        this.isMultiPlayer = isMultiPlayer;
     }
 
     public boolean isTheGameFinished() {
@@ -125,13 +128,19 @@ public class BattleManager {
         currentPlayer.selectedCard = null;
         removeItemIfThereIsSomething(theMinion);
         removeFlagIfThereIsSomething(theMinion, x1, x2);
-        SinglePlayerBattlePageController.getInstance().refreshTheStatusOfMap(this);
+
+        refreshTheWholeMap();
 
         if (!isThisRecordedGame)
             gameRecord.addAction(whoIsCurrentPlayer() + "I" + theMinion.id + x1 + x2);
         return true;
     }
-
+    private void refreshTheWholeMap(){
+        if (isMultiPlayer)
+            MultiPlayerBattlePageController.getInstance().refreshTheStatusOfMap(this);
+        else
+            SinglePlayerBattlePageController.getInstance().refreshTheStatusOfMap(this);
+    }
     public String whoIsCurrentPlayer() {
         if (currentPlayer == player1)
             return "1";
@@ -170,7 +179,7 @@ public class BattleManager {
 
     public boolean compileTargetString(ArrayList<Card> targetCards, ArrayList<Cell> targetCells, String target,
                                        int x1, int x2, Deployable attackTarget) {
-        if(isTheGameFinished)
+        if (isTheGameFinished)
             return false;
         try {
             Pattern pattern = Pattern.compile(TargetStrings.MINIONS_WITH_DISTANCE + "(\\d+)");
@@ -456,7 +465,7 @@ public class BattleManager {
     }
 
     public void compileFunction(Function function, int x1, int x2, Deployable attackTarget) {
-        if(isTheGameFinished)
+        if (isTheGameFinished)
             return;
         ArrayList<Cell> targetCells = new ArrayList<>();
         ArrayList<Card> targetCards = new ArrayList<>();
@@ -613,7 +622,7 @@ public class BattleManager {
     }
 
     private void handleDispel(Function function, ArrayList<Card> targetCards) {
-        if(isTheGameFinished)
+        if (isTheGameFinished)
             return;
         if (function.getFunction().matches("(.*)" + FunctionStrings.DISPEL + "(.*)")) {
             for (Card card : targetCards) {
@@ -647,7 +656,7 @@ public class BattleManager {
     }
 
     private void handleDamage(Function function, ArrayList<Card> targetCards) {
-        if(isTheGameFinished)
+        if (isTheGameFinished)
             return;
         Pattern pattern = Pattern.compile(FunctionStrings.DEAL_DAMAGE + "(\\d+)");
         Matcher matcher = pattern.matcher(function.getFunction());
@@ -663,7 +672,7 @@ public class BattleManager {
     }
 
     private void handleBuffs(Function function, ArrayList<Card> targetCards) {
-        if(isTheGameFinished)
+        if (isTheGameFinished)
             return;
         Pattern pattern = Pattern.compile(FunctionStrings.APPLY_BUFF + "(.*)");
         Matcher matcher = pattern.matcher(function.getFunction());
@@ -871,7 +880,7 @@ public class BattleManager {
 
 
         SinglePlayerBattlePageController.getInstance().removeASpellFromHand(currentPlayer, isThisRecordedGame, spell, this);
-        SinglePlayerBattlePageController.getInstance().refreshTheStatusOfMap(this);
+       refreshTheWholeMap();
         if (!isThisRecordedGame)
             gameRecord.addAction(whoIsCurrentPlayer() + "I" + spell.id + x1 + x2);
         return true;
@@ -892,16 +901,16 @@ public class BattleManager {
             }
         }
 
-        SinglePlayerBattlePageController.getInstance().refreshTheStatusOfMap(this);
+        refreshTheWholeMap();
 
         return true;
     }
 
 
     public void move(Deployable card, int x1, int x2) {
-        if(isTheGameFinished)
+        if (isTheGameFinished)
             return;
-        SinglePlayerBattlePageController.getInstance().refreshTheStatusOfMap(this);
+        refreshTheWholeMap();
 
         if (card.cell == null) {
             System.err.println("the cell is null in the move method");
@@ -928,7 +937,7 @@ public class BattleManager {
         card.cell.setCardInCell(card);
         removeItemIfThereIsSomething(card);
         removeFlagIfThereIsSomething(card, x1, x2);
-        SinglePlayerBattlePageController.getInstance().refreshTheStatusOfMap(this);
+        refreshTheWholeMap();
 
         Output.movedSuccessfully(card);
     }
@@ -953,7 +962,7 @@ public class BattleManager {
     }
 
     public void killTheThing(Deployable enemy) {
-        if(isTheGameFinished)
+        if (isTheGameFinished)
             return;
         Player player;
         if (player1.doesPlayerHaveDeployable(enemy))
@@ -992,7 +1001,7 @@ public class BattleManager {
             dealAttackDamageAndDoOtherStuff(comboAttackers.get(i), enemy);
         }
 
-        SinglePlayerBattlePageController.getInstance().refreshTheStatusOfMap(this);
+        refreshTheWholeMap();
 
 
     }
@@ -1006,7 +1015,7 @@ public class BattleManager {
     }
 
     public void attack(Deployable card, Deployable enemy) {
-        if(isTheGameFinished)
+        if (isTheGameFinished)
             return;
         if (canAttack(card, enemy) && !card.account.getUsername().equals(enemy.account.getUsername())) {
             doTheActualAttack_noTarof(card, enemy);
@@ -1022,7 +1031,7 @@ public class BattleManager {
                 Output.enemyNotThere();
         }
 
-        SinglePlayerBattlePageController.getInstance().refreshTheStatusOfMap(this);
+        refreshTheWholeMap();
 
     }
 
@@ -1077,7 +1086,7 @@ public class BattleManager {
             }
         }
 
-        SinglePlayerBattlePageController.getInstance().refreshTheStatusOfMap(this);
+        refreshTheWholeMap();
 
     }
 
@@ -1089,7 +1098,7 @@ public class BattleManager {
             }
         }
 
-        SinglePlayerBattlePageController.getInstance().refreshTheStatusOfMap(this);
+        refreshTheWholeMap();
 
     }
 
@@ -1116,7 +1125,7 @@ public class BattleManager {
             e.printStackTrace();
         }
 
-        SinglePlayerBattlePageController.getInstance().refreshTheStatusOfMap(this);
+        refreshTheWholeMap();
 
     }
 
@@ -1130,7 +1139,7 @@ public class BattleManager {
                 compileFunction(function, card.cell.getX1Coordinate(), card.cell.getX2Coordinate());
         }
 
-        SinglePlayerBattlePageController.getInstance().refreshTheStatusOfMap(this);
+        refreshTheWholeMap();
 
     }
 
@@ -1142,7 +1151,7 @@ public class BattleManager {
 
         }
 
-        SinglePlayerBattlePageController.getInstance().refreshTheStatusOfMap(this);
+        refreshTheWholeMap();
 
     }
 
@@ -1158,7 +1167,7 @@ public class BattleManager {
             killTheThing(counterAttacker);
         }
 
-        SinglePlayerBattlePageController.getInstance().refreshTheStatusOfMap(this);
+        refreshTheWholeMap();
 
 
     }
@@ -1408,6 +1417,6 @@ public class BattleManager {
             Map.getInstance().getCell(x1, x2).setItem(item);
         }
 
-        SinglePlayerBattlePageController.getInstance().refreshTheStatusOfMap(this);
+        refreshTheWholeMap();
     }
 }
