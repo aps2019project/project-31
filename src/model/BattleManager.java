@@ -171,6 +171,8 @@ public class BattleManager {
 
     public boolean compileTargetString(ArrayList<Card> targetCards, ArrayList<Cell> targetCells, String target,
                                        int x1, int x2, Deployable attackTarget) {
+        if(isTheGameFinished)
+            return false;
         try {
             Pattern pattern = Pattern.compile(TargetStrings.MINIONS_WITH_DISTANCE + "(\\d+)");
             Matcher matcher = pattern.matcher(target);
@@ -455,6 +457,8 @@ public class BattleManager {
     }
 
     public void compileFunction(Function function, int x1, int x2, Deployable attackTarget) {
+        if(isTheGameFinished)
+            return;
         ArrayList<Cell> targetCells = new ArrayList<>();
         ArrayList<Card> targetCards = new ArrayList<>();
         if (!compileTargetString(targetCards, targetCells, function.getTarget(), x1, x2, attackTarget)) {
@@ -610,6 +614,8 @@ public class BattleManager {
     }
 
     private void handleDispel(Function function, ArrayList<Card> targetCards) {
+        if(isTheGameFinished)
+            return;
         if (function.getFunction().matches("(.*)" + FunctionStrings.DISPEL + "(.*)")) {
             for (Card card : targetCards) {
                 ArrayList<Buff> toRemove = new ArrayList<>();
@@ -642,6 +648,8 @@ public class BattleManager {
     }
 
     private void handleDamage(Function function, ArrayList<Card> targetCards) {
+        if(isTheGameFinished)
+            return;
         Pattern pattern = Pattern.compile(FunctionStrings.DEAL_DAMAGE + "(\\d+)");
         Matcher matcher = pattern.matcher(function.getFunction());
         if (matcher.matches()) {
@@ -656,6 +664,8 @@ public class BattleManager {
     }
 
     private void handleBuffs(Function function, ArrayList<Card> targetCards) {
+        if(isTheGameFinished)
+            return;
         Pattern pattern = Pattern.compile(FunctionStrings.APPLY_BUFF + "(.*)");
         Matcher matcher = pattern.matcher(function.getFunction());
         if (matcher.matches()) {
@@ -890,7 +900,8 @@ public class BattleManager {
 
 
     public void move(Deployable card, int x1, int x2) {
-
+        if(isTheGameFinished)
+            return;
         BattlePageController.getInstance().refreshTheStatusOfMap(this);
 
         if (card.cell == null) {
@@ -943,6 +954,8 @@ public class BattleManager {
     }
 
     public void killTheThing(Deployable enemy) {
+        if(isTheGameFinished)
+            return;
         Player player;
         if (player1.doesPlayerHaveDeployable(enemy))
             player = player1;
@@ -994,6 +1007,8 @@ public class BattleManager {
     }
 
     public void attack(Deployable card, Deployable enemy) {
+        if(isTheGameFinished)
+            return;
         if (canAttack(card, enemy) && !card.account.getUsername().equals(enemy.account.getUsername())) {
             doTheActualAttack_noTarof(card, enemy);
             /*enemy.getFace().attack();
