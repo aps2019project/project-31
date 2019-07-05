@@ -56,11 +56,28 @@ public class User extends Thread {
 
                 handleCardRemoval(command);
 
+                handleMainDeckSet(command);
+
                 if (handleLogout(command)) break;
 
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    private void handleMainDeckSet(String command) throws IOException {
+        Pattern pattern = Pattern.compile(ServerStrings.SET_AS_MAIN_REQUEST);
+        Matcher matcher = pattern.matcher(command);
+        if (matcher.matches()){
+            for (Deck deck: account.getDecks()){
+                if (deck.getDeckName().matches(matcher.group(1))){
+                    account.setMainDeck(deck);
+                    dataOutputStream.writeUTF(ServerStrings.MAIN_DECK_SET);
+                    return;
+                }
+            }
+            safetyOutput("Nay!");
         }
     }
 

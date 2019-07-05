@@ -237,4 +237,14 @@ public class Client extends Thread {
         }
         return false;
     }
+
+    public boolean setAsMainDeck(Deck editingDeck) {
+        try {
+            os.writeUTF("set " + editingDeck.getDeckName() + " as main");
+            return is.readUTF().matches(ServerStrings.MAIN_DECK_SET);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }
