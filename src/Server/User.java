@@ -5,14 +5,13 @@ import com.gilecode.yagson.YaGsonBuilder;
 import constants.GameMode;
 import controller.BattleMenu;
 import controller.Shop;
+import javafx.css.Match;
 import model.Account;
 import model.BattleManager;
 import model.Card;
 import model.Deck;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -36,6 +35,7 @@ public class User extends Thread {
         try {
             while (true) {
                 String command = dataInputStream.readUTF();
+                System.out.println("user received:" + command);
                 shopRequestStockHandler(command);
 
                 handleCardBuyingRequest(command);
@@ -46,12 +46,92 @@ public class User extends Thread {
 
                 handleLeaderBoardRequest(command);
 
+                handleNewDeck(command);
+
+                handleCardAddition(command);
+
                 handleCancelRequest(command);
+
+                handleDeckDeletion(command);
+
+                handleCardRemoval(command);
+
                 if (handleLogout(command)) break;
 
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    private void handleCardRemoval(String command) throws IOException {
+        Pattern pattern = Pattern.compile(ServerStrings.DELETE_CARD_REQUEST);
+        Matcher matcher = pattern.matcher(command);
+        if (matcher.matches()){
+            int cardID = Integer.parseInt(matcher.group(1));
+            String deckName = matcher.group(2);
+            for (Deck deck: account.getDecks()){
+                System.out.println(deck.getDeckName());
+                if (deck.getDeckName().equals(deckName)){
+                    deck.deleteCard(Shop.findCardById(cardID));
+                    dataOutputStream.writeUTF(ServerStrings.CARD_DELETED);
+                    return;
+                }
+            }
+            safetyOutput("not grrr");
+        }
+
+    }
+
+    private void handleDeckDeletion(String command) throws IOException {
+        Pattern pattern = Pattern.compile(ServerStrings.DELETE_DECK);
+        Matcher matcher = pattern.matcher(command);
+        if (matcher.matches()){
+            account.deleteDeck(matcher.group(1));
+            dataOutputStream.writeUTF(ServerStrings.DECK_DELETED);
+        }
+    }
+
+    private void handleCardAddition(String command) {
+        Pattern pattern = Pattern.compile(ServerStrings.ADD_CARD_TO_DECK);
+        Matcher matcher = pattern.matcher(command);
+        if (matcher.matches()) {
+            for (Deck deck : account.getDecks()) {
+                if (deck.getDeckName().equals(matcher.group(2))) {
+                    deck.addCard(Shop.findCardById(Integer.parseInt(matcher.group(1))));
+                    try {
+                        dataOutputStream.writeUTF(ServerStrings.CARD_ADDED);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    return;
+                }
+            }
+            safetyOutput("Nooope");
+        }
+
+    }
+
+    private void safetyOutput(String nooope) {
+        try {
+            dataOutputStream.writeUTF(nooope);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void handleNewDeck(String command) {
+        Pattern pattern = Pattern.compile(ServerStrings.NEW_DECK);
+        Matcher matcher = pattern.matcher(command);
+        if (matcher.matches()) {
+            this.account.getDecks().add(new Deck(matcher.group(1)));
+            try {
+                dataOutputStream.writeUTF(ServerStrings.NEW_DECK_SUCCESS);
+                return;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            safetyOutput("Nooooope");
         }
     }
 
@@ -74,12 +154,15 @@ public class User extends Thread {
         Pattern pattern = Pattern.compile(ServerStrings.LOGOUT);
         Matcher matcher = pattern.matcher(command);
         if (matcher.matches()) {
-            this.account = null;
+            System.out.println("logging out!");
             this.authToken = -1;
             users.remove(this);
             YaGson yaGson = new YaGsonBuilder().create();
             Server.saveAllAccounts();
+            System.out.println("saved all accounts");
             Server.makeWaitForLoginThread(yaGson, socket);
+            System.out.println("User " + account.getUsername() + "logged out!");
+            this.account = null;
             return true;
         }
         return false;
@@ -133,6 +216,7 @@ public class User extends Thread {
             this.account.addDaric(card.getPrice());
             this.account.getCollection().remove(card);
             Shop.getStock().put(card.getId(), Shop.getStock().get(card.getId()) + 1);
+            updateStockFile();
             dataOutputStream.writeUTF(ServerStrings.SOLD);
         }
 
@@ -152,8 +236,22 @@ public class User extends Thread {
             this.account.decreaseDaric(card.getPrice());
             this.account.getCollection().add(card);
             Shop.getStock().put(card.getId(), Shop.getStock().get(card.getId()) - 1);
+            updateStockFile();
             dataOutputStream.writeUTF(ServerStrings.BOUGHT);
         }
+    }
+
+    private synchronized static void updateStockFile() {
+        try {
+            YaGson yaGson = new YaGsonBuilder().create();
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(System.getProperty("user.dir") +
+                    "/Sources/ServerResources/serverData.txt"));
+            bufferedWriter.write(yaGson.toJson(Shop.getStock()));
+            bufferedWriter.flush();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+
     }
 
 
@@ -199,9 +297,10 @@ public class User extends Thread {
                     break;
             }
         } else {
-            System.out.println("ridi tu ferestadan dastur be user");
+            System.out.println("sina nooni e");
         }
     }
+
 
     private void makeBattle(GameMode gameMode, User user1, User user2) throws IOException {
         BattleMenu.setBattleManagerForMultiPlayer(user1.account, user2.account, findNumberOfFlags(gameMode),

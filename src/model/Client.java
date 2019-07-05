@@ -1,5 +1,6 @@
 package model;
 
+import Server.Server;
 import Server.ServerStrings;
 import com.gilecode.yagson.YaGson;
 import com.gilecode.yagson.YaGsonBuilder;
@@ -115,9 +116,18 @@ public class Client extends Thread {
                         BattleManager battle = (BattleManager) receiveObject(this.is, BattleManager.class);
                         System.out.println("receeeeeeeeeeeeived successfully");
                         BattleMenu.setBattleManager(battle);
-                        BattlePageController.getInstance().setAsScene();
+                        if(battle==null)
+                            System.out.println("wtf isssssssssssssssssssssssssssssssssssssssssssssss");
+                        WaitingPageController.getInstance().johnyJohnyYesPapaGoingToBattle.set(true);
+                        synchronized (WaitingPageController.getInstance()) {
+                            WaitingPageController.getInstance().notifyAll();
+                        }
                     } else if(serverReply.equals(ServerStrings.CANCELSUCCESSFULLY)) {
+                        WaitingPageController.getInstance().johnyJohnyYesPapaGoingToBattle.set(true);
                         System.out.println("we canceled the game honey");
+                        synchronized (WaitingPageController.getInstance()){
+                            WaitingPageController.getInstance().notifyAll();
+                        }
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -155,6 +165,18 @@ public class Client extends Thread {
         return response.matches(ServerStrings.SOLD);
     }
 
+    public boolean requestCardAddition(int cardID, String deckname){
+        try {
+            os.writeUTF("add " + cardID + " to " + deckname);
+            String response = is.readUTF();
+            return response.matches(ServerStrings.CARD_ADDED);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
+
+    }
+
     public VBox requestLeaderBoard() throws IOException {
         os.writeUTF(ServerStrings.GET_LEADERBOARD);
         String response = is.readUTF();
@@ -187,9 +209,41 @@ public class Client extends Thread {
         authToken = -1;
     }
 
+    public boolean requestRemoveDeck(String deckName){
+        try {
+            os.writeUTF("remove deck:" + deckName);
+            return is.readUTF().matches(ServerStrings.DECK_DELETED);
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean requestNewDeck(String deckName){
+        try {
+            os.writeUTF("new deck:" + deckName);
+            return is.readUTF().matches(ServerStrings.NEW_DECK_SUCCESS);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     public boolean requestSignUp(String username, String password) throws IOException {
         os.writeUTF("signup username:" + username + " password:" + password);
         String response = is.readUTF();
         return response.matches(ServerStrings.SIGNUP_SUCCESSFUL);
+    }
+
+    public boolean requestCardDeletion(Card card) {
+        try {
+            os.writeUTF("remove card:" + card.getId() + " from deck:" + Account.getEditingDeck().getDeckName());
+            String res = is.readUTF();
+            System.out.println(res);
+            return res.matches(ServerStrings.CARD_DELETED);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }

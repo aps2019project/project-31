@@ -146,7 +146,11 @@ public class Cell {
     public Double[] calculateCenter() {
         Double[] coordinates = new Double[2];
         double x = 0, y = 0;
-
+        if (polygon == null) {
+            System.out.println("the null polygon : " + x1Coordinate + x2Coordinate);
+            if(Map.getInstance().getCell(3,1).getPolygon()==null)
+                System.out.println(":??????????????????????????????");
+        }
         x += polygon.getPoints().get(0) + polygon.getPoints().get(2);
         y += polygon.getPoints().get(1);
         coordinates[0] = (x / 2) + polygon.getLayoutX() - 40;
