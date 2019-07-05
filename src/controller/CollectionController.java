@@ -214,6 +214,11 @@ public class CollectionController implements Initializable {
                 displayMessage("select a deck");
                 return;
             }
+            if (!Client.getClient().requestRemoveDeck(Account.getEditingDeck().getDeckName())){
+                displayMessage("Error! Deck not removed!");
+                return;
+            }
+            displayMessage("Deck removed!");
             for (Label label : decksListView.getItems()) {
                 if (label.getText().equalsIgnoreCase(Account.getEditingDeck().getDeckName())) {
                     decksListView.getItems().remove(label);
@@ -236,6 +241,7 @@ public class CollectionController implements Initializable {
                 displayMessage("select a card first");
                 return;
             }
+
             Account.getEditingDeck().deleteDisplayableCards(listView.getSelectionModel().getSelectedItems());
             updateEditingDeck();
         });

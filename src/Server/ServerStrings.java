@@ -24,6 +24,8 @@ public class ServerStrings {
     public static final String CARD_ADDED = "card added successfuly";
     public static final String CANCELPLAYREQUEST = "(\\d+) request is canceled";
     public static final String CANCELSUCCESSFULLY = "canceled successfully";
-
-
+    public static final String DECK_DELETED = "deck deleted!";
+    public static final String DELETE_DECK = "remove deck:(.*)";
+    public static final String CARD_DELETED = "card removed from deck!";
+    public static final String DELETE_CARD_REQUEST = "remove card:(\\d+) from deck:(.*)";
 }

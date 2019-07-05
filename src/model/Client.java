@@ -199,6 +199,16 @@ public class Client extends Thread {
         authToken = -1;
     }
 
+    public boolean requestRemoveDeck(String deckName){
+        try {
+            os.writeUTF("remove deck:" + deckName);
+            return is.readUTF().matches(ServerStrings.DECK_DELETED);
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     public boolean requestNewDeck(String deckName){
         try {
             os.writeUTF("new deck:" + deckName);
@@ -213,5 +223,15 @@ public class Client extends Thread {
         os.writeUTF("signup username:" + username + " password:" + password);
         String response = is.readUTF();
         return response.matches(ServerStrings.SIGNUP_SUCCESSFUL);
+    }
+
+    public boolean requestCardDeletion(Card card) {
+        try {
+            os.writeUTF("remove card:" + card.getId() + " from deck:" + Account.getEditingDeck());
+            return is.readUTF().matches(ServerStrings.CARD_DELETED);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }

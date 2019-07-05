@@ -5,6 +5,7 @@ import com.gilecode.yagson.YaGsonBuilder;
 import constants.GameMode;
 import controller.BattleMenu;
 import controller.Shop;
+import javafx.css.Match;
 import model.Account;
 import model.BattleManager;
 import model.Card;
@@ -50,11 +51,43 @@ public class User extends Thread {
                 handleCardAddition(command);
 
                 handleCancelRequest(command);
+
+                handleDeckDeletion(command);
+
+                handleCardRemoval(command);
+
                 if (handleLogout(command)) break;
 
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    private void handleCardRemoval(String command) throws IOException {
+        Pattern pattern = Pattern.compile(ServerStrings.DELETE_CARD_REQUEST);
+        Matcher matcher = pattern.matcher(command);
+        if (matcher.matches()){
+            int cardID = Integer.parseInt(matcher.group(1));
+            String deckName = matcher.group(2);
+            for (Deck deck: account.getDecks()){
+                if (deck.getDeckName().equals(deckName)){
+                    deck.deleteCard(Shop.findCardById(cardID));
+                    dataOutputStream.writeUTF(ServerStrings.CARD_DELETED);
+                    return;
+                }
+            }
+            safetyOutput("not grrr");
+        }
+
+    }
+
+    private void handleDeckDeletion(String command) throws IOException {
+        Pattern pattern = Pattern.compile(ServerStrings.DELETE_DECK);
+        Matcher matcher = pattern.matcher(command);
+        if (matcher.matches()){
+            account.deleteDeck(matcher.group(1));
+            dataOutputStream.writeUTF(ServerStrings.DECK_DELETED);
         }
     }
 
@@ -263,9 +296,10 @@ public class User extends Thread {
                     break;
             }
         } else {
-            System.out.println("ridi tu ferestadan dastur be user");
+            System.out.println("sina nooni e");
         }
     }
+
 
     private void makeBattle(GameMode gameMode, User user1, User user2) throws IOException {
         BattleMenu.setBattleManagerForMultiPlayer(user1.account, user2.account, findNumberOfFlags(gameMode),
