@@ -29,7 +29,7 @@ public class User extends Thread {
     private static User waitingUserMode2;
     private static User waitingUserMode3;
     private BattleManager battle;
-
+    private BattleServer battleServer;
     @Override
     public void run() {
         try {
@@ -69,6 +69,9 @@ public class User extends Thread {
 
     private void handleEndTurnRequest(String command) {
         if (command.equals(ServerStrings.SENDENDTURNREQUEST)) {
+            battle.serverEndTurn();
+            // say some stuff to other player
+            // say where items are added
 
         }
     }
@@ -330,6 +333,7 @@ public class User extends Thread {
         BattleMenu.setBattleManagerForMultiPlayer(user1.account, user2.account, findNumberOfFlags(gameMode),
                 findNumberOfHavingFlags(gameMode), gameMode);
         battle = BattleMenu.getBattleManager();
+        battleServer = new BattleServer(battle,user1,user2);
         user1.dataOutputStream.writeUTF(ServerStrings.MULTIPLAYERSUCCESS);
         Server.sendObject(BattleMenu.getBattleManager(), user1.dataOutputStream);
         user2.dataOutputStream.writeUTF(ServerStrings.MULTIPLAYERSUCCESS);

@@ -471,13 +471,6 @@ public class MultiPlayerBattlePageController implements Initializable {
             battle.setCurrentPlayer(battle.getOtherPlayer());
         }
         BattleMenu.getBattleManager().doAllAtTheBeginningOfTurnThings(true);
-        if (battle.getCurrentPlayer().isAi()) {
-            System.err.println("ai is playing");
-            ((Ai) battle.getCurrentPlayer()).play();
-            battle.setCurrentPlayer(battle.getOtherPlayer());
-            BattleMenu.getBattleManager().doAllThingsInEndingOfTheTurns();
-            BattleMenu.getBattleManager().doAllAtTheBeginningOfTurnThings(true);
-        }
         updateManaViewers(battle);
     }
 

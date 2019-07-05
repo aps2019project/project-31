@@ -1458,7 +1458,7 @@ public class BattleManager {
     public void doAllThingsInEndingOfTheTurns() {
         makeIsMovedAndIsAttackedFalse();
         applyItemFunctions(getPlayer1().getHero(), FunctionType.Passive);
-        getCurrentPlayer().placeNextCardToHand();//this should just be called just after inserting cards from hand to battle!!
+        getCurrentPlayer().placeNextCardToHand();
         getCurrentPlayer().endOfTurnBuffsAndFunctions();
         getOtherPlayer().endOfTurnBuffsAndFunctions();
         checkTheEndSituation();
@@ -1522,7 +1522,6 @@ public class BattleManager {
     }
 
     public void serverEndTurn() {
-        currentPlayer.placeNextCardToHand();
         doAllThingsInEndingOfTheTurns();
         setCurrentPlayer(getOtherPlayer());
         doAllAtTheBeginningOfTurnThings(isMultiPlayer);
