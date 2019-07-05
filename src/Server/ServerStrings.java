@@ -18,4 +18,8 @@ public class ServerStrings {
     public static final String SIGNUP_SUCCESSFUL = "signup successful!";
     public static final String REQUEST_SIGNUP = "signup username:(.*) password:(.*)";
     public static final String ALREADY_TAKEN = "username taken";
+    public static final String NEW_DECK = "new deck:(.*)";
+    public static final String NEW_DECK_SUCCESS = "new deck created!";
+    public static final String ADD_CARD_TO_DECK = "add (\\d+) to (.*)";
+    public static final String CARD_ADDED = "card added successfuly";
 }

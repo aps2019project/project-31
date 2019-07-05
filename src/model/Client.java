@@ -142,6 +142,18 @@ public class Client extends Thread {
         return response.matches(ServerStrings.SOLD);
     }
 
+    public boolean requestCardAddition(int cardID, String deckname){
+        try {
+            os.writeUTF("add " + cardID + " to " + deckname);
+            String response = is.readUTF();
+            return response.matches(ServerStrings.CARD_ADDED);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
+
+    }
+
     public VBox requestLeaderBoard() throws IOException {
         os.writeUTF(ServerStrings.GET_LEADERBOARD);
         String response = is.readUTF();
@@ -172,6 +184,16 @@ public class Client extends Thread {
     public void logout() throws IOException {
         os.writeUTF(ServerStrings.LOGOUT);
         authToken = -1;
+    }
+
+    public boolean requestNewDeck(String deckName){
+        try {
+            os.writeUTF("new deck:" + deckName);
+            return is.readUTF().matches(ServerStrings.NEW_DECK_SUCCESS);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     public boolean requestSignUp(String username, String password) throws IOException {

@@ -10,6 +10,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import model.Account;
+import model.Client;
 import model.Initializer;
 
 import java.awt.*;
@@ -64,6 +65,11 @@ public class MainMenuController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         logoutButton.setOnAction(event -> {
+            try {
+                Client.getClient().logout();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             LoginPageController.getInstance().setAsScene();
             Account.setMainAccount(null);
         });

@@ -132,9 +132,15 @@ public class CollectionController implements Initializable {
                     return;
                 }
             }
-            Account.getMainAccount().addDeck(new Deck(newDeckName.getText()));
-            decksListView.getItems().add(new Label(newDeckName.getText()));
-            newDeckName.clear();
+            if (Client.getClient().requestNewDeck(newDeckName.getText())) {
+                Account.getMainAccount().addDeck(new Deck(newDeckName.getText()));
+                decksListView.getItems().add(new Label(newDeckName.getText()));
+                newDeckName.clear();
+                displayMessage("Deck created!");
+            } else {
+                displayMessage("Error! Deck not Created!");
+            }
+
         });
         selectDeckButton.setOnAction(event -> {
             if (decksListView.getSelectionModel().getSelectedItem() == null) {
@@ -166,15 +172,15 @@ public class CollectionController implements Initializable {
                 ShopController.getInstance().selectTab(deckTabPane, displayableCard.getCard());
                 if (displayableCard.getCard().getType() == CardType.hero) {
                     if (Account.getEditingDeck().getHero() == null) {
-                        Account.getEditingDeck().addDisplayableCard(displayableCard);
+                        serverCardAdd(displayableCard);
                     } else {
                         displayMessage("delete current hero");
                         return;
                     }
                 } else if (displayableCard.getCard().getType() == CardType.item) {
-                    if (Account.getEditingDeck().getItem() == null)
-                        Account.getEditingDeck().addDisplayableCard(displayableCard);
-                    else {
+                    if (Account.getEditingDeck().getItem() == null) {
+                        serverCardAdd(displayableCard);
+                    } else {
                         displayMessage("delete current item");
                         return;
                     }
@@ -194,7 +200,7 @@ public class CollectionController implements Initializable {
                         return;
                     }
                     if (Account.getEditingDeck().getCards().size() < 18)
-                        Account.getEditingDeck().addDisplayableCard(displayableCard);
+                        serverCardAdd(displayableCard);
                     else {
                         displayMessage("delete some cards first");
                         return;
@@ -247,6 +253,16 @@ public class CollectionController implements Initializable {
         });
         mainMenuButton.setOnAction(event -> MainMenuController.getInstance().setAsScene());
         shopButton.setOnAction(event -> ShopController.getInstance().setAsScene());
+    }
+
+    public void serverCardAdd(DisplayableCard displayableCard) {
+        boolean wasSuccess = Client.getClient().requestCardAddition(displayableCard.getCard().getId()
+                , Account.getEditingDeck().getDeckName());
+        if (wasSuccess) {
+            Account.getEditingDeck().addDisplayableCard(displayableCard);
+        } else {
+            displayMessage("Error! Card not added!");
+        }
     }
 
     public void displayMessage(String massage) {
