@@ -375,7 +375,13 @@ public class Player {
     }
 
     public void duplicateTheDeck() {
+        if (account.getMainDeck() == null)
+            System.out.println("as");
+        if (account.getMainDeck().getCards() == null)
+            System.out.println("qwd");
         for (Card card : account.getMainDeck().getCards()) {
+            if (card == null)
+                System.out.println("sd");
             currentDeck.getCards().add(card);
         }
     }

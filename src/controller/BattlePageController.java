@@ -200,12 +200,12 @@ public class BattlePageController implements Initializable {
     }
 
     public void initPlayers() {
-        if(BattleMenu.getBattleManager()==null){
+        if (BattleMenu.getBattleManager() == null) {
             System.out.println("battle manager in init is null");
         }
-        if(BattleMenu.getBattleManager().getPlayer1()==null)
+        if (BattleMenu.getBattleManager().getPlayer1() == null)
             System.out.println("battle manager player 1 is null");
-        if(BattleMenu.getBattleManager().getPlayer1().getAccount()==null)
+        if (BattleMenu.getBattleManager().getPlayer1().getAccount() == null)
             System.out.println("battle manager player 1 . get account is null");
         if (BattleMenu.getBattleManager().getPlayer1().getAccount().getUsername().equals(Account.getMainAccount().getUsername())) {
             me = BattleMenu.getBattleManager().getPlayer1();
@@ -315,9 +315,17 @@ public class BattlePageController implements Initializable {
         makeColumnHands();
         setPolygonsInMap();
         infoButton.setOnAction(actionEvent -> {
-            infoButton();
+            if (!isMyTurn()) {
+                displayMessage("this is not your turn =");
+            } else
+                infoButton();
         });
-        selectItem.setOnAction(event -> selectItem());
+        selectItem.setOnAction(event -> {
+            if (!isMyTurn()) {
+                displayMessage("this is not your turn =");
+            } else
+                selectItem();
+        });
         initHeroesSpecialPowers();
 
         setOnActionForEveryCell();
@@ -331,14 +339,21 @@ public class BattlePageController implements Initializable {
         atStartThings(battle);
         BattleMenu.doAllAtTheBeginningOfTurnThings();
         replace.setOnAction(event -> {
-            if (isMyTurn() && battle.getCurrentPlayer().getSelectedCard() != null) {
-                BattlePageController.getInstance().replaceCardInHand(battle.getCurrentPlayer().getSelectedCard().getId(), battle);
+            if (!isMyTurn()) {
+                displayMessage("this is not your turn =");
+            } else {
+                if (isMyTurn() && battle.getCurrentPlayer().getSelectedCard() != null) {
+                    BattlePageController.getInstance().replaceCardInHand(battle.getCurrentPlayer().getSelectedCard().getId(), battle);
 
+                }
             }
         });
         endTurn.setOnAction(event -> {
             try {
-                endTurn(battle);
+                if (!isMyTurn()) {
+                    displayMessage("this is not your turn =");
+                } else
+                    endTurn(battle);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -394,8 +409,12 @@ public class BattlePageController implements Initializable {
             BattlePageController.getInstance().mainPane.getChildren().add(face);
         }
         face.setOnMouseClicked(event -> {
-            BattlePageController.getInstance().setOnMouseDeployable(theMinion, battle);
-            face.updateStats();
+            if (!isMyTurn()) {
+                displayMessage("this is not your turn =");
+            } else {
+                BattlePageController.getInstance().setOnMouseDeployable(theMinion, battle);
+                face.updateStats();
+            }
         });
     }
 
@@ -418,7 +437,7 @@ public class BattlePageController implements Initializable {
         initPlayers();
         initHeroesSpecialPowers();
         atStartThings(battle);
-        Thread showGame = new Thread(()->{
+        Thread showGame = new Thread(() -> {
 
         });
         showGame.start();
@@ -463,9 +482,13 @@ public class BattlePageController implements Initializable {
         opponentSpecialSpell.setScaleY(0.85);
         opponentSpecialSpell.setScaleX(0.85);
         specialSpell.setOnMouseClicked(mouseEvent -> {
-            me.selectACard(me.getHero().getHeroSpell().getId());
-            System.out.println(opponent.getHero().getId());
-            System.out.println(me.getHero().getHeroSpell().getId());
+            if (!isMyTurn()) {
+                displayMessage("this is not your turn =");
+            } else {
+                me.selectACard(me.getHero().getHeroSpell().getId());
+                System.out.println(opponent.getHero().getId());
+                System.out.println(me.getHero().getHeroSpell().getId());
+            }
         });
     }
 
@@ -481,13 +504,17 @@ public class BattlePageController implements Initializable {
         System.out.println("Showing " + card.getName() + " in column" + i);
         columnHands[i].getStackPane().getChildren().add(face);
         face.setOnMouseClicked(event -> {
-            System.out.println("clicked! on a card");
-            if (battle.getCurrentPlayer() == me) {
-                System.out.println(card.getId());
-                me.selectACard(card.getId());
+            if (!isMyTurn()) {
+                displayMessage("this is not your turn =");
             } else {
-                displayMessage("not my turn");
-                System.out.println("not my turn");
+                System.out.println("clicked! on a card");
+                if (battle.getCurrentPlayer() == me) {
+                    System.out.println(card.getId());
+                    me.selectACard(card.getId());
+                } else {
+                    displayMessage("not my turn");
+                    System.out.println("not my turn");
+                }
             }
         });
     }
@@ -519,13 +546,17 @@ public class BattlePageController implements Initializable {
         //
         face.setTranslateY(-10);
         face.setOnMouseClicked(event -> {
-            System.out.println("clicked! on " + deployable.getName());
-            if (battle.getCurrentPlayer() == me) {
-                System.out.println(face.getDeployable().getId());
-                me.selectACard(face.getDeployable().getId());
+            if (!isMyTurn()) {
+                displayMessage("this is not your turn =");
             } else {
-                displayMessage("not my turn");
-                System.out.println("not my turn");
+                System.out.println("clicked! on " + deployable.getName());
+                if (battle.getCurrentPlayer() == me) {
+                    System.out.println(face.getDeployable().getId());
+                    me.selectACard(face.getDeployable().getId());
+                } else {
+                    displayMessage("not my turn");
+                    System.out.println("not my turn");
+                }
             }
         });
         //
@@ -549,6 +580,8 @@ public class BattlePageController implements Initializable {
     public void initHeroes(BattleManager battleManager) {
         Hero hero1 = battleManager.getPlayer1().getHero();
         Hero hero2 = battleManager.getPlayer2().getHero();
+        hero1.setCell(Map.getInstance().getCell(3, 1));
+        hero2.setCell(Map.getInstance().getCell(3, 9));
         hero1.getCell().setCardInCell(hero1);
         hero2.getCell().setCardInCell(hero2);
         battleManager.getPlayer1().addCardToBattlefield(hero1);
@@ -633,7 +666,7 @@ public class BattlePageController implements Initializable {
     }
 
     public void refreshTheStatusOfMap(BattleManager battleManager) {
-        if(battleManager.isTheGameFinished())
+        if (battleManager.isTheGameFinished())
             return;
         refreshPartly();
         refreshFlagsSituation(battleManager);
@@ -816,12 +849,7 @@ public class BattlePageController implements Initializable {
         Map.getInstance().getMap()[2][7].setPolygon(place27);
         Map.getInstance().getMap()[2][8].setPolygon(place28);
         Map.getInstance().getMap()[2][9].setPolygon(place29);
-        System.out.println("mother fucker what the fuck are you saying ?");
-        if(place31==null)
-            System.out.println("polygon 31 is null");
         Map.getInstance().getMap()[3][1].setPolygon(place31);
-        if(Map.getInstance().getCell(3,1).getPolygon()==null)
-            System.out.println("kill me now, nowwwwwwwwww");
         Map.getInstance().getMap()[3][2].setPolygon(place32);
         Map.getInstance().getMap()[3][3].setPolygon(place33);
         Map.getInstance().getMap()[3][4].setPolygon(place34);
@@ -860,26 +888,30 @@ public class BattlePageController implements Initializable {
                 polyline.setFill(Color.rgb(0, 0, 0, 0.15));
             });
             polyline.setOnMouseClicked(event -> {
-                if (me.getSelectedCard() == null) {
-                    displayMessage("select a card first");
-                    System.err.println("no selected card");
-                    return;
-                }
-                if (cell.getCardInCell() == null && (me.getSelectedCard().getType() == CardType.item)) { // spell can't insert on the ground ?
-                    BattleMenu.insert(me.getSelectedCard(), cell.getX1Coordinate(), cell.getX2Coordinate());
-                } else if (cell.getCardInCell() != null) {
-                    displayMessage("destination is not empty");
-                    System.out.println("card in this cell is : " + cell.getCardInCell().infoToString());
-                    return;
-                }
-                if (me.isSelectedCardDeployed()) {
-                    BattleMenu.getBattleManager().move((Deployable) me.getSelectedCard(),
-                            cell.getX1Coordinate(), cell.getX2Coordinate());
-                    System.out.println("we called move method dude!");
-                } else if (!me.isSelectedCardDeployed()) {
-                    BattleMenu.insert(me.getSelectedCard(), cell.getX1Coordinate(), cell.getX2Coordinate());
-                } else if (me.getSelectedCard() != null && me.getSelectedCard().getType() == CardType.spell) {
-                    BattleMenu.insert(me.getSelectedCard(), cell.getX1Coordinate(), cell.getX2Coordinate());
+                if (!isMyTurn()) {
+                    displayMessage("this is not your turn =");
+                } else {
+                    if (me.getSelectedCard() == null) {
+                        displayMessage("select a card first");
+                        System.err.println("no selected card");
+                        return;
+                    }
+                    if (cell.getCardInCell() == null && (me.getSelectedCard().getType() == CardType.item)) { // spell can't insert on the ground ?
+                        BattleMenu.insert(me.getSelectedCard(), cell.getX1Coordinate(), cell.getX2Coordinate());
+                    } else if (cell.getCardInCell() != null) {
+                        displayMessage("destination is not empty");
+                        System.out.println("card in this cell is : " + cell.getCardInCell().infoToString());
+                        return;
+                    }
+                    if (me.isSelectedCardDeployed()) {
+                        BattleMenu.getBattleManager().move((Deployable) me.getSelectedCard(),
+                                cell.getX1Coordinate(), cell.getX2Coordinate());
+                        System.out.println("we called move method dude!");
+                    } else if (!me.isSelectedCardDeployed()) {
+                        BattleMenu.insert(me.getSelectedCard(), cell.getX1Coordinate(), cell.getX2Coordinate());
+                    } else if (me.getSelectedCard() != null && me.getSelectedCard().getType() == CardType.spell) {
+                        BattleMenu.insert(me.getSelectedCard(), cell.getX1Coordinate(), cell.getX2Coordinate());
+                    }
                 }
             });
         } catch (Exception e) {
