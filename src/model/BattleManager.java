@@ -105,7 +105,8 @@ public class BattleManager {
     }
 
     public boolean playMinion(Minion minion, int x1, int x2) {
-        Minion theMinion = minion.duplicateDeployed(Map.getInstance().getCell(x1, x2), currentPlayer.account, this);
+        Minion theMinion = minion.duplicateDeployed(Map.getInstance().getCell(x1, x2),
+                currentPlayer.account, this);
         Map.getInstance().putCardInCell(theMinion, x1, x2);
 
         Output.insertionSuccessful(theMinion, x1, x2);

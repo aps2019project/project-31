@@ -92,8 +92,13 @@ public class Deck {
     }
 
     public void deleteDisplayableCards(ObservableList<DisplayableCard> displayableCards) {
-        for (DisplayableCard displayableCard : displayableCards)
+        for (DisplayableCard displayableCard : displayableCards) {
+            if (!Client.getClient().requestCardDeletion(displayableCard.getCard())){
+                System.out.println("Error! card " + displayableCard.getCard().getName() + " not removed!");
+                continue;
+            }
             deleteDisplayableCard(displayableCard);
+        }
     }
 
     public void deleteCardByName(String cardName) {
