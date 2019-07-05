@@ -48,6 +48,7 @@ public class PlayMenuController implements Initializable {
         backButton.setOnAction(event -> MainMenuController.getInstance().setAsScene());
         storyButton.setOnMouseClicked(event ->StoryMenuController.getInstance().setAsScene());
         customButton.setOnMouseClicked(event -> CustomGameController.getInstance().setAsScene());
+        multiplayerButton.setOnMouseClicked(event -> WaitingPageController.getInstance().setAsScene());
     }
 
     public PlayMenuController() {

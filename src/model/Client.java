@@ -3,6 +3,9 @@ package model;
 import Server.ServerStrings;
 import com.gilecode.yagson.YaGson;
 import com.gilecode.yagson.YaGsonBuilder;
+import constants.GameMode;
+import controller.BattlePageController;
+import controller.LoginPageController;
 import controller.LoginPageController;
 import controller.Shop;
 import javafx.geometry.Pos;
@@ -80,9 +83,30 @@ public class Client extends Thread {
         } else return null;
     }
 
-    public void sendPlayRequest() {
+    public void sendPlayRequest(GameMode gameMode) {
         try {
-            os.writeUTF("play request from user:" + Account.getMainAccount().getUsername());
+            switch (gameMode){
+                case DeathMatch:
+                    os.writeUTF("DeathMatch request from user:" + Account.getMainAccount().getUsername());
+                    break;
+                case Flag:
+                    os.writeUTF("Flag request from user:" + Account.getMainAccount().getUsername());
+                    break;
+                case Domination:
+                    os.writeUTF("Domination request from user:" + Account.getMainAccount().getUsername());
+                    break;
+            }
+            String serverReply = is.readUTF();
+            if(serverReply.equals(ServerStrings.MULTIPLAYERSUCCESS)){
+                BattlePageController.getInstance().setAsScene();
+            }
+            else {
+                // some pop up happens !
+
+
+
+            }
+
 
 
         } catch (IOException e) {

@@ -166,26 +166,7 @@ public class LoginPageController implements Initializable {
 
     public void login() throws IOException {
         String username = usernameTF.getText();
-
-        /*Account account = Account.findAccount(username);
-        if (account == null) {
-            displayMessage("Incorrect Username!", 17, 2, infoVBox);
-            return;
-        }*/
         String password = passwordField.getText();
-       /* if (account.getPassword().equals(password)) {
-            Account.setMainAccount(account);
-            displayMessage("Login Successful! Entering game...", 17, 2, infoVBox);
-            //handle entering the next scene
-            MainMenuController.getInstance().setAsScene();
-            usernameTF.clear();
-            passwordField.clear();
-            System.err.println(Account.getMainAccount().getMainDeck().getDeckName());
-            return;
-        } else {
-            displayMessage("Incorrect Password!", 17, 2, infoVBox);
-            return;
-        }*/
         Account account = Client.getClient().attemptLogin(username, password);
         if (account == null) {
             displayMessage("Incorrect Username!", 17, 2, infoVBox);

@@ -1,13 +1,17 @@
 package Server;
 
+import constants.GameMode;
+import controller.BattleMenu;
 import controller.Shop;
 import model.Account;
+import model.BattleManager;
 import model.Card;
 import model.Deck;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -20,6 +24,10 @@ public class User extends Thread {
     private Account account;
     private DataInputStream dataInputStream;
     private DataOutputStream dataOutputStream;
+    private static User waitingUserMode1;
+    private static User waitingUserMode2;
+    private static User waitingUserMode3;
+
 
     @Override
     public void run() {
@@ -31,6 +39,7 @@ public class User extends Thread {
                 handleCardBuyingRequest(command);
 
                 handleCardSellingRequest(command);
+                multiPlayerRequestHandler(command);
 
                 handleLeaderBoardRequest(command);
 
@@ -110,6 +119,7 @@ public class User extends Thread {
         }
     }
 
+
     private void shopRequestStockHandler(String command) throws IOException {
 
         Pattern pattern = Pattern.compile(ServerStrings.REQUEST_STOCK);
@@ -127,6 +137,47 @@ public class User extends Thread {
         }
     }
 
+    private void multiPlayerRequestHandler(String command) throws IOException {
+        Pattern pattern = Pattern.compile(ServerStrings.MULTIPLAYERREQUEST);
+        Matcher matcher = pattern.matcher(command);
+        if (matcher.matches()) {
+            GameMode gameMode = findGameMode(matcher.group(1));
+            switch (gameMode) {
+                case Domination:
+                    if (waitingUserMode3 == null) {
+                        waitingUserMode3 = this;
+                    }
+                    else makeBattle(GameMode.Domination,waitingUserMode3,this);
+                    break;
+                case DeathMatch:
+                    if (waitingUserMode1 == null) {
+                        waitingUserMode1 = this;
+                    }
+                    else makeBattle(GameMode.DeathMatch,waitingUserMode1,this);
+
+                    break;
+                case Flag:
+                    if (waitingUserMode2 == null) {
+                        waitingUserMode2 = this;
+                    }
+                    else makeBattle(GameMode.Flag,waitingUserMode2,this);
+                    break;
+            }
+        }else{
+            System.out.println("ridi tu ferestadan dastur be user");
+            dataOutputStream.writeUTF(ServerStrings.MULTIPLAYERFAILED);
+        }
+    }
+
+    private void makeBattle(GameMode gameMode, User user1, User user2) throws IOException {  //////////
+        // //////////// inja buge sag mikhore chon bayad battle menu baraye bazikone 2 om ham battle manageresh
+        // set she
+        BattleMenu.setBattleManagerForMultiPlayer(user1.account, user2.account, findNumberOfFlags(gameMode),
+                findNumberOfHavingFlags(gameMode), gameMode);
+        user1.dataOutputStream.writeUTF(ServerStrings.MULTIPLAYERSUCCESS);
+        user1.dataOutputStream.writeUTF(ServerStrings.MULTIPLAYERSUCCESS);
+    }
+
     private boolean authorise(Matcher matcher) throws IOException {
         int authToken = Integer.parseInt(matcher.group(1));
         if (!(authToken == this.authToken)) {
@@ -138,6 +189,41 @@ public class User extends Thread {
 
     private void multiPlayerRequestHandler() {
 
+
+    }
+
+    private GameMode findGameMode(String gm) {
+        if (gm.equals("DeathMatch"))
+            return GameMode.DeathMatch;
+        if (gm.equals("Flag"))
+            return GameMode.Flag;
+        if (gm.equals("Domination"))
+            return GameMode.Domination;
+        return null;
+    }
+
+    private int findNumberOfFlags(GameMode gameMode) {
+        switch (gameMode) {
+            case Flag:
+                return BattleManager.PERMANENT;
+            case DeathMatch:
+                return BattleManager.PERMANENT;
+            case Domination:
+                return 11;
+        }
+        return BattleManager.PERMANENT;
+    }
+
+    private int findNumberOfHavingFlags(GameMode gameMode) {
+        switch (gameMode) {
+            case Flag:
+                return 12;
+            case DeathMatch:
+                return BattleManager.PERMANENT;
+            case Domination:
+                return BattleManager.PERMANENT;
+        }
+        return BattleManager.PERMANENT;
     }
 
     public User(Socket socket, Account account) {
