@@ -1,5 +1,7 @@
 package Server;
 
+import com.gilecode.yagson.YaGson;
+import com.gilecode.yagson.YaGsonBuilder;
 import constants.GameMode;
 import controller.BattleMenu;
 import controller.Shop;

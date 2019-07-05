@@ -78,8 +78,7 @@ public class Server extends Thread {
                         outputStream.flush();
                         System.out.println(ServerStrings.LOGINSUCCESS);
                         User user = new User(socket, account);
-                        byte[] bytes = yaGson.toJson(account).getBytes();
-                        sendObject(user,bytes,inputStream,outputStream);
+                        sendObject(account, outputStream);
                         /*outputStream.writeUTF(bytes.length + "");
                         outputStream.flush();
 
