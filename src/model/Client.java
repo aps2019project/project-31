@@ -116,9 +116,18 @@ public class Client extends Thread {
                         BattleManager battle = (BattleManager) receiveObject(this.is, BattleManager.class);
                         System.out.println("receeeeeeeeeeeeived successfully");
                         BattleMenu.setBattleManager(battle);
-                        BattlePageController.getInstance().setAsScene();
+                        if(battle==null)
+                            System.out.println("wtf isssssssssssssssssssssssssssssssssssssssssssssss");
+                        WaitingPageController.getInstance().johnyJohnyYesPapaGoingToBattle.set(true);
+                        synchronized (WaitingPageController.getInstance()) {
+                            WaitingPageController.getInstance().notifyAll();
+                        }
                     } else if(serverReply.equals(ServerStrings.CANCELSUCCESSFULLY)) {
+                        WaitingPageController.getInstance().johnyJohnyYesPapaGoingToBattle.set(true);
                         System.out.println("we canceled the game honey");
+                        synchronized (WaitingPageController.getInstance()){
+                            WaitingPageController.getInstance().notifyAll();
+                        }
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
