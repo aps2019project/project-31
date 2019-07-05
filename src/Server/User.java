@@ -1,7 +1,5 @@
 package Server;
 
-import com.gilecode.yagson.YaGson;
-import com.gilecode.yagson.YaGsonBuilder;
 import constants.GameMode;
 import controller.BattleMenu;
 import controller.Shop;
@@ -33,22 +31,66 @@ public class User extends Thread {
 
     @Override
     public void run() {
-
-        while (true) {
-            try {
+        try {
+            while (true) {
                 String command = dataInputStream.readUTF();
                 shopRequestStockHandler(command);
 
                 handleCardBuyingRequest(command);
 
                 handleCardSellingRequest(command);
-                multiPlayerRequestHandler(command);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
 
+                multiPlayerRequestHandler(command);
+
+                handleLeaderBoardRequest(command);
+
+
+                if (handleLogout(command)) break;
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
+
+    public boolean handleLogout(String command) {
+        Pattern pattern = Pattern.compile(ServerStrings.LOGOUT);
+        Matcher matcher = pattern.matcher(command);
+        if (matcher.matches()){
+            this.account = null;
+            this.authToken = -1;
+            users.remove(this);
+            YaGson yaGson = new YaGsonBuilder().create();
+            Server.saveAllAccounts();
+            Server.makeWaitForLoginThread(yaGson, socket);
+            return true;
+        }
+        return false;
+    }
+
+    private void handleLeaderBoardRequest(String command) throws IOException {
+        Pattern pattern = Pattern.compile(ServerStrings.GET_LEADERBOARD);
+        Matcher matcher = pattern.matcher(command);
+        if (matcher.matches()) {
+            Account.sortAllAccounts();
+            accounts:
+            for (int i = 0; i < Integer.min(Account.getAllAccounts().size(), 10); i++) {
+                String ret = "       " + (i + 1) + ".    " +
+                        Account.getAllAccounts().get(i).toString();
+                dataOutputStream.writeUTF(ret);
+                for (User user : users) {
+                    if (user.socket.isConnected()
+                            && user.account.equals(Account.getAllAccounts().get(i))) {
+                        dataOutputStream.writeUTF("Online");
+                        continue accounts;
+                    }
+                }
+                dataOutputStream.writeUTF("Offline");
+            }
+            dataOutputStream.writeUTF("end");
+        }
+    }
+
 
     private void handleCardSellingRequest(String command) throws IOException {
         Pattern pattern = Pattern.compile(ServerStrings.REQUEST_SELL);

@@ -170,7 +170,7 @@ public class LoginPageController implements Initializable {
         Account account = Client.getClient().attemptLogin(username, password);
         if (account == null) {
             displayMessage("Incorrect Username!", 17, 2, infoVBox);
-        }else {
+        } else {
             Account.setMainAccount(account);
             displayMessage("Login Successful! Entering game...", 17, 2, infoVBox);
             //handle entering the next scene
@@ -190,21 +190,28 @@ public class LoginPageController implements Initializable {
             displayMessage("Enter account info!", 17, 2, infoVBox);
             return;
         }
-        if (Account.findAccount(username) != null) {
-            displayMessage("Username already taken!", 17, 2, infoVBox);
-            return;
-        }
+
         String password = signupPassword.getText();
         String passRepeat = repassword.getText();
         if (!passRepeat.equals(password)) {
             displayMessage("Passwords must match!", 17, 2, infoVBox);
             return;
         }
-        Account.createAccount(username, password.trim());
-        signupUsername.clear();
-        signupPassword.clear();
-        repassword.clear();
-        displayMessage("Account created! Sign in!", 17, 2, infoVBox);
+        try {
+            boolean wasSuccess = Client.getClient().requestSignUp(username, password);
+            if (wasSuccess) {
+                signupUsername.clear();
+                signupPassword.clear();
+                repassword.clear();
+                displayMessage("Account created! Sign in!", 17, 2, infoVBox);
+            }else {
+                displayMessage("Username already taken! That or something went wrong!",
+                        17,2,infoVBox);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
 

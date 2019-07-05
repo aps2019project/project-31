@@ -7,7 +7,14 @@ import constants.GameMode;
 import controller.BattleMenu;
 import controller.BattlePageController;
 import controller.LoginPageController;
+import controller.LoginPageController;
 import controller.Shop;
+import javafx.geometry.Pos;
+import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 
 import java.io.*;
 import java.net.Socket;
@@ -134,5 +141,43 @@ public class Client extends Thread {
         os.writeUTF(authToken + " request to sell card: " + id);
         String response = is.readUTF();
         return response.matches(ServerStrings.SOLD);
+    }
+
+    public VBox requestLeaderBoard() throws IOException {
+        os.writeUTF(ServerStrings.GET_LEADERBOARD);
+        String response = is.readUTF();
+        VBox vBox = new VBox();
+        vBox.setAlignment(Pos.TOP_CENTER);
+        while (!response.equals("end")){
+            HBox hBox = new HBox();
+            hBox.setAlignment(Pos.CENTER);
+            hBox.getChildren().add(LoginPageController.getInstance().makeMainLabel(response,17));
+            String status = is.readUTF();
+            if (status.matches("Online")){
+                Label label = new Label(status);
+                label.setFont(Font.font(17));
+                label.setTextFill(Color.GREEN);
+                hBox.getChildren().add(label);
+            }else {
+                Label label = new Label(status);
+                label.setFont(Font.font(17));
+                label.setTextFill(Color.RED);
+                hBox.getChildren().add(label);
+            }
+            vBox.getChildren().add(hBox);
+            response = is.readUTF();
+        }
+        return vBox;
+    }
+
+    public void logout() throws IOException {
+        os.writeUTF(ServerStrings.LOGOUT);
+        authToken = -1;
+    }
+
+    public boolean requestSignUp(String username, String password) throws IOException {
+        os.writeUTF("signup username:" + username + " password:" + password);
+        String response = is.readUTF();
+        return response.matches(ServerStrings.SIGNUP_SUCCESSFUL);
     }
 }
