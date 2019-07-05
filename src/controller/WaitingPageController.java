@@ -17,6 +17,7 @@ import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class WaitingPageController implements Initializable {
     private static Scene scene;
@@ -31,6 +32,7 @@ public class WaitingPageController implements Initializable {
     public Label status;
     private static WaitingPageController waitingPage;
     public ImageView flagBtn;
+    public AtomicBoolean johnyJohnyYesPapaGoingToBattle = new AtomicBoolean(false);
 
     public static WaitingPageController getInstance() {
         if (waitingPage == null) {
@@ -62,11 +64,12 @@ public class WaitingPageController implements Initializable {
         cancel.setOnMouseClicked(mouseEvent -> {
             Client.getClient().sendCancelRequest();
             PlayMenuController.getInstance().setAsScene();
-
+            playMenuOrBattleMenu();
         });
         deathMatchBtn.setOnMouseClicked(event -> {
             removeModesFromPage();
             Client.getClient().sendPlayRequest(GameMode.DeathMatch);
+            playMenuOrBattleMenu();
 
         });
         flagBtn.setOnMouseClicked(event -> {
@@ -90,5 +93,21 @@ public class WaitingPageController implements Initializable {
         status.setText("waiting ...");
     }
 
+    private void playMenuOrBattleMenu() {
+        synchronized (WaitingPageController.getInstance()) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            if (johnyJohnyYesPapaGoingToBattle.get()) {
+                System.out.println("battle page it is");
+                BattlePageController.getInstance().setAsScene();
+            } else {
+                System.out.println("play menu it is");
+                PlayMenuController.getInstance().setAsScene();
+            }
+        }
+    }
 
 }

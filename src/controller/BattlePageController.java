@@ -312,12 +312,8 @@ public class BattlePageController implements Initializable {
 
     private void playTheActualGame(BattleManager battle) {
         initPlayers();
-        try {
-            makeColumnHands();
-            setPolygonsInMap();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        makeColumnHands();
+        setPolygonsInMap();
         infoButton.setOnAction(actionEvent -> {
             infoButton();
         });
@@ -820,7 +816,12 @@ public class BattlePageController implements Initializable {
         Map.getInstance().getMap()[2][7].setPolygon(place27);
         Map.getInstance().getMap()[2][8].setPolygon(place28);
         Map.getInstance().getMap()[2][9].setPolygon(place29);
+        System.out.println("mother fucker what the fuck are you saying ?");
+        if(place31==null)
+            System.out.println("polygon 31 is null");
         Map.getInstance().getMap()[3][1].setPolygon(place31);
+        if(Map.getInstance().getCell(3,1).getPolygon()==null)
+            System.out.println("kill me now, nowwwwwwwwww");
         Map.getInstance().getMap()[3][2].setPolygon(place32);
         Map.getInstance().getMap()[3][3].setPolygon(place33);
         Map.getInstance().getMap()[3][4].setPolygon(place34);
