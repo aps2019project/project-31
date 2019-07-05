@@ -8,7 +8,6 @@ import constants.FunctionType;
 import constants.GameMode;
 import controller.BattleMenu;
 
-import javafx.application.Platform;
 import view.Output;
 
 import java.util.*;
@@ -116,15 +115,14 @@ public class BattleManager {
         onSpawnFunctions(minion, x1, x2);
         currentPlayer.addCardToBattlefield(theMinion);
 
-        SinglePlayerBattlePageController.getInstance().addFaceToBattlePage(theMinion, this);
+        addFaceToGraphic(theMinion);
 
         theMinion.isMoved = false;
         currentPlayer.removeFromHand(minion);
         applyOnSpawnFunction(theMinion);
         currentPlayer.decreaseMana(theMinion.manaCost);
         if (!currentPlayer.isAi() && !isThisRecordedGame)
-            SinglePlayerBattlePageController.getInstance().removeMinionFromHand(((Deployable) SinglePlayerBattlePageController
-                    .getInstance().getMe().selectedCard).face);
+            removeFaceInHand();
         currentPlayer.selectedCard = null;
         removeItemIfThereIsSomething(theMinion);
         removeFlagIfThereIsSomething(theMinion, x1, x2);
@@ -135,12 +133,30 @@ public class BattleManager {
             gameRecord.addAction(whoIsCurrentPlayer() + "I" + theMinion.id + x1 + x2);
         return true;
     }
-    private void refreshTheWholeMap(){
+
+    private void addFaceToGraphic(Minion minion) {
+        if (isMultiPlayer)
+            MultiPlayerBattlePageController.getInstance().addFaceToBattlePage(minion, this);
+        else SinglePlayerBattlePageController.getInstance().addFaceToBattlePage(minion, this);
+
+    }
+
+    private void removeFaceInHand() {
+        if (isMultiPlayer)
+            MultiPlayerBattlePageController.getInstance().removeMinionFromHand(((Deployable) MultiPlayerBattlePageController
+                    .getInstance().getMe().selectedCard).face);
+        else
+            SinglePlayerBattlePageController.getInstance().removeMinionFromHand(((Deployable) SinglePlayerBattlePageController
+                    .getInstance().getMe().selectedCard).face);
+    }
+
+    private void refreshTheWholeMap() {
         if (isMultiPlayer)
             MultiPlayerBattlePageController.getInstance().refreshTheStatusOfMap(this);
         else
             SinglePlayerBattlePageController.getInstance().refreshTheStatusOfMap(this);
     }
+
     public String whoIsCurrentPlayer() {
         if (currentPlayer == player1)
             return "1";
@@ -879,11 +895,17 @@ public class BattleManager {
         currentPlayer.selectedCard = null;
 
 
-        SinglePlayerBattlePageController.getInstance().removeASpellFromHand(currentPlayer, isThisRecordedGame, spell, this);
-       refreshTheWholeMap();
+        removeCardFromGraphic(spell);
+        refreshTheWholeMap();
         if (!isThisRecordedGame)
             gameRecord.addAction(whoIsCurrentPlayer() + "I" + spell.id + x1 + x2);
         return true;
+    }
+
+    private void removeCardFromGraphic(Card card) {
+        if (isMultiPlayer)
+            MultiPlayerBattlePageController.getInstance().removeCardFromHand(card, this);
+        else SinglePlayerBattlePageController.getInstance().removeCardFromHand(card, this);
     }
 
     public boolean useItem(Item item, int x1, int x2) {
@@ -948,17 +970,29 @@ public class BattleManager {
                 currentPlayer.numberOfFlags++;
             card.setHasFlag(true);
             Map.getInstance().getCell(x1, x2).setHasFlag(false);
-            SinglePlayerBattlePageController.getInstance().removeFlagInGround(card.cell);
+            removeFlagInGraphic(card.cell);
         }
+    }
+
+    private void removeFlagInGraphic(Cell cell) {
+        if (isMultiPlayer)
+            MultiPlayerBattlePageController.getInstance().removeFlagInGround(cell);
+        else
+            SinglePlayerBattlePageController.getInstance().removeFlagInGround(cell);
     }
 
     public void removeItemIfThereIsSomething(Deployable card) {
         if (card.cell.getItem() != null && card.item == null) {
             card.item = card.cell.getItem();
             card.cell.setItem(null);
-            SinglePlayerBattlePageController.getInstance().removeItemInGround(card.cell);
+            removeItemInGraphic(card.cell);
         }
+    }
 
+    private void removeItemInGraphic(Cell cell) {
+        if (isMultiPlayer)
+            MultiPlayerBattlePageController.getInstance().removeItemInGround(cell);
+        else SinglePlayerBattlePageController.getInstance().removeItemInGround(cell);
     }
 
     public void killTheThing(Deployable enemy) {
@@ -987,11 +1021,17 @@ public class BattleManager {
 
         enemy.cell.setCardInCell(null);
         System.out.println("we killed this poor thing");
-        SinglePlayerBattlePageController.getInstance().mainPane.getChildren().remove(enemy.getFace());
+        removeFaceInGraphic(enemy.getFace());
 
         player.addCardToGraveYard(new DisplayableDeployable(enemy));
         player.getCardsOnBattleField().remove(enemy);
 
+    }
+
+    private void removeFaceInGraphic(DisplayableDeployable face) {
+        if (isMultiPlayer)
+            MultiPlayerBattlePageController.getInstance().mainPane.getChildren().remove(face);
+        else SinglePlayerBattlePageController.getInstance().mainPane.getChildren().remove(face);
     }
 
 
@@ -1221,14 +1261,21 @@ public class BattleManager {
             gameRecord.addAction("E");
         System.out.println(gameRecord.game);
         if (isThisRecordedGame) {
-            SinglePlayerBattlePageController.getInstance().showThatGameEnded();
+            showGameEnding();
         }
         BattleMenu.setGameFinished(true);
         if (winner != null)
             Output.print(winner.getAccount().getUsername() + " won");
         else System.out.println("draw");
 
-        SinglePlayerBattlePageController.getInstance().showThatGameEnded();
+        showGameEnding();
+    }
+
+    private void showGameEnding() {
+        if (isMultiPlayer)
+            MultiPlayerBattlePageController.getInstance().showThatGameEnded();
+        else
+            SinglePlayerBattlePageController.getInstance().showThatGameEnded();
     }
 
     public void player2Won() {
@@ -1409,9 +1456,10 @@ public class BattleManager {
         int x2 = random.nextInt(9) + 1;
         if (Map.getInstance().getCell(x1, x2).getCardInCell() != null) {
             Map.getInstance().getCell(x1, x2).getCardInCell().setItem(item);
-            Platform.runLater(() -> {
+            if (!isMultiPlayer)
                 SinglePlayerBattlePageController.getInstance().displayMessage("Item put on Minion!!!");
-            });
+            else
+                MultiPlayerBattlePageController.getInstance().displayMessage("Item put on Minion!!!");
             System.out.println("item was put on someones minion with coordination: " + x1 + " , " + x2);
         } else {
             Map.getInstance().getCell(x1, x2).setItem(item);

@@ -896,6 +896,7 @@ public class MultiPlayerBattlePageController implements Initializable {
                         return;
                     }
                     if (cell.getCardInCell() == null && (me.getSelectedCard().getType() == CardType.item)) { // spell can't insert on the ground ?'
+                        Client.getClient().sendInsertRequest();
                         BattleMenu.insert(me.getSelectedCard(), cell.getX1Coordinate(), cell.getX2Coordinate());
                     } else if (cell.getCardInCell() != null) {
                         displayMessage("destination is not empty");

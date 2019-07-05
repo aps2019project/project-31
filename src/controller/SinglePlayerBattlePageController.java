@@ -419,11 +419,6 @@ public class SinglePlayerBattlePageController implements Initializable {
         });
     }
 
-    public void removeASpellFromHand(Player currentPlayer, boolean isThisRecordedGame, Spell spell, BattleManager battleManager) {
-        if (!currentPlayer.isAi() && !isThisRecordedGame)
-            SinglePlayerBattlePageController.getInstance().removeSpellFromHand(spell.getFace(), battleManager);
-    }
-
     public void showThatGameEnded() {
         MainMenuController.getInstance().setAsScene();
         BattleMenu.deleteBattleManagerAndMakeMap();
