@@ -102,17 +102,6 @@ public class Account {
         Account.mainAccount = mainAccount;
     }
 
-    public static void saveCurrentAccount() {//buggy
-        YaGson yaGson = new YaGsonBuilder().create();
-        String path = System.getProperty("user.dir") + "/Sources/Accounts/Accounts.txt";
-        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(path))) {
-            if (Account.getMainAccount() != null) {
-                bufferedWriter.write(yaGson.toJson(Account.getMainAccount()) + "\n");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     public static void saveAllAccounts() {
         YaGson yaGson = new YaGsonBuilder().create();
