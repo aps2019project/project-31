@@ -81,9 +81,9 @@ public class MainMenuController implements Initializable {
         matchHistories.setOnAction(event -> {
             MatchHistoryController.getInstance().setAsScene();
         });
-        chatRoom.setOnAction(event -> {
+        /*chatRoom.setOnAction(event -> {
 
-        });
+        });*/
         playButton.setOnAction(event -> PlayMenuController.getInstance().setAsScene());
         shopButton.setOnAction(event -> ShopController.getInstance().setAsScene());
         collectionButton.setOnAction(event -> CollectionController.getInstance().setAsScene());

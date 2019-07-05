@@ -71,6 +71,7 @@ public class User extends Thread {
             int cardID = Integer.parseInt(matcher.group(1));
             String deckName = matcher.group(2);
             for (Deck deck: account.getDecks()){
+                System.out.println(deck.getDeckName());
                 if (deck.getDeckName().equals(deckName)){
                     deck.deleteCard(Shop.findCardById(cardID));
                     dataOutputStream.writeUTF(ServerStrings.CARD_DELETED);

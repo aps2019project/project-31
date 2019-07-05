@@ -1,5 +1,6 @@
 package model;
 
+import Server.Server;
 import Server.ServerStrings;
 import com.gilecode.yagson.YaGson;
 import com.gilecode.yagson.YaGsonBuilder;
@@ -227,8 +228,10 @@ public class Client extends Thread {
 
     public boolean requestCardDeletion(Card card) {
         try {
-            os.writeUTF("remove card:" + card.getId() + " from deck:" + Account.getEditingDeck());
-            return is.readUTF().matches(ServerStrings.CARD_DELETED);
+            os.writeUTF("remove card:" + card.getId() + " from deck:" + Account.getEditingDeck().getDeckName());
+            String res = is.readUTF();
+            System.out.println(res);
+            return res.matches(ServerStrings.CARD_DELETED);
         } catch (IOException e) {
             e.printStackTrace();
         }
