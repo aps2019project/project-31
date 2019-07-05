@@ -1,5 +1,7 @@
 package Server;
 
+import com.gilecode.yagson.YaGson;
+import com.gilecode.yagson.YaGsonBuilder;
 import constants.GameMode;
 import controller.BattleMenu;
 import controller.Shop;
@@ -142,13 +144,13 @@ public class User extends Thread {
         }
     }
 
-    private void makeBattle(GameMode gameMode, User user1, User user2) throws IOException {  //////////
-        // //////////// inja buge sag mikhore chon bayad battle menu baraye bazikone 2 om ham battle manageresh
-        // set she
+    private void makeBattle(GameMode gameMode, User user1, User user2) throws IOException {
         BattleMenu.setBattleManagerForMultiPlayer(user1.account, user2.account, findNumberOfFlags(gameMode),
                 findNumberOfHavingFlags(gameMode), gameMode);
         user1.dataOutputStream.writeUTF(ServerStrings.MULTIPLAYERSUCCESS);
-        user1.dataOutputStream.writeUTF(ServerStrings.MULTIPLAYERSUCCESS);
+        Server.sendObject(BattleMenu.getBattleManager(),user1.dataOutputStream);
+        user2.dataOutputStream.writeUTF(ServerStrings.MULTIPLAYERSUCCESS);
+        Server.sendObject(BattleMenu.getBattleManager(),user2.dataOutputStream);
     }
 
     private boolean authorise(Matcher matcher) throws IOException {
@@ -160,10 +162,7 @@ public class User extends Thread {
         return false;
     }
 
-    private void multiPlayerRequestHandler() {
 
-
-    }
 
     private GameMode findGameMode(String gm) {
         if (gm.equals("DeathMatch"))

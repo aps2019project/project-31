@@ -66,8 +66,8 @@ public class Server extends Thread {
                                 outputStream.flush();
                                 System.out.println(ServerStrings.LOGINSUCCESS);
                                 User user = new User(socket, account);
-                                byte[] bytes = yaGson.toJson(account).getBytes();
-                                sendObject(user,bytes,inputStream,outputStream);
+
+                                sendObject(account, outputStream);
                                 /*outputStream.writeUTF(bytes.length + "");
                                 outputStream.flush();
 
@@ -96,7 +96,9 @@ public class Server extends Thread {
         }
     }
 
-    public static void sendObject(User user, byte[] objectBytes, DataInputStream is, DataOutputStream os) throws IOException {
+    public static void sendObject(Object object, DataOutputStream os) throws IOException {
+        YaGson yaGson = new YaGsonBuilder().create();
+        byte[] objectBytes = yaGson.toJson(object).getBytes();
         os.writeUTF(objectBytes.length + "");
         os.flush();
         for (int i = 0; i < objectBytes.length; i++) {

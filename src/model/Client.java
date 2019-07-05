@@ -4,6 +4,7 @@ import Server.ServerStrings;
 import com.gilecode.yagson.YaGson;
 import com.gilecode.yagson.YaGsonBuilder;
 import constants.GameMode;
+import controller.BattleMenu;
 import controller.BattlePageController;
 import controller.LoginPageController;
 import controller.Shop;
@@ -58,7 +59,7 @@ public class Client extends Thread {
             System.out.println("getting account...");
             YaGson yaGson = new YaGsonBuilder().create();
 
-            Account account = (Account) receiveObject(yaGson, is);
+            Account account = (Account) receiveObject(is, Account.class);
             int auth = Integer.parseInt(is.readUTF());
             setAuthToken(auth);
             HashMap<Integer, Integer> stock = yaGson.fromJson(is.readUTF(), HashMap.class);
@@ -67,7 +68,8 @@ public class Client extends Thread {
         } else return null;
     }
 
-    public static Object receiveObject(YaGson yaGson, DataInputStream is) throws IOException {
+    public static Object receiveObject(DataInputStream is, Class objectClass) throws IOException {
+        YaGson yaGson = new YaGsonBuilder().create();
         int size = Integer.parseInt(is.readUTF());
         byte[] bytes = new byte[size];
 
@@ -75,8 +77,8 @@ public class Client extends Thread {
             byte b = is.readByte();
             bytes[i] = b;
         }
-        String accountString = new String(bytes);
-        return yaGson.fromJson(accountString, Account.class);
+        String objectString = new String(bytes);
+        return yaGson.fromJson(objectString, objectClass);
 
     }
 
@@ -95,7 +97,9 @@ public class Client extends Thread {
             }
             String serverReply = is.readUTF();
             if (serverReply.equals(ServerStrings.MULTIPLAYERSUCCESS)) {
-                receiveBattleManager();
+                BattleManager battle = (BattleManager) receiveObject(this.is, BattleManager.class);
+                System.out.println("receeeeeeeeeeeeived successfully");
+                BattleMenu.setBattleManager(battle);
                 BattlePageController.getInstance().setAsScene();
             } else {
                 // some pop up happens !
@@ -109,9 +113,6 @@ public class Client extends Thread {
         }
     }
 
-    public void receiveBattleManager() {
-
-    }
 
     public String requestCardStock(int id) {
         try {

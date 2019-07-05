@@ -200,6 +200,13 @@ public class BattlePageController implements Initializable {
     }
 
     public void initPlayers() {
+        if(BattleMenu.getBattleManager()==null){
+            System.out.println("battle manager in init is null");
+        }
+        if(BattleMenu.getBattleManager().getPlayer1()==null)
+            System.out.println("battle manager player 1 is null");
+        if(BattleMenu.getBattleManager().getPlayer1().getAccount()==null)
+            System.out.println("battle manager player 1 . get account is null");
         if (BattleMenu.getBattleManager().getPlayer1().getAccount().getUsername().equals(Account.getMainAccount().getUsername())) {
             me = BattleMenu.getBattleManager().getPlayer1();
             opponent = BattleMenu.getBattleManager().getPlayer2();
