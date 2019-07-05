@@ -15,17 +15,7 @@
             <Image url="@images/chapter20_background@2x.jpg" />
          </image>
       </ImageView>
-      <Label fx:id="status" prefHeight="0.0" prefWidth="326.0" stylesheets="@style/mainLabel.css" text="waiting ..." translateX="60.0" StackPane.alignment="TOP_CENTER">
-         <font>
-            <Font size="57.0" />
-         </font>
-      </Label>
-      <Button id="graveYard" fx:id="cancel" mnemonicParsing="false" prefHeight="57.0" prefWidth="183.0" stylesheets="@style/buttonOne.css" text="Cancel" translateY="310.0" StackPane.alignment="CENTER">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Button>
-      <HBox fx:id="mainHBox" alignment="CENTER" prefHeight="616.0" prefWidth="1080.0">
+      <HBox fx:id="mainHBox" alignment="CENTER" prefHeight="549.0" prefWidth="1080.0">
          <children>
             <StackPane fx:id="mode1" prefHeight="150.0" prefWidth="240.0" stylesheets="@style/buttonOne.css">
                <children>
@@ -71,5 +61,15 @@
             </StackPane>
          </children>
       </HBox>
+      <Label fx:id="status" prefHeight="0.0" prefWidth="326.0" stylesheets="@style/mainLabel.css" text="waiting ..." translateX="60.0" StackPane.alignment="TOP_CENTER">
+         <font>
+            <Font size="57.0" />
+         </font>
+      </Label>
+      <Button id="graveYard" fx:id="cancel" mnemonicParsing="false" prefHeight="57.0" prefWidth="183.0" stylesheets="@style/buttonOne.css" text="Cancel" translateY="310.0" StackPane.alignment="CENTER">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
    </children>
 </StackPane>

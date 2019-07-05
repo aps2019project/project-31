@@ -58,6 +58,12 @@ public class WaitingPageController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         waitingPage = this;
         status.setText("Click One Mode.");
+
+        cancel.setOnMouseClicked(mouseEvent -> {
+            Client.getClient().sendCancelRequest();
+            PlayMenuController.getInstance().setAsScene();
+
+        });
         deathMatchBtn.setOnMouseClicked(event -> {
             removeModesFromPage();
             Client.getClient().sendPlayRequest(GameMode.DeathMatch);
@@ -74,12 +80,10 @@ public class WaitingPageController implements Initializable {
 
         });
 
-        cancel.setOnMouseClicked(mouseEvent -> {
 
-        });
     }
 
-    private void removeModesFromPage(){
+    private void removeModesFromPage() {
         mainHBox.getChildren().remove(mode1);
         mainHBox.getChildren().remove(mode2);
         mainHBox.getChildren().remove(mode3);

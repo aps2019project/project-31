@@ -46,7 +46,7 @@ public class User extends Thread {
 
                 handleLeaderBoardRequest(command);
 
-
+                handleCancelRequest(command);
                 if (handleLogout(command)) break;
 
             }
@@ -55,10 +55,25 @@ public class User extends Thread {
         }
     }
 
+    public void handleCancelRequest(String command) throws IOException {
+        Pattern pattern = Pattern.compile(ServerStrings.CANCELPLAYREQUEST);
+        Matcher matcher = pattern.matcher(command);
+        if (matcher.matches()) {
+            if (authorise(matcher)) return;
+            dataOutputStream.writeUTF(ServerStrings.CANCELSUCCESSFULLY);
+            if (this == waitingUserMode1)
+                waitingUserMode1 = null;
+            if (this == waitingUserMode2)
+                waitingUserMode2 = null;
+            if (this == waitingUserMode3)
+                waitingUserMode3 = null;
+        }
+    }
+
     public boolean handleLogout(String command) {
         Pattern pattern = Pattern.compile(ServerStrings.LOGOUT);
         Matcher matcher = pattern.matcher(command);
-        if (matcher.matches()){
+        if (matcher.matches()) {
             this.account = null;
             this.authToken = -1;
             users.remove(this);
@@ -163,7 +178,8 @@ public class User extends Thread {
         Pattern pattern = Pattern.compile(ServerStrings.MULTIPLAYERREQUEST);
         Matcher matcher = pattern.matcher(command);
         if (matcher.matches()) {
-            GameMode gameMode = findGameMode(matcher.group(1));
+            if (authorise(matcher)) return;
+            GameMode gameMode = findGameMode(matcher.group(2));
             switch (gameMode) {
                 case Domination:
                     if (waitingUserMode3 == null) {
@@ -191,9 +207,9 @@ public class User extends Thread {
         BattleMenu.setBattleManagerForMultiPlayer(user1.account, user2.account, findNumberOfFlags(gameMode),
                 findNumberOfHavingFlags(gameMode), gameMode);
         user1.dataOutputStream.writeUTF(ServerStrings.MULTIPLAYERSUCCESS);
-        Server.sendObject(BattleMenu.getBattleManager(),user1.dataOutputStream);
+        Server.sendObject(BattleMenu.getBattleManager(), user1.dataOutputStream);
         user2.dataOutputStream.writeUTF(ServerStrings.MULTIPLAYERSUCCESS);
-        Server.sendObject(BattleMenu.getBattleManager(),user2.dataOutputStream);
+        Server.sendObject(BattleMenu.getBattleManager(), user2.dataOutputStream);
     }
 
     private boolean authorise(Matcher matcher) throws IOException {
@@ -204,7 +220,6 @@ public class User extends Thread {
         }
         return false;
     }
-
 
 
     private GameMode findGameMode(String gm) {
