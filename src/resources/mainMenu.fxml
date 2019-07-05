@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<StackPane fx:id="mainContainer" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainMenuController">
+<StackPane fx:id="mainContainer" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainMenuController">
    <children>
       <ImageView fx:id="backgroundImage" fitHeight="753.0" fitWidth="1111.0" pickOnBounds="true">
          <image>
@@ -36,7 +36,7 @@
             </VBox>
          </left>
          <bottom>
-            <Button id="logoutButton" fx:id="logoutButton" mnemonicParsing="false" prefHeight="52.0" prefWidth="71.0" stylesheets="@style/buttonOne.css" text="logout" BorderPane.alignment="CENTER_RIGHT">
+            <Button id="logoutButton" fx:id="logoutButton" mnemonicParsing="false" prefHeight="55.0" prefWidth="158.0" stylesheets="@style/buttonOne.css" text="logout" BorderPane.alignment="CENTER_RIGHT">
                <padding>
                   <Insets left="15.0" />
                </padding>
@@ -53,6 +53,7 @@
             </ImageView>
          </top>
       </BorderPane>
-      <Button id="mainMenuButton" fx:id="matchHistories" mnemonicParsing="false" prefHeight="92.0" prefWidth="276.0" stylesheets="@style/buttonOne.css" text="Match Histories" translateX="350.0" StackPane.alignment="BOTTOM_CENTER" />
+      <Button id="mainMenuButton2" fx:id="matchHistories" mnemonicParsing="false" prefHeight="215.0" prefWidth="393.0" stylesheets="@style/buttonOne.css" text="Match Histories" translateX="300.0" StackPane.alignment="BOTTOM_CENTER" />
+      <Button id="mainMenuButton2" fx:id="chatRoom" mnemonicParsing="false" prefHeight="215.0" prefWidth="393.0" stylesheets="@style/buttonOne.css" text="Chat Room" translateX="135.0" StackPane.alignment="BOTTOM_CENTER" />
    </children>
 </StackPane>
