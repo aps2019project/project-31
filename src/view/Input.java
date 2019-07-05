@@ -177,7 +177,7 @@ public class Input {
             BattleMenu.showPlayerMinions(BattleMenu.getBattleManager().getOtherPlayer());
         else if (input.matches("show card info \\d+")) {
             String cardUniqueId = input.replace("show card info", "").trim();
-            System.out.println(BattleManager.findCardByUniqueid(Integer.parseInt(cardUniqueId)).infoToString());
+            System.out.println(BattleMenu.getBattleManager().findCardByUniqueid(Integer.parseInt(cardUniqueId)).infoToString());
         }
         pattern = Pattern.compile("use special power \\((\\d+),(\\d+)\\)");
         matcher = pattern.matcher(input);

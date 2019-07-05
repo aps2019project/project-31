@@ -23,11 +23,11 @@ public class Minion extends Deployable {
         this.health = health;
     }
 
-    public Minion duplicateDeployed(Cell cell,Account account) {
+    public Minion duplicateDeployed(Cell cell,Account account, BattleManager battleManager) {
 
         return new Minion(price, manaCost, cardText, new ArrayList<Function>(functions), account, name,
                 id, type, true, true, true, cell,
-                attackRange, health, attack, BattleManager.generateUniqueId(this.id),
+                attackRange, health, attack, battleManager.generateUniqueId(this.id),
                 attackType, isCombo, maxHealth, attack, health);
     }
 
