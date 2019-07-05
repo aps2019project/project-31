@@ -1,5 +1,7 @@
 package Server;
 
+import com.gilecode.yagson.YaGson;
+import com.gilecode.yagson.YaGsonBuilder;
 import constants.GameMode;
 import controller.BattleMenu;
 import controller.Shop;
@@ -39,14 +41,33 @@ public class User extends Thread {
                 handleCardBuyingRequest(command);
 
                 handleCardSellingRequest(command);
+
                 multiPlayerRequestHandler(command);
 
                 handleLeaderBoardRequest(command);
+
+
+                if (handleLogout(command)) break;
 
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public boolean handleLogout(String command) {
+        Pattern pattern = Pattern.compile(ServerStrings.LOGOUT);
+        Matcher matcher = pattern.matcher(command);
+        if (matcher.matches()){
+            this.account = null;
+            this.authToken = -1;
+            users.remove(this);
+            YaGson yaGson = new YaGsonBuilder().create();
+            Server.saveAllAccounts();
+            Server.makeWaitForLoginThread(yaGson, socket);
+            return true;
+        }
+        return false;
     }
 
     private void handleLeaderBoardRequest(String command) throws IOException {
@@ -160,9 +181,6 @@ public class User extends Thread {
                     } else makeBattle(GameMode.Flag, waitingUserMode2, this);
                     break;
             }
-        } else {
-            System.out.println("ridi tu ferestadan dastur be user");
-            dataOutputStream.writeUTF(ServerStrings.MULTIPLAYERFAILED);
         }
     }
 

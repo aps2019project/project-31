@@ -42,58 +42,81 @@ public class Server extends Thread {
             while (true) {
                 Socket socket = server.accept();
                 System.out.println("Client " + socket.getLocalSocketAddress() + "connected");
-                new Thread(() -> {
-                    try {
-                        DataInputStream inputStream = new DataInputStream(socket.getInputStream());
-                        DataOutputStream outputStream = new DataOutputStream(socket.getOutputStream());
-                        while (true) {
-                            String command = inputStream.readUTF();
-                            System.out.println(command + " received");
-                            Pattern pattern = Pattern.compile(ServerStrings.LOGIN);
-                            Matcher matcher = pattern.matcher(command);
-                            if (matcher.matches()) {
-                                String username = matcher.group(1);
-                                System.out.println("client logging in to account " + username);
-                                String password = matcher.group(2);
-                                Account account = Account.findAccount(username);
-                                if (account == null ||
-                                        !account.getPassword().equals(password)) {
-                                    outputStream.writeUTF(ServerStrings.LOGINERROR);
-                                    System.out.println(account);
-                                    continue;
-                                }
-                                outputStream.writeUTF(ServerStrings.LOGINSUCCESS);
-                                outputStream.flush();
-                                System.out.println(ServerStrings.LOGINSUCCESS);
-                                User user = new User(socket, account);
-                                byte[] bytes = yaGson.toJson(account).getBytes();
-                                sendObject(user,bytes,inputStream,outputStream);
-                                /*outputStream.writeUTF(bytes.length + "");
-                                outputStream.flush();
-
-                                System.out.println("sending account with " + bytes.length);
-                                for (int i = 0; i < bytes.length; i++) {
-                                    outputStream.writeByte(bytes[i]);
-                                }
-*/
-                                System.out.println("Sending auth token");
-                                outputStream.writeUTF(user.getAuthToken() + "");
-                                System.out.println("sending shop stock");
-                                outputStream.writeUTF(yaGson.toJson(Shop.getStock()));
-                                user.start();
-                                break;
-
-                            }
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-                }).start();
+                makeWaitForLoginThread(yaGson, socket);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public synchronized static void saveAllAccounts(){
+        Account.saveAllAccounts();
+    }
+
+    public static void makeWaitForLoginThread(YaGson yaGson, Socket socket) {
+        new Thread(() -> {
+            try {
+                DataInputStream inputStream = new DataInputStream(socket.getInputStream());
+                DataOutputStream outputStream = new DataOutputStream(socket.getOutputStream());
+                while (true) {
+                    String command = inputStream.readUTF();
+                    System.out.println(command + " received");
+                    Pattern pattern = Pattern.compile(ServerStrings.LOGIN);
+                    Matcher matcher = pattern.matcher(command);
+                    if (matcher.matches()) {
+                        String username = matcher.group(1);
+                        System.out.println("client logging in to account " + username);
+                        String password = matcher.group(2);
+                        Account account = Account.findAccount(username);
+                        if (account == null ||
+                                !account.getPassword().equals(password)) {
+                            outputStream.writeUTF(ServerStrings.LOGINERROR);
+                            System.out.println(account);
+                            continue;
+                        }
+                        outputStream.writeUTF(ServerStrings.LOGINSUCCESS);
+                        outputStream.flush();
+                        System.out.println(ServerStrings.LOGINSUCCESS);
+                        User user = new User(socket, account);
+                        byte[] bytes = yaGson.toJson(account).getBytes();
+                        sendObject(user,bytes,inputStream,outputStream);
+                        /*outputStream.writeUTF(bytes.length + "");
+                        outputStream.flush();
+
+                        System.out.println("sending account with " + bytes.length);
+                        for (int i = 0; i < bytes.length; i++) {
+                            outputStream.writeByte(bytes[i]);
+                        }
+*/
+                        System.out.println("Sending auth token");
+                        outputStream.writeUTF(user.getAuthToken() + "");
+                        System.out.println("sending shop stock");
+                        outputStream.writeUTF(yaGson.toJson(Shop.getStock()));
+                        user.start();
+                        break;
+
+                    }
+
+
+                    pattern = Pattern.compile(ServerStrings.REQUEST_SIGNUP);
+                    matcher = pattern.matcher(command);
+                    if (matcher.matches()){
+                        String username = matcher.group(1);
+                        String password = matcher.group(2);
+                        if (Account.findAccount(username) != null) {
+                            outputStream.writeUTF(ServerStrings.ALREADY_TAKEN);
+                            continue;
+                        }
+                        Account.createAccount(username, password.trim());
+                        saveAllAccounts();
+                        outputStream.writeUTF(ServerStrings.SIGNUP_SUCCESSFUL);
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }).start();
     }
 
     public static void sendObject(User user, byte[] objectBytes, DataInputStream is, DataOutputStream os) throws IOException {

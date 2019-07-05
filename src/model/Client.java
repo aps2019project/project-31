@@ -168,4 +168,15 @@ public class Client extends Thread {
         }
         return vBox;
     }
+
+    public void logout() throws IOException {
+        os.writeUTF(ServerStrings.LOGOUT);
+        authToken = -1;
+    }
+
+    public boolean requestSignUp(String username, String password) throws IOException {
+        os.writeUTF("signup username:" + username + " password:" + password);
+        String response = is.readUTF();
+        return response.matches(ServerStrings.SIGNUP_SUCCESSFUL);
+    }
 }

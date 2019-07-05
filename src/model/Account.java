@@ -122,7 +122,7 @@ public class Account {
                 bufferedWriter.write(yaGson.toJson(account) + "\n");
             }
         } catch (IOException e) {
-
+            e.printStackTrace();
         }
     }
 
