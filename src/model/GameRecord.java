@@ -3,11 +3,10 @@ package model;
 import constants.FunctionType;
 import constants.GameMode;
 import controller.BattleMenu;
-import controller.BattlePageController;
+import controller.SinglePlayerBattlePageController;
 import controller.Shop;
 import javafx.application.Platform;
 
-import java.util.Collections;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -60,7 +59,7 @@ public class GameRecord {
 
             if (action.startsWith("E")) {
                 System.out.println("the game ended");
-                BattlePageController.getInstance().showThatGameEnded();
+                SinglePlayerBattlePageController.getInstance().showThatGameEnded();
                 System.out.println("the game ended ? wtf ???");
             }
             if (action.startsWith("T")) {
@@ -72,7 +71,7 @@ public class GameRecord {
                 checkIfInsert(action);
             if (action.contains("M"))
                 checkIfMove(action);
-            BattlePageController.getInstance().refreshTheStatusOfMap(battleManager);
+            SinglePlayerBattlePageController.getInstance().refreshTheStatusOfMap(battleManager);
             try {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
@@ -137,7 +136,7 @@ public class GameRecord {
         doThingsAtBeginningOfTurn();
 
         Platform.runLater(() -> {
-            BattlePageController.getInstance().refreshTheStatusOfMap(battleManager);
+            SinglePlayerBattlePageController.getInstance().refreshTheStatusOfMap(battleManager);
         });
     }
 

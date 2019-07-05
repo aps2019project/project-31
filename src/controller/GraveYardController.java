@@ -8,7 +8,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.image.ImageView;
-import model.BattleManager;
 import model.DisplayableDeployable;
 import model.Initializer;
 
@@ -38,15 +37,15 @@ public class GraveYardController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         graveYard = this;
-        username.setText(BattlePageController.getInstance().getMe().getAccount().getUsername());
-        opponentUsername.setText(BattlePageController.getInstance().getOpponent().getAccount().getUsername());
+        username.setText(SinglePlayerBattlePageController.getInstance().getMe().getAccount().getUsername());
+        opponentUsername.setText(SinglePlayerBattlePageController.getInstance().getOpponent().getAccount().getUsername());
         backToBattle.setOnAction(event -> {
 
-            BattlePageController.getInstance().setAsScene();
+            SinglePlayerBattlePageController.getInstance().setAsScene();
 
         });
-        player1Profile = BattlePageController.getInstance().player1Profile;
-        player2Profile = BattlePageController.getInstance().player2Profile;
+        player1Profile = SinglePlayerBattlePageController.getInstance().player1Profile;
+        player2Profile = SinglePlayerBattlePageController.getInstance().player2Profile;
     }
 
     public void updateGraveYard() {

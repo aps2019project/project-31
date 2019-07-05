@@ -8,7 +8,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.Background;
-import javafx.scene.layout.HBox;
 import model.*;
 
 import java.awt.*;
@@ -57,7 +56,7 @@ public class MatchHistoryController implements Initializable {
             GameRecord gameRecord = matchHistory.getGameRecord();
             gameRecord.makeFormalBattleManagerForRecord();
             Account.getMainAccount().setSelectedGameRecord(gameRecord);
-            BattlePageController.getInstance().setAsScene();
+            SinglePlayerBattlePageController.getInstance().setAsScene();
             gameRecord.showTheWholeGame();
         });
     }

@@ -256,4 +256,7 @@ public class Client extends Thread {
         }
         return false;
     }
+    public void sendInsertRequest(){
+
+    }
 }

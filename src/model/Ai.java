@@ -1,7 +1,7 @@
 package model;
 
 import controller.BattleMenu;
-import controller.BattlePageController;
+import controller.SinglePlayerBattlePageController;
 
 
 public class Ai extends Player {
@@ -14,8 +14,8 @@ public class Ai extends Player {
     }
 
     public void considerAllMoves() {
-        Player me = BattlePageController.getInstance().getMe();
-        Player opponent = BattlePageController.getInstance().getOpponent();
+        Player me = SinglePlayerBattlePageController.getInstance().getMe();
+        Player opponent = SinglePlayerBattlePageController.getInstance().getOpponent();
         for (Deployable deployable : getCardsOnBattleField()) {
             int x2Moves = coefficient(deployable.cell.getX2Coordinate() - me.getHero().cell.getX2Coordinate());
             int x1Moves = coefficient(deployable.cell.getX1Coordinate() - me.getHero().cell.getX1Coordinate());

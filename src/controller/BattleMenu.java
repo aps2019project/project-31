@@ -8,6 +8,7 @@ import view.Output;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Random;
 
 public class BattleMenu extends Menu {
     private static BattleManager battleManager;
@@ -46,7 +47,31 @@ public class BattleMenu extends Menu {
                                                       int maxNumberOfHavingFlag, GameMode gameMode) {
         Player player1 = new Player(player1Acc, false);
         Player player2 = new Player(player2Acc, false);
+        generateFlags(gameMode,maxNumberOfHavingFlag);
         makeInstanceOfBattleManager(player1, player2, numberOfFlags, maxNumberOfHavingFlag, gameMode);
+    }
+
+    private static void generateFlags(GameMode gameMode, int maxNumberOfFlags) {
+        if (gameMode == GameMode.Flag) {
+            Map.getInstance().getCell(3, 5).setHasFlag(true);
+        }
+        if (gameMode == GameMode.Domination) {
+            for (int i = 0; i < maxNumberOfFlags; i++) {
+                putARandomFlagOnMap();
+            }
+        }
+
+    }
+
+    private static void putARandomFlagOnMap() {
+        Random random = new Random();
+        int x1 = random.nextInt(5) + 1;
+        int x2 = random.nextInt(9) + 1;
+        if (Map.getInstance().getCell(x1, x1).hasFlag()) {
+            putARandomFlagOnMap();
+        } else {
+            Map.getInstance().getCell(x1, x2).setHasFlag(true);
+        }
     }
 
     public static void setBattleManagerForSinglePLayer(BattleManagerMode battleManagerMode, Account account,
@@ -123,8 +148,8 @@ public class BattleMenu extends Menu {
         battleManager.getCurrentPlayer().setHasReplaced(false);
         battleManager.assignManaToPlayers();
 
-        if (BattlePageController.getInstance().nextCardField.getChildren().size() <= 1)
-            BattlePageController.getInstance().updateNextCard();
+        if (SinglePlayerBattlePageController.getInstance().nextCardField.getChildren().size() <= 1)
+            SinglePlayerBattlePageController.getInstance().updateNextCard();
 
         isTimeToPutItem();
 
@@ -238,7 +263,7 @@ public class BattleMenu extends Menu {
     }
 
     public static boolean insert(Card card, int x1, int x2) {
-        if(battleManager.isTheGameFinished())
+        if (battleManager.isTheGameFinished())
             return false;
         if (card == null) {
             System.err.println("insert(method) -> card is null");

@@ -15,7 +15,7 @@
 <?import javafx.scene.shape.Polyline?>
 <?import javafx.scene.text.Font?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.BattlePageController">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.SinglePlayerBattlePageController">
    <children>
       <ImageView fitHeight="720.0" fitWidth="1080.0">
          <image>
@@ -519,7 +519,7 @@
          <center>
             <Pane prefHeight="392.0" prefWidth="712.0" BorderPane.alignment="CENTER">
                <children>
-                  <Pane fx:id="mainPane" layoutX="-6.0" layoutY="-47.0" prefHeight="401.0" prefWidth="664.0">
+                  <Pane fx:id="mainPane" layoutX="-6.0" layoutY="-47.0" prefHeight="441.0" prefWidth="770.0">
                      <children>
                         <Polyline fx:id="place51" fill="#00000025" layoutX="55.0" layoutY="377.0" points="-24.0, -24.0, 51.0, -24.0, 22.0, 60.0, -58.0, 60.0" stroke="TRANSPARENT" strokeType="INSIDE" />
                         <Polyline fx:id="place52" fill="#00000024" layoutX="150.0" layoutY="369.0" points="-38.0, -16.0, 40.0, -16.0, 14.0, 68.0, -67.0, 68.0" stroke="TRANSPARENT" strokeType="INSIDE" />
@@ -563,11 +563,11 @@
                         <Polyline fx:id="place17" fill="#00000024" layoutX="536.0" layoutY="57.0" points="-29.0, -25.0, 20.0, -25.0, 28.0, 43.0, -29.0, 43.0" stroke="TRANSPARENT" strokeType="INSIDE" />
                         <Polyline fx:id="place18" fill="#00000026" layoutX="616.0" layoutY="52.0" points="-52.0, -20.0, 14.0, -20.0, 21.0, 45.0, -44.0, 45.0" stroke="TRANSPARENT" strokeType="INSIDE" />
                         <Polyline fx:id="place19" fill="#00000021" layoutX="630.0" layoutY="127.0" points="-54.0, -17.0, 12.0, -17.0, 21.0, 49.0, -43.0, 49.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+                        <Polyline fx:id="place39" fill="#00000021" layoutX="713.0" layoutY="214.0" points="-49.0, -25.0, 14.0, -25.0, 31.0, 50.0, -40.0, 50.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+                        <Polyline fx:id="place28" fill="#00000026" layoutX="698.0" layoutY="125.0" points="-47.0, -17.0, 18.0, -17.0, 30.0, 57.0, -34.0, 57.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+                        <Polyline fx:id="place49" fill="#00000021" layoutX="727.0" layoutY="296.0" points="-57.0, -25.0, 16.0, -25.0, 29.0, 50.0, -47.0, 50.0" stroke="TRANSPARENT" strokeType="INSIDE" />
                      </children>
                   </Pane>
-                  <Polyline fx:id="place49" fill="#00000021" layoutX="725.0" layoutY="251.0" points="-57.0, -25.0, 16.0, -25.0, 29.0, 50.0, -47.0, 50.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-                  <Polyline fx:id="place39" fill="#00000021" layoutX="707.0" layoutY="167.0" points="-49.0, -25.0, 14.0, -25.0, 31.0, 50.0, -40.0, 50.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-                  <Polyline fx:id="place28" fill="#00000026" layoutX="691.0" layoutY="78.0" points="-47.0, -17.0, 18.0, -17.0, 30.0, 57.0, -34.0, 57.0" stroke="TRANSPARENT" strokeType="INSIDE" />
                </children></Pane>
          </center>
       </BorderPane>

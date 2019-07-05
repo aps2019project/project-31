@@ -1,7 +1,7 @@
 package model;
 
 import constants.FunctionType;
-import controller.BattlePageController;
+import controller.SinglePlayerBattlePageController;
 import view.Output;
 
 import java.util.ArrayList;
@@ -228,7 +228,7 @@ public class Player {
     }
 
     public Deployable opponentDeployable(int uniqueId) {
-        for (Deployable card : BattlePageController.getInstance().getOpponent().cardsOnBattleField) {
+        for (Deployable card : SinglePlayerBattlePageController.getInstance().getOpponent().cardsOnBattleField) {
             if (card != null && uniqueId == card.getUniqueId())
                 return card;
         }

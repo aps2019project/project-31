@@ -23,12 +23,12 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-public class BattlePageController implements Initializable {
+public class SinglePlayerBattlePageController implements Initializable {
     public static final double SCALE = 0.25;
     public static final int OFFSET_X = -60;
     public static final int OFFSET_Y = -90;
     private static Scene scene;
-    private static BattlePageController battlePageController;
+    private static SinglePlayerBattlePageController singlePlayerBattlePageController;
     public static final int HAND_CAPACITY = 6;
     public Button graveYard;
     public StackPane column1;
@@ -154,7 +154,7 @@ public class BattlePageController implements Initializable {
     private ColumnOfHand[] columnHands = new ColumnOfHand[6];
     private GameRecord gameRecord;
 
-    public BattlePageController() {
+    public SinglePlayerBattlePageController() {
     }
 
     public void setInGraveYard(boolean inGraveYard) {
@@ -183,12 +183,12 @@ public class BattlePageController implements Initializable {
     }
 
     public static void deleteBattlePage() {
-        battlePageController = null;
+        singlePlayerBattlePageController = null;
     }
 
-    public static BattlePageController getInstance() {
-        if (battlePageController == null) battlePageController = new BattlePageController();
-        return battlePageController;
+    public static SinglePlayerBattlePageController getInstance() {
+        if (singlePlayerBattlePageController == null) singlePlayerBattlePageController = new SinglePlayerBattlePageController();
+        return singlePlayerBattlePageController;
     }
 
     public void setMe(Player me) {
@@ -288,7 +288,7 @@ public class BattlePageController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        battlePageController = this;
+        singlePlayerBattlePageController = this;
         BattleManager battle = BattleMenu.getBattleManager();
 
         if (!battle.isThisRecordedGame())
@@ -343,7 +343,7 @@ public class BattlePageController implements Initializable {
                 displayMessage("this is not your turn =");
             } else {
                 if (isMyTurn() && battle.getCurrentPlayer().getSelectedCard() != null) {
-                    BattlePageController.getInstance().replaceCardInHand(battle.getCurrentPlayer().getSelectedCard().getId(), battle);
+                    SinglePlayerBattlePageController.getInstance().replaceCardInHand(battle.getCurrentPlayer().getSelectedCard().getId(), battle);
 
                 }
             }
@@ -373,22 +373,22 @@ public class BattlePageController implements Initializable {
     }
 
     public void replaceCardInHand(int cardId, BattleManager battleManager) {
-        for (Card card : BattlePageController.getInstance().me.getHand()) {
+        for (Card card : SinglePlayerBattlePageController.getInstance().me.getHand()) {
             if (card != null && card.getId() == cardId) {
-                Player me = BattlePageController.getInstance().me;
+                Player me = SinglePlayerBattlePageController.getInstance().me;
                 if (me.hasReplaced()) {
                     displayMessage("you have replaced once this turn!!");
                     return;
                 }
                 me.generateCardInReplace();
-                BattlePageController.getInstance().removeCardFromHand(card, battleManager);
+                SinglePlayerBattlePageController.getInstance().removeCardFromHand(card, battleManager);
                 me.getHand().remove(card);
                 me.getCurrentDeck().addCard(card);
                 Card cardInReplace = me.getCardInReplace();
                 me.getHand().add(cardInReplace);
                 me.getCurrentDeck().getCards().remove
                         (cardInReplace);
-                BattlePageController.getInstance().showCardInHand(cardInReplace, battleManager);
+                SinglePlayerBattlePageController.getInstance().showCardInHand(cardInReplace, battleManager);
                 me.setHasReplaced(true);
                 return;
 
@@ -401,18 +401,18 @@ public class BattlePageController implements Initializable {
         DisplayableDeployable face = new DisplayableDeployable(theMinion);
         theMinion.setFace(face);
         face.updateStats();
-        if (BattlePageController.getInstance() != null) {
-            if (BattlePageController.getInstance().mainPane == null) {
+        if (SinglePlayerBattlePageController.getInstance() != null) {
+            if (SinglePlayerBattlePageController.getInstance().mainPane == null) {
                 System.err.println("main pane is null");
                 return;
             }
-            BattlePageController.getInstance().mainPane.getChildren().add(face);
+            SinglePlayerBattlePageController.getInstance().mainPane.getChildren().add(face);
         }
         face.setOnMouseClicked(event -> {
             if (!isMyTurn()) {
                 displayMessage("this is not your turn =");
             } else {
-                BattlePageController.getInstance().setOnMouseDeployable(theMinion, battle);
+                SinglePlayerBattlePageController.getInstance().setOnMouseDeployable(theMinion, battle);
                 face.updateStats();
             }
         });
@@ -420,13 +420,13 @@ public class BattlePageController implements Initializable {
 
     public void removeASpellFromHand(Player currentPlayer, boolean isThisRecordedGame, Spell spell, BattleManager battleManager) {
         if (!currentPlayer.isAi() && !isThisRecordedGame)
-            BattlePageController.getInstance().removeSpellFromHand(spell.getFace(), battleManager);
+            SinglePlayerBattlePageController.getInstance().removeSpellFromHand(spell.getFace(), battleManager);
     }
 
     public void showThatGameEnded() {
         MainMenuController.getInstance().setAsScene();
         BattleMenu.deleteBattleManagerAndMakeMap();
-        BattlePageController.deleteBattlePage();
+        SinglePlayerBattlePageController.deleteBattlePage();
     }
 
     private void recordTheGame(BattleManager battle) {
@@ -896,7 +896,7 @@ public class BattlePageController implements Initializable {
                         System.err.println("no selected card");
                         return;
                     }
-                    if (cell.getCardInCell() == null && (me.getSelectedCard().getType() == CardType.item)) { // spell can't insert on the ground ?
+                    if (cell.getCardInCell() == null && (me.getSelectedCard().getType() == CardType.item)) { // spell can't insert on the ground ?'
                         BattleMenu.insert(me.getSelectedCard(), cell.getX1Coordinate(), cell.getX2Coordinate());
                     } else if (cell.getCardInCell() != null) {
                         displayMessage("destination is not empty");

@@ -1,6 +1,5 @@
 package controller;
 
-import com.sun.jdi.IntegerValue;
 import constants.BattleManagerMode;
 import constants.GameMode;
 import javafx.collections.FXCollections;
@@ -60,7 +59,7 @@ public class CustomGameController implements Initializable {
     private void customGameMode1() {
         BattleMenu.setBattleManagerForSinglePLayer(BattleManagerMode.CustomGame, Account.getMainAccount(),
                 100, 100, GameMode.DeathMatch, 1);
-        BattlePageController.getInstance().setAsScene();
+        SinglePlayerBattlePageController.getInstance().setAsScene();
     }
 
     private void customGameMode2() {
@@ -77,7 +76,7 @@ public class CustomGameController implements Initializable {
             if (numberOfTurnsHavingFlagToWin < 20) {
                 BattleMenu.setBattleManagerForSinglePLayer(BattleManagerMode.CustomGame, Account.getMainAccount(),
                         BattleManager.PERMANENT, numberOfTurnsHavingFlagToWin, GameMode.Flag, 1);
-                BattlePageController.getInstance().setAsScene();
+                SinglePlayerBattlePageController.getInstance().setAsScene();
             }else LoginPageController.getInstance().displayMessage("TOO BIG A NUMBER SIR!", 19, 5, vbox);
         }
     }
@@ -96,7 +95,7 @@ public class CustomGameController implements Initializable {
             if (numberOfFlags < 45) {
                 BattleMenu.setBattleManagerForSinglePLayer(BattleManagerMode.CustomGame, Account.getMainAccount(),
                         numberOfFlags, 100, GameMode.Domination, 1);
-                BattlePageController.getInstance().setAsScene();
+                SinglePlayerBattlePageController.getInstance().setAsScene();
             } else LoginPageController.getInstance().displayMessage("TOO BIG A NUMBER SIR!", 19, 5, vbox);
         }
     }

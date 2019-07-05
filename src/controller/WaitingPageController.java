@@ -102,7 +102,7 @@ public class WaitingPageController implements Initializable {
             }
             if (johnyJohnyYesPapaGoingToBattle.get()) {
                 System.out.println("battle page it is");
-                BattlePageController.getInstance().setAsScene();
+                SinglePlayerBattlePageController.getInstance().setAsScene();
             } else {
                 System.out.println("play menu it is");
                 PlayMenuController.getInstance().setAsScene();
