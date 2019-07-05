@@ -150,9 +150,74 @@ public class MultiPlayerBattlePageController implements Initializable {
     private ArrayList<ImageView> manas = new ArrayList<>();
     private controller.ColumnOfHand[] columnHands = new controller.ColumnOfHand[6];
     private GameRecord gameRecord;
-
+    private GameCompiler gameCompiler;
     public MultiPlayerBattlePageController() {
     }
+
+    private void playTheActualGame(BattleManager battle) {
+        initPlayers();
+        makeColumnHands();
+        setPolygonsInMap();
+        initHeroesSpecialPowers();
+        setOnActionForEveryCell();
+        battle.initialTheGame();
+        for (int i = 0; i < HAND_CAPACITY; i++) {
+            handleHandPlace(i, battle);
+        }
+        atStartThings(battle);
+        BattleMenu.doAllAtTheBeginningOfTurnThings(true);
+        gameCompiler = new GameCompiler(battle);
+        if(!isMyTurn())
+
+
+        infoBtn.setOnAction(actionEvent -> {
+            if (!isMyTurn()) {
+                displayMessage("this is not your turn =");
+            } else
+                infoButton();
+        });
+        selectMItem.setOnAction(event -> {
+            if (!isMyTurn()) {
+                displayMessage("this is not your turn =");
+            } else
+                selectItem();
+        });
+        replace.setOnAction(event -> {
+            if (!isMyTurn()) {
+                displayMessage("this is not your turn =");
+            } else {
+                if (isMyTurn() && battle.getCurrentPlayer().getSelectedCard() != null) {
+                    MultiPlayerBattlePageController.getInstance().replaceCardInHand(battle.getCurrentPlayer().getSelectedCard().getId(), battle);
+
+                }
+            }
+        });
+        endTurn.setOnAction(event -> {
+            try {
+                if (!isMyTurn()) {
+                    displayMessage("this is not your turn =");
+                } else
+                    endTurn(battle);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+        concede.setOnAction(event -> {
+            concede.setText("Concede");
+            if (me == battle.getPlayer1())
+                battle.player2Won();
+            else
+                battle.player1Won();
+
+        });
+        graveYard.setOnAction(event -> {
+            isInGraveYard = true;
+            GraveYardController.getInstance().setAsScene();
+        });
+    }
+
+
+
 
     public void setInGraveYard(boolean inGraveYard) {
         isInGraveYard = inGraveYard;
@@ -166,6 +231,10 @@ public class MultiPlayerBattlePageController implements Initializable {
         }
 
         Initializer.setCurrentScene(scene);
+    }
+
+    public GameCompiler getGameCompiler() {
+        return gameCompiler;
     }
 
     private void loadTheScene() {
@@ -306,68 +375,6 @@ public class MultiPlayerBattlePageController implements Initializable {
         else if (((Deployable) me.getSelectedCard()).getItem() == null)
             displayMessage("your deployable doesn't have an item to select");
         else me.setSelectedCard(((Deployable) me.getSelectedCard()).getItem());
-    }
-
-    private void playTheActualGame(BattleManager battle) {
-        initPlayers();
-        makeColumnHands();
-        setPolygonsInMap();
-        infoBtn.setOnAction(actionEvent -> {
-            if (!isMyTurn()) {
-                displayMessage("this is not your turn =");
-            } else
-                infoButton();
-        });
-        selectMItem.setOnAction(event -> {
-            if (!isMyTurn()) {
-                displayMessage("this is not your turn =");
-            } else
-                selectItem();
-        });
-        initHeroesSpecialPowers();
-
-        setOnActionForEveryCell();
-
-
-        battle.initialTheGame();
-
-        for (int i = 0; i < HAND_CAPACITY; i++) {
-            handleHandPlace(i, battle);
-        }
-        atStartThings(battle);
-        BattleMenu.doAllAtTheBeginningOfTurnThings(true);
-        replace.setOnAction(event -> {
-            if (!isMyTurn()) {
-                displayMessage("this is not your turn =");
-            } else {
-                if (isMyTurn() && battle.getCurrentPlayer().getSelectedCard() != null) {
-                    MultiPlayerBattlePageController.getInstance().replaceCardInHand(battle.getCurrentPlayer().getSelectedCard().getId(), battle);
-
-                }
-            }
-        });
-        endTurn.setOnAction(event -> {
-            try {
-                if (!isMyTurn()) {
-                    displayMessage("this is not your turn =");
-                } else
-                    endTurn(battle);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        });
-        concede.setOnAction(event -> {
-            concede.setText("Concede");
-            if (me == battle.getPlayer1())
-                battle.player2Won();
-            else
-                battle.player1Won();
-
-        });
-        graveYard.setOnAction(event -> {
-            isInGraveYard = true;
-            GraveYardController.getInstance().setAsScene();
-        });
     }
 
     public void replaceCardInHand(int cardId, BattleManager battleManager) {

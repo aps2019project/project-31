@@ -141,7 +141,22 @@ public class Client extends Thread {
             e.printStackTrace();
         }
     }
+    public void theThingsWeDoWhenitIsNotOurTime(){  // :'((((((
+        Thread reading = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    String command = is.readUTF();
+                    while (command.equals("T")){
 
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        reading.start();
+    }
 
     public String requestCardStock(int id) {
         try {
