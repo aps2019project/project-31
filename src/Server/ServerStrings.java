@@ -10,4 +10,5 @@ public class ServerStrings {
     public static final String OUT_OF_STOCK = "out of stock";
     public static final String REQUEST_SELL = "(\\d+) request to sell card: (\\d+)";
     public static final String SOLD = "sold successfully";
+    public static final String GET_LEADERBOARD = "request leaderboard";
 }

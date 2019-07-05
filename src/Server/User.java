@@ -32,9 +32,34 @@ public class User extends Thread {
 
                 handleCardSellingRequest(command);
 
+                handleLeaderBoardRequest(command);
+
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    private void handleLeaderBoardRequest(String command) throws IOException {
+        Pattern pattern = Pattern.compile(ServerStrings.GET_LEADERBOARD);
+        Matcher matcher = pattern.matcher(command);
+        if (matcher.matches()) {
+            Account.sortAllAccounts();
+            accounts:
+            for (int i = 0; i < Integer.min(Account.getAllAccounts().size(), 10); i++) {
+                String ret = "       " + (i + 1) + ".    " +
+                        Account.getAllAccounts().get(i).toString();
+                dataOutputStream.writeUTF(ret);
+                for (User user : users) {
+                    if (user.socket.isConnected()
+                            && user.account.equals(Account.getAllAccounts().get(i))) {
+                        dataOutputStream.writeUTF("Online");
+                        continue accounts;
+                    }
+                }
+                dataOutputStream.writeUTF("Offline");
+            }
+            dataOutputStream.writeUTF("end");
         }
     }
 
@@ -61,7 +86,7 @@ public class User extends Thread {
             }
             this.account.addDaric(card.getPrice());
             this.account.getCollection().remove(card);
-            Shop.getStock().put(card.getId(),Shop.getStock().get(card.getId()) + 1);
+            Shop.getStock().put(card.getId(), Shop.getStock().get(card.getId()) + 1);
             dataOutputStream.writeUTF(ServerStrings.SOLD);
         }
 

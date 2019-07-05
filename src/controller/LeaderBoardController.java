@@ -3,13 +3,16 @@ package controller;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import model.Account;
+import model.Client;
 import model.Initializer;
 
 import java.awt.*;
@@ -25,6 +28,9 @@ public class LeaderBoardController implements Initializable {
     public Button leaderBoardBackButton;
     public ScrollPane LeaderBoardScrollPane;
     public Label label;
+    @FXML
+    private Button refreshButton;
+    private VBox currentVbox;
 
     public LeaderBoardController() {
     }
@@ -63,7 +69,21 @@ public class LeaderBoardController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         leaderBoardBackButton.setOnAction(event -> MainMenuController.getInstance().setAsScene());
-        label.setText(updateLeaderBoard());
-        System.err.println(updateLeaderBoard());
+        refreshLeaderBoard();
+        refreshButton.setOnAction(actionEvent -> refreshLeaderBoard());
+
+    }
+
+    private void refreshLeaderBoard() {
+        try {
+            currentVbox = Client.getClient().requestLeaderBoard();
+            currentVbox.setPadding(new Insets(50,0,0,0));
+            StackPane stackPane = new StackPane();
+            stackPane.getChildren().addAll(label, currentVbox);
+            LeaderBoardScrollPane.setContent(stackPane);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
