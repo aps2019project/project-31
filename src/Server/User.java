@@ -146,24 +146,21 @@ public class User extends Thread {
                 case Domination:
                     if (waitingUserMode3 == null) {
                         waitingUserMode3 = this;
-                    }
-                    else makeBattle(GameMode.Domination,waitingUserMode3,this);
+                    } else makeBattle(GameMode.Domination, waitingUserMode3, this);
                     break;
                 case DeathMatch:
                     if (waitingUserMode1 == null) {
                         waitingUserMode1 = this;
-                    }
-                    else makeBattle(GameMode.DeathMatch,waitingUserMode1,this);
+                    } else makeBattle(GameMode.DeathMatch, waitingUserMode1, this);
 
                     break;
                 case Flag:
                     if (waitingUserMode2 == null) {
                         waitingUserMode2 = this;
-                    }
-                    else makeBattle(GameMode.Flag,waitingUserMode2,this);
+                    } else makeBattle(GameMode.Flag, waitingUserMode2, this);
                     break;
             }
-        }else{
+        } else {
             System.out.println("ridi tu ferestadan dastur be user");
             dataOutputStream.writeUTF(ServerStrings.MULTIPLAYERFAILED);
         }
