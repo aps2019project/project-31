@@ -140,33 +140,8 @@ public class BattleMenu extends Menu {
         Map.getInstance().makeANewMap();
     }
 
-    public static void doAllAtTheBeginningOfTurnThings(boolean isMulti) {
-        for (Deployable deployable : battleManager.getCurrentPlayer().getCardsOnBattleField()) {
-            deployable.setMoved(false);
-            deployable.setAttacked(false);
-        }
-        battleManager.getCurrentPlayer().setHasReplaced(false);
-        battleManager.assignManaToPlayers();
-        if(isMulti){
-            if (MultiPlayerBattlePageController.getInstance().nextCardField.getChildren().size() <= 1)
-                MultiPlayerBattlePageController.getInstance().updateNextCard();
-        }else {
-            if (SinglePlayerBattlePageController.getInstance().nextCardField.getChildren().size() <= 1)
-                SinglePlayerBattlePageController.getInstance().updateNextCard();
-        }
-        isTimeToPutItem();
 
 
-    }
-
-    public static void isTimeToPutItem() {
-        for (int theTurn : battleManager.getTurnsAppearingTheCollectibleItem()) {
-            if (theTurn == battleManager.getTurn()) {
-                Collections.shuffle(Shop.getAllCollectibles());
-                battleManager.putItemOnMap(Shop.getAllCollectibles().get(0));
-            }
-        }
-    }
 
     public BattleMenu(int id, String title) {
         super(id, title);
@@ -209,27 +184,9 @@ public class BattleMenu extends Menu {
     }*/
 
 
-    public static void doAllThingsInEndingOfTheTurns() {
-        battleManager.makeIsMovedAndIsAttackedFalse();
-        battleManager.applyItemFunctions(battleManager.getPlayer1().getHero(), FunctionType.Passive);
-        battleManager.getCurrentPlayer().placeNextCardToHand();//this should just be called just after inserting cards from hand to battle!!
-        battleManager.getCurrentPlayer().endOfTurnBuffsAndFunctions();
-        battleManager.getOtherPlayer().endOfTurnBuffsAndFunctions();
-        battleManager.checkTheEndSituation();
-        flagModeSitAndAddTurnAndHeroSpellSit();
-        //    battleManager.refreshTheStatusOfMap();
-        BattleMenu.showGlimpseOfMap();
-    }
 
-    public static void flagModeSitAndAddTurnAndHeroSpellSit() {
-        if (battleManager.getGameMode() == GameMode.Flag) {
-            battleManager.getPlayer1().handleNumberOfTurnHavingFlagAtTheEndOfTurn();
-            battleManager.getPlayer2().handleNumberOfTurnHavingFlagAtTheEndOfTurn();
-        }
-        battleManager.addTurn();
-        battleManager.getPlayer1().getHero().getHeroSpell().decrementCooldonwRemaining();
-        battleManager.getPlayer2().getHero().getHeroSpell().decrementCooldonwRemaining();
-    }
+
+
 
     public static void prepareComboAttack(String[] strNumbers, int opponentCardId) {
         ArrayList<Deployable> validCards = new ArrayList<>();

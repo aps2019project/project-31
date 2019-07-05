@@ -151,6 +151,7 @@ public class MultiPlayerBattlePageController implements Initializable {
     private controller.ColumnOfHand[] columnHands = new controller.ColumnOfHand[6];
     private GameRecord gameRecord;
     private GameCompiler gameCompiler;
+
     public MultiPlayerBattlePageController() {
     }
 
@@ -165,9 +166,11 @@ public class MultiPlayerBattlePageController implements Initializable {
             handleHandPlace(i, battle);
         }
         atStartThings(battle);
-        BattleMenu.doAllAtTheBeginningOfTurnThings(true);
+        BattleMenu.getBattleManager().doAllAtTheBeginningOfTurnThings(true);
         gameCompiler = new GameCompiler(battle);
-        if(!isMyTurn())
+        if (!isMyTurn()) {
+            Client.getClient().theThingsWeDoWhenitIsNotOurTime();
+        }
 
 
         infoBtn.setOnAction(actionEvent -> {
@@ -193,14 +196,16 @@ public class MultiPlayerBattlePageController implements Initializable {
             }
         });
         endTurn.setOnAction(event -> {
-            try {
-                if (!isMyTurn()) {
-                    displayMessage("this is not your turn =");
-                } else
-                    endTurn(battle);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            if (!isMyTurn()) {
+                displayMessage("this is not your turn =");
+            } else {
+                try {
+                    Client.getClient().sendEndTurnRequest();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
+
         });
         concede.setOnAction(event -> {
             concede.setText("Concede");
@@ -215,8 +220,6 @@ public class MultiPlayerBattlePageController implements Initializable {
             GraveYardController.getInstance().setAsScene();
         });
     }
-
-
 
 
     public void setInGraveYard(boolean inGraveYard) {
@@ -458,22 +461,22 @@ public class MultiPlayerBattlePageController implements Initializable {
         }
     }
 
-    private void endTurn(BattleManager battle) throws InterruptedException {
-        battle.getGameRecord().addAction("T");
+    public void endTurn(BattleManager battle) throws InterruptedException {
+        System.out.println("called endTurn in Multi player");
         Thread.sleep(300);
         putNextCardInHand(battle);
         updateNextCard();
-        BattleMenu.doAllThingsInEndingOfTheTurns();
+        BattleMenu.getBattleManager().doAllThingsInEndingOfTheTurns();
         if (isMyTurn()) {
             battle.setCurrentPlayer(battle.getOtherPlayer());
         }
-        BattleMenu.doAllAtTheBeginningOfTurnThings(true);
+        BattleMenu.getBattleManager().doAllAtTheBeginningOfTurnThings(true);
         if (battle.getCurrentPlayer().isAi()) {
             System.err.println("ai is playing");
             ((Ai) battle.getCurrentPlayer()).play();
             battle.setCurrentPlayer(battle.getOtherPlayer());
-            BattleMenu.doAllThingsInEndingOfTheTurns();
-            BattleMenu.doAllAtTheBeginningOfTurnThings(true);
+            BattleMenu.getBattleManager().doAllThingsInEndingOfTheTurns();
+            BattleMenu.getBattleManager().doAllAtTheBeginningOfTurnThings(true);
         }
         updateManaViewers(battle);
     }

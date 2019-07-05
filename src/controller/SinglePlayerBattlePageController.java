@@ -337,7 +337,7 @@ public class SinglePlayerBattlePageController implements Initializable {
             handleHandPlace(i, battle);
         }
         atStartThings(battle);
-        BattleMenu.doAllAtTheBeginningOfTurnThings(false);
+        BattleMenu.getBattleManager().doAllAtTheBeginningOfTurnThings(false);
         refreshFlagsSituation(battle);
         replace.setOnAction(event -> {
             if (!isMyTurn()) {
@@ -454,17 +454,17 @@ public class SinglePlayerBattlePageController implements Initializable {
         Thread.sleep(300);
         putNextCardInHand(battle);
         updateNextCard();
-        BattleMenu.doAllThingsInEndingOfTheTurns();
+        BattleMenu.getBattleManager().doAllThingsInEndingOfTheTurns();
         if (isMyTurn()) {
             battle.setCurrentPlayer(battle.getOtherPlayer());
         }
-        BattleMenu.doAllAtTheBeginningOfTurnThings(false);
+        BattleMenu.getBattleManager().doAllAtTheBeginningOfTurnThings(false);
         if (battle.getCurrentPlayer().isAi()) {
             System.err.println("ai is playing");
             ((Ai) battle.getCurrentPlayer()).play();
             battle.setCurrentPlayer(battle.getOtherPlayer());
-            BattleMenu.doAllThingsInEndingOfTheTurns();
-            BattleMenu.doAllAtTheBeginningOfTurnThings(false);
+            BattleMenu.getBattleManager().doAllThingsInEndingOfTheTurns();
+            BattleMenu.getBattleManager().doAllAtTheBeginningOfTurnThings(false);
         }
         updateManaViewers(battle);
     }

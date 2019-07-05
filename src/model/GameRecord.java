@@ -3,6 +3,7 @@ package model;
 import constants.FunctionType;
 import constants.GameMode;
 import controller.BattleMenu;
+import controller.MultiPlayerBattlePageController;
 import controller.SinglePlayerBattlePageController;
 import controller.Shop;
 import javafx.application.Platform;
@@ -57,22 +58,14 @@ public class GameRecord {
         Map.getInstance().getCell(3, 9).setCardInCell(battleManager.getPlayer2().getHero());
         GameCompiler gameCompiler = new GameCompiler(battleManager);
         for (String action : actions) {
-
-            if (action.startsWith("E")) {
-                System.out.println("the game ended");
-                SinglePlayerBattlePageController.getInstance().showThatGameEnded();
-                System.out.println("the game ended ? wtf ???");
-            }
             if (action.startsWith("T")) {
                 formalEndTurn();
             }
-            if (action.contains("A"))
-                gameCompiler.checkIfAttack(action);
-            if (action.contains("I"))
-                gameCompiler.checkIfInsert(action);
-            if (action.contains("M"))
-                gameCompiler.checkIfMove(action);
-            SinglePlayerBattlePageController.getInstance().refreshTheStatusOfMap(battleManager);
+            gameCompiler.whatIsThePlay(action, gameCompiler);
+            if (battleManager.isMultiPlayer())
+                MultiPlayerBattlePageController.getInstance().refreshTheStatusOfMap(battleManager);
+            else
+                SinglePlayerBattlePageController.getInstance().refreshTheStatusOfMap(battleManager);
             try {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
@@ -97,7 +90,7 @@ public class GameRecord {
         battleManager.applyItemFunctions(battleManager.getPlayer1().getHero(), FunctionType.Passive);
         battleManager.getCurrentPlayer().endOfTurnBuffsAndFunctions();
         battleManager.getOtherPlayer().endOfTurnBuffsAndFunctions();
-        BattleMenu.flagModeSitAndAddTurnAndHeroSpellSit();
+        BattleMenu.getBattleManager().flagModeSitAndAddTurnAndHeroSpellSit();
     }
 
     private void doThingsAtBeginningOfTurn() {

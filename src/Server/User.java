@@ -28,7 +28,7 @@ public class User extends Thread {
     private static User waitingUserMode1;
     private static User waitingUserMode2;
     private static User waitingUserMode3;
-
+    private BattleManager battle;
 
     @Override
     public void run() {
@@ -58,6 +58,7 @@ public class User extends Thread {
 
                 handleMainDeckSet(command);
 
+
                 if (handleLogout(command)) break;
 
             }
@@ -66,12 +67,18 @@ public class User extends Thread {
         }
     }
 
+    private void handleEndTurnRequest(String command) {
+        if (command.equals(ServerStrings.SENDENDTURNREQUEST)) {
+
+        }
+    }
+
     private void handleMainDeckSet(String command) throws IOException {
         Pattern pattern = Pattern.compile(ServerStrings.SET_AS_MAIN_REQUEST);
         Matcher matcher = pattern.matcher(command);
-        if (matcher.matches()){
-            for (Deck deck: account.getDecks()){
-                if (deck.getDeckName().matches(matcher.group(1))){
+        if (matcher.matches()) {
+            for (Deck deck : account.getDecks()) {
+                if (deck.getDeckName().matches(matcher.group(1))) {
                     account.setMainDeck(deck);
                     dataOutputStream.writeUTF(ServerStrings.MAIN_DECK_SET);
                     return;
@@ -84,12 +91,12 @@ public class User extends Thread {
     private void handleCardRemoval(String command) throws IOException {
         Pattern pattern = Pattern.compile(ServerStrings.DELETE_CARD_REQUEST);
         Matcher matcher = pattern.matcher(command);
-        if (matcher.matches()){
+        if (matcher.matches()) {
             int cardID = Integer.parseInt(matcher.group(1));
             String deckName = matcher.group(2);
-            for (Deck deck: account.getDecks()){
+            for (Deck deck : account.getDecks()) {
                 System.out.println(deck.getDeckName());
-                if (deck.getDeckName().equals(deckName)){
+                if (deck.getDeckName().equals(deckName)) {
                     deck.deleteCard(Shop.findCardById(cardID));
                     dataOutputStream.writeUTF(ServerStrings.CARD_DELETED);
                     return;
@@ -103,7 +110,7 @@ public class User extends Thread {
     private void handleDeckDeletion(String command) throws IOException {
         Pattern pattern = Pattern.compile(ServerStrings.DELETE_DECK);
         Matcher matcher = pattern.matcher(command);
-        if (matcher.matches()){
+        if (matcher.matches()) {
             account.deleteDeck(matcher.group(1));
             dataOutputStream.writeUTF(ServerStrings.DECK_DELETED);
         }
@@ -265,7 +272,7 @@ public class User extends Thread {
                     "/Sources/ServerResources/serverData.txt"));
             bufferedWriter.write(yaGson.toJson(Shop.getStock()));
             bufferedWriter.flush();
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
@@ -322,6 +329,7 @@ public class User extends Thread {
     private void makeBattle(GameMode gameMode, User user1, User user2) throws IOException {
         BattleMenu.setBattleManagerForMultiPlayer(user1.account, user2.account, findNumberOfFlags(gameMode),
                 findNumberOfHavingFlags(gameMode), gameMode);
+        battle = BattleMenu.getBattleManager();
         user1.dataOutputStream.writeUTF(ServerStrings.MULTIPLAYERSUCCESS);
         Server.sendObject(BattleMenu.getBattleManager(), user1.dataOutputStream);
         user2.dataOutputStream.writeUTF(ServerStrings.MULTIPLAYERSUCCESS);

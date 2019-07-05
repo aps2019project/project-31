@@ -109,23 +109,23 @@ public class Client extends Thread {
                     os.writeUTF(authToken + " Domination request from user:" + Account.getMainAccount().getUsername());
                     break;
             }
-            new Thread(()->{
+            new Thread(() -> {
                 try {
-                     String serverReply = is.readUTF();
+                    String serverReply = is.readUTF();
                     if (serverReply.equals(ServerStrings.MULTIPLAYERSUCCESS)) {
                         BattleManager battle = (BattleManager) receiveObject(this.is, BattleManager.class);
                         System.out.println("receeeeeeeeeeeeived successfully");
                         BattleMenu.setBattleManager(battle);
-                        if(battle==null)
+                        if (battle == null)
                             System.out.println("wtf isssssssssssssssssssssssssssssssssssssssssssssss");
                         WaitingPageController.getInstance().johnyJohnyYesPapaGoingToBattle.set(true);
                         synchronized (WaitingPageController.getInstance()) {
                             WaitingPageController.getInstance().notifyAll();
                         }
-                    } else if(serverReply.equals(ServerStrings.CANCELSUCCESSFULLY)) {
+                    } else if (serverReply.equals(ServerStrings.CANCELSUCCESSFULLY)) {
                         WaitingPageController.getInstance().johnyJohnyYesPapaGoingToBattle.set(true);
                         System.out.println("we canceled the game honey");
-                        synchronized (WaitingPageController.getInstance()){
+                        synchronized (WaitingPageController.getInstance()) {
                             WaitingPageController.getInstance().notifyAll();
                         }
                     }
@@ -135,22 +135,28 @@ public class Client extends Thread {
             }).start();
 
 
-
-
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    public void theThingsWeDoWhenitIsNotOurTime(){  // :'((((((
+    public void sendEndTurnRequest() throws IOException {
+        os.writeUTF(ServerStrings.SENDENDTURNREQUEST);
+
+    }
+    public void theThingsWeDoWhenitIsNotOurTime() {  // :'((((((
         Thread reading = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
+                    GameCompiler gc = MultiPlayerBattlePageController.getInstance().getGameCompiler();
                     String command = is.readUTF();
-                    while (command.equals("T")){
-
+                    while (!command.equals("T")) {
+                        gc.whatIsThePlay(command,gc);
                     }
+                    MultiPlayerBattlePageController.getInstance().endTurn(BattleMenu.getBattleManager()); /// turn end ro inja ejra kon
                 } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
@@ -180,7 +186,7 @@ public class Client extends Thread {
         return response.matches(ServerStrings.SOLD);
     }
 
-    public boolean requestCardAddition(int cardID, String deckname){
+    public boolean requestCardAddition(int cardID, String deckname) {
         try {
             os.writeUTF("add " + cardID + " to " + deckname);
             String response = is.readUTF();
@@ -224,17 +230,17 @@ public class Client extends Thread {
         authToken = -1;
     }
 
-    public boolean requestRemoveDeck(String deckName){
+    public boolean requestRemoveDeck(String deckName) {
         try {
             os.writeUTF("remove deck:" + deckName);
             return is.readUTF().matches(ServerStrings.DECK_DELETED);
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return false;
     }
 
-    public boolean requestNewDeck(String deckName){
+    public boolean requestNewDeck(String deckName) {
         try {
             os.writeUTF("new deck:" + deckName);
             return is.readUTF().matches(ServerStrings.NEW_DECK_SUCCESS);
@@ -271,7 +277,8 @@ public class Client extends Thread {
         }
         return false;
     }
-    public void sendInsertRequest(){
+
+    public void sendInsertRequest() {
 
     }
 }

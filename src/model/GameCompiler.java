@@ -2,6 +2,7 @@ package model;
 
 
 import controller.Shop;
+import controller.SinglePlayerBattlePageController;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -61,6 +62,20 @@ public class GameCompiler {
                     break;
             }
         }
+    }
+
+    public void whatIsThePlay(String action, GameCompiler gameCompiler) {
+        if (action.startsWith("E")) {
+            System.out.println("the game ended");
+            SinglePlayerBattlePageController.getInstance().showThatGameEnded();
+            System.out.println("the game ended ? wtf ???");
+        }
+        if (action.contains("A"))
+            gameCompiler.checkIfAttack(action);
+        if (action.contains("I"))
+            gameCompiler.checkIfInsert(action);
+        if (action.contains("M"))
+            gameCompiler.checkIfMove(action);
     }
 }
 

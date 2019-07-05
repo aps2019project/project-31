@@ -1,6 +1,7 @@
 package model;
 
 import controller.MultiPlayerBattlePageController;
+import controller.Shop;
 import controller.SinglePlayerBattlePageController;
 import constants.AttackType;
 import constants.CardType;
@@ -36,6 +37,10 @@ public class BattleManager {
 
     public int getTurn() {
         return turn;
+    }
+
+    public boolean isMultiPlayer() {
+        return isMultiPlayer;
     }
 
     public BattleManager(Player player1, Player player2, int maxNumberOfFlags, int maxTurnsOfHavingFlag, GameMode gameMode, boolean isThisRecordedGame, boolean isMultiPlayer) {
@@ -1450,6 +1455,54 @@ public class BattleManager {
         }
     }
 
+    public void doAllThingsInEndingOfTheTurns() {
+        makeIsMovedAndIsAttackedFalse();
+        applyItemFunctions(getPlayer1().getHero(), FunctionType.Passive);
+        getCurrentPlayer().placeNextCardToHand();//this should just be called just after inserting cards from hand to battle!!
+        getCurrentPlayer().endOfTurnBuffsAndFunctions();
+        getOtherPlayer().endOfTurnBuffsAndFunctions();
+        checkTheEndSituation();
+        flagModeSitAndAddTurnAndHeroSpellSit();
+        //    battleManager.refreshTheStatusOfMap();
+        BattleMenu.showGlimpseOfMap();
+    }
+
+    public void flagModeSitAndAddTurnAndHeroSpellSit() {
+        if (getGameMode() == GameMode.Flag) {
+            getPlayer1().handleNumberOfTurnHavingFlagAtTheEndOfTurn();
+            getPlayer2().handleNumberOfTurnHavingFlagAtTheEndOfTurn();
+        }
+        addTurn();
+        getPlayer1().getHero().getHeroSpell().decrementCooldonwRemaining();
+        getPlayer2().getHero().getHeroSpell().decrementCooldonwRemaining();
+    }
+    public  void isTimeToPutItem() {
+        for (int theTurn : getTurnsAppearingTheCollectibleItem()) {
+            if (theTurn == getTurn()) {
+                Collections.shuffle(Shop.getAllCollectibles());
+                putItemOnMap(Shop.getAllCollectibles().get(0));
+            }
+        }
+    }
+
+    public void doAllAtTheBeginningOfTurnThings(boolean isMulti) {
+        for (Deployable deployable : getCurrentPlayer().getCardsOnBattleField()) {
+            deployable.setMoved(false);
+            deployable.setAttacked(false);
+        }
+        getCurrentPlayer().setHasReplaced(false);
+        assignManaToPlayers();
+        if(isMulti){
+            if (MultiPlayerBattlePageController.getInstance().nextCardField.getChildren().size() <= 1)
+                MultiPlayerBattlePageController.getInstance().updateNextCard();
+        }else {
+            if (SinglePlayerBattlePageController.getInstance().nextCardField.getChildren().size() <= 1)
+                SinglePlayerBattlePageController.getInstance().updateNextCard();
+        }
+        isTimeToPutItem();
+
+
+    }
     public void putItemOnMap(Item item) {
         Random random = new Random();
         int x1 = random.nextInt(5) + 1;
@@ -1467,4 +1520,13 @@ public class BattleManager {
 
         refreshTheWholeMap();
     }
+
+    public void serverEndTurn() {
+        currentPlayer.placeNextCardToHand();
+        doAllThingsInEndingOfTheTurns();
+        setCurrentPlayer(getOtherPlayer());
+        doAllAtTheBeginningOfTurnThings(isMultiPlayer);
+    }
+
+
 }
