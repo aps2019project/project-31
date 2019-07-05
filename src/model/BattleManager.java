@@ -60,6 +60,9 @@ public class BattleManager {
         isTheGameFinished = false;
     }
 
+    public boolean isTheGameFinished() {
+        return isTheGameFinished;
+    }
 
     public static void setPlayer1(Player player1) {
         BattleManager.player1 = player1;
@@ -1182,6 +1185,7 @@ public class BattleManager {
         player1.getAccount().addMatchHistories(matchHistory1);
         MatchHistory matchHistory2 = new MatchHistory(player1, player2, "LOSE", gameRecord, gameMode);
         player2.getAccount().addMatchHistories(matchHistory2);
+
         player1.getAccount().incrementWins();
         player2.getAccount().incrementLosses();
         gameEnded(player1);
@@ -1209,6 +1213,7 @@ public class BattleManager {
         player1.getAccount().addMatchHistories(matchHistory1);
         MatchHistory matchHistory2 = new MatchHistory(player1, player2, "WIN", gameRecord, gameMode);
         player2.getAccount().addMatchHistories(matchHistory2);
+
         player1.getAccount().incrementLosses();
         player2.getAccount().incrementWins();
         gameEnded(player2);
@@ -1219,6 +1224,7 @@ public class BattleManager {
         player1.getAccount().addMatchHistories(matchHistory1);
         MatchHistory matchHistory2 = new MatchHistory(player1, player2, "DRAW", gameRecord, gameMode);
         player2.getAccount().addMatchHistories(matchHistory2);
+
         player1.getAccount().incrementDraw();
         player2.getAccount().incrementDraw();
         gameEnded(null);
@@ -1260,7 +1266,7 @@ public class BattleManager {
     public void isFinishedDueToHavingMostOfFlags() {
         if (2 * player1.getNumberOfFlags() > maxNumberOfFlags)
             player1Won();
-        if (2 * player1.getNumberOfFlags() > maxNumberOfFlags)
+        if (2 * player2.getNumberOfFlags() > maxNumberOfFlags)
             player2Won();
 
     }

@@ -140,7 +140,6 @@ public class User extends Thread {
             }
         } else {
             System.out.println("ridi tu ferestadan dastur be user");
-            dataOutputStream.writeUTF(ServerStrings.MULTIPLAYERFAILED);
         }
     }
 

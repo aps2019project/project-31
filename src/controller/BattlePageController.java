@@ -637,6 +637,8 @@ public class BattlePageController implements Initializable {
     }
 
     public void refreshTheStatusOfMap(BattleManager battleManager) {
+        if(battleManager.isTheGameFinished())
+            return;
         refreshPartly();
         refreshFlagsSituation(battleManager);
         if (!battleManager.isThisRecordedGame()) {
