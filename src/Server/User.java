@@ -31,8 +31,9 @@ public class User extends Thread {
 
     @Override
     public void run() {
-        try {
-            while (true) {
+
+        while (true) {
+            try {
                 String command = dataInputStream.readUTF();
                 shopRequestStockHandler(command);
 
@@ -40,11 +41,11 @@ public class User extends Thread {
 
                 handleCardSellingRequest(command);
                 multiPlayerRequestHandler(command);
-
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
+
     }
 
     private void handleCardSellingRequest(String command) throws IOException {
@@ -70,7 +71,7 @@ public class User extends Thread {
             }
             this.account.addDaric(card.getPrice());
             this.account.getCollection().remove(card);
-            Shop.getStock().put(card.getId(),Shop.getStock().get(card.getId()) + 1);
+            Shop.getStock().put(card.getId(), Shop.getStock().get(card.getId()) + 1);
             dataOutputStream.writeUTF(ServerStrings.SOLD);
         }
 
@@ -121,24 +122,21 @@ public class User extends Thread {
                 case Domination:
                     if (waitingUserMode3 == null) {
                         waitingUserMode3 = this;
-                    }
-                    else makeBattle(GameMode.Domination,waitingUserMode3,this);
+                    } else makeBattle(GameMode.Domination, waitingUserMode3, this);
                     break;
                 case DeathMatch:
                     if (waitingUserMode1 == null) {
                         waitingUserMode1 = this;
-                    }
-                    else makeBattle(GameMode.DeathMatch,waitingUserMode1,this);
+                    } else makeBattle(GameMode.DeathMatch, waitingUserMode1, this);
 
                     break;
                 case Flag:
                     if (waitingUserMode2 == null) {
                         waitingUserMode2 = this;
-                    }
-                    else makeBattle(GameMode.Flag,waitingUserMode2,this);
+                    } else makeBattle(GameMode.Flag, waitingUserMode2, this);
                     break;
             }
-        }else{
+        } else {
             System.out.println("ridi tu ferestadan dastur be user");
             dataOutputStream.writeUTF(ServerStrings.MULTIPLAYERFAILED);
         }

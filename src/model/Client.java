@@ -8,10 +8,7 @@ import controller.BattlePageController;
 import controller.LoginPageController;
 import controller.Shop;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
+import java.io.*;
 import java.net.Socket;
 import java.util.AbstractCollection;
 import java.util.HashMap;
@@ -59,26 +56,33 @@ public class Client extends Thread {
         String command = is.readUTF();
         if (command.matches(ServerStrings.LOGINSUCCESS)) {
             System.out.println("getting account...");
-            int size = Integer.parseInt(is.readUTF());
-            byte[] bytes = new byte[size];
-
-            for (int i = 0; i < size; i++) {
-                byte b = is.readByte();
-                bytes[i] = b;
-            }
-            String accountString = new String(bytes);
             YaGson yaGson = new YaGsonBuilder().create();
+
+            Account account = (Account) receiveObject(yaGson, is);
             int auth = Integer.parseInt(is.readUTF());
             setAuthToken(auth);
             HashMap<Integer, Integer> stock = yaGson.fromJson(is.readUTF(), HashMap.class);
             Shop.setStock(stock);
-            return yaGson.fromJson(accountString, Account.class);
+            return account;
         } else return null;
+    }
+
+    public static Object receiveObject(YaGson yaGson, DataInputStream is) throws IOException {
+        int size = Integer.parseInt(is.readUTF());
+        byte[] bytes = new byte[size];
+
+        for (int i = 0; i < size; i++) {
+            byte b = is.readByte();
+            bytes[i] = b;
+        }
+        String accountString = new String(bytes);
+        return yaGson.fromJson(accountString, Account.class);
+
     }
 
     public void sendPlayRequest(GameMode gameMode) {
         try {
-            switch (gameMode){
+            switch (gameMode) {
                 case DeathMatch:
                     os.writeUTF("DeathMatch request from user:" + Account.getMainAccount().getUsername());
                     break;
@@ -90,21 +94,23 @@ public class Client extends Thread {
                     break;
             }
             String serverReply = is.readUTF();
-            if(serverReply.equals(ServerStrings.MULTIPLAYERSUCCESS)){
+            if (serverReply.equals(ServerStrings.MULTIPLAYERSUCCESS)) {
+                receiveBattleManager();
                 BattlePageController.getInstance().setAsScene();
-            }
-            else {
+            } else {
                 // some pop up happens !
 
 
-
             }
-
 
 
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void receiveBattleManager() {
+
     }
 
     public String requestCardStock(int id) {
@@ -120,14 +126,12 @@ public class Client extends Thread {
     public boolean requestCardBuy(int id) throws IOException {
         os.writeUTF(authToken + " request to buy card: " + id);
         String response = is.readUTF();
-        if (response.matches(ServerStrings.BOUGHT)) return true;
-        else return false;
+        return response.matches(ServerStrings.BOUGHT);
     }
 
-    public boolean requestCardSell(int id) throws IOException{
+    public boolean requestCardSell(int id) throws IOException {
         os.writeUTF(authToken + " request to sell card: " + id);
         String response = is.readUTF();
-        if (response.matches(ServerStrings.SOLD)) return true;
-        else return false;
+        return response.matches(ServerStrings.SOLD);
     }
 }

@@ -65,16 +65,17 @@ public class Server extends Thread {
                                 outputStream.writeUTF(ServerStrings.LOGINSUCCESS);
                                 outputStream.flush();
                                 System.out.println(ServerStrings.LOGINSUCCESS);
-
+                                User user = new User(socket, account);
                                 byte[] bytes = yaGson.toJson(account).getBytes();
-                                outputStream.writeUTF(bytes.length + "");
+                                sendObject(user,bytes,inputStream,outputStream);
+                                /*outputStream.writeUTF(bytes.length + "");
                                 outputStream.flush();
 
                                 System.out.println("sending account with " + bytes.length);
                                 for (int i = 0; i < bytes.length; i++) {
                                     outputStream.writeByte(bytes[i]);
                                 }
-                                User user = new User(socket, account);
+*/
                                 System.out.println("Sending auth token");
                                 outputStream.writeUTF(user.getAuthToken() + "");
                                 System.out.println("sending shop stock");
@@ -93,5 +94,14 @@ public class Server extends Thread {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static void sendObject(User user, byte[] objectBytes, DataInputStream is, DataOutputStream os) throws IOException {
+        os.writeUTF(objectBytes.length + "");
+        os.flush();
+        for (int i = 0; i < objectBytes.length; i++) {
+            os.writeByte(objectBytes[i]);
+        }
+
     }
 }
