@@ -610,9 +610,9 @@ public class SinglePlayerBattlePageController implements Initializable {
     public void setOnMouseDeployable(Deployable card, BattleManager battleManager) {
         if (battleManager.getCurrentPlayer() == me) {
             if (me.getSelectedCard() != null && me.getSelectedCard().getType() == CardType.spell) {
-                BattleMenu.insert(me.getSelectedCard(), card.getCell().getX1Coordinate(), card.getCell().getX2Coordinate());
+                BattleMenu.getBattleManager().insert(me.getSelectedCard(), card.getCell().getX1Coordinate(), card.getCell().getX2Coordinate());
             } else if (me.getSelectedCard() != null && me.getSelectedCard().getType() == CardType.item) {
-                BattleMenu.insert(me.getSelectedCard(), card.getCell().getX1Coordinate(), card.getCell().getX2Coordinate());
+                BattleMenu.getBattleManager().insert(me.getSelectedCard(), card.getCell().getX1Coordinate(), card.getCell().getX2Coordinate());
             } else if (me.getSelectedCard() != null &&
                     me.getSelectedCard().getType() != CardType.spell &&
                     !card.getAccount().equals(me.getAccount())) {
@@ -908,7 +908,7 @@ public class SinglePlayerBattlePageController implements Initializable {
                         return;
                     }
                     if (cell.getCardInCell() == null && (me.getSelectedCard().getType() == CardType.item)) { // spell can't insert on the ground ?'
-                        BattleMenu.insert(me.getSelectedCard(), cell.getX1Coordinate(), cell.getX2Coordinate());
+                        BattleMenu.getBattleManager().insert(me.getSelectedCard(), cell.getX1Coordinate(), cell.getX2Coordinate());
                     } else if (cell.getCardInCell() != null) {
                         displayMessage("destination is not empty");
                         System.out.println("card in this cell is : " + cell.getCardInCell().infoToString());
@@ -919,9 +919,9 @@ public class SinglePlayerBattlePageController implements Initializable {
                                 cell.getX1Coordinate(), cell.getX2Coordinate());
                         System.out.println("we called move method dude!");
                     } else if (!me.isSelectedCardDeployed()) {
-                        BattleMenu.insert(me.getSelectedCard(), cell.getX1Coordinate(), cell.getX2Coordinate());
+                        BattleMenu.getBattleManager().insert(me.getSelectedCard(), cell.getX1Coordinate(), cell.getX2Coordinate());
                     } else if (me.getSelectedCard() != null && me.getSelectedCard().getType() == CardType.spell) {
-                        BattleMenu.insert(me.getSelectedCard(), cell.getX1Coordinate(), cell.getX2Coordinate());
+                        BattleMenu.getBattleManager().insert(me.getSelectedCard(), cell.getX1Coordinate(), cell.getX2Coordinate());
                     }
                 }
             });

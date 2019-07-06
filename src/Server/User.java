@@ -47,12 +47,15 @@ public class User extends Thread {
         while (!command.equals("T") || !command.equals(ServerStrings.CONCEDE)) {
             battleServer.gameCompiler.whatIsThePlay(command);
         //    battleServer.updateBothUsers();
+
             System.out.println("get the next command from current player");
             command=is.readUTF();
             System.out.println("the command is : "+ command);
         }
         if (command.equals(ServerStrings.CONCEDE)) {
             System.out.println("the concede has been received");
+
+
             return false;
         }
         System.out.println("the end turn has been received");

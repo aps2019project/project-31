@@ -67,7 +67,7 @@ public class Input {
         pattern = Pattern.compile("insert in \\((\\d),(\\d)\\)\\s*");
         matcher = pattern.matcher(input);
         if (matcher.matches()) {
-            BattleMenu.insert(BattleMenu.getBattleManager().getCurrentPlayer().getSelectedCard(),
+            BattleMenu.getBattleManager().insert(BattleMenu.getBattleManager().getCurrentPlayer().getSelectedCard(),
                     Integer.parseInt(matcher.group(1)), Integer.parseInt(matcher.group(2)));
         }
         BattleMenu.getBattleManager().checkTheEndSituation();

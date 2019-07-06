@@ -163,7 +163,7 @@ public class Client extends Thread {
         }
 
         new Thread(() -> {
-            receiveMapAndBattle();
+
 
         }).start();
 
@@ -176,7 +176,7 @@ public class Client extends Thread {
             e.printStackTrace();
         }
         new Thread(() -> {
-            receiveMapAndBattle();
+
         }).start();
     }
 
@@ -303,7 +303,7 @@ public class Client extends Thread {
             e.printStackTrace();
         }
         new Thread(() -> {
-            receiveMapAndBattle();
+
         }).start();
 
     }
@@ -353,7 +353,7 @@ public class Client extends Thread {
             e.printStackTrace();
         }
         new Thread(() -> {
-            receiveMapAndBattle();
+
         }).start();
 
 
@@ -368,7 +368,7 @@ public class Client extends Thread {
             e.printStackTrace();
         }
         new Thread(() -> {
-            receiveMapAndBattle();
+
 
         }).start();
 

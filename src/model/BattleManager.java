@@ -141,7 +141,7 @@ public class BattleManager {
 
     private void addFaceToGraphic(Minion minion) {
         if (!isMultiPlayer)
-             SinglePlayerBattlePageController.getInstance().addFaceToBattlePage(minion, this);
+            SinglePlayerBattlePageController.getInstance().addFaceToBattlePage(minion, this);
 
     }
 
@@ -957,7 +957,7 @@ public class BattleManager {
         card.cell.setCardInCell(card);
         removeItemIfThereIsSomething(card);
         removeFlagIfThereIsSomething(card, x1, x2);
-       refreshTheWholeMap();
+        refreshTheWholeMap();
 
         Output.movedSuccessfully(card);
     }
@@ -1015,7 +1015,7 @@ public class BattleManager {
 
     private void removeFaceInGraphic(DisplayableDeployable face) {
         if (!isMultiPlayer)
-             SinglePlayerBattlePageController.getInstance().mainPane.getChildren().remove(face);
+            SinglePlayerBattlePageController.getInstance().mainPane.getChildren().remove(face);
     }
 
 
@@ -1468,7 +1468,8 @@ public class BattleManager {
         getPlayer1().getHero().getHeroSpell().decrementCooldonwRemaining();
         getPlayer2().getHero().getHeroSpell().decrementCooldonwRemaining();
     }
-    public  void isTimeToPutItem() {
+
+    public void isTimeToPutItem() {
         for (int theTurn : getTurnsAppearingTheCollectibleItem()) {
             if (theTurn == getTurn()) {
                 Collections.shuffle(Shop.getAllCollectibles());
@@ -1488,6 +1489,7 @@ public class BattleManager {
 
 
     }
+
     public void putItemOnMap(Item item) {
         Random random = new Random();
         int x1 = random.nextInt(5) + 1;
@@ -1505,5 +1507,58 @@ public class BattleManager {
     }
 
 
+    public boolean insert(Card card, int x1, int x2) {
+        if (isTheGameFinished())
+            return false;
+        if (card == null) {
+            System.err.println("insert(method) -> card is null");
+            return false;
+        }
+        if (card.getType() == CardType.item) {
+            card.setAccount(getCurrentPlayer().getAccount());
+            useItem((Item) card, x1, x2);
+            getGameRecord().addAction(whoIsCurrentPlayer() + "I" + card.getId() + x1 + x2);
+        }
+        if (getCurrentPlayer().getHero().getHeroSpell().getId() == card.getId()) {
+            if (card.getManaCost() > getCurrentPlayer().getMana()) {
+                System.err.println("Not enough mana");
+                return false;
+            }
+            System.out.println("Using hero spell " + card.getName());
+            playSpell((Spell) card, x1, x2);
+            return true;
+        }
+        if (cardInHandByCardId(card.getId()) != null) {
+            if (card.getManaCost() > getCurrentPlayer().getMana()) {
+                System.err.println("Not enough mana");
+                return false;
+            }
+            if (card.getType() == CardType.minion) {
+                if (!checkCoordinates(x1, x2)) {
+                    Output.invalidInsertionTarget();
+                    System.err.println("Invalid Coordinates");
+                    return false;
+
+                }
+                playMinion((Minion) card, x1, x2);
+            }
+            if (card.getType() == CardType.spell) {
+                card.setAccount(getCurrentPlayer().getAccount());
+                playSpell((Spell) card, x1, x2);
+            }
+
+
+            if (card.getName() == "Eagle") {
+                System.out.println("found eagle");
+                for (Buff buff : ((Deployable) card).getBuffs()) {
+                    System.out.println(buff.getBuffType());
+                }
+            }
+        } else {
+            System.err.println("Minion not in hand");
+            return false;
+        }
+        return true;
+    }
 
 }
