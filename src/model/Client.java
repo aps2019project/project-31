@@ -347,8 +347,11 @@ public class Client extends Thread {
         System.out.println("sending move request");
         System.out.println(BattleMenu.getBattleManager().whoIsCurrentPlayer() + "M" + x1 + x2 + x_1 + x_2);
         try {
+            os.flush();
             os.writeUTF(BattleMenu.getBattleManager().whoIsCurrentPlayer() + "M" + x1 + x2 + x_1 + x_2);
+            os.flush();
         } catch (IOException e) {
+            System.out.println("qqqqqqqqqqqqqqqqqqqqqqq");
             e.printStackTrace();
         }
 
@@ -383,9 +386,8 @@ public class Client extends Thread {
             System.out.println("we received this command : " + command);
             if (command != ServerStrings.NOTALLOWED) {
                 BattleMenu.getBattleManager().doWhatIAmToldTo(command);
-            }
+            }else System.out.println("not allowed");
         }).start();
-
     }
 
     private void updateOneCell(Cell cell) throws IOException {

@@ -18,61 +18,16 @@ public class User extends Thread {
     private Socket socket;
     private int authToken = -1;
     private Account account;
-    private DataInputStream is;
-    private DataOutputStream os;
+    protected DataInputStream is;
+    protected DataOutputStream os;
     private static User waitingUserMode1;
     private static User waitingUserMode2;
     private static User waitingUserMode3;
-    private BattleManager battle;
-    private BattleServer battleServer;
+    protected static BattleManager battle;
+    private static BattleServer battleServer;
 
 
-    private void goToBattle() throws IOException {
-        System.out.println("we are in the battle :)");
-        battleServer.updateBothUsers();
-        while (true) {
-            System.out.println("go to battle while loop");
-            if (!battleServer.currentPlayer().getCommandFromCurrentPlayer()) {
-                gameFinished();
-                return;
-            }
-        }
-    }
 
-
-    private boolean getCommandFromCurrentPlayer() throws IOException {
-        System.out.println("get command from current player");
-        String command = is.readUTF();
-        System.out.println("the command is : "+ command);
-        while (!command.equals("T") || !command.equals(ServerStrings.CONCEDE)) {
-            if(battleServer.gameCompiler.whatIsThePlay(command)){
-                System.out.println("we pass command :"+command+ "\n" +
-                        "because it was allowed !");
-                battleServer.user1.os.writeUTF(command);
-                battleServer.user2.os.writeUTF(command);
-            }else {
-                battleServer.currentPlayer().os.writeUTF(ServerStrings.NOTALLOWED);
-            }
-        //    battleServer.updateBothUsers();
-            System.out.println("get the next command from current player");
-            command=is.readUTF();
-            System.out.println("the command is : "+ command);
-        }
-        if (command.equals(ServerStrings.CONCEDE)) {
-            System.out.println("the concede has been received");
-
-
-            return false;
-        }
-        System.out.println("the end turn has been received");
-     //   battleServer.updateBothUsers();
-        return true;
-    }
-
-
-    private void gameFinished() {
-
-    }
 
     @Override
     public void run() {
@@ -335,7 +290,7 @@ public class User extends Thread {
         }
     }
 
-    private void multiPlayerRequestHandler(String command) throws IOException {
+    private void multiPlayerRequestHandler(String command) throws IOException, InterruptedException {
         Pattern pattern = Pattern.compile(ServerStrings.MULTIPLAYERREQUEST);
         Matcher matcher = pattern.matcher(command);
         if (matcher.matches()) {
@@ -367,18 +322,30 @@ public class User extends Thread {
     }
 
 
-    private void makeBattle(GameMode gameMode, User user1, User user2) throws IOException {
+    private void makeBattle(GameMode gameMode, User user1, User user2) throws IOException, InterruptedException {
         BattleMenu.setBattleManagerForMultiPlayer(user1.account, user2.account, findNumberOfFlags(gameMode),
                 findNumberOfHavingFlags(gameMode), gameMode);
-        battle = BattleMenu.getBattleManager();
+        if (battle == null)
+            battle = BattleMenu.getBattleManager();
         battle.initialTheGame();
-        battleServer = new BattleServer(battle, user1, user2);
+        if (battleServer == null)
+            battleServer = new BattleServer(battle, user1, user2);
         user1.os.writeUTF(ServerStrings.MULTIPLAYERSUCCESS);
         user1.sendMapAndBattle();
         user2.os.writeUTF(ServerStrings.MULTIPLAYERSUCCESS);
         user2.sendMapAndBattle();
+        System.out.println("two map sent !");
+        synchronized (battle){
+            System.out.println("we are at synchronized block");
+            if(this == user1) {
+                System.out.println("im user 1 bitch :/");
+                battleServer.start();
+                System.out.println("battleServer.start was passed");
+            }
+            battle.wait();
+        }
+        System.out.println("the game ended :((((");
 
-        goToBattle();
 
 
     }
