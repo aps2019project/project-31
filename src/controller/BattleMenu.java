@@ -67,11 +67,12 @@ public class BattleMenu extends Menu {
         Random random = new Random();
         int x1 = random.nextInt(5) + 1;
         int x2 = random.nextInt(9) + 1;
-        if (Map.getInstance().getCell(x1, x1).hasFlag()) {
+        /*if (Map.getInstance().getCell(x1, x1).hasFlag()) {
             putARandomFlagOnMap();
         } else {
             Map.getInstance().getCell(x1, x2).setHasFlag(true);
-        }
+        }*/
+        Map.getInstance().getCell(x1, x2).setHasFlag(true);
     }
 
     public static void setBattleManagerForSinglePLayer(BattleManagerMode battleManagerMode, Account account,

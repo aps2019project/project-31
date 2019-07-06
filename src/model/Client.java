@@ -124,17 +124,19 @@ public class Client extends Thread {
                     break;
                 case Domination:
                     os.writeUTF(authToken + " Domination request from user:" + Account.getMainAccount().getUsername());
+                    System.out.println("sent domination");
                     break;
             }
             new Thread(() -> {
                 try {
                     String serverReply = is.readUTF();
                     if (serverReply.equals(ServerStrings.MULTIPLAYERSUCCESS)) {
-                        receiveMapAndBattle();
                         WaitingPageController.getInstance().johnyJohnyYesPapaGoingToBattle.set(true);
                         synchronized (WaitingPageController.getInstance()) {
                             WaitingPageController.getInstance().notifyAll();
+                            receiveMapAndBattleForFirstTime();
                         }
+
                     } else if (serverReply.equals(ServerStrings.CANCELSUCCESSFULLY)) {
                         WaitingPageController.getInstance().johnyJohnyYesPapaGoingToBattle.set(true);
                         System.out.println("we canceled the game honey");
@@ -153,28 +155,29 @@ public class Client extends Thread {
         }
     }
 
-    public void sendEndTurnRequest()  {
-        new Thread(()->{
+    public void sendEndTurnRequest() {
+        new Thread(() -> {
             try {
                 os.writeUTF("T");
                 receiveMapAndBattle();
-            }catch (IOException e){
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }).start();
 
     }
 
-    public void sendConcedeRequest(){
-        new Thread(()->{
+    public void sendConcedeRequest() {
+        new Thread(() -> {
             try {
                 os.writeUTF(ServerStrings.CONCEDE);
                 receiveMapAndBattle();
-            }catch (IOException e){
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }).start();
     }
+
     public String requestCardStock(int id) {
         try {
             os.writeUTF(authToken + " request card stock: " + id);
@@ -294,6 +297,7 @@ public class Client extends Thread {
 
         new Thread(() -> {
             try {
+                System.out.println(BattleMenu.getBattleManager().whoIsCurrentPlayer() + "I" + cardId + x1 + x2);
                 os.writeUTF(BattleMenu.getBattleManager().whoIsCurrentPlayer() + "I" + cardId + x1 + x2);
                 receiveMapAndBattle();
             } catch (IOException e) {
@@ -304,6 +308,13 @@ public class Client extends Thread {
     }
 
     public void receiveMapAndBattle() {
+        receiveMapAndBattleForFirstTime();
+        Platform.runLater(() -> {
+            MultiPlayerBattlePageController.getInstance().refreshTheStatusOfMap(BattleMenu.getBattleManager());
+        });
+    }
+
+    public void receiveMapAndBattleForFirstTime() {
         System.out.println("receive map and battle");
 
         try {
@@ -315,12 +326,8 @@ public class Client extends Thread {
             e.printStackTrace();
         }
         System.out.println("map received successfully");
-        Platform.runLater(() -> {
-            MultiPlayerBattlePageController.getInstance().refreshTheStatusOfMap(BattleMenu.getBattleManager());
-        });
-
-
     }
+
 
     public void wipeThisShit() {
         BattleManager battle = BattleMenu.getBattleManager();
@@ -340,6 +347,7 @@ public class Client extends Thread {
         System.out.println("sending move request");
         new Thread(() -> {
             try {
+                System.out.println(BattleMenu.getBattleManager().whoIsCurrentPlayer() + "M" + x1 + x2 + x_1 + x_2);
                 os.writeUTF(BattleMenu.getBattleManager().whoIsCurrentPlayer() + "M" + x1 + x2 + x_1 + x_2);
                 receiveMapAndBattle();
             } catch (IOException e) {
@@ -354,6 +362,7 @@ public class Client extends Thread {
         System.out.println("sending attack request");
         new Thread(() -> {
             try {
+                System.out.println(BattleMenu.getBattleManager().whoIsCurrentPlayer() + "A" + x1 + x2 + x_1 + x_2);
                 os.writeUTF(BattleMenu.getBattleManager().whoIsCurrentPlayer() + "A" + x1 + x2 + x_1 + x_2);
                 receiveMapAndBattle();
             } catch (IOException e) {

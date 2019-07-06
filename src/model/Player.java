@@ -241,16 +241,17 @@ public class Player {
             selectedCard = cardInHand(cardId);
             return true;
         }
-        if (myDeployable(cardId) != null) {
-            System.err.println("selected minion successfully");
-            selectedCard = myDeployable(cardId);
-            return true;
-        }
         if (battle.getCurrentPlayer().getHero().getId() == cardId) {
             System.err.println("selected hero successfully");
             selectedCard = battle.getCurrentPlayer().getHero();
             return true;
         }
+        if (myDeployable(cardId) != null) {
+            System.err.println("selected minion successfully");
+            selectedCard = myDeployable(cardId);
+            return true;
+        }
+
         if (getHero().getHeroSpell().getId() == cardId) {
             System.err.println("Selected Hero spell!");
             selectedCard = getHero().heroSpell;

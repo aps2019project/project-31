@@ -28,8 +28,10 @@ public class User extends Thread {
 
 
     private void goToBattle() throws IOException {
+        System.out.println("we are in the battle :)");
         battleServer.updateBothUsers();
         while (true) {
+            System.out.println("go to battle while loop");
             if (!battleServer.currentPlayer().getCommandFromCurrentPlayer()) {
                 gameFinished();
                 return;
@@ -39,10 +41,15 @@ public class User extends Thread {
 
 
     private boolean getCommandFromCurrentPlayer() throws IOException {
+        System.out.println("get command from current player");
         String command = is.readUTF();
+        System.out.println("the command is : "+ command);
         while (!command.equals("T") || !command.equals(ServerStrings.CONCEDE)) {
             battleServer.gameCompiler.whatIsThePlay(command);
             battleServer.updateBothUsers();
+            System.out.println("get the next command from current player");
+            command=is.readUTF();
+            System.out.println("the command is : "+ command);
         }
         if (command.equals(ServerStrings.CONCEDE)) {
             System.out.println("the concede has been received");
@@ -326,6 +333,8 @@ public class User extends Thread {
             GameMode gameMode = findGameMode(matcher.group(2));
             switch (gameMode) {
                 case Domination:
+                    System.out.println("domination it is");
+
                     if (waitingUserMode3 == null) {
                         waitingUserMode3 = this;
                     } else makeBattle(GameMode.Domination, waitingUserMode3, this);

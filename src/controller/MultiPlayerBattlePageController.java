@@ -157,6 +157,7 @@ public class MultiPlayerBattlePageController implements Initializable {
     }
 
     public void theThingsWeDoWheIitIsNotOurTime() {  // :'((((((
+        System.out.println("i'm in the theThingsWeDoWheIitIsNotOurTime");
         Thread reading = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -208,9 +209,7 @@ public class MultiPlayerBattlePageController implements Initializable {
             if (!isMyTurn()) {
                 displayMessage("this is not your turn =");
             } else {
-
                 Client.getClient().sendEndTurnRequest();
-
             }
 
         });
