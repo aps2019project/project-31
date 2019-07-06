@@ -59,11 +59,11 @@ public class Initializer extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        String musicPath = System.getProperty("user.dir") + "src/resources/assets/music/music_battlemap_duskfall.m4a";
+        /*String musicPath = System.getProperty("user.dir") +
+                "src/resources/assets/music/music_battlemap_duskfall.m4a";*/
+
         setPrimaryStage(primaryStage);
-        Media sound = new Media(new File(musicPath).toURI().toString());
-        MediaPlayer mediaPlayer = new MediaPlayer(sound);
-        mediaPlayer.play();
+
         LoginPageController.getInstance().setAsScene();
         primaryStage.show();
     }

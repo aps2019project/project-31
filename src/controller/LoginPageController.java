@@ -17,11 +17,14 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.Font;
 import model.*;
 
 import java.awt.*;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
@@ -96,6 +99,12 @@ public class LoginPageController implements Initializable {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        try {
+            String musicPath = getClass().getResource("/musique/a.mp3").toExternalForm();
+            Media sound = new Media(musicPath);
+            MediaPlayer mediaPlayer = new MediaPlayer(sound);
+            mediaPlayer.play();
+        } catch (Exception ignored) { }
         Font.loadFont(getClass().getResource("/assets/fonts/Lato-Regular.ttf").toExternalForm(), 10);
         Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
         Double screenWidth = screen.getWidth();
@@ -204,9 +213,9 @@ public class LoginPageController implements Initializable {
                 signupPassword.clear();
                 repassword.clear();
                 displayMessage("Account created! Sign in!", 17, 2, infoVBox);
-            }else {
+            } else {
                 displayMessage("Username already taken! That or something went wrong!",
-                        17,2,infoVBox);
+                        17, 2, infoVBox);
             }
         } catch (IOException e) {
             e.printStackTrace();
