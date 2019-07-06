@@ -153,9 +153,16 @@ public class Client extends Thread {
         }
     }
 
-    public void sendEndTurnRequest() throws IOException {
-        os.writeUTF("T");
-        receiveMapAndBattle();
+    public void sendEndTurnRequest()  {
+        new Thread(()->{
+            try {
+                os.writeUTF("T");
+                receiveMapAndBattle();
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+        }).start();
+
     }
 
 
@@ -275,25 +282,35 @@ public class Client extends Thread {
 
     public void sendInsertRequest(int cardId, int x1, int x2) {
         System.out.println("sending insert request");
+
+        new Thread(() -> {
+            try {
+                os.writeUTF(BattleMenu.getBattleManager().whoIsCurrentPlayer() + "I" + cardId + x1 + x2);
+                receiveMapAndBattle();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }).start();
+
+    }
+
+    public void receiveMapAndBattle() {
+        System.out.println("receive map and battle");
+
         try {
-            os.writeUTF(BattleMenu.getBattleManager().whoIsCurrentPlayer() + "I" + cardId + x1 + x2);
-            receiveMapAndBattle();
+            BattleManager battle = (BattleManager) receiveObject(this.is, BattleManager.class);
+            BattleMenu.setBattleManager(battle);
+            updateMap();
+            wipeThisShit();
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public void receiveMapAndBattle() throws IOException {
-        System.out.println("receive map and battle");
-
-        BattleManager battle = (BattleManager) receiveObject(this.is, BattleManager.class);
-        BattleMenu.setBattleManager(battle);
-        updateMap();
-        wipeThisShit();
         System.out.println("map received successfully");
         Platform.runLater(() -> {
             MultiPlayerBattlePageController.getInstance().refreshTheStatusOfMap(BattleMenu.getBattleManager());
         });
+
+
     }
 
     public void wipeThisShit() {
@@ -312,23 +329,30 @@ public class Client extends Thread {
 
     public void sendMoveRequest(int x1, int x2, int x_1, int x_2) {
         System.out.println("sending move request");
-        try {
-            os.writeUTF(BattleMenu.getBattleManager().whoIsCurrentPlayer() + "M" + x1 + x2 + x_1 + x_2);
-            receiveMapAndBattle();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        new Thread(() -> {
+            try {
+                os.writeUTF(BattleMenu.getBattleManager().whoIsCurrentPlayer() + "M" + x1 + x2 + x_1 + x_2);
+                receiveMapAndBattle();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }).start();
+
+
     }
 
     public void sendAttackRequest(int x1, int x2, int x_1, int x_2) {
         System.out.println("sending attack request");
-        try {
-            os.writeUTF(BattleMenu.getBattleManager().whoIsCurrentPlayer() + "A" + x1 + x2 + x_1 + x_2);
-            receiveMapAndBattle();
+        new Thread(() -> {
+            try {
+                os.writeUTF(BattleMenu.getBattleManager().whoIsCurrentPlayer() + "A" + x1 + x2 + x_1 + x_2);
+                receiveMapAndBattle();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }).start();
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
     }
 
     private void updateOneCell(Cell cell) throws IOException {

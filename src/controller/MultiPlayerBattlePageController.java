@@ -160,14 +160,12 @@ public class MultiPlayerBattlePageController implements Initializable {
         Thread reading = new Thread(new Runnable() {
             @Override
             public void run() {
-                try {
-                    while (!isMyTurn())
-                        Client.getClient().receiveMapAndBattle();
-                    Platform.runLater(() -> refreshTheStatusOfMap(BattleMenu.getBattleManager()));
 
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                while (!isMyTurn())
+                    Client.getClient().receiveMapAndBattle();
+                Platform.runLater(() -> refreshTheStatusOfMap(BattleMenu.getBattleManager()));
+
+
             }
         });
         reading.start();
@@ -175,11 +173,9 @@ public class MultiPlayerBattlePageController implements Initializable {
 
     private void playTheActualGame(BattleManager battle) {
         graphicStuffAtBegin();
-        try {
-            Client.getClient().receiveMapAndBattle();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
+        Client.getClient().receiveMapAndBattle();
+
 
         if (!isMyTurn()) {
             theThingsWeDoWheIitIsNotOurTime();
@@ -212,11 +208,9 @@ public class MultiPlayerBattlePageController implements Initializable {
             if (!isMyTurn()) {
                 displayMessage("this is not your turn =");
             } else {
-                try {
-                    Client.getClient().sendEndTurnRequest();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+
+                Client.getClient().sendEndTurnRequest();
+
             }
 
         });
