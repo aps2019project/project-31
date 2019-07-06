@@ -29,6 +29,7 @@ public class BattleServer {
         return user2;
     }
     public void updateBothUsers(){
+        System.out.println("update both users");
         user2.sendMapAndBattle();
         user1.sendMapAndBattle();
     }

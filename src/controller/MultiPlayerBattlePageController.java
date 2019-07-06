@@ -656,7 +656,7 @@ public class MultiPlayerBattlePageController implements Initializable {
                 ((Deployable) me.getSelectedCard()).getFace().attack();
                 card.getFace().getHit();
             } else {
-                System.out.println("be inja mireseeeeeeeeeeeeeeeeeeeeeeee");
+                System.out.println("going to select a card !");
                 me.selectACard(card.getUniqueId());
             }
         }

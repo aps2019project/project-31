@@ -274,6 +274,7 @@ public class Client extends Thread {
     }
 
     public void sendInsertRequest(int cardId, int x1, int x2) {
+        System.out.println("sending insert request");
         try {
             os.writeUTF(BattleMenu.getBattleManager().whoIsCurrentPlayer() + "I" + cardId + x1 + x2);
             receiveMapAndBattle();
@@ -283,30 +284,34 @@ public class Client extends Thread {
     }
 
     public void receiveMapAndBattle() throws IOException {
-
+        System.out.println("receive map and battle");
 
         BattleManager battle = (BattleManager) receiveObject(this.is, BattleManager.class);
         BattleMenu.setBattleManager(battle);
         updateMap();
         wipeThisShit();
-        Platform.runLater(()->{
+        System.out.println("map received successfully");
+        Platform.runLater(() -> {
             MultiPlayerBattlePageController.getInstance().refreshTheStatusOfMap(BattleMenu.getBattleManager());
         });
     }
 
     public void wipeThisShit() {
         BattleManager battle = BattleMenu.getBattleManager();
-        for (Deployable card : battle.getPlayer1().cardsOnBattleField){
-            card.setCell(Map.getInstance().getCell(card.getCell().getX1Coordinate(),card.getCell().getX2Coordinate()));
+        for (Deployable card : battle.getPlayer1().cardsOnBattleField) {
+            card.setCell(Map.getInstance().getCell(card.getCell().getX1Coordinate(), card.getCell().getX2Coordinate()));
             card.getCell().setCardInCell(card);
         }
-        for (Deployable card : battle.getPlayer2().cardsOnBattleField){
-            card.setCell(Map.getInstance().getCell(card.getCell().getX1Coordinate(),card.getCell().getX2Coordinate()));
+        for (Deployable card : battle.getPlayer2().cardsOnBattleField) {
+            card.setCell(Map.getInstance().getCell(card.getCell().getX1Coordinate(), card.getCell().getX2Coordinate()));
             card.getCell().setCardInCell(card);
         }
+        if (battle.getCurrentPlayer() == MultiPlayerBattlePageController.getInstance().getMe())
+            battle.getCurrentPlayer().setSelectedCard(MultiPlayerBattlePageController.getInstance().getMe().getSelectedCard());
     }
 
     public void sendMoveRequest(int x1, int x2, int x_1, int x_2) {
+        System.out.println("sending move request");
         try {
             os.writeUTF(BattleMenu.getBattleManager().whoIsCurrentPlayer() + "M" + x1 + x2 + x_1 + x_2);
             receiveMapAndBattle();
@@ -316,6 +321,7 @@ public class Client extends Thread {
     }
 
     public void sendAttackRequest(int x1, int x2, int x_1, int x_2) {
+        System.out.println("sending attack request");
         try {
             os.writeUTF(BattleMenu.getBattleManager().whoIsCurrentPlayer() + "A" + x1 + x2 + x_1 + x_2);
             receiveMapAndBattle();

@@ -71,7 +71,6 @@ public class User extends Thread {
         }
         if (command.equals(ServerStrings.CONCEDE))
             return false;
-        battleServer.serverEndTurn();
         battleServer.updateBothUsers();
         return true;
     }
@@ -452,6 +451,7 @@ public class User extends Thread {
         try {
             Server.sendObject(BattleMenu.getBattleManager(), os);
             sendMap();
+            System.out.println("map and battle sent");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -460,8 +460,6 @@ public class User extends Thread {
     private void sendMap() throws IOException {
         for (int i = 1; i < Map.MAP_X1_LENGTH; i++) {
             for (int j = 1; j < Map.MAP_X2_LENGTH; j++) {
-                if(Map.getInstance().getCell(1,1)==null)
-                    System.out.println("kojaaaaaaaaaaaaaaaaaaaaaaaaaaa beram ?");
                 sendOneCell(Map.getInstance().getCell(i, j));
             }
         }

@@ -237,17 +237,17 @@ public class Player {
 
     public boolean selectACard(int cardId) {
         if (cardInHand(cardId) != null) {
-            System.err.println("selected card successfully");
+            System.err.println("selected card in hand successfully");
             selectedCard = cardInHand(cardId);
             return true;
         }
         if (myDeployable(cardId) != null) {
-            System.err.println("selected card successfully");
+            System.err.println("selected minion successfully");
             selectedCard = myDeployable(cardId);
             return true;
         }
         if (battle.getCurrentPlayer().getHero().getId() == cardId) {
-            System.err.println("selected card successfully");
+            System.err.println("selected hero successfully");
             selectedCard = battle.getCurrentPlayer().getHero();
             return true;
         }
