@@ -3,9 +3,12 @@ package model;
 import controller.*;
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 import view.Input;
 
+import java.io.File;
 import java.util.Random;
 
 public class Initializer extends Application {
@@ -56,7 +59,11 @@ public class Initializer extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        String musicPath = System.getProperty("user.dir") + "src/resources/assets/music/music_battlemap_duskfall.m4a";
         setPrimaryStage(primaryStage);
+        Media sound = new Media(new File(musicPath).toURI().toString());
+        MediaPlayer mediaPlayer = new MediaPlayer(sound);
+        mediaPlayer.play();
         LoginPageController.getInstance().setAsScene();
         primaryStage.show();
     }

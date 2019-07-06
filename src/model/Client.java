@@ -1,12 +1,13 @@
 package model;
 
-import Server.Server;
 import Server.ServerStrings;
 import com.gilecode.yagson.YaGson;
 import com.gilecode.yagson.YaGsonBuilder;
 import constants.GameMode;
-import controller.*;
+import controller.BattleMenu;
 import controller.LoginPageController;
+import controller.Shop;
+import controller.WaitingPageController;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
@@ -14,9 +15,10 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
-import java.io.*;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.net.Socket;
-import java.util.AbstractCollection;
 import java.util.HashMap;
 
 public class Client extends Thread {
