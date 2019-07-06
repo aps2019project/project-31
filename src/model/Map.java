@@ -19,8 +19,8 @@ public class Map {
         if (x1 <= MAP_X1_LENGTH && x2 <= MAP_X2_LENGTH && x1 > 0 && x2 > 0) {
             return map[x1][x2];
         }
-        return null; //sina's code
-//        throw new RuntimeException("cell not in range");
+        return null;
+
     }
 
     public void createTheMap() {

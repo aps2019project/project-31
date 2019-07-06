@@ -450,15 +450,17 @@ public class User extends Thread {
     public void sendMapAndBattle() {
         try {
             Server.sendObject(BattleMenu.getBattleManager(), os);
-            sendMapAndBattle();
+            sendMap();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private void sendeMap() throws IOException {
-        for (int i = 0; i < Map.MAP_X1_LENGTH; i++) {
-            for (int j = 0; j < Map.MAP_X2_LENGTH; j++) {
+    private void sendMap() throws IOException {
+        for (int i = 1; i < Map.MAP_X1_LENGTH; i++) {
+            for (int j = 1; j < Map.MAP_X2_LENGTH; j++) {
+                if(Map.getInstance().getCell(1,1)==null)
+                    System.out.println("kojaaaaaaaaaaaaaaaaaaaaaaaaaaa beram ?");
                 sendOneCell(Map.getInstance().getCell(i, j));
             }
         }

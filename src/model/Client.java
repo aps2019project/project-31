@@ -129,7 +129,7 @@ public class Client extends Thread {
                 try {
                     String serverReply = is.readUTF();
                     if (serverReply.equals(ServerStrings.MULTIPLAYERSUCCESS)) {
-                        updateMap();
+                        receiveMapAndBattle();
                         WaitingPageController.getInstance().johnyJohnyYesPapaGoingToBattle.set(true);
                         synchronized (WaitingPageController.getInstance()) {
                             WaitingPageController.getInstance().notifyAll();
@@ -287,7 +287,18 @@ public class Client extends Thread {
         BattleManager battle = (BattleManager) receiveObject(this.is, BattleManager.class);
         BattleMenu.setBattleManager(battle);
         updateMap();
+        wipeThisShit();
+        MultiPlayerBattlePageController.getInstance().refreshTheStatusOfMap(BattleMenu.getBattleManager());
+    }
 
+    private void wipeThisShit() {
+        BattleManager battle = BattleMenu.getBattleManager();
+        for (Deployable card : battle.getPlayer1().cardsOnBattleField){
+            card.setCell(Map.getInstance().getCell(card.getCell().getX1Coordinate(),card.getCell().getX2Coordinate()));
+        }
+        for (Deployable card : battle.getPlayer2().cardsOnBattleField){
+            card.setCell(Map.getInstance().getCell(card.getCell().getX1Coordinate(),card.getCell().getX2Coordinate()));
+        }
     }
 
     public void sendMoveRequest(int x1, int x2, int x_1, int x_2) {
@@ -303,6 +314,7 @@ public class Client extends Thread {
         try {
             os.writeUTF(BattleMenu.getBattleManager().whoIsCurrentPlayer() + "A" + x1 + x2 + x_1 + x_2);
             receiveMapAndBattle();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -323,8 +335,8 @@ public class Client extends Thread {
     }
 
     private void updateMap() throws IOException {
-        for (int i = 0; i < Map.MAP_X1_LENGTH; i++) {
-            for (int j = 0; j < Map.MAP_X2_LENGTH; j++) {
+        for (int i = 1; i < Map.MAP_X1_LENGTH; i++) {
+            for (int j = 1; j < Map.MAP_X2_LENGTH; j++) {
                 updateOneCell(Map.getInstance().getCell(i, j));
             }
         }

@@ -1,6 +1,6 @@
 package model;
 
-import controller.MultiPlayerBattlePageController;
+
 import controller.Shop;
 import controller.SinglePlayerBattlePageController;
 import constants.AttackType;
@@ -140,25 +140,21 @@ public class BattleManager {
     }
 
     private void addFaceToGraphic(Minion minion) {
-        if (isMultiPlayer)
-            MultiPlayerBattlePageController.getInstance().addFaceToBattlePage(minion, this);
-        else SinglePlayerBattlePageController.getInstance().addFaceToBattlePage(minion, this);
+        if (!isMultiPlayer)
+             SinglePlayerBattlePageController.getInstance().addFaceToBattlePage(minion, this);
 
     }
 
     private void removeFaceInHand() {
-        if (isMultiPlayer)
-            MultiPlayerBattlePageController.getInstance().removeMinionFromHand(((Deployable) MultiPlayerBattlePageController
-                    .getInstance().getMe().selectedCard).face);
-        else
+        if (!isMultiPlayer)
+
             SinglePlayerBattlePageController.getInstance().removeMinionFromHand(((Deployable) SinglePlayerBattlePageController
                     .getInstance().getMe().selectedCard).face);
     }
 
     private void refreshTheWholeMap() {
-        if (isMultiPlayer)
-            MultiPlayerBattlePageController.getInstance().refreshTheStatusOfMap(this);
-        else
+        if (!isMultiPlayer)
+
             SinglePlayerBattlePageController.getInstance().refreshTheStatusOfMap(this);
     }
 
@@ -908,9 +904,8 @@ public class BattleManager {
     }
 
     private void removeCardFromGraphic(Card card) {
-        if (isMultiPlayer)
-            MultiPlayerBattlePageController.getInstance().removeCardFromHand(card, this);
-        else SinglePlayerBattlePageController.getInstance().removeCardFromHand(card, this);
+        if (!isMultiPlayer)
+            SinglePlayerBattlePageController.getInstance().removeCardFromHand(card, this);
     }
 
     public boolean useItem(Item item, int x1, int x2) {
@@ -980,9 +975,8 @@ public class BattleManager {
     }
 
     private void removeFlagInGraphic(Cell cell) {
-        if (isMultiPlayer)
-            MultiPlayerBattlePageController.getInstance().removeFlagInGround(cell);
-        else
+        if (!isMultiPlayer)
+
             SinglePlayerBattlePageController.getInstance().removeFlagInGround(cell);
     }
 
@@ -995,9 +989,8 @@ public class BattleManager {
     }
 
     private void removeItemInGraphic(Cell cell) {
-        if (isMultiPlayer)
-            MultiPlayerBattlePageController.getInstance().removeItemInGround(cell);
-        else SinglePlayerBattlePageController.getInstance().removeItemInGround(cell);
+        if (!isMultiPlayer)
+             SinglePlayerBattlePageController.getInstance().removeItemInGround(cell);
     }
 
     public void killTheThing(Deployable enemy) {
@@ -1034,9 +1027,8 @@ public class BattleManager {
     }
 
     private void removeFaceInGraphic(DisplayableDeployable face) {
-        if (isMultiPlayer)
-            MultiPlayerBattlePageController.getInstance().mainPane.getChildren().remove(face);
-        else SinglePlayerBattlePageController.getInstance().mainPane.getChildren().remove(face);
+        if (!isMultiPlayer)
+             SinglePlayerBattlePageController.getInstance().mainPane.getChildren().remove(face);
     }
 
 
@@ -1277,9 +1269,7 @@ public class BattleManager {
     }
 
     private void showGameEnding() {
-        if (isMultiPlayer)
-            MultiPlayerBattlePageController.getInstance().showThatGameEnded();
-        else
+        if (!isMultiPlayer)
             SinglePlayerBattlePageController.getInstance().showThatGameEnded();
     }
 
@@ -1519,8 +1509,6 @@ public class BattleManager {
             Map.getInstance().getCell(x1, x2).getCardInCell().setItem(item);
             if (!isMultiPlayer)
                 SinglePlayerBattlePageController.getInstance().displayMessage("Item put on Minion!!!");
-            else
-                MultiPlayerBattlePageController.getInstance().displayMessage("Item put on Minion!!!");
             System.out.println("item was put on someones minion with coordination: " + x1 + " , " + x2);
         } else {
             Map.getInstance().getCell(x1, x2).setItem(item);
