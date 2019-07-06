@@ -3,6 +3,7 @@ package controller;
 import Server.ServerStrings;
 import constants.CardType;
 import constants.GameMode;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -162,7 +163,8 @@ public class MultiPlayerBattlePageController implements Initializable {
                 try {
                     while (!isMyTurn())
                         Client.getClient().receiveMapAndBattle();
-                    refreshTheStatusOfMap(BattleMenu.getBattleManager());
+                    Platform.runLater(() -> refreshTheStatusOfMap(BattleMenu.getBattleManager()));
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -619,6 +621,10 @@ public class MultiPlayerBattlePageController implements Initializable {
         hero1.setFace(faceHero1);
         hero2.setFace(faceHero2);
         mainPane.getChildren().addAll(faceHero1, faceHero2);
+        hero1.setCell(Map.getInstance().getCell(3, 1));
+        hero2.setCell(Map.getInstance().getCell(3, 9));
+        hero1.getCell().setCardInCell(hero1);
+        hero2.getCell().setCardInCell(hero2);
         faceHero1.updateStats();
         faceHero2.updateStats();
 
@@ -638,15 +644,15 @@ public class MultiPlayerBattlePageController implements Initializable {
                 // BattleMenu.insert(me.getSelectedCard(), card.getCell().getX1Coordinate(), card.getCell().getX2Coordinate());
                 Client.getClient().sendInsertRequest(me.getSelectedCard().getId(), card.getCell().getX1Coordinate(), card.getCell().getX2Coordinate());
             } else if (me.getSelectedCard() != null && me.getSelectedCard().getType() == CardType.item) {
-             //   BattleMenu.insert(me.getSelectedCard(), card.getCell().getX1Coordinate(), card.getCell().getX2Coordinate());
+                //   BattleMenu.insert(me.getSelectedCard(), card.getCell().getX1Coordinate(), card.getCell().getX2Coordinate());
                 Client.getClient().sendInsertRequest(me.getSelectedCard().getId(), card.getCell().getX1Coordinate(), card.getCell().getX2Coordinate());
             } else if (me.getSelectedCard() != null &&
                     me.getSelectedCard().getType() != CardType.spell &&
                     !card.getAccount().equals(me.getAccount())) {
                 System.err.println(me.getSelectedCard().getName() + " attacked " + card.getName());
-            //    battleManager.attack((Deployable) me.getSelectedCard(), card);
-                Client.getClient().sendAttackRequest(((Deployable)me.getSelectedCard()).getCell().getX1Coordinate()
-                        ,((Deployable)me.getSelectedCard()).getCell().getX1Coordinate(),card.getCell().getX1Coordinate(),card.getCell().getX2Coordinate() );
+                //    battleManager.attack((Deployable) me.getSelectedCard(), card);
+                Client.getClient().sendAttackRequest(((Deployable) me.getSelectedCard()).getCell().getX1Coordinate()
+                        , ((Deployable) me.getSelectedCard()).getCell().getX1Coordinate(), card.getCell().getX1Coordinate(), card.getCell().getX2Coordinate());
                 ((Deployable) me.getSelectedCard()).getFace().attack();
                 card.getFace().getHit();
             } else {
@@ -907,8 +913,8 @@ public class MultiPlayerBattlePageController implements Initializable {
                         return;
                     }
                     if (me.isSelectedCardDeployed()) {
-                        Client.getClient().sendMoveRequest(((Deployable)me.getSelectedCard()).getCell().getX1Coordinate()
-                                ,((Deployable)me.getSelectedCard()).getCell().getX1Coordinate(),cell.getX1Coordinate(),cell.getX2Coordinate() );
+                        Client.getClient().sendMoveRequest(((Deployable) me.getSelectedCard()).getCell().getX1Coordinate()
+                                , ((Deployable) me.getSelectedCard()).getCell().getX1Coordinate(), cell.getX1Coordinate(), cell.getX2Coordinate());
                         //    BattleMenu.getBattleManager().move((Deployable) me.getSelectedCard(), cell.getX1Coordinate(), cell.getX2Coordinate());
                         System.out.println("we called move method dude!");
                     } else if (!me.isSelectedCardDeployed()) {

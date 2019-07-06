@@ -7,6 +7,7 @@ import com.gilecode.yagson.YaGsonBuilder;
 import constants.GameMode;
 import controller.*;
 import controller.LoginPageController;
+import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
@@ -288,16 +289,20 @@ public class Client extends Thread {
         BattleMenu.setBattleManager(battle);
         updateMap();
         wipeThisShit();
-        MultiPlayerBattlePageController.getInstance().refreshTheStatusOfMap(BattleMenu.getBattleManager());
+        Platform.runLater(()->{
+            MultiPlayerBattlePageController.getInstance().refreshTheStatusOfMap(BattleMenu.getBattleManager());
+        });
     }
 
-    private void wipeThisShit() {
+    public void wipeThisShit() {
         BattleManager battle = BattleMenu.getBattleManager();
         for (Deployable card : battle.getPlayer1().cardsOnBattleField){
             card.setCell(Map.getInstance().getCell(card.getCell().getX1Coordinate(),card.getCell().getX2Coordinate()));
+            card.getCell().setCardInCell(card);
         }
         for (Deployable card : battle.getPlayer2().cardsOnBattleField){
             card.setCell(Map.getInstance().getCell(card.getCell().getX1Coordinate(),card.getCell().getX2Coordinate()));
+            card.getCell().setCardInCell(card);
         }
     }
 
