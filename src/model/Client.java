@@ -26,6 +26,22 @@ public class Client extends Thread {
     private DataOutputStream os;
     private DataInputStream is;
 
+    public DataOutputStream getOs() {
+        return os;
+    }
+
+    public void setOs(DataOutputStream os) {
+        this.os = os;
+    }
+
+    public DataInputStream getIs() {
+        return is;
+    }
+
+    public void setIs(DataInputStream is) {
+        this.is = is;
+    }
+
     public static int getAuthToken() {
         return authToken;
     }
@@ -141,29 +157,10 @@ public class Client extends Thread {
     }
 
     public void sendEndTurnRequest() throws IOException {
-        os.writeUTF(ServerStrings.SENDENDTURNREQUEST);
-
+        os.writeUTF("T");
+        receiveMapAndBattle();
     }
 
-    public void theThingsWeDoWhenitIsNotOurTime() {  // :'((((((
-        Thread reading = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    String command = is.readUTF();
-                    while (!command.equals("T")) {
-
-                    }
-                    MultiPlayerBattlePageController.getInstance().endTurn(BattleMenu.getBattleManager()); /// turn end ro inja ejra kon
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        reading.start();
-    }
 
     public String requestCardStock(int id) {
         try {
@@ -283,14 +280,12 @@ public class Client extends Thread {
 
     }
 
-    public void receiveMapAndBattle() {
-        try {
-            Map map = (Map) receiveObject(is, Map.class);
-            Map.getInstance().setMap(map.getMap());
-            BattleManager battle = (BattleManager) receiveObject(this.is, BattleManager.class);
-            BattleMenu.setBattleManager(battle);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void receiveMapAndBattle() throws IOException {
+
+        Map map = (Map) receiveObject(is, Map.class);
+        Map.getInstance().setMap(map.getMap());
+        BattleManager battle = (BattleManager) receiveObject(this.is, BattleManager.class);
+        BattleMenu.setBattleManager(battle);
+
     }
 }

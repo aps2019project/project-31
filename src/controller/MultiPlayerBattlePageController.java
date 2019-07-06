@@ -1,7 +1,7 @@
 package controller;
 
+import Server.ServerStrings;
 import constants.CardType;
-import constants.FunctionType;
 import constants.GameMode;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -155,12 +155,32 @@ public class MultiPlayerBattlePageController implements Initializable {
     public MultiPlayerBattlePageController() {
     }
 
+    public void theThingsWeDoWheIitIsNotOurTime() {  // :'((((((
+        Thread reading = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    while (!isMyTurn())
+                        Client.getClient().receiveMapAndBattle();
+                    refreshTheStatusOfMap(BattleMenu.getBattleManager());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        reading.start();
+    }
+
     private void playTheActualGame(BattleManager battle) {
         graphicStuffAtBegin();
-        Client.getClient().receiveMapAndBattle();
+        try {
+            Client.getClient().receiveMapAndBattle();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         if (!isMyTurn()) {
-            Client.getClient().theThingsWeDoWhenitIsNotOurTime();
+            theThingsWeDoWheIitIsNotOurTime();
         }
 
 
@@ -177,14 +197,14 @@ public class MultiPlayerBattlePageController implements Initializable {
                 selectItem();
         });
         replace.setOnAction(event -> {
-            if (!isMyTurn()) {
+            /*if (!isMyTurn()) {
                 displayMessage("this is not your turn =");
             } else {
                 if (isMyTurn() && battle.getCurrentPlayer().getSelectedCard() != null) {
                     MultiPlayerBattlePageController.getInstance().replaceCardInHand(battle.getCurrentPlayer().getSelectedCard().getId(), battle);
 
                 }
-            }
+            }*/
         });
         endTurn.setOnAction(event -> {
             if (!isMyTurn()) {
@@ -199,11 +219,15 @@ public class MultiPlayerBattlePageController implements Initializable {
 
         });
         concede.setOnAction(event -> {
-            concede.setText("Concede");
-            if (me == battle.getPlayer1())
-                battle.player2Won();
-            else
-                battle.player1Won();
+            if (!isMyTurn()) {
+                displayMessage("this is not your turn =");
+            }else {
+                try {
+                    Client.getClient().getOs().writeUTF(ServerStrings.CONCEDE);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
 
         });
         graveYard.setOnAction(event -> {
@@ -249,6 +273,7 @@ public class MultiPlayerBattlePageController implements Initializable {
 
         Initializer.setCurrentScene(scene);
     }
+
     private void loadTheScene() {
         try {
             Parent root = FXMLLoader.load(getClass().getResource("/MultiPlayerBattlePage.fxml"));

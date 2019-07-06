@@ -77,22 +77,12 @@ public class User extends Thread {
     }
 
     private void goToBattle() throws IOException {
-        battleServer.user1.sendMapAndBattle();
-        battleServer.user2.sendMapAndBattle();
+        battleServer.updateBothUsers();
         while (true) {
             if (!battleServer.currentPlayer().getCommandFromCurrentPlayer()) {
                 gameFinished();
                 return;
             }
-        }
-    }
-
-    private void handleEndTurnRequest(String command) {
-        if (command.equals(ServerStrings.SENDENDTURNREQUEST)) {
-
-            // say some stuff to other player
-            // say where items are added
-
         }
     }
 
