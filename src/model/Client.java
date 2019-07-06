@@ -165,7 +165,16 @@ public class Client extends Thread {
 
     }
 
-
+    public void sendConcedeRequest(){
+        new Thread(()->{
+            try {
+                os.writeUTF(ServerStrings.CONCEDE);
+                receiveMapAndBattle();
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+        }).start();
+    }
     public String requestCardStock(int id) {
         try {
             os.writeUTF(authToken + " request card stock: " + id);

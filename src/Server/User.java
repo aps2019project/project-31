@@ -26,6 +26,38 @@ public class User extends Thread {
     private BattleManager battle;
     private BattleServer battleServer;
 
+
+    private void goToBattle() throws IOException {
+        battleServer.updateBothUsers();
+        while (true) {
+            if (!battleServer.currentPlayer().getCommandFromCurrentPlayer()) {
+                gameFinished();
+                return;
+            }
+        }
+    }
+
+
+    private boolean getCommandFromCurrentPlayer() throws IOException {
+        String command = is.readUTF();
+        while (!command.equals("T") || !command.equals(ServerStrings.CONCEDE)) {
+            battleServer.gameCompiler.whatIsThePlay(command);
+            battleServer.updateBothUsers();
+        }
+        if (command.equals(ServerStrings.CONCEDE)) {
+            System.out.println("the concede has been received");
+            return false;
+        }
+        System.out.println("the end turn has been received");
+        battleServer.updateBothUsers();
+        return true;
+    }
+
+
+    private void gameFinished() {
+
+    }
+
     @Override
     public void run() {
         try {
@@ -61,32 +93,6 @@ public class User extends Thread {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    private boolean getCommandFromCurrentPlayer() throws IOException {
-        String command = is.readUTF();
-        while (!command.equals("T") || !command.equals(ServerStrings.CONCEDE)) {
-            battleServer.gameCompiler.whatIsThePlay(command);
-            battleServer.updateBothUsers();
-        }
-        if (command.equals(ServerStrings.CONCEDE))
-            return false;
-        battleServer.updateBothUsers();
-        return true;
-    }
-
-    private void goToBattle() throws IOException {
-        battleServer.updateBothUsers();
-        while (true) {
-            if (!battleServer.currentPlayer().getCommandFromCurrentPlayer()) {
-                gameFinished();
-                return;
-            }
-        }
-    }
-
-    private void gameFinished() {
-
     }
 
     private void handleMainDeckSet(String command) throws IOException {

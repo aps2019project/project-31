@@ -218,11 +218,7 @@ public class MultiPlayerBattlePageController implements Initializable {
             if (!isMyTurn()) {
                 displayMessage("this is not your turn =");
             } else {
-                try {
-                    Client.getClient().getOs().writeUTF(ServerStrings.CONCEDE);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                Client.getClient().sendConcedeRequest();
             }
 
         });

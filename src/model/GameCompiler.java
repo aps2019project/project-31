@@ -22,27 +22,33 @@ public class GameCompiler {
     }
 
     public void checkIfAttack(String action) {
+        System.out.println("check if action is attack");
         Pattern pattern = Pattern.compile("\\dA(\\d)(\\d)(\\d)(\\d)");
         Matcher matcher = pattern.matcher(action);
         if (matcher.matches()) {
+            System.out.println("the action was attack");
             battleManager.doTheActualAttack_noTarof(deployableInCell(matcher.group(1), matcher.group(2)),
                     deployableInCell(matcher.group(3), matcher.group(4)));
         }
     }
 
     public void checkIfMove(String action) {
+        System.out.println("check if action is move");
         Pattern pattern = Pattern.compile("\\dM(\\d)(\\d)(\\d)(\\d)");
         Matcher matcher = pattern.matcher(action);
         if (matcher.matches()) {
+            System.out.println("the action was move");
             battleManager.doTheActualMove_noTarof(deployableInCell(matcher.group(1), matcher.group(2)),
                     Integer.parseInt(matcher.group(3)), Integer.parseInt(matcher.group(4)));
         }
     }
 
     public void checkIfInsert(String action) {
+        System.out.println("check if action is insert");
         Pattern pattern = Pattern.compile("\\dI(\\d\\d\\d)(\\d)(\\d)");
         Matcher matcher = pattern.matcher(action);
         if (matcher.matches()) {
+            System.out.println("the action was insert");
             int id = Integer.parseInt(matcher.group(1));
             int x1 = Integer.parseInt(matcher.group(2));
             int x2 = Integer.parseInt(matcher.group(3));
@@ -65,6 +71,7 @@ public class GameCompiler {
     }
 
     public void whatIsThePlay(String action) {
+        System.out.println("what is the play");
         if (action.startsWith("E")) {
             System.out.println("the game ended");
             SinglePlayerBattlePageController.getInstance().showThatGameEnded();
