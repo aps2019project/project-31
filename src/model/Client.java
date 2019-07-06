@@ -276,8 +276,13 @@ public class Client extends Thread {
         return false;
     }
 
-    public void sendInsertRequest() {
-
+    public void sendInsertRequest(int cardId, int x1, int x2) {
+        try {
+            os.writeUTF(BattleMenu.getBattleManager().whoIsCurrentPlayer() + "I" + cardId + x1 + x2);
+            receiveMapAndBattle();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void receiveMapAndBattle() throws IOException {
@@ -288,4 +293,22 @@ public class Client extends Thread {
         BattleMenu.setBattleManager(battle);
 
     }
+
+    public void sendMoveRequest(int x1, int x2, int x_1, int x_2) {
+        try {
+            os.writeUTF(BattleMenu.getBattleManager().whoIsCurrentPlayer() + "M" + x1 + x2 + x_1 + x_2);
+            receiveMapAndBattle();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public void sendAttackRequest(int x1, int x2, int x_1, int x_2) {
+        try {
+            os.writeUTF(BattleMenu.getBattleManager().whoIsCurrentPlayer() + "A" + x1 + x2 + x_1 + x_2);
+            receiveMapAndBattle();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

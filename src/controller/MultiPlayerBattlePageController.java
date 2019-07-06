@@ -221,7 +221,7 @@ public class MultiPlayerBattlePageController implements Initializable {
         concede.setOnAction(event -> {
             if (!isMyTurn()) {
                 displayMessage("this is not your turn =");
-            }else {
+            } else {
                 try {
                     Client.getClient().getOs().writeUTF(ServerStrings.CONCEDE);
                 } catch (IOException e) {
@@ -635,14 +635,18 @@ public class MultiPlayerBattlePageController implements Initializable {
     public void setOnMouseDeployable(Deployable card, BattleManager battleManager) {
         if (battleManager.getCurrentPlayer() == me) {
             if (me.getSelectedCard() != null && me.getSelectedCard().getType() == CardType.spell) {
-                BattleMenu.insert(me.getSelectedCard(), card.getCell().getX1Coordinate(), card.getCell().getX2Coordinate());
+                // BattleMenu.insert(me.getSelectedCard(), card.getCell().getX1Coordinate(), card.getCell().getX2Coordinate());
+                Client.getClient().sendInsertRequest(me.getSelectedCard().getId(), card.getCell().getX1Coordinate(), card.getCell().getX2Coordinate());
             } else if (me.getSelectedCard() != null && me.getSelectedCard().getType() == CardType.item) {
-                BattleMenu.insert(me.getSelectedCard(), card.getCell().getX1Coordinate(), card.getCell().getX2Coordinate());
+             //   BattleMenu.insert(me.getSelectedCard(), card.getCell().getX1Coordinate(), card.getCell().getX2Coordinate());
+                Client.getClient().sendInsertRequest(me.getSelectedCard().getId(), card.getCell().getX1Coordinate(), card.getCell().getX2Coordinate());
             } else if (me.getSelectedCard() != null &&
                     me.getSelectedCard().getType() != CardType.spell &&
                     !card.getAccount().equals(me.getAccount())) {
                 System.err.println(me.getSelectedCard().getName() + " attacked " + card.getName());
-                battleManager.attack((Deployable) me.getSelectedCard(), card);
+            //    battleManager.attack((Deployable) me.getSelectedCard(), card);
+                Client.getClient().sendAttackRequest(((Deployable)me.getSelectedCard()).getCell().getX1Coordinate()
+                        ,((Deployable)me.getSelectedCard()).getCell().getX1Coordinate(),card.getCell().getX1Coordinate(),card.getCell().getX2Coordinate() );
                 ((Deployable) me.getSelectedCard()).getFace().attack();
                 card.getFace().getHit();
             } else {
@@ -895,21 +899,24 @@ public class MultiPlayerBattlePageController implements Initializable {
                         return;
                     }
                     if (cell.getCardInCell() == null && (me.getSelectedCard().getType() == CardType.item)) { // spell can't insert on the ground ?'
-                        Client.getClient().sendInsertRequest();
-                        BattleMenu.insert(me.getSelectedCard(), cell.getX1Coordinate(), cell.getX2Coordinate());
+                        Client.getClient().sendInsertRequest(me.getSelectedCard().getId(), cell.getX1Coordinate(), cell.getX2Coordinate());
+                        //  BattleMenu.insert(me.getSelectedCard(), cell.getX1Coordinate(), cell.getX2Coordinate());
                     } else if (cell.getCardInCell() != null) {
                         displayMessage("destination is not empty");
                         System.out.println("card in this cell is : " + cell.getCardInCell().infoToString());
                         return;
                     }
                     if (me.isSelectedCardDeployed()) {
-                        BattleMenu.getBattleManager().move((Deployable) me.getSelectedCard(),
-                                cell.getX1Coordinate(), cell.getX2Coordinate());
+                        Client.getClient().sendMoveRequest(((Deployable)me.getSelectedCard()).getCell().getX1Coordinate()
+                                ,((Deployable)me.getSelectedCard()).getCell().getX1Coordinate(),cell.getX1Coordinate(),cell.getX2Coordinate() );
+                        //    BattleMenu.getBattleManager().move((Deployable) me.getSelectedCard(), cell.getX1Coordinate(), cell.getX2Coordinate());
                         System.out.println("we called move method dude!");
                     } else if (!me.isSelectedCardDeployed()) {
-                        BattleMenu.insert(me.getSelectedCard(), cell.getX1Coordinate(), cell.getX2Coordinate());
+                        Client.getClient().sendInsertRequest(me.getSelectedCard().getId(), cell.getX1Coordinate(), cell.getX2Coordinate());
+                        //      BattleMenu.insert(me.getSelectedCard(), cell.getX1Coordinate(), cell.getX2Coordinate());
                     } else if (me.getSelectedCard() != null && me.getSelectedCard().getType() == CardType.spell) {
-                        BattleMenu.insert(me.getSelectedCard(), cell.getX1Coordinate(), cell.getX2Coordinate());
+                        Client.getClient().sendInsertRequest(me.getSelectedCard().getId(), cell.getX1Coordinate(), cell.getX2Coordinate());
+                        //      BattleMenu.insert(me.getSelectedCard(), cell.getX1Coordinate(), cell.getX2Coordinate());
                     }
                 }
             });
