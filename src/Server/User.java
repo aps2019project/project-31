@@ -347,12 +347,13 @@ public class User extends Thread {
         BattleMenu.setBattleManagerForMultiPlayer(user1.account, user2.account, findNumberOfFlags(gameMode),
                 findNumberOfHavingFlags(gameMode), gameMode);
         battle = BattleMenu.getBattleManager();
+        battle.initialTheGame();
         battleServer = new BattleServer(battle, user1, user2);
         user1.os.writeUTF(ServerStrings.MULTIPLAYERSUCCESS);
         user1.sendMapAndBattle();
         user2.os.writeUTF(ServerStrings.MULTIPLAYERSUCCESS);
         user2.sendMapAndBattle();
-        battle.initialTheGame();
+
         goToBattle();
 
 

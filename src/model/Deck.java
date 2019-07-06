@@ -157,15 +157,6 @@ public class Deck {
         Output.print("---------------");
     }
 
-    public void shuffle() {
-        Random random = new Random();
-        for (int i = 0; i < 100; i++) {
-            int first = random.nextInt(cards.size());
-            int second = random.nextInt(cards.size());
-            Collections.swap(cards, first, second);
-        }
-    }
-
     public boolean checkIfValid() {
         if (hero == null)
             return false;

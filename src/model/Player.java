@@ -203,7 +203,7 @@ public class Player {
     }
 
     public void generateDeckArrangement() {
-        currentDeck.shuffle();
+        Collections.shuffle(currentDeck.getCards());
     }
 
     public void setSelectedCard(Card selectedCard) {
