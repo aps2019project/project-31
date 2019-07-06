@@ -46,7 +46,7 @@ public class User extends Thread {
         System.out.println("the command is : "+ command);
         while (!command.equals("T") || !command.equals(ServerStrings.CONCEDE)) {
             battleServer.gameCompiler.whatIsThePlay(command);
-            battleServer.updateBothUsers();
+        //    battleServer.updateBothUsers();
             System.out.println("get the next command from current player");
             command=is.readUTF();
             System.out.println("the command is : "+ command);
@@ -56,7 +56,7 @@ public class User extends Thread {
             return false;
         }
         System.out.println("the end turn has been received");
-        battleServer.updateBothUsers();
+     //   battleServer.updateBothUsers();
         return true;
     }
 
@@ -69,6 +69,7 @@ public class User extends Thread {
     public void run() {
         try {
             while (true) {
+                System.out.println("run loop");
                 String command = is.readUTF();
                 System.out.println("user received:" + command);
                 shopRequestStockHandler(command);

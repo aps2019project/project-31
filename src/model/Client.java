@@ -74,7 +74,7 @@ public class Client extends Thread {
     }
 
     public Account attemptLogin(String username, String password) throws IOException {
-        os.writeUTF("login username:" + username +
+       os.writeUTF("login username:" + username +
                 " password:" + password);
         String command = is.readUTF();
         if (command.matches(ServerStrings.LOGINSUCCESS)) {
@@ -156,25 +156,27 @@ public class Client extends Thread {
     }
 
     public void sendEndTurnRequest() {
+        try {
+            os.writeUTF("T");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         new Thread(() -> {
-            try {
-                os.writeUTF("T");
-                receiveMapAndBattle();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            receiveMapAndBattle();
+
         }).start();
 
     }
 
     public void sendConcedeRequest() {
+        try {
+            os.writeUTF(ServerStrings.CONCEDE);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         new Thread(() -> {
-            try {
-                os.writeUTF(ServerStrings.CONCEDE);
-                receiveMapAndBattle();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            receiveMapAndBattle();
         }).start();
     }
 
@@ -294,15 +296,14 @@ public class Client extends Thread {
 
     public void sendInsertRequest(int cardId, int x1, int x2) {
         System.out.println("sending insert request");
-
+        System.out.println(BattleMenu.getBattleManager().whoIsCurrentPlayer() + "I" + cardId + x1 + x2);
+        try {
+            os.writeUTF(BattleMenu.getBattleManager().whoIsCurrentPlayer() + "I" + cardId + x1 + x2);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         new Thread(() -> {
-            try {
-                System.out.println(BattleMenu.getBattleManager().whoIsCurrentPlayer() + "I" + cardId + x1 + x2);
-                os.writeUTF(BattleMenu.getBattleManager().whoIsCurrentPlayer() + "I" + cardId + x1 + x2);
-                receiveMapAndBattle();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            receiveMapAndBattle();
         }).start();
 
     }
@@ -345,14 +346,14 @@ public class Client extends Thread {
 
     public void sendMoveRequest(int x1, int x2, int x_1, int x_2) {
         System.out.println("sending move request");
+        System.out.println(BattleMenu.getBattleManager().whoIsCurrentPlayer() + "M" + x1 + x2 + x_1 + x_2);
+        try {
+            os.writeUTF(BattleMenu.getBattleManager().whoIsCurrentPlayer() + "M" + x1 + x2 + x_1 + x_2);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         new Thread(() -> {
-            try {
-                System.out.println(BattleMenu.getBattleManager().whoIsCurrentPlayer() + "M" + x1 + x2 + x_1 + x_2);
-                os.writeUTF(BattleMenu.getBattleManager().whoIsCurrentPlayer() + "M" + x1 + x2 + x_1 + x_2);
-                receiveMapAndBattle();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            receiveMapAndBattle();
         }).start();
 
 
@@ -360,14 +361,15 @@ public class Client extends Thread {
 
     public void sendAttackRequest(int x1, int x2, int x_1, int x_2) {
         System.out.println("sending attack request");
+        System.out.println(BattleMenu.getBattleManager().whoIsCurrentPlayer() + "A" + x1 + x2 + x_1 + x_2);
+        try {
+            os.writeUTF(BattleMenu.getBattleManager().whoIsCurrentPlayer() + "A" + x1 + x2 + x_1 + x_2);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         new Thread(() -> {
-            try {
-                System.out.println(BattleMenu.getBattleManager().whoIsCurrentPlayer() + "A" + x1 + x2 + x_1 + x_2);
-                os.writeUTF(BattleMenu.getBattleManager().whoIsCurrentPlayer() + "A" + x1 + x2 + x_1 + x_2);
-                receiveMapAndBattle();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            receiveMapAndBattle();
+
         }).start();
 
 

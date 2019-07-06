@@ -147,14 +147,12 @@ public class BattleManager {
 
     private void removeFaceInHand() {
         if (!isMultiPlayer)
-
             SinglePlayerBattlePageController.getInstance().removeMinionFromHand(((Deployable) SinglePlayerBattlePageController
                     .getInstance().getMe().selectedCard).face);
     }
 
     private void refreshTheWholeMap() {
         if (!isMultiPlayer)
-
             SinglePlayerBattlePageController.getInstance().refreshTheStatusOfMap(this);
     }
 
@@ -959,7 +957,7 @@ public class BattleManager {
         card.cell.setCardInCell(card);
         removeItemIfThereIsSomething(card);
         removeFlagIfThereIsSomething(card, x1, x2);
-        refreshTheWholeMap();
+       refreshTheWholeMap();
 
         Output.movedSuccessfully(card);
     }
@@ -970,28 +968,17 @@ public class BattleManager {
                 currentPlayer.numberOfFlags++;
             card.setHasFlag(true);
             Map.getInstance().getCell(x1, x2).setHasFlag(false);
-            removeFlagInGraphic(card.cell);
+
         }
-    }
-
-    private void removeFlagInGraphic(Cell cell) {
-        if (!isMultiPlayer)
-
-            SinglePlayerBattlePageController.getInstance().removeFlagInGround(cell);
     }
 
     public void removeItemIfThereIsSomething(Deployable card) {
         if (card.cell.getItem() != null && card.item == null) {
             card.item = card.cell.getItem();
             card.cell.setItem(null);
-            removeItemInGraphic(card.cell);
         }
     }
 
-    private void removeItemInGraphic(Cell cell) {
-        if (!isMultiPlayer)
-             SinglePlayerBattlePageController.getInstance().removeItemInGround(cell);
-    }
 
     public void killTheThing(Deployable enemy) {
         if (isTheGameFinished)

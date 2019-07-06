@@ -342,7 +342,7 @@ public class SinglePlayerBattlePageController implements Initializable {
         BattleMenu.getBattleManager().doAllAtTheBeginningOfTurnThings(false);
         updateNextCard();
         refreshFlagsSituation(battle);
-        BattleMenu.generateFlags(battle.getGameMode(),battle.getMaxNumberOfFlags());
+        BattleMenu.generateFlags(battle.getGameMode(), battle.getMaxNumberOfFlags());
         replace.setOnAction(event -> {
             if (!isMyTurn()) {
                 displayMessage("this is not your turn =");
@@ -672,6 +672,9 @@ public class SinglePlayerBattlePageController implements Initializable {
             return;
         refreshPartly();
         if (!battleManager.isThisRecordedGame()) {
+            removeFlags();
+            removeItems();
+            refreshFlagsSituation(battleManager);
             BattleMenu.getBattleManager().checkTheEndSituation();
             try {
                 health.setText("" + me.getHero().theActualHealth());
@@ -693,7 +696,22 @@ public class SinglePlayerBattlePageController implements Initializable {
             showItems();
         }
         showFlag();
+    }
 
+    public void removeItems() {
+        for (Cell[] cells : Map.getInstance().getMap())
+            for (Cell cell : cells) {
+                if (cell.getItem() == null)
+                    removeItemInGround(cell);
+            }
+    }
+
+    public void removeFlags() {
+        for (Cell[] cells : Map.getInstance().getMap())
+            for (Cell cell : cells) {
+                if (cell.hasFlag() == false)
+                    removeFlagInGround(cell);
+            }
     }
 
     public void showFlag() {
