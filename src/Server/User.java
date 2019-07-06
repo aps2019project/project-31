@@ -26,7 +26,7 @@ public class User extends Thread {
     protected static BattleManager battle;
     private static BattleServer battleServer;
 
-
+    public static final Object syncObject = new Object();
 
 
     @Override
@@ -325,9 +325,10 @@ public class User extends Thread {
     private void makeBattle(GameMode gameMode, User user1, User user2) throws IOException, InterruptedException {
         BattleMenu.setBattleManagerForMultiPlayer(user1.account, user2.account, findNumberOfFlags(gameMode),
                 findNumberOfHavingFlags(gameMode), gameMode);
-        if (battle == null)
+        if (battle == null) {
             battle = BattleMenu.getBattleManager();
-        battle.initialTheGame();
+            battle.initialTheGame();
+        }
         if (battleServer == null)
             battleServer = new BattleServer(battle, user1, user2);
         user1.os.writeUTF(ServerStrings.MULTIPLAYERSUCCESS);
@@ -335,14 +336,11 @@ public class User extends Thread {
         user2.os.writeUTF(ServerStrings.MULTIPLAYERSUCCESS);
         user2.sendMapAndBattle();
         System.out.println("two map sent !");
-        synchronized (battle){
+        synchronized (syncObject){
             System.out.println("we are at synchronized block");
-            if(this == user1) {
-                System.out.println("im user 1 bitch :/");
-                battleServer.start();
-                System.out.println("battleServer.start was passed");
-            }
-            battle.wait();
+            battleServer.start();
+            System.out.println("battleServer.start was passed");
+            syncObject.wait();
         }
         System.out.println("the game ended :((((");
 

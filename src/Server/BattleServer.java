@@ -90,7 +90,7 @@ public class BattleServer extends Thread {
     @Override
     public void run() {
         System.out.println("battle server is going to start its job :)");
-        synchronized (User.battle) {
+        synchronized (User.syncObject) {
             System.out.println("we are in the battle :)");
             updateBothUsers();
             while (true) {
