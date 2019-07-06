@@ -349,9 +349,9 @@ public class User extends Thread {
         battle = BattleMenu.getBattleManager();
         battleServer = new BattleServer(battle, user1, user2);
         user1.os.writeUTF(ServerStrings.MULTIPLAYERSUCCESS);
-        Server.sendObject(BattleMenu.getBattleManager(), user1.os);
+        user1.sendMapAndBattle();
         user2.os.writeUTF(ServerStrings.MULTIPLAYERSUCCESS);
-        Server.sendObject(BattleMenu.getBattleManager(), user2.os);
+        user2.sendMapAndBattle();
         battle.initialTheGame();
         goToBattle();
 
@@ -449,10 +449,34 @@ public class User extends Thread {
 
     public void sendMapAndBattle() {
         try {
-            Server.sendObject(Map.getInstance(), os);
             Server.sendObject(BattleMenu.getBattleManager(), os);
+            sendMapAndBattle();
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void sendeMap() throws IOException {
+        for (int i = 0; i < Map.MAP_X1_LENGTH; i++) {
+            for (int j = 0; j < Map.MAP_X2_LENGTH; j++) {
+                sendOneCell(Map.getInstance().getCell(i, j));
+            }
+        }
+    }
+
+    private String boolToString(boolean bool) {
+        if (bool == true)
+            return "true";
+        else return "false";
+    }
+
+    private void sendOneCell(Cell cell) throws IOException {
+        os.writeUTF(cell.getX1Coordinate() + "");
+        os.writeUTF(cell.getX2Coordinate() + "");
+        Server.sendObject(cell.getCardInCell(), os);
+        os.writeUTF(cell.getOnFireTurns() + "");
+        os.writeUTF(cell.getOnPoisonTurns() + "");
+        os.writeUTF(boolToString(cell.hasFlag()));
+        Server.sendObject(cell.getItem(), os);
     }
 }

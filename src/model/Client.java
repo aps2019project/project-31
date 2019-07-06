@@ -129,11 +129,7 @@ public class Client extends Thread {
                 try {
                     String serverReply = is.readUTF();
                     if (serverReply.equals(ServerStrings.MULTIPLAYERSUCCESS)) {
-                        BattleManager battle = (BattleManager) receiveObject(this.is, BattleManager.class);
-                        System.out.println("receeeeeeeeeeeeived successfully");
-                        BattleMenu.setBattleManager(battle);
-                        if (battle == null)
-                            System.out.println("wtf isssssssssssssssssssssssssssssssssssssssssssssss");
+                        updateMap();
                         WaitingPageController.getInstance().johnyJohnyYesPapaGoingToBattle.set(true);
                         synchronized (WaitingPageController.getInstance()) {
                             WaitingPageController.getInstance().notifyAll();
@@ -287,10 +283,10 @@ public class Client extends Thread {
 
     public void receiveMapAndBattle() throws IOException {
 
-        Map map = (Map) receiveObject(is, Map.class);
-        Map.getInstance().setMap(map.getMap());
+
         BattleManager battle = (BattleManager) receiveObject(this.is, BattleManager.class);
         BattleMenu.setBattleManager(battle);
+        updateMap();
 
     }
 
@@ -302,12 +298,35 @@ public class Client extends Thread {
             e.printStackTrace();
         }
     }
+
     public void sendAttackRequest(int x1, int x2, int x_1, int x_2) {
         try {
             os.writeUTF(BattleMenu.getBattleManager().whoIsCurrentPlayer() + "A" + x1 + x2 + x_1 + x_2);
             receiveMapAndBattle();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void updateOneCell(Cell cell) throws IOException {
+        cell.setX1Coordinate(Integer.parseInt(is.readUTF()));
+        cell.setX2Coordinate(Integer.parseInt(is.readUTF()));
+        receiveObject(is, Deployable.class);
+        cell.setOnFireTurns(Integer.parseInt(is.readUTF()));
+        cell.setOnPoisonTurns(Integer.parseInt(is.readUTF()));
+        cell.setHasFlag(trueOrFalse(is.readUTF()));
+        receiveObject(is, Item.class);
+    }
+
+    private boolean trueOrFalse(String bool) {
+        return bool.contains("t");
+    }
+
+    private void updateMap() throws IOException {
+        for (int i = 0; i < Map.MAP_X1_LENGTH; i++) {
+            for (int j = 0; j < Map.MAP_X2_LENGTH; j++) {
+                updateOneCell(Map.getInstance().getCell(i, j));
+            }
         }
     }
 
