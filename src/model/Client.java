@@ -150,10 +150,9 @@ public class Client extends Thread {
             @Override
             public void run() {
                 try {
-                    GameCompiler gc = MultiPlayerBattlePageController.getInstance().getGameCompiler();
                     String command = is.readUTF();
                     while (!command.equals("T")) {
-                        gc.whatIsThePlay(command, gc);
+
                     }
                     MultiPlayerBattlePageController.getInstance().endTurn(BattleMenu.getBattleManager()); /// turn end ro inja ejra kon
                 } catch (IOException e) {

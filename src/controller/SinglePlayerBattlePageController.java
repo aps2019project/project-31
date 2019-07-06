@@ -342,6 +342,7 @@ public class SinglePlayerBattlePageController implements Initializable {
         BattleMenu.getBattleManager().doAllAtTheBeginningOfTurnThings(false);
         updateNextCard();
         refreshFlagsSituation(battle);
+        BattleMenu.generateFlags(battle.getGameMode(),battle.getMaxNumberOfFlags());
         replace.setOnAction(event -> {
             if (!isMyTurn()) {
                 displayMessage("this is not your turn =");

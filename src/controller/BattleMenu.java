@@ -51,7 +51,7 @@ public class BattleMenu extends Menu {
         makeInstanceOfBattleManager(player1, player2, numberOfFlags, maxNumberOfHavingFlag, gameMode,true);
     }
 
-    private static void generateFlags(GameMode gameMode, int maxNumberOfFlags) {
+    public static void generateFlags(GameMode gameMode, int maxNumberOfFlags) {
         if (gameMode == GameMode.Flag) {
             Map.getInstance().getCell(3, 5).setHasFlag(true);
         }

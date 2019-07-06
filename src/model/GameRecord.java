@@ -61,7 +61,7 @@ public class GameRecord {
             if (action.startsWith("T")) {
                 formalEndTurn();
             }
-            gameCompiler.whatIsThePlay(action, gameCompiler);
+            gameCompiler.whatIsThePlay(action);
             if (battleManager.isMultiPlayer())
                 MultiPlayerBattlePageController.getInstance().refreshTheStatusOfMap(battleManager);
             else
