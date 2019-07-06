@@ -46,6 +46,8 @@ public class User extends Thread {
         System.out.println("the command is : "+ command);
         while (!command.equals("T") || !command.equals(ServerStrings.CONCEDE)) {
             if(battleServer.gameCompiler.whatIsThePlay(command)){
+                System.out.println("we pass command :"+command+ "\n" +
+                        "because it was allowed !");
                 battleServer.user1.os.writeUTF(command);
                 battleServer.user2.os.writeUTF(command);
             }else {

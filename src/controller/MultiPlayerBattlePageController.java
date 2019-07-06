@@ -162,10 +162,14 @@ public class MultiPlayerBattlePageController implements Initializable {
             @Override
             public void run() {
 
-                while (!isMyTurn())
-                    Client.getClient().receiveMapAndBattle();
-                Platform.runLater(() -> refreshTheStatusOfMap(BattleMenu.getBattleManager()));
-
+                while (!isMyTurn()) {
+                    try {
+                        Client.getClient().doWhatServerSays();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Platform.runLater(() -> refreshTheStatusOfMap(BattleMenu.getBattleManager()));
+                }
 
             }
         });
@@ -903,10 +907,11 @@ public class MultiPlayerBattlePageController implements Initializable {
                         return;
                     }
                     if (me.isSelectedCardDeployed()) {
+                        System.out.println("we called move method dude!");
                         Client.getClient().sendMoveRequest(((Deployable) me.getSelectedCard()).getCell().getX1Coordinate()
                                 , ((Deployable) me.getSelectedCard()).getCell().getX1Coordinate(), cell.getX1Coordinate(), cell.getX2Coordinate());
                         //    BattleMenu.getBattleManager().move((Deployable) me.getSelectedCard(), cell.getX1Coordinate(), cell.getX2Coordinate());
-                        System.out.println("we called move method dude!");
+
                     } else if (!me.isSelectedCardDeployed()) {
                         Client.getClient().sendInsertRequest(me.getSelectedCard().getId(), cell.getX1Coordinate(), cell.getX2Coordinate());
                         //      BattleMenu.insert(me.getSelectedCard(), cell.getX1Coordinate(), cell.getX2Coordinate());

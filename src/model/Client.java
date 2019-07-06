@@ -74,7 +74,7 @@ public class Client extends Thread {
     }
 
     public Account attemptLogin(String username, String password) throws IOException {
-       os.writeUTF("login username:" + username +
+        os.writeUTF("login username:" + username +
                 " password:" + password);
         String command = is.readUTF();
         if (command.matches(ServerStrings.LOGINSUCCESS)) {
@@ -162,17 +162,9 @@ public class Client extends Thread {
             e.printStackTrace();
         }
 
-        new Thread(() -> {
 
-            try {
-                String command = is.readUTF();
-                if(command!=ServerStrings.NOTALLOWED){
+        doWhatServerSays();
 
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }).start();
 
     }
 
@@ -182,16 +174,9 @@ public class Client extends Thread {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        new Thread(() -> {
-            try {
-                String command = is.readUTF();
-                if(command!=ServerStrings.NOTALLOWED){
 
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }).start();
+        doWhatServerSays();
+
     }
 
     public String requestCardStock(int id) {
@@ -316,16 +301,9 @@ public class Client extends Thread {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        new Thread(() -> {
-            try {
-                String command = is.readUTF();
-                if(command!=ServerStrings.NOTALLOWED){
 
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }).start();
+        doWhatServerSays();
+
 
     }
 
@@ -373,16 +351,8 @@ public class Client extends Thread {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        new Thread(() -> {
-            try {
-                String command = is.readUTF();
-                if(command!=ServerStrings.NOTALLOWED){
 
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }).start();
+        doWhatServerSays();
 
 
     }
@@ -395,18 +365,26 @@ public class Client extends Thread {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        new Thread(() -> {
-            try {
-                String command = is.readUTF();
-                if(command!=ServerStrings.NOTALLOWED){
 
-                }
+        doWhatServerSays();
+
+
+    }
+
+    public void doWhatServerSays() {
+        new Thread(() -> {
+            System.out.println("we are at do what server says !");
+            String command = null;
+            try {
+                command = is.readUTF();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
+            System.out.println("we received this command : " + command);
+            if (command != ServerStrings.NOTALLOWED) {
+                BattleMenu.getBattleManager().doWhatIAmToldTo(command);
+            }
         }).start();
-
 
     }
 
