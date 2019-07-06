@@ -139,10 +139,12 @@ public class Client extends Thread {
             e.printStackTrace();
         }
     }
+
     public void sendEndTurnRequest() throws IOException {
         os.writeUTF(ServerStrings.SENDENDTURNREQUEST);
 
     }
+
     public void theThingsWeDoWhenitIsNotOurTime() {  // :'((((((
         Thread reading = new Thread(new Runnable() {
             @Override
@@ -151,7 +153,7 @@ public class Client extends Thread {
                     GameCompiler gc = MultiPlayerBattlePageController.getInstance().getGameCompiler();
                     String command = is.readUTF();
                     while (!command.equals("T")) {
-                        gc.whatIsThePlay(command,gc);
+                        gc.whatIsThePlay(command, gc);
                     }
                     MultiPlayerBattlePageController.getInstance().endTurn(BattleMenu.getBattleManager()); /// turn end ro inja ejra kon
                 } catch (IOException e) {
@@ -280,5 +282,16 @@ public class Client extends Thread {
 
     public void sendInsertRequest() {
 
+    }
+
+    public void receiveMapAndBattle() {
+        try {
+            Map map = (Map) receiveObject(is, Map.class);
+            Map.getInstance().setMap(map.getMap());
+            BattleManager battle = (BattleManager) receiveObject(this.is, BattleManager.class);
+            BattleMenu.setBattleManager(battle);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

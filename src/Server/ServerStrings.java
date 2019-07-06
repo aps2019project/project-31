@@ -31,4 +31,5 @@ public class ServerStrings {
     public static final String MAIN_DECK_SET = "main deck successfully set";
     public static final String SET_AS_MAIN_REQUEST = "set (.*) as main";
     public static final String SENDENDTURNREQUEST = "end turn";
+    public static final String CONCEDE = "CONCEDE";
 }

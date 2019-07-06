@@ -64,18 +64,18 @@ public class GameCompiler {
         }
     }
 
-    public void whatIsThePlay(String action, GameCompiler gameCompiler) {
+    public void whatIsThePlay(String action) {
         if (action.startsWith("E")) {
             System.out.println("the game ended");
             SinglePlayerBattlePageController.getInstance().showThatGameEnded();
             System.out.println("the game ended ? wtf ???");
         }
         if (action.contains("A"))
-            gameCompiler.checkIfAttack(action);
+            this.checkIfAttack(action);
         if (action.contains("I"))
-            gameCompiler.checkIfInsert(action);
+            this.checkIfInsert(action);
         if (action.contains("M"))
-            gameCompiler.checkIfMove(action);
+            this.checkIfMove(action);
     }
 }
 

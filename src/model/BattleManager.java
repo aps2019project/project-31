@@ -1358,6 +1358,21 @@ public class BattleManager {
         if (!isThisRecordedGame) {
             gameRecord.setMap(Map.getInstance().getMap());
         }
+        getPlayer1().generateDeckArrangement();
+        getPlayer2().generateDeckArrangement();
+        setCurrentPlayer(BattleMenu.getBattleManager().getPlayer2());
+        applyItemFunctions(BattleMenu.getBattleManager().getCurrentPlayer().getHero(), FunctionType.GameStart);
+        setCurrentPlayer(BattleMenu.getBattleManager().getPlayer1());
+        applyItemFunctions(BattleMenu.getBattleManager().getCurrentPlayer().getHero(), FunctionType.GameStart);
+
+        player2.initNextcard();
+        player1.initNextcard();
+        player1.getHero().setCell(Map.getInstance().getCell(3, 1));
+        player2.getHero().setCell(Map.getInstance().getCell(3, 9));
+        player1.getHero().getCell().setCardInCell(player1.getHero());
+        player2.getHero().getCell().setCardInCell(player2.getHero());
+        getPlayer1().addCardToBattlefield(player1.getHero());
+        getPlayer2().addCardToBattlefield(player2.getHero());
     }
 
     private void initialTheHands() {
@@ -1492,13 +1507,6 @@ public class BattleManager {
         }
         getCurrentPlayer().setHasReplaced(false);
         assignManaToPlayers();
-        if(isMulti){
-            if (MultiPlayerBattlePageController.getInstance().nextCardField.getChildren().size() <= 1)
-                MultiPlayerBattlePageController.getInstance().updateNextCard();
-        }else {
-            if (SinglePlayerBattlePageController.getInstance().nextCardField.getChildren().size() <= 1)
-                SinglePlayerBattlePageController.getInstance().updateNextCard();
-        }
         isTimeToPutItem();
 
 
@@ -1521,11 +1529,6 @@ public class BattleManager {
         refreshTheWholeMap();
     }
 
-    public void serverEndTurn() {
-        doAllThingsInEndingOfTheTurns();
-        setCurrentPlayer(getOtherPlayer());
-        doAllAtTheBeginningOfTurnThings(isMultiPlayer);
-    }
 
 
 }

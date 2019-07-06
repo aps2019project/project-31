@@ -5,10 +5,7 @@ import com.gilecode.yagson.YaGsonBuilder;
 import constants.GameMode;
 import controller.BattleMenu;
 import controller.Shop;
-import model.Account;
-import model.BattleManager;
-import model.Card;
-import model.Deck;
+import model.*;
 
 import java.io.*;
 import java.net.Socket;
@@ -28,6 +25,7 @@ public class User extends Thread {
     private static User waitingUserMode3;
     private BattleManager battle;
     private BattleServer battleServer;
+
     @Override
     public void run() {
         try {
@@ -65,13 +63,41 @@ public class User extends Thread {
         }
     }
 
+    private boolean getCommandFromCurrentPlayer() throws IOException {
+        String command = is.readUTF();
+        while (!command.equals("T") || !command.equals(ServerStrings.CONCEDE)) {
+            battleServer.gameCompiler.whatIsThePlay(command);
+            battleServer.updateBothUsers();
+        }
+        if (command.equals(ServerStrings.CONCEDE))
+            return false;
+        battleServer.serverEndTurn();
+        battleServer.updateBothUsers();
+        return true;
+    }
+
+    private void goToBattle() throws IOException {
+        battleServer.user1.sendMapAndBattle();
+        battleServer.user2.sendMapAndBattle();
+        while (true) {
+            if (!battleServer.currentPlayer().getCommandFromCurrentPlayer()) {
+                gameFinished();
+                return;
+            }
+        }
+    }
+
     private void handleEndTurnRequest(String command) {
         if (command.equals(ServerStrings.SENDENDTURNREQUEST)) {
-            battle.serverEndTurn();
+
             // say some stuff to other player
             // say where items are added
 
         }
+    }
+
+    private void gameFinished() {
+
     }
 
     private void handleMainDeckSet(String command) throws IOException {
@@ -331,11 +357,15 @@ public class User extends Thread {
         BattleMenu.setBattleManagerForMultiPlayer(user1.account, user2.account, findNumberOfFlags(gameMode),
                 findNumberOfHavingFlags(gameMode), gameMode);
         battle = BattleMenu.getBattleManager();
-        battleServer = new BattleServer(battle,user1,user2);
+        battleServer = new BattleServer(battle, user1, user2);
         user1.os.writeUTF(ServerStrings.MULTIPLAYERSUCCESS);
         Server.sendObject(BattleMenu.getBattleManager(), user1.os);
         user2.os.writeUTF(ServerStrings.MULTIPLAYERSUCCESS);
         Server.sendObject(BattleMenu.getBattleManager(), user2.os);
+        battle.initialTheGame();
+        goToBattle();
+
+
     }
 
     private boolean authorise(Matcher matcher) throws IOException {
@@ -425,5 +455,14 @@ public class User extends Thread {
 
     private int generateAuthToken() {
         return Math.abs(account.getUsername().hashCode());
+    }
+
+    public void sendMapAndBattle() {
+        try {
+            Server.sendObject(Map.getInstance(), os);
+            Server.sendObject(BattleMenu.getBattleManager(), os);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

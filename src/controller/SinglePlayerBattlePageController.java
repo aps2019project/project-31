@@ -187,7 +187,8 @@ public class SinglePlayerBattlePageController implements Initializable {
     }
 
     public static SinglePlayerBattlePageController getInstance() {
-        if (singlePlayerBattlePageController == null) singlePlayerBattlePageController = new SinglePlayerBattlePageController();
+        if (singlePlayerBattlePageController == null)
+            singlePlayerBattlePageController = new SinglePlayerBattlePageController();
         return singlePlayerBattlePageController;
     }
 
@@ -310,6 +311,7 @@ public class SinglePlayerBattlePageController implements Initializable {
         else me.setSelectedCard(((Deployable) me.getSelectedCard()).getItem());
     }
 
+
     private void playTheActualGame(BattleManager battle) {
         initPlayers();
         makeColumnHands();
@@ -329,7 +331,7 @@ public class SinglePlayerBattlePageController implements Initializable {
         initHeroesSpecialPowers();
 
         setOnActionForEveryCell();
-
+        initHeroes(battle);
 
         battle.initialTheGame();
 
@@ -338,6 +340,7 @@ public class SinglePlayerBattlePageController implements Initializable {
         }
         atStartThings(battle);
         BattleMenu.getBattleManager().doAllAtTheBeginningOfTurnThings(false);
+        updateNextCard();
         refreshFlagsSituation(battle);
         replace.setOnAction(event -> {
             if (!isMyTurn()) {
@@ -459,12 +462,14 @@ public class SinglePlayerBattlePageController implements Initializable {
             battle.setCurrentPlayer(battle.getOtherPlayer());
         }
         BattleMenu.getBattleManager().doAllAtTheBeginningOfTurnThings(false);
+        updateNextCard();
         if (battle.getCurrentPlayer().isAi()) {
             System.err.println("ai is playing");
             ((Ai) battle.getCurrentPlayer()).play();
             battle.setCurrentPlayer(battle.getOtherPlayer());
             BattleMenu.getBattleManager().doAllThingsInEndingOfTheTurns();
             BattleMenu.getBattleManager().doAllAtTheBeginningOfTurnThings(false);
+            updateNextCard();
         }
         updateManaViewers(battle);
     }
@@ -783,15 +788,7 @@ public class SinglePlayerBattlePageController implements Initializable {
         opponentGeneralSpellManaCost.setText("" + opponent.getHero().getHeroSpell().getManaCost());
         generalCoolDown.setText("" + me.getHero().getHeroSpell().getManaCost());
         opponentGeneralCoolDown.setText("" + opponent.getHero().getHeroSpell().getManaCost());
-        battle.getPlayer1().generateDeckArrangement();
-        battle.getPlayer2().generateDeckArrangement();
-        battle.setCurrentPlayer(BattleMenu.getBattleManager().getPlayer2());
-        battle.applyItemFunctions(BattleMenu.getBattleManager().getCurrentPlayer().getHero(), FunctionType.GameStart);
-        battle.setCurrentPlayer(BattleMenu.getBattleManager().getPlayer1());
-        battle.applyItemFunctions(BattleMenu.getBattleManager().getCurrentPlayer().getHero(), FunctionType.GameStart);
-        initHeroes(battle);
-        me.initNextcard();
-        opponent.initNextcard();
+
         refreshTheStatusOfMap(battle);
         manas.add(mana1);
         manas.add(mana2);

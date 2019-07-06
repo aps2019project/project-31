@@ -150,24 +150,15 @@ public class MultiPlayerBattlePageController implements Initializable {
     private ArrayList<ImageView> manas = new ArrayList<>();
     private controller.ColumnOfHand[] columnHands = new controller.ColumnOfHand[6];
     private GameRecord gameRecord;
-    private GameCompiler gameCompiler;
+
 
     public MultiPlayerBattlePageController() {
     }
 
     private void playTheActualGame(BattleManager battle) {
-        initPlayers();
-        makeColumnHands();
-        setPolygonsInMap();
-        initHeroesSpecialPowers();
-        setOnActionForEveryCell();
-        battle.initialTheGame();
-        for (int i = 0; i < HAND_CAPACITY; i++) {
-            handleHandPlace(i, battle);
-        }
-        atStartThings(battle);
-        BattleMenu.getBattleManager().doAllAtTheBeginningOfTurnThings(true);
-        gameCompiler = new GameCompiler(battle);
+        graphicStuffAtBegin();
+        Client.getClient().receiveMapAndBattle();
+
         if (!isMyTurn()) {
             Client.getClient().theThingsWeDoWhenitIsNotOurTime();
         }
@@ -221,6 +212,29 @@ public class MultiPlayerBattlePageController implements Initializable {
         });
     }
 
+    private void graphicStuffAtBegin() {
+        initPlayers();
+        makeColumnHands();
+        setPolygonsInMap();
+        initHeroesSpecialPowers();
+        setOnActionForEveryCell();
+        nameAndStuff();
+        initHeroes(BattleMenu.getBattleManager());
+        setGameMode(BattleMenu.getBattleManager());
+        refreshTheStatusOfMap(BattleMenu.getBattleManager());
+        for (int i = 0; i < HAND_CAPACITY; i++) {
+            handleHandPlace(i, BattleMenu.getBattleManager());
+        }
+    }
+
+    private void nameAndStuff() {
+        username.setText(me.getAccount().getUsername());
+        opponentUsername.setText(opponent.getAccount().getUsername());
+        generalSpellManaCost.setText("" + me.getHero().getHeroSpell().getManaCost());
+        opponentGeneralSpellManaCost.setText("" + opponent.getHero().getHeroSpell().getManaCost());
+        generalCoolDown.setText("" + me.getHero().getHeroSpell().getManaCost());
+        opponentGeneralCoolDown.setText("" + opponent.getHero().getHeroSpell().getManaCost());
+    }
 
     public void setInGraveYard(boolean inGraveYard) {
         isInGraveYard = inGraveYard;
@@ -235,11 +249,6 @@ public class MultiPlayerBattlePageController implements Initializable {
 
         Initializer.setCurrentScene(scene);
     }
-
-    public GameCompiler getGameCompiler() {
-        return gameCompiler;
-    }
-
     private void loadTheScene() {
         try {
             Parent root = FXMLLoader.load(getClass().getResource("/MultiPlayerBattlePage.fxml"));
@@ -363,7 +372,7 @@ public class MultiPlayerBattlePageController implements Initializable {
             playTheActualGame(battle);
         else {
             gameRecord = Account.getMainAccount().getSelectedGameRecord();
-            recordTheGame(battle);
+            //    recordTheGame(battle);
         }
     }
 
@@ -435,7 +444,7 @@ public class MultiPlayerBattlePageController implements Initializable {
         MultiPlayerBattlePageController.deleteBattlePage();
     }
 
-    private void recordTheGame(BattleManager battle) {
+   /* private void recordTheGame(BattleManager battle) {
         concede.setText("Exit");
         concede.setOnAction(event -> showThatGameEnded());
         System.out.println(gameRecord.getGame());
@@ -447,7 +456,7 @@ public class MultiPlayerBattlePageController implements Initializable {
 
         });
         showGame.start();
-    }
+    }*/
 
     private void setOnActionForEveryCell() {
         for (int i = 1; i <= Map.MAP_X1_LENGTH; i++) {
@@ -580,12 +589,6 @@ public class MultiPlayerBattlePageController implements Initializable {
     public void initHeroes(BattleManager battleManager) {
         Hero hero1 = battleManager.getPlayer1().getHero();
         Hero hero2 = battleManager.getPlayer2().getHero();
-        hero1.setCell(Map.getInstance().getCell(3, 1));
-        hero2.setCell(Map.getInstance().getCell(3, 9));
-        hero1.getCell().setCardInCell(hero1);
-        hero2.getCell().setCardInCell(hero2);
-        battleManager.getPlayer1().addCardToBattlefield(hero1);
-        battleManager.getPlayer2().addCardToBattlefield(hero2);
         DisplayableDeployable faceHero1 = new DisplayableDeployable(hero1);
         DisplayableDeployable faceHero2 = new DisplayableDeployable(hero2);
         hero1.setFace(faceHero1);
@@ -594,7 +597,6 @@ public class MultiPlayerBattlePageController implements Initializable {
         faceHero1.updateStats();
         faceHero2.updateStats();
 
-        System.out.println(faceHero1.getDeployable().getCell().getPolygon().getTranslateX());
         faceHero1.setOnMouseClicked(event -> {
             setOnMouseDeployable(hero1, battleManager);
             faceHero1.updateStats();
@@ -779,35 +781,6 @@ public class MultiPlayerBattlePageController implements Initializable {
         } catch (Exception e) {
 
         }
-    }
-
-    private void atStartThings(BattleManager battle) {
-        username.setText(me.getAccount().getUsername());
-        opponentUsername.setText(opponent.getAccount().getUsername());
-        generalSpellManaCost.setText("" + me.getHero().getHeroSpell().getManaCost());
-        opponentGeneralSpellManaCost.setText("" + opponent.getHero().getHeroSpell().getManaCost());
-        generalCoolDown.setText("" + me.getHero().getHeroSpell().getManaCost());
-        opponentGeneralCoolDown.setText("" + opponent.getHero().getHeroSpell().getManaCost());
-        battle.getPlayer1().generateDeckArrangement();
-        battle.getPlayer2().generateDeckArrangement();
-        battle.setCurrentPlayer(BattleMenu.getBattleManager().getPlayer2());
-        battle.applyItemFunctions(BattleMenu.getBattleManager().getCurrentPlayer().getHero(), FunctionType.GameStart);
-        battle.setCurrentPlayer(BattleMenu.getBattleManager().getPlayer1());
-        battle.applyItemFunctions(BattleMenu.getBattleManager().getCurrentPlayer().getHero(), FunctionType.GameStart);
-        initHeroes(battle);
-        me.initNextcard();
-        opponent.initNextcard();
-        refreshTheStatusOfMap(battle);
-        manas.add(mana1);
-        manas.add(mana2);
-        manas.add(mana3);
-        manas.add(mana4);
-        manas.add(mana5);
-        manas.add(mana6);
-        manas.add(mana7);
-        manas.add(mana8);
-        manas.add(mana9);
-        setGameMode(battle);
     }
 
     private void setGameMode(BattleManager battle) {
