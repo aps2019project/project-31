@@ -45,9 +45,13 @@ public class User extends Thread {
         String command = is.readUTF();
         System.out.println("the command is : "+ command);
         while (!command.equals("T") || !command.equals(ServerStrings.CONCEDE)) {
-            battleServer.gameCompiler.whatIsThePlay(command);
+            if(battleServer.gameCompiler.whatIsThePlay(command)){
+                battleServer.user1.os.writeUTF(command);
+                battleServer.user2.os.writeUTF(command);
+            }else {
+                battleServer.currentPlayer().os.writeUTF(ServerStrings.NOTALLOWED);
+            }
         //    battleServer.updateBothUsers();
-
             System.out.println("get the next command from current player");
             command=is.readUTF();
             System.out.println("the command is : "+ command);

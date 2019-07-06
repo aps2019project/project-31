@@ -34,4 +34,8 @@ public class BattleServer {
         user1.sendMapAndBattle();
     }
 
+    public void isThisPlayAllowed(){
+
+    }
+
 }

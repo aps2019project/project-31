@@ -164,7 +164,14 @@ public class Client extends Thread {
 
         new Thread(() -> {
 
+            try {
+                String command = is.readUTF();
+                if(command!=ServerStrings.NOTALLOWED){
 
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }).start();
 
     }
@@ -176,7 +183,14 @@ public class Client extends Thread {
             e.printStackTrace();
         }
         new Thread(() -> {
+            try {
+                String command = is.readUTF();
+                if(command!=ServerStrings.NOTALLOWED){
 
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }).start();
     }
 
@@ -303,7 +317,14 @@ public class Client extends Thread {
             e.printStackTrace();
         }
         new Thread(() -> {
+            try {
+                String command = is.readUTF();
+                if(command!=ServerStrings.NOTALLOWED){
 
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }).start();
 
     }
@@ -353,7 +374,14 @@ public class Client extends Thread {
             e.printStackTrace();
         }
         new Thread(() -> {
+            try {
+                String command = is.readUTF();
+                if(command!=ServerStrings.NOTALLOWED){
 
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }).start();
 
 
@@ -368,7 +396,14 @@ public class Client extends Thread {
             e.printStackTrace();
         }
         new Thread(() -> {
+            try {
+                String command = is.readUTF();
+                if(command!=ServerStrings.NOTALLOWED){
 
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
         }).start();
 
