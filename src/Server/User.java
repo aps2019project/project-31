@@ -302,17 +302,29 @@ public class User extends Thread {
 
                     if (waitingUserMode3 == null) {
                         waitingUserMode3 = this;
+                        synchronized (syncObject) {
+                            syncObject.wait();
+                            System.out.println("the game ended :((((");
+                        }
                     } else makeBattle(GameMode.Domination, waitingUserMode3, this);
                     break;
                 case DeathMatch:
                     if (waitingUserMode1 == null) {
                         waitingUserMode1 = this;
+                        synchronized (syncObject) {
+                            syncObject.wait();
+                            System.out.println("the game ended :((((");
+                        }
                     } else makeBattle(GameMode.DeathMatch, waitingUserMode1, this);
 
                     break;
                 case Flag:
                     if (waitingUserMode2 == null) {
                         waitingUserMode2 = this;
+                        synchronized (syncObject) {
+                            syncObject.wait();
+                            System.out.println("the game ended :((((");
+                        }
                     } else makeBattle(GameMode.Flag, waitingUserMode2, this);
                     break;
             }
@@ -325,25 +337,23 @@ public class User extends Thread {
     private void makeBattle(GameMode gameMode, User user1, User user2) throws IOException, InterruptedException {
         BattleMenu.setBattleManagerForMultiPlayer(user1.account, user2.account, findNumberOfFlags(gameMode),
                 findNumberOfHavingFlags(gameMode), gameMode);
-        if (battle == null) {
-            battle = BattleMenu.getBattleManager();
-            battle.initialTheGame();
-        }
-        if (battleServer == null)
-            battleServer = new BattleServer(battle, user1, user2);
+
+        battle = BattleMenu.getBattleManager();
+        battle.initialTheGame();
+        System.out.println(this.account.getUsername() + " is here :)");
+        battleServer = new BattleServer(battle, user1, user2);
         user1.os.writeUTF(ServerStrings.MULTIPLAYERSUCCESS);
         user1.sendMapAndBattle();
         user2.os.writeUTF(ServerStrings.MULTIPLAYERSUCCESS);
         user2.sendMapAndBattle();
         System.out.println("two map sent !");
-        synchronized (syncObject){
+        synchronized (syncObject) {
             System.out.println("we are at synchronized block");
             battleServer.start();
             System.out.println("battleServer.start was passed");
             syncObject.wait();
         }
         System.out.println("the game ended :((((");
-
 
 
     }

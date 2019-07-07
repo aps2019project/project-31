@@ -1,5 +1,6 @@
 package model;
 
+import Server.ServerStrings;
 import constants.FunctionType;
 import constants.GameMode;
 import controller.BattleMenu;
@@ -75,6 +76,17 @@ public class GameRecord {
         this.battleManager = battleManager;
         if (action.startsWith("T")) {
             formalEndTurn();
+        }
+        if(action.equals(ServerStrings.ENDTURN)){
+            battleManager.endTurn();
+        }
+        if(action.contains(ServerStrings.GAMEENDED)){
+            System.out.println("the game ended in client side, i dont know what to do !");
+            if(action.charAt(0)=='1'){
+                battleManager.player1Won();
+            }else {
+                battleManager.player2Won();
+            }
         }
         if (action.startsWith("E")) {
             System.out.println("the game ended");

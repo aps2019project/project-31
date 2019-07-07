@@ -19,12 +19,6 @@ public class BattleServer extends Thread {
         gameCompiler = new GameCompiler(battleManager);
     }
 
-    public void serverEndTurn() {
-        battleManager.doAllThingsInEndingOfTheTurns();
-        battleManager.setCurrentPlayer(battleManager.getOtherPlayer());
-        battleManager.doAllAtTheBeginningOfTurnThings(battleManager.isMultiPlayer());
-    }
-
     public User currentPlayer() {
         if (battleManager.getCurrentPlayer().getAccount() == user1.getAccount())
             return user1;
@@ -58,7 +52,7 @@ public class BattleServer extends Thread {
         System.out.println("current player is " + currentPlayer().getAccount().getUsername());
         String command = currentPlayer().is.readUTF();
         System.out.println("the command is : " + command);
-        while (!command.equals("T") || !command.equals(ServerStrings.CONCEDE)) {
+        while (!command.equals(ServerStrings.ENDTURN) || !command.contains(ServerStrings.CONCEDE)) {
             if (gameCompiler.whatIsThePlay(command)) {
                 System.out.println("we pass command :" + command + "");
                 user1.os.writeUTF(command);
@@ -71,20 +65,23 @@ public class BattleServer extends Thread {
             command = currentPlayer().is.readUTF();
             System.out.println("the command is : " + command);
         }
-        if (command.equals(ServerStrings.CONCEDE)) {
+        if (command.contains(ServerStrings.CONCEDE)) {
             System.out.println("the concede has been received");
-
-
+            user1.os.writeUTF(command.charAt(0) + ServerStrings.GAMEENDED);
+            user2.os.writeUTF(command.charAt(0) + ServerStrings.GAMEENDED);
             return false;
         }
+        user1.os.writeUTF(ServerStrings.ENDTURN);
+        user2.os.writeUTF(ServerStrings.ENDTURN);
         System.out.println("the end turn has been received");
         //   battleServer.updateBothUsers();
+        battleManager.endTurn();
         return true;
     }
 
 
     private void gameFinished() {
-
+        System.out.println("the game has finished ( in battle server )");
     }
 
     @Override
@@ -102,7 +99,6 @@ public class BattleServer extends Thread {
                         gameFinished();
                         return;
                     }
-
 
 
                 } catch (IOException e) {

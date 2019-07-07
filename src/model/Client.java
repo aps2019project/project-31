@@ -157,7 +157,7 @@ public class Client extends Thread {
 
     public void sendEndTurnRequest() {
         try {
-            os.writeUTF("T");
+            os.writeUTF(ServerStrings.ENDTURN);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -170,7 +170,8 @@ public class Client extends Thread {
 
     public void sendConcedeRequest() {
         try {
-            os.writeUTF(ServerStrings.CONCEDE);
+            os.writeUTF(BattleMenu.getBattleManager().whoIsCurrentPlayer()
+                    +ServerStrings.CONCEDE);
         } catch (IOException e) {
             e.printStackTrace();
         }

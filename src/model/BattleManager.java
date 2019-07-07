@@ -1,6 +1,7 @@
 package model;
 
 
+import controller.MultiPlayerBattlePageController;
 import controller.Shop;
 import controller.SinglePlayerBattlePageController;
 import constants.AttackType;
@@ -928,7 +929,7 @@ public class BattleManager {
     public void doTheActualMove_noTarof(Deployable card, int x1, int x2) {
         if (!isThisRecordedGame)
             gameRecord.addAction(whoIsCurrentPlayer() + "M" + card.cell.getX1Coordinate() + card.cell.getX2Coordinate() + x1 + x2);
-
+        System.out.println("we are at move_noTarof");
         card.cell.setCardInCell(null);
         card.cell = Map.getInstance().getCell(x1, x2);
         card.setMoved(true);
@@ -1237,6 +1238,7 @@ public class BattleManager {
     private void showGameEnding() {
         if (!isMultiPlayer)
             SinglePlayerBattlePageController.getInstance().showThatGameEnded();
+        else MultiPlayerBattlePageController.getInstance().showThatGameEnded();
     }
 
     public void player2Won() {
@@ -1329,6 +1331,7 @@ public class BattleManager {
         player2.getHero().getCell().setCardInCell(player2.getHero());
         getPlayer1().addCardToBattlefield(player1.getHero());
         getPlayer2().addCardToBattlefield(player2.getHero());
+        doAllAtTheBeginningOfTurnThings(isMultiPlayer);
     }
 
     private void initialTheHands() {
@@ -1547,6 +1550,11 @@ public class BattleManager {
             System.out.println("we are going to command battle manager to do things with no tarof");
             gameRecord.doWhatIAmToldTo(command,this);
         }
+    }
+    public void endTurn(){
+        doAllThingsInEndingOfTheTurns();
+        setCurrentPlayer(getOtherPlayer());
+        doAllAtTheBeginningOfTurnThings(isMultiPlayer());
     }
 
 
