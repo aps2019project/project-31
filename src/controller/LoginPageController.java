@@ -89,6 +89,8 @@ public class LoginPageController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        infoVBox.getChildren().addAll(new ChatMessage("sdafsadf", true));
         try {
             BufferedReader bufferedReader = new BufferedReader(new FileReader(
                     System.getProperty("user.dir") + "/Sources/ServerResources/config.txt"));

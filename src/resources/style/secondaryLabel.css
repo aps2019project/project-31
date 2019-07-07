@@ -1,0 +1,6 @@
+.text{
+    -fx-text-fill: black;
+    -fx-stroke: red;
+    -fx-stroke-width: 0.7;
+    /*-fx-font-style: bold;*/
+}

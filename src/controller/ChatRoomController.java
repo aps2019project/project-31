@@ -25,7 +25,7 @@ public class ChatRoomController implements Initializable {
     @FXML
     private Button backButton;
 
-    public ChatRoomController getInstance() {
+    public static ChatRoomController getInstance() {
         if (chatRoom == null)
             chatRoom = new ChatRoomController();
         return chatRoom;
