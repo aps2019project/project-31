@@ -318,7 +318,7 @@ public class Client extends Thread {
     public void receiveMapAndBattle() {
         receiveMapAndBattleForFirstTime();
         Platform.runLater(() -> {
-            MultiPlayerBattlePageController.getInstance().refreshTheStatusOfMap(BattleMenu.getBattleManager());
+                MultiPlayerBattlePageController.getInstance().refreshTheStatusOfMap(BattleMenu.getBattleManager());
         });
     }
 

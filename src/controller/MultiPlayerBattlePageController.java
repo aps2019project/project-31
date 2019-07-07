@@ -158,7 +158,6 @@ public class MultiPlayerBattlePageController implements Initializable {
 
     public MultiPlayerBattlePageController() {
     }
-
     public void theThingsWeDoWheIitIsNotOurTime() {  // :'((((((
         System.out.println("i'm in the theThingsWeDoWheIitIsNotOurTime");
         new Thread(() -> {
@@ -270,7 +269,6 @@ public class MultiPlayerBattlePageController implements Initializable {
         } else {
             isInGraveYard = false;
         }
-
         Initializer.setCurrentScene(scene);
     }
 
@@ -357,7 +355,6 @@ public class MultiPlayerBattlePageController implements Initializable {
         else if (card.getType() == CardType.spell)
             removeSpellFromHand(((Spell) card).getFace(), battle);
     }
-
     private void putNextCardInHand(BattleManager battle) {
         for (int i = 0; i < 6; i++) {
             if (columnHands[i].stackPane.getChildren().size() == 1) {
@@ -436,7 +433,6 @@ public class MultiPlayerBattlePageController implements Initializable {
         }
         System.err.println("you don't have this card in your hand.");
     }
-
     public void addFaceToBattlePage(Minion theMinion, BattleManager battle) {
         DisplayableDeployable face = new DisplayableDeployable(theMinion);
         theMinion.setFace(face);
