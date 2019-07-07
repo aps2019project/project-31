@@ -79,6 +79,9 @@ public class GameRecord {
         }
         if(action.equals(ServerStrings.ENDTURN)){
             battleManager.endTurn();
+            if(MultiPlayerBattlePageController.getInstance().getMe()==battleManager.getOtherPlayer()){
+                MultiPlayerBattlePageController.getInstance().theThingsWeDoWheIitIsNotOurTime();
+            }
         }
         if(action.contains(ServerStrings.GAMEENDED)){
             System.out.println("the game ended in client side, i dont know what to do !");

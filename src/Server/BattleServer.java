@@ -52,7 +52,7 @@ public class BattleServer extends Thread {
         System.out.println("current player is " + currentPlayer().getAccount().getUsername());
         String command = currentPlayer().is.readUTF();
         System.out.println("the command is : " + command);
-        while (!command.equals(ServerStrings.ENDTURN) || !command.contains(ServerStrings.CONCEDE)) {
+        while (!command.equals(ServerStrings.ENDTURN) && !command.contains(ServerStrings.CONCEDE)) {
             if (gameCompiler.whatIsThePlay(command)) {
                 System.out.println("we pass command :" + command + "");
                 user1.os.writeUTF(command);

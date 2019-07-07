@@ -125,6 +125,8 @@ public class BattleManager {
     private void refreshTheWholeMap() {
         if (!isMultiPlayer)
             SinglePlayerBattlePageController.getInstance().refreshTheStatusOfMap(this);
+        else if (MultiPlayerBattlePageController.getInstance().getHboxInTop() != null)
+            MultiPlayerBattlePageController.getInstance().refreshTheStatusOfMap(this);
     }
 
     public String whoIsCurrentPlayer() {
@@ -827,6 +829,7 @@ public class BattleManager {
             }
         }
     }
+
     public boolean playMinion(Minion minion, int x1, int x2) {
         Minion theMinion = minion.duplicateDeployed(Map.getInstance().getCell(x1, x2),
                 currentPlayer.account, this);
@@ -855,6 +858,7 @@ public class BattleManager {
             gameRecord.addAction(whoIsCurrentPlayer() + "I" + theMinion.id + x1 + x2);
         return true;
     }
+
     public boolean playSpell(Spell spell, int x1, int x2) {
         if (!spell.equals(currentPlayer.getHero().heroSpell)) {
             currentPlayer.hand.remove(spell);
@@ -1129,7 +1133,6 @@ public class BattleManager {
             e.printStackTrace();
         }
 
-        refreshTheWholeMap();
 
     }
 
@@ -1467,7 +1470,7 @@ public class BattleManager {
         }
         getCurrentPlayer().setHasReplaced(false);
         assignManaToPlayers();
-        isTimeToPutItem();
+     //   isTimeToPutItem();
 
 
     }
@@ -1543,15 +1546,16 @@ public class BattleManager {
     }
 
 
-    public void doWhatIAmToldTo(String command){
-        if(gameRecord==null)
+    public void doWhatIAmToldTo(String command) {
+        if (gameRecord == null)
             System.out.println("game record is null in battle manager");
         else {
             System.out.println("we are going to command battle manager to do things with no tarof");
-            gameRecord.doWhatIAmToldTo(command,this);
+            gameRecord.doWhatIAmToldTo(command, this);
         }
     }
-    public void endTurn(){
+
+    public void endTurn() {
         doAllThingsInEndingOfTheTurns();
         setCurrentPlayer(getOtherPlayer());
         doAllAtTheBeginningOfTurnThings(isMultiPlayer());

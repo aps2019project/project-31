@@ -152,6 +152,9 @@ public class MultiPlayerBattlePageController implements Initializable {
     private controller.ColumnOfHand[] columnHands = new controller.ColumnOfHand[6];
     private GameRecord gameRecord;
 
+    public HBox getHboxInTop() {
+        return hboxInTop;
+    }
 
     public MultiPlayerBattlePageController() {
     }
