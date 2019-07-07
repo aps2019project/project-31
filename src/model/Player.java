@@ -408,5 +408,10 @@ public class Player {
             generateCardInReplace();
         cardInReplace = currentDeck.getCards().get(value);
     }
+
+
+    public boolean equals(Player player) {
+        return this.account.getUsername().equals(player.account.getUsername());
+    }
 }
 

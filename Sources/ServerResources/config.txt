@@ -1,2 +1,2 @@
 5678
-localHost
+localhost

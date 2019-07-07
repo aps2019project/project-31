@@ -15,6 +15,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
+import javax.xml.crypto.Data;
 import java.io.*;
 import java.net.Socket;
 import java.util.AbstractCollection;
@@ -81,7 +82,12 @@ public class Client extends Thread {
             System.out.println("getting account...");
             YaGson yaGson = new YaGsonBuilder().create();
 
-            Account account = (Account) receiveObject(is, Account.class);
+            Account account = null;
+            try {
+                account = (Account) receiveObject(is, Account.class);
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
             int auth = Integer.parseInt(is.readUTF());
             setAuthToken(auth);
             HashMap<Integer, Integer> stock = yaGson.fromJson(is.readUTF(), HashMap.class);
@@ -90,7 +96,7 @@ public class Client extends Thread {
         } else return null;
     }
 
-    public static Object receiveObject(DataInputStream is, Class objectClass) throws IOException {
+    public static Object receiveObject(DataInputStream is, Class objectClass) throws IOException, ClassNotFoundException {
         YaGson yaGson = new YaGsonBuilder().create();
         int size = Integer.parseInt(is.readUTF());
         byte[] bytes = new byte[size];
@@ -101,6 +107,7 @@ public class Client extends Thread {
         }
         String objectString = new String(bytes);
         return yaGson.fromJson(objectString, objectClass);
+
 
     }
 
@@ -171,7 +178,7 @@ public class Client extends Thread {
     public void sendConcedeRequest() {
         try {
             os.writeUTF(BattleMenu.getBattleManager().whoIsCurrentPlayer()
-                    +ServerStrings.CONCEDE);
+                    + ServerStrings.CONCEDE);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -325,6 +332,8 @@ public class Client extends Thread {
             wipeThisShit();
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
         System.out.println("map received successfully");
     }
@@ -387,25 +396,26 @@ public class Client extends Thread {
             System.out.println("we received this command : " + command);
             if (command != ServerStrings.NOTALLOWED) {
                 BattleMenu.getBattleManager().doWhatIAmToldTo(command);
-            }else System.out.println("not allowed");
+                Platform.runLater(()->MultiPlayerBattlePageController.getInstance().refreshTheStatusOfMap(BattleMenu.getBattleManager()));
+            } else System.out.println("not allowed");
         }).start();
     }
 
-    private void updateOneCell(Cell cell) throws IOException {
+    private void updateOneCell(Cell cell) throws IOException, ClassNotFoundException {
         cell.setX1Coordinate(Integer.parseInt(is.readUTF()));
         cell.setX2Coordinate(Integer.parseInt(is.readUTF()));
-        receiveObject(is, Deployable.class);
+        cell.setCardInCell((Deployable) receiveObject(is, Deployable.class));
         cell.setOnFireTurns(Integer.parseInt(is.readUTF()));
         cell.setOnPoisonTurns(Integer.parseInt(is.readUTF()));
         cell.setHasFlag(trueOrFalse(is.readUTF()));
-        receiveObject(is, Item.class);
+        cell.setItem((Item) receiveObject(is, Item.class));
     }
 
     private boolean trueOrFalse(String bool) {
         return bool.contains("t");
     }
 
-    private void updateMap() throws IOException {
+    private void updateMap() throws IOException, ClassNotFoundException {
         for (int i = 1; i < Map.MAP_X1_LENGTH; i++) {
             for (int j = 1; j < Map.MAP_X2_LENGTH; j++) {
                 updateOneCell(Map.getInstance().getCell(i, j));

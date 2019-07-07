@@ -59,7 +59,7 @@ public class GameRecord {
         Map.getInstance().getCell(3, 1).setCardInCell(battleManager.getPlayer1().getHero());
         Map.getInstance().getCell(3, 9).setCardInCell(battleManager.getPlayer2().getHero());
         for (String action : actions) {
-            doWhatIAmToldTo(action,battleManager);
+            doWhatIAmToldTo(action, battleManager);
             if (battleManager.isMultiPlayer())
                 MultiPlayerBattlePageController.getInstance().refreshTheStatusOfMap(battleManager);
             else
@@ -77,17 +77,23 @@ public class GameRecord {
         if (action.startsWith("T")) {
             formalEndTurn();
         }
-        if(action.equals(ServerStrings.ENDTURN)){
+        if (action.equals(ServerStrings.ENDTURN)) {
             battleManager.endTurn();
-            if(MultiPlayerBattlePageController.getInstance().getMe()==battleManager.getOtherPlayer()){
+           /* System.out.println("player 1 is : " + battleManager.player1.account.getUsername() + " \n player 2 is : " + battleManager.player2.account.getUsername());
+            System.out.println("the actual me is : "+Account.getMainAccount().getUsername()+" and the battle manager me is : "+MultiPlayerBattlePageController.getInstance().getMe().account.getUsername());
+            System.out.println("the current player is : " + battleManager.currentPlayer.account.getUsername());*/
+            if (!MultiPlayerBattlePageController.getInstance().getMe().equals(battleManager.currentPlayer)) {
+                /*System.out.println("going to theThingsWeDoWheIitIsNotOurTime");*/
                 MultiPlayerBattlePageController.getInstance().theThingsWeDoWheIitIsNotOurTime();
+            } else {
+                System.out.println("not going to theThingsWeDoWheIitIsNotOurTime");
             }
         }
-        if(action.contains(ServerStrings.GAMEENDED)){
+        if (action.contains(ServerStrings.GAMEENDED)) {
             System.out.println("the game ended in client side, i dont know what to do !");
-            if(action.charAt(0)=='1'){
+            if (action.charAt(0) == '1') {
                 battleManager.player1Won();
-            }else {
+            } else {
                 battleManager.player2Won();
             }
         }

@@ -176,6 +176,7 @@ public class MultiPlayerBattlePageController implements Initializable {
                 }else System.out.println("not allowed !!!");
                 Platform.runLater(() -> refreshTheStatusOfMap(BattleMenu.getBattleManager()));
             }
+            System.out.println("the thread in theThingsWeDoWheIitIsNotOurTime has ended just fine :)");
         }).start();
 
     }
@@ -660,8 +661,7 @@ public class MultiPlayerBattlePageController implements Initializable {
     }
 
     private boolean isMyTurn() {
-        return BattleMenu.getBattleManager().getCurrentPlayer().
-                getAccount().getUsername().equals(me.getAccount().getUsername());
+        return BattleMenu.getBattleManager().getCurrentPlayer().equals(me);
     }
 
     public Player getMe() {
