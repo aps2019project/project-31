@@ -33,16 +33,12 @@ import java.util.ResourceBundle;
 public class LoginPageController implements Initializable {
     public static Scene scene = null;
     private static LoginPageController loginPage;
+    public Media sound;
 
-    @FXML
     public HBox mainContainer;
-    @FXML
     public TextField usernameTF;
-    @FXML
     public PasswordField passwordField;
-    @FXML
     public Button loginButton;
-    @FXML
     public ImageView middlePicture;
     @FXML
     private TextField signupUsername;
@@ -102,7 +98,7 @@ public class LoginPageController implements Initializable {
         }
         try {
             String musicPath = getClass().getResource("/musique/a.mp3").toExternalForm();
-            Media sound = new Media(musicPath);
+            sound = new Media(musicPath);
             MediaPlayer mediaPlayer = new MediaPlayer(sound);
             mediaPlayer.play();
         } catch (Exception ignored) { }

@@ -14,13 +14,13 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
-import javax.xml.crypto.Data;
-import java.io.*;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Client extends Thread {
     private Socket socket;
@@ -247,6 +247,71 @@ public class Client extends Thread {
             response = is.readUTF();
         }
         return vBox;
+    }
+
+    public void sendChatMessage(String text) {
+        try {
+            os.writeUTF("send message: " + Account.getMainAccount().getUsername() + ": ###"
+                    + text);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void exitChatroom() {
+        try {
+            os.writeUTF(ServerStrings.EXIT_CHATROOM);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void enterChatRoom() {
+        try {
+            os.writeUTF(ServerStrings.ENTERING_CHATROOM);
+            new Thread(() -> {
+                while (true) {
+                    try {
+                        String command = is.readUTF();
+
+                        Pattern pattern = Pattern.compile(ServerStrings.RECEIVE_MESSAGE);
+                        Matcher matcher = pattern.matcher(command);
+                        if (matcher.matches()) {
+                            if (!matcher.group(1).equals(Account.getMainAccount().getUsername())) {
+                                Matcher finalMatcher = matcher;
+                                Platform.runLater(() -> {
+                                    ChatRoomController.getInstance().addForeignMessage(finalMatcher.group(1) + ":\n"
+                                            + finalMatcher.group(2));
+                                });
+                            } else {
+                                Matcher finalMatcher1 = matcher;
+                                Platform.runLater(() -> {
+                                    ChatRoomController.getInstance().addNativeMessage(finalMatcher1.group(2));
+                                });
+
+                            }
+                        }
+
+                        pattern = Pattern.compile(ServerStrings.EXIT_CHATROOM);
+                        matcher = pattern.matcher(command);
+                        if (matcher.matches()) {
+                            break;
+                        }
+
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+
+
+            }).start();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     public void logout() throws IOException {

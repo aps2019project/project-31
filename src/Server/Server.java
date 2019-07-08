@@ -2,6 +2,7 @@ package Server;
 
 import com.gilecode.yagson.YaGson;
 import com.gilecode.yagson.YaGsonBuilder;
+import controller.ChatRoomController;
 import controller.Shop;
 import model.Account;
 import model.Card;
@@ -10,6 +11,7 @@ import model.Initializer;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -17,13 +19,18 @@ import java.util.regex.Pattern;
 public class Server extends Thread {
     private static ServerSocket server;
     private static int port;
+    private static ArrayList<User> usersInChat = new ArrayList<>();
+
+    public static ArrayList<User> getUsersInChat() {
+        return usersInChat;
+    }
 
 
-    public static void main(String[] args) {
+    @Override
+    public void run() {
 
         try {
             YaGson yaGson = new YaGsonBuilder().create();
-            Initializer.initialiseData();
             BufferedReader bufferedReader = new BufferedReader(new FileReader(
                     System.getProperty("user.dir") + "/Sources/ServerResources/config.txt"));
             port = Integer.parseInt(bufferedReader.readLine());
@@ -39,6 +46,7 @@ public class Server extends Thread {
             bufferedWriter.flush();*/
             Shop.setStock(yaGson.fromJson(bufferedReader.readLine(), HashMap.class));
 
+
             server = new ServerSocket(port);
             while (true) {
                 Socket socket = server.accept();
@@ -50,8 +58,9 @@ public class Server extends Thread {
         }
     }
 
-    public synchronized static void saveAllAccounts(){
+    public synchronized static void saveAllAccounts() {
         Account.saveAllAccounts();
+
     }
 
     public static void makeWaitForLoginThread(YaGson yaGson, Socket socket) {
@@ -100,7 +109,7 @@ public class Server extends Thread {
 
                     pattern = Pattern.compile(ServerStrings.REQUEST_SIGNUP);
                     matcher = pattern.matcher(command);
-                    if (matcher.matches()){
+                    if (matcher.matches()) {
                         String username = matcher.group(1);
                         String password = matcher.group(2);
                         if (Account.findAccount(username) != null) {
