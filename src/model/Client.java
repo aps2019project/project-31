@@ -115,7 +115,7 @@ public class Client extends Thread {
     public void sendCancelRequest() {
 
         try {
-            os.writeUTF(authToken + " request is canceled");
+            os.writeUTF("request is canceled");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -141,9 +141,9 @@ public class Client extends Thread {
                     if (serverReply.equals(ServerStrings.MULTIPLAYERSUCCESS)) {
                         WaitingPageController.getInstance().johnyJohnyYesPapaGoingToBattle.set(true);
                         synchronized (WaitingPageController.getInstance()) {
-                            WaitingPageController.getInstance().notifyAll();
                             receiveMapAndBattleForFirstTime();
-                        }
+                        }   WaitingPageController.getInstance().notifyAll();
+
 
                     } else if (serverReply.equals(ServerStrings.CANCELSUCCESSFULLY)) {
                         WaitingPageController.getInstance().johnyJohnyYesPapaGoingToBattle.set(true);
@@ -319,7 +319,7 @@ public class Client extends Thread {
     public void receiveMapAndBattle() {
         receiveMapAndBattleForFirstTime();
         Platform.runLater(() -> {
-                MultiPlayerBattlePageController.getInstance().refreshTheStatusOfMap(BattleMenu.getBattleManager());
+            MultiPlayerBattlePageController.getInstance().refreshTheStatusOfMap(BattleMenu.getBattleManager());
         });
     }
 
@@ -397,7 +397,7 @@ public class Client extends Thread {
             System.out.println("we received this command : " + command);
             if (command != ServerStrings.NOTALLOWED) {
                 BattleMenu.getBattleManager().doWhatIAmToldTo(command);
-                Platform.runLater(()->MultiPlayerBattlePageController.getInstance().refreshTheStatusOfMap(BattleMenu.getBattleManager()));
+                Platform.runLater(() -> MultiPlayerBattlePageController.getInstance().refreshTheStatusOfMap(BattleMenu.getBattleManager()));
             } else System.out.println("not allowed");
             BattleMenu.showGlimpseOfMap();
         }).start();

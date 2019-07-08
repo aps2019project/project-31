@@ -22,7 +22,7 @@ public class ServerStrings {
     public static final String NEW_DECK_SUCCESS = "new deck created!";
     public static final String ADD_CARD_TO_DECK = "add (\\d+) to (.*)";
     public static final String CARD_ADDED = "card added successfuly";
-    public static final String CANCELPLAYREQUEST = "(\\d+) request is canceled";
+    public static final String CANCELPLAYREQUEST = "request is canceled";
     public static final String CANCELSUCCESSFULLY = "canceled successfully";
     public static final String DECK_DELETED = "deck deleted!";
     public static final String DELETE_DECK = "remove deck:(.*)";
