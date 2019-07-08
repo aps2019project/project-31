@@ -356,6 +356,7 @@ public class User extends Thread {
                         syncObject.notify();
                     }
                 }
+                os.writeUTF(ServerStrings.CANCELSUCCESSFULLY);
             } catch (IOException e) {
                 e.printStackTrace();
             }

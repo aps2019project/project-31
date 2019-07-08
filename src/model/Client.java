@@ -113,7 +113,6 @@ public class Client extends Thread {
     }
 
     public void sendCancelRequest() {
-
         try {
             os.writeUTF("request is canceled");
         } catch (IOException e) {
