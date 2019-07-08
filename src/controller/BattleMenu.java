@@ -274,7 +274,16 @@ public class BattleMenu extends Menu {
 
     }*/
 
+    private static void whereTheCardInCells(){
 
+        for (Cell[] cells:Map.getInstance().getMap()) {
+            for (Cell cell:cells){
+                if(cell.getCardInCell()!=null){
+                    System.out.println("cell is not empty: "+cell.getX1Coordinate()+" , "+cell.getX2Coordinate()+ "    annd the minion is: "+cell.getCardInCell());
+                }
+            }
+        }
+    }
     public static void showGlimpseOfMap() {
         System.out.println("Player 1 minions are:\n");
         for (Deployable deployable : battleManager.getPlayer1().getCardsOnBattleField()) {
@@ -287,6 +296,8 @@ public class BattleMenu extends Menu {
             if (deployable != null)
                 System.out.println(deployable.shortVersionString());
         }
+        whereTheCardInCells();
+
         for (Cell[] cells : Map.getInstance().getMap()) {
             for (Cell cell : cells) {
                 if (cell != null && cell.getItem() != null) {

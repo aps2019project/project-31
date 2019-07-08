@@ -10,6 +10,7 @@ import constants.FunctionType;
 import constants.GameMode;
 import controller.BattleMenu;
 
+import javafx.application.Platform;
 import view.Output;
 
 import java.util.*;
@@ -114,19 +115,26 @@ public class BattleManager {
     private void addFaceToGraphic(Minion minion) {
         if (!isMultiPlayer)
             SinglePlayerBattlePageController.getInstance().addFaceToBattlePage(minion, this);
+        else if (MultiPlayerBattlePageController.getInstance().getHboxInTop() != null)
+            Platform.runLater(() -> MultiPlayerBattlePageController.getInstance().addFaceToBattlePage(minion, this));
     }
 
     private void removeFaceInHand() {
         if (!isMultiPlayer)
             SinglePlayerBattlePageController.getInstance().removeMinionFromHand(((Deployable) SinglePlayerBattlePageController
                     .getInstance().getMe().selectedCard).face);
+        else if (MultiPlayerBattlePageController.getInstance().getHboxInTop() != null &&
+                this.currentPlayer == MultiPlayerBattlePageController.getInstance().getMe()
+                && this.currentPlayer.isInHand(MultiPlayerBattlePageController.getInstance().getMe().selectedCard))
+            Platform.runLater(() -> MultiPlayerBattlePageController.getInstance().removeMinionFromHand
+                    (((Deployable) MultiPlayerBattlePageController.getInstance().getMe().selectedCard).face));
     }
 
     private void refreshTheWholeMap() {
         if (!isMultiPlayer)
             SinglePlayerBattlePageController.getInstance().refreshTheStatusOfMap(this);
         else if (MultiPlayerBattlePageController.getInstance().getHboxInTop() != null)
-            MultiPlayerBattlePageController.getInstance().refreshTheStatusOfMap(this);
+            Platform.runLater(() -> MultiPlayerBattlePageController.getInstance().refreshTheStatusOfMap(this));
     }
 
     public String whoIsCurrentPlayer() {
@@ -884,6 +892,11 @@ public class BattleManager {
     private void removeCardFromGraphic(Card card) {
         if (!isMultiPlayer)
             SinglePlayerBattlePageController.getInstance().removeCardFromHand(card, this);
+        else if (MultiPlayerBattlePageController.getInstance().getHboxInTop() != null &&
+                this.currentPlayer == MultiPlayerBattlePageController.getInstance().getMe()
+                && this.currentPlayer.isInHand(MultiPlayerBattlePageController.getInstance().getMe().selectedCard))
+            Platform.runLater(() -> MultiPlayerBattlePageController.getInstance().removeCardFromHand(card, this));
+
     }
 
     public boolean useItem(Item item, int x1, int x2) {
@@ -999,6 +1012,8 @@ public class BattleManager {
     private void removeFaceInGraphic(DisplayableDeployable face) {
         if (!isMultiPlayer)
             SinglePlayerBattlePageController.getInstance().mainPane.getChildren().remove(face);
+        else if (MultiPlayerBattlePageController.getInstance().getHboxInTop() != null)
+            Platform.runLater(() -> MultiPlayerBattlePageController.getInstance().mainPane.getChildren().remove(face));
     }
 
 
@@ -1241,7 +1256,7 @@ public class BattleManager {
     private void showGameEnding() {
         if (!isMultiPlayer)
             SinglePlayerBattlePageController.getInstance().showThatGameEnded();
-        else MultiPlayerBattlePageController.getInstance().showThatGameEnded();
+        else Platform.runLater(() -> MultiPlayerBattlePageController.getInstance().showThatGameEnded());
     }
 
     public void player2Won() {
@@ -1334,7 +1349,7 @@ public class BattleManager {
         player2.getHero().getCell().setCardInCell(player2.getHero());
         getPlayer1().addCardToBattlefield(player1.getHero());
         getPlayer2().addCardToBattlefield(player2.getHero());
-        doAllAtTheBeginningOfTurnThings(isMultiPlayer);
+        doAllAtTheBeginningOfTurnThings();
     }
 
     private void initialTheHands() {
@@ -1463,14 +1478,14 @@ public class BattleManager {
         }
     }
 
-    public void doAllAtTheBeginningOfTurnThings(boolean isMulti) {
+    public void doAllAtTheBeginningOfTurnThings() {
         for (Deployable deployable : getCurrentPlayer().getCardsOnBattleField()) {
             deployable.setMoved(false);
             deployable.setAttacked(false);
         }
         getCurrentPlayer().setHasReplaced(false);
         assignManaToPlayers();
-     //   isTimeToPutItem();
+        //   isTimeToPutItem();
 
 
     }
@@ -1483,6 +1498,8 @@ public class BattleManager {
             Map.getInstance().getCell(x1, x2).getCardInCell().setItem(item);
             if (!isMultiPlayer)
                 SinglePlayerBattlePageController.getInstance().displayMessage("Item put on Minion!!!");
+            else if (MultiPlayerBattlePageController.getInstance().getHboxInTop() != null)
+                Platform.runLater(() -> MultiPlayerBattlePageController.getInstance().displayMessage("Item put on a Minion"));
             System.out.println("item was put on someones minion with coordination: " + x1 + " , " + x2);
         } else {
             Map.getInstance().getCell(x1, x2).setItem(item);
@@ -1558,7 +1575,7 @@ public class BattleManager {
     public void endTurn() {
         doAllThingsInEndingOfTheTurns();
         setCurrentPlayer(getOtherPlayer());
-        doAllAtTheBeginningOfTurnThings(isMultiPlayer());
+        doAllAtTheBeginningOfTurnThings();
     }
 
 

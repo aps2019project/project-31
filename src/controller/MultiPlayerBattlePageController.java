@@ -175,6 +175,7 @@ public class MultiPlayerBattlePageController implements Initializable {
                 }else System.out.println("not allowed !!!");
                 Platform.runLater(() -> refreshTheStatusOfMap(BattleMenu.getBattleManager()));
             }
+            BattleMenu.showGlimpseOfMap();
             System.out.println("the thread in theThingsWeDoWheIitIsNotOurTime has ended just fine :)");
         }).start();
 
@@ -498,7 +499,7 @@ public class MultiPlayerBattlePageController implements Initializable {
         if (isMyTurn()) {
             battle.setCurrentPlayer(battle.getOtherPlayer());
         }
-        BattleMenu.getBattleManager().doAllAtTheBeginningOfTurnThings(true);
+        BattleMenu.getBattleManager().doAllAtTheBeginningOfTurnThings();
         updateManaViewers(battle);
     }
 
@@ -619,6 +620,8 @@ public class MultiPlayerBattlePageController implements Initializable {
         hero2.setCell(Map.getInstance().getCell(3, 9));
         hero1.getCell().setCardInCell(hero1);
         hero2.getCell().setCardInCell(hero2);
+        hero1.setFace(faceHero1);
+        hero2.setFace(faceHero2);
         faceHero1.updateStats();
         faceHero2.updateStats();
 
