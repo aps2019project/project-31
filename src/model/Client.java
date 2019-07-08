@@ -1,5 +1,6 @@
 package model;
 
+import Server.Server;
 import Server.ServerStrings;
 import com.gilecode.yagson.YaGson;
 import com.gilecode.yagson.YaGsonBuilder;
@@ -137,6 +138,11 @@ public class Client extends Thread {
             new Thread(() -> {
                 try {
                     String serverReply = is.readUTF();
+                    if(serverReply.equals(ServerStrings.CHERTMESSAGE)){
+                        System.out.println("yoooo hooo dare kar mikone :)");
+                        os.writeUTF(ServerStrings.CHERTMESSAGE);
+                        serverReply = is.readUTF();
+                    }
                     if (serverReply.equals(ServerStrings.MULTIPLAYERSUCCESS)) {
                         receiveMapAndBattleForFirstTime();
                         Platform.runLater(() -> {

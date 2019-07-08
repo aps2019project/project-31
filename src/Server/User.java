@@ -348,14 +348,15 @@ public class User extends Thread {
     private void cancelThread() {
         waitingForCancel = new Thread(() -> {
             try {
+
                 String command = is.readUTF();
-                System.out.println("command is:" + command);
+                System.out.println("in cancel command is:" + command);
                 if (command.equals(ServerStrings.CANCELPLAYREQUEST)) {
                     synchronized (syncObject) {
                         syncObject.notify();
                     }
+                    os.writeUTF(ServerStrings.CANCELSUCCESSFULLY);
                 }
-                os.writeUTF(ServerStrings.CANCELSUCCESSFULLY);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -415,7 +416,9 @@ public class User extends Thread {
     private void makeBattle(GameMode gameMode, User user1, User user2) throws IOException, InterruptedException {
         BattleMenu.setBattleManagerForMultiPlayer(user1.account, user2.account, findNumberOfFlags(gameMode),
                 findNumberOfHavingFlags(gameMode), gameMode);
-        user1.waitingForCancel.interrupt();
+
+//        user1.waitingForCancel.interrupt();
+        user1.os.writeUTF(ServerStrings.CHERTMESSAGE);
         battle = BattleMenu.getBattleManager();
         battle.initialTheGame();
         System.out.println(this.account.getUsername() + " is here :)");
