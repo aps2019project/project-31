@@ -2,11 +2,8 @@ package Server;
 
 import com.gilecode.yagson.YaGson;
 import com.gilecode.yagson.YaGsonBuilder;
-import controller.ChatRoomController;
 import controller.Shop;
 import model.Account;
-import model.Card;
-import model.Initializer;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -48,6 +45,7 @@ public class Server extends Thread {
 
 
             server = new ServerSocket(port);
+            System.out.println(server.getInetAddress().getHostName());
             while (true) {
                 Socket socket = server.accept();
                 System.out.println("Client " + socket.getLocalSocketAddress() + "connected");

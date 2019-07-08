@@ -30,7 +30,6 @@ public class User extends Thread {
     private Thread waitingForCancel;
     public static final Object syncObject = new Object();
 
-
     @Override
     public void run() {
         try {
@@ -253,7 +252,7 @@ public class User extends Thread {
                         Account.getAllAccounts().get(i).toString();
                 os.writeUTF(ret);
                 for (User user : users) {
-                    if (user.socket.isConnected()
+                        if (user.socket.isConnected()
                             && user.account.equals(Account.getAllAccounts().get(i))) {
                         os.writeUTF("Online");
                         continue accounts;
