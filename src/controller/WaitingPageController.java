@@ -75,12 +75,13 @@ public class WaitingPageController implements Initializable {
         flagBtn.setOnMouseClicked(event -> {
             removeModesFromPage();
             Client.getClient().sendPlayRequest(GameMode.Flag);
+            playMenuOrBattleMenu();
 
         });
         dominationBtn.setOnMouseClicked(event -> {
             removeModesFromPage();
             Client.getClient().sendPlayRequest(GameMode.Domination);
-
+            playMenuOrBattleMenu();
         });
 
 

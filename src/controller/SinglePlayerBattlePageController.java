@@ -187,7 +187,8 @@ public class SinglePlayerBattlePageController implements Initializable {
     }
 
     public static SinglePlayerBattlePageController getInstance() {
-        if (singlePlayerBattlePageController == null) singlePlayerBattlePageController = new SinglePlayerBattlePageController();
+        if (singlePlayerBattlePageController == null)
+            singlePlayerBattlePageController = new SinglePlayerBattlePageController();
         return singlePlayerBattlePageController;
     }
 
@@ -310,6 +311,7 @@ public class SinglePlayerBattlePageController implements Initializable {
         else me.setSelectedCard(((Deployable) me.getSelectedCard()).getItem());
     }
 
+
     private void playTheActualGame(BattleManager battle) {
         initPlayers();
         makeColumnHands();
@@ -329,7 +331,7 @@ public class SinglePlayerBattlePageController implements Initializable {
         initHeroesSpecialPowers();
 
         setOnActionForEveryCell();
-
+        initHeroes(battle);
 
         battle.initialTheGame();
 
@@ -338,7 +340,9 @@ public class SinglePlayerBattlePageController implements Initializable {
         }
         atStartThings(battle);
         BattleMenu.getBattleManager().doAllAtTheBeginningOfTurnThings(false);
+        updateNextCard();
         refreshFlagsSituation(battle);
+        BattleMenu.generateFlags(battle.getGameMode(), battle.getMaxNumberOfFlags());
         replace.setOnAction(event -> {
             if (!isMyTurn()) {
                 displayMessage("this is not your turn =");
@@ -459,12 +463,14 @@ public class SinglePlayerBattlePageController implements Initializable {
             battle.setCurrentPlayer(battle.getOtherPlayer());
         }
         BattleMenu.getBattleManager().doAllAtTheBeginningOfTurnThings(false);
+        updateNextCard();
         if (battle.getCurrentPlayer().isAi()) {
             System.err.println("ai is playing");
             ((Ai) battle.getCurrentPlayer()).play();
             battle.setCurrentPlayer(battle.getOtherPlayer());
             BattleMenu.getBattleManager().doAllThingsInEndingOfTheTurns();
             BattleMenu.getBattleManager().doAllAtTheBeginningOfTurnThings(false);
+            updateNextCard();
         }
         updateManaViewers(battle);
     }
@@ -604,9 +610,9 @@ public class SinglePlayerBattlePageController implements Initializable {
     public void setOnMouseDeployable(Deployable card, BattleManager battleManager) {
         if (battleManager.getCurrentPlayer() == me) {
             if (me.getSelectedCard() != null && me.getSelectedCard().getType() == CardType.spell) {
-                BattleMenu.insert(me.getSelectedCard(), card.getCell().getX1Coordinate(), card.getCell().getX2Coordinate());
+                BattleMenu.getBattleManager().insert(me.getSelectedCard(), card.getCell().getX1Coordinate(), card.getCell().getX2Coordinate());
             } else if (me.getSelectedCard() != null && me.getSelectedCard().getType() == CardType.item) {
-                BattleMenu.insert(me.getSelectedCard(), card.getCell().getX1Coordinate(), card.getCell().getX2Coordinate());
+                BattleMenu.getBattleManager().insert(me.getSelectedCard(), card.getCell().getX1Coordinate(), card.getCell().getX2Coordinate());
             } else if (me.getSelectedCard() != null &&
                     me.getSelectedCard().getType() != CardType.spell &&
                     !card.getAccount().equals(me.getAccount())) {
@@ -666,6 +672,9 @@ public class SinglePlayerBattlePageController implements Initializable {
             return;
         refreshPartly();
         if (!battleManager.isThisRecordedGame()) {
+            removeFlags();
+            removeItems();
+            refreshFlagsSituation(battleManager);
             BattleMenu.getBattleManager().checkTheEndSituation();
             try {
                 health.setText("" + me.getHero().theActualHealth());
@@ -687,7 +696,22 @@ public class SinglePlayerBattlePageController implements Initializable {
             showItems();
         }
         showFlag();
+    }
 
+    public void removeItems() {
+        for (Cell[] cells : Map.getInstance().getMap())
+            for (Cell cell : cells) {
+                if (cell.getItem() == null)
+                    removeItemInGround(cell);
+            }
+    }
+
+    public void removeFlags() {
+        for (Cell[] cells : Map.getInstance().getMap())
+            for (Cell cell : cells) {
+                if (cell.hasFlag() == false)
+                    removeFlagInGround(cell);
+            }
     }
 
     public void showFlag() {
@@ -783,15 +807,7 @@ public class SinglePlayerBattlePageController implements Initializable {
         opponentGeneralSpellManaCost.setText("" + opponent.getHero().getHeroSpell().getManaCost());
         generalCoolDown.setText("" + me.getHero().getHeroSpell().getManaCost());
         opponentGeneralCoolDown.setText("" + opponent.getHero().getHeroSpell().getManaCost());
-        battle.getPlayer1().generateDeckArrangement();
-        battle.getPlayer2().generateDeckArrangement();
-        battle.setCurrentPlayer(BattleMenu.getBattleManager().getPlayer2());
-        battle.applyItemFunctions(BattleMenu.getBattleManager().getCurrentPlayer().getHero(), FunctionType.GameStart);
-        battle.setCurrentPlayer(BattleMenu.getBattleManager().getPlayer1());
-        battle.applyItemFunctions(BattleMenu.getBattleManager().getCurrentPlayer().getHero(), FunctionType.GameStart);
-        initHeroes(battle);
-        me.initNextcard();
-        opponent.initNextcard();
+
         refreshTheStatusOfMap(battle);
         manas.add(mana1);
         manas.add(mana2);
@@ -892,7 +908,7 @@ public class SinglePlayerBattlePageController implements Initializable {
                         return;
                     }
                     if (cell.getCardInCell() == null && (me.getSelectedCard().getType() == CardType.item)) { // spell can't insert on the ground ?'
-                        BattleMenu.insert(me.getSelectedCard(), cell.getX1Coordinate(), cell.getX2Coordinate());
+                        BattleMenu.getBattleManager().insert(me.getSelectedCard(), cell.getX1Coordinate(), cell.getX2Coordinate());
                     } else if (cell.getCardInCell() != null) {
                         displayMessage("destination is not empty");
                         System.out.println("card in this cell is : " + cell.getCardInCell().infoToString());
@@ -903,9 +919,9 @@ public class SinglePlayerBattlePageController implements Initializable {
                                 cell.getX1Coordinate(), cell.getX2Coordinate());
                         System.out.println("we called move method dude!");
                     } else if (!me.isSelectedCardDeployed()) {
-                        BattleMenu.insert(me.getSelectedCard(), cell.getX1Coordinate(), cell.getX2Coordinate());
+                        BattleMenu.getBattleManager().insert(me.getSelectedCard(), cell.getX1Coordinate(), cell.getX2Coordinate());
                     } else if (me.getSelectedCard() != null && me.getSelectedCard().getType() == CardType.spell) {
-                        BattleMenu.insert(me.getSelectedCard(), cell.getX1Coordinate(), cell.getX2Coordinate());
+                        BattleMenu.getBattleManager().insert(me.getSelectedCard(), cell.getX1Coordinate(), cell.getX2Coordinate());
                     }
                 }
             });

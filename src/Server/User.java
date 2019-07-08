@@ -5,10 +5,7 @@ import com.gilecode.yagson.YaGsonBuilder;
 import constants.GameMode;
 import controller.BattleMenu;
 import controller.Shop;
-import model.Account;
-import model.BattleManager;
-import model.Card;
-import model.Deck;
+import model.*;
 
 import java.io.*;
 import java.net.Socket;
@@ -21,17 +18,22 @@ public class User extends Thread {
     private Socket socket;
     private int authToken = -1;
     private Account account;
-    private DataInputStream is;
-    private DataOutputStream os;
+    protected DataInputStream is;
+    protected DataOutputStream os;
     private static User waitingUserMode1;
     private static User waitingUserMode2;
     private static User waitingUserMode3;
-    private BattleManager battle;
-    private BattleServer battleServer;
+    protected static BattleManager battle;
+    private static BattleServer battleServer;
+
+    public static final Object syncObject = new Object();
+
+
     @Override
     public void run() {
         try {
             while (true) {
+                System.out.println("run loop");
                 String command = is.readUTF();
                 System.out.println("user received:" + command);
                 shopRequestStockHandler(command);
@@ -62,15 +64,6 @@ public class User extends Thread {
             }
         } catch (Exception e) {
             e.printStackTrace();
-        }
-    }
-
-    private void handleEndTurnRequest(String command) {
-        if (command.equals(ServerStrings.SENDENDTURNREQUEST)) {
-            battle.serverEndTurn();
-            // say some stuff to other player
-            // say where items are added
-
         }
     }
 
@@ -297,7 +290,7 @@ public class User extends Thread {
         }
     }
 
-    private void multiPlayerRequestHandler(String command) throws IOException {
+    private void multiPlayerRequestHandler(String command) throws IOException, InterruptedException {
         Pattern pattern = Pattern.compile(ServerStrings.MULTIPLAYERREQUEST);
         Matcher matcher = pattern.matcher(command);
         if (matcher.matches()) {
@@ -305,19 +298,33 @@ public class User extends Thread {
             GameMode gameMode = findGameMode(matcher.group(2));
             switch (gameMode) {
                 case Domination:
+                    System.out.println("domination it is");
+
                     if (waitingUserMode3 == null) {
                         waitingUserMode3 = this;
+                        synchronized (syncObject) {
+                            syncObject.wait();
+                            System.out.println("the game ended :((((");
+                        }
                     } else makeBattle(GameMode.Domination, waitingUserMode3, this);
                     break;
                 case DeathMatch:
                     if (waitingUserMode1 == null) {
                         waitingUserMode1 = this;
+                        synchronized (syncObject) {
+                            syncObject.wait();
+                            System.out.println("the game ended :((((");
+                        }
                     } else makeBattle(GameMode.DeathMatch, waitingUserMode1, this);
 
                     break;
                 case Flag:
                     if (waitingUserMode2 == null) {
                         waitingUserMode2 = this;
+                        synchronized (syncObject) {
+                            syncObject.wait();
+                            System.out.println("the game ended :((((");
+                        }
                     } else makeBattle(GameMode.Flag, waitingUserMode2, this);
                     break;
             }
@@ -327,15 +334,28 @@ public class User extends Thread {
     }
 
 
-    private void makeBattle(GameMode gameMode, User user1, User user2) throws IOException {
+    private void makeBattle(GameMode gameMode, User user1, User user2) throws IOException, InterruptedException {
         BattleMenu.setBattleManagerForMultiPlayer(user1.account, user2.account, findNumberOfFlags(gameMode),
                 findNumberOfHavingFlags(gameMode), gameMode);
+
         battle = BattleMenu.getBattleManager();
-        battleServer = new BattleServer(battle,user1,user2);
+        battle.initialTheGame();
+        System.out.println(this.account.getUsername() + " is here :)");
+        battleServer = new BattleServer(battle, user1, user2);
         user1.os.writeUTF(ServerStrings.MULTIPLAYERSUCCESS);
-        Server.sendObject(BattleMenu.getBattleManager(), user1.os);
+        user1.sendMapAndBattle();
         user2.os.writeUTF(ServerStrings.MULTIPLAYERSUCCESS);
-        Server.sendObject(BattleMenu.getBattleManager(), user2.os);
+        user2.sendMapAndBattle();
+        System.out.println("two map sent !");
+        synchronized (syncObject) {
+            System.out.println("we are at synchronized block");
+            battleServer.start();
+            System.out.println("battleServer.start was passed");
+            syncObject.wait();
+        }
+        System.out.println("the game ended :((((");
+
+
     }
 
     private boolean authorise(Matcher matcher) throws IOException {
@@ -425,5 +445,39 @@ public class User extends Thread {
 
     private int generateAuthToken() {
         return Math.abs(account.getUsername().hashCode());
+    }
+
+    public void sendMapAndBattle() {
+        try {
+            Server.sendObject(BattleMenu.getBattleManager(), os);
+            sendMap();
+            System.out.println("map and battle sent");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void sendMap() throws IOException {
+        for (int i = 1; i < Map.MAP_X1_LENGTH; i++) {
+            for (int j = 1; j < Map.MAP_X2_LENGTH; j++) {
+                sendOneCell(Map.getInstance().getCell(i, j));
+            }
+        }
+    }
+
+    private String boolToString(boolean bool) {
+        if (bool == true)
+            return "true";
+        else return "false";
+    }
+
+    private void sendOneCell(Cell cell) throws IOException {
+        os.writeUTF(cell.getX1Coordinate() + "");
+        os.writeUTF(cell.getX2Coordinate() + "");
+        Server.sendObject(cell.getCardInCell(), os);
+        os.writeUTF(cell.getOnFireTurns() + "");
+        os.writeUTF(cell.getOnPoisonTurns() + "");
+        os.writeUTF(boolToString(cell.hasFlag()));
+        Server.sendObject(cell.getItem(), os);
     }
 }

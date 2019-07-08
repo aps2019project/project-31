@@ -21,61 +21,52 @@ public class GameCompiler {
         return deployableCell.getCardInCell();
     }
 
-    public void checkIfAttack(String action) {
+    public boolean checkIfAttack(String action) {
+        System.out.println("check if action is attack");
         Pattern pattern = Pattern.compile("\\dA(\\d)(\\d)(\\d)(\\d)");
         Matcher matcher = pattern.matcher(action);
         if (matcher.matches()) {
-            battleManager.doTheActualAttack_noTarof(deployableInCell(matcher.group(1), matcher.group(2)),
-                    deployableInCell(matcher.group(3), matcher.group(4)));
+            System.out.println("the action was attack");
+            return battleManager.attack(deployableInCell(matcher.group(1), matcher.group(2)), deployableInCell(matcher.group(3), matcher.group(4)));
         }
+        return false;
     }
 
-    public void checkIfMove(String action) {
+    public boolean checkIfMove(String action) {
+        System.out.println("check if action is move");
         Pattern pattern = Pattern.compile("\\dM(\\d)(\\d)(\\d)(\\d)");
         Matcher matcher = pattern.matcher(action);
         if (matcher.matches()) {
-            battleManager.doTheActualMove_noTarof(deployableInCell(matcher.group(1), matcher.group(2)),
-                    Integer.parseInt(matcher.group(3)), Integer.parseInt(matcher.group(4)));
+            System.out.println("the action was move");
+            return battleManager.move(deployableInCell(matcher.group(1), matcher.group(2)), Integer.parseInt(matcher.group(3)), Integer.parseInt(matcher.group(4)));
         }
+        return false;
     }
 
-    public void checkIfInsert(String action) {
+    public boolean checkIfInsert(String action) {
+        System.out.println("check if action is insert");
         Pattern pattern = Pattern.compile("\\dI(\\d\\d\\d)(\\d)(\\d)");
         Matcher matcher = pattern.matcher(action);
         if (matcher.matches()) {
+            System.out.println("the action was insert");
             int id = Integer.parseInt(matcher.group(1));
             int x1 = Integer.parseInt(matcher.group(2));
             int x2 = Integer.parseInt(matcher.group(3));
             Card card = Shop.findCardById(id);
-            switch (card.getType()) {
-                case minion:
-                    battleManager.playMinion((Minion) card, x1, x2);
-                    break;
-                case spell:
-                    battleManager.playSpell((Spell) card, x1, x2);
-                    break;
-                case herospell:
-                    battleManager.playSpell((Spell) card, x1, x2);
-                    break;
-                case item:
-                    battleManager.useItem((Item) card, x1, x2);
-                    break;
-            }
+            return battleManager.insert(card, x1, x2);
         }
+        return false;
     }
 
-    public void whatIsThePlay(String action, GameCompiler gameCompiler) {
-        if (action.startsWith("E")) {
-            System.out.println("the game ended");
-            SinglePlayerBattlePageController.getInstance().showThatGameEnded();
-            System.out.println("the game ended ? wtf ???");
-        }
+    public boolean whatIsThePlay(String action) {
+        System.out.println("what is the play");
         if (action.contains("A"))
-            gameCompiler.checkIfAttack(action);
+            return this.checkIfAttack(action);
         if (action.contains("I"))
-            gameCompiler.checkIfInsert(action);
+            return this.checkIfInsert(action);
         if (action.contains("M"))
-            gameCompiler.checkIfMove(action);
+            return this.checkIfMove(action);
+        return false;
     }
 }
 

@@ -51,7 +51,7 @@ public class BattleMenu extends Menu {
         makeInstanceOfBattleManager(player1, player2, numberOfFlags, maxNumberOfHavingFlag, gameMode,true);
     }
 
-    private static void generateFlags(GameMode gameMode, int maxNumberOfFlags) {
+    public static void generateFlags(GameMode gameMode, int maxNumberOfFlags) {
         if (gameMode == GameMode.Flag) {
             Map.getInstance().getCell(3, 5).setHasFlag(true);
         }
@@ -67,11 +67,12 @@ public class BattleMenu extends Menu {
         Random random = new Random();
         int x1 = random.nextInt(5) + 1;
         int x2 = random.nextInt(9) + 1;
-        if (Map.getInstance().getCell(x1, x1).hasFlag()) {
+        /*if (Map.getInstance().getCell(x1, x1).hasFlag()) {
             putARandomFlagOnMap();
         } else {
             Map.getInstance().getCell(x1, x2).setHasFlag(true);
-        }
+        }*/
+        Map.getInstance().getCell(x1, x2).setHasFlag(true);
     }
 
     public static void setBattleManagerForSinglePLayer(BattleManagerMode battleManagerMode, Account account,
@@ -222,59 +223,6 @@ public class BattleMenu extends Menu {
             battleManager.move((Deployable) (battleManager.getCurrentPlayer().getSelectedCard()), x1, x2);
     }
 
-    public static boolean insert(Card card, int x1, int x2) {
-        if (battleManager.isTheGameFinished())
-            return false;
-        if (card == null) {
-            System.err.println("insert(method) -> card is null");
-            return false;
-        }
-        if (card.getType() == CardType.item) {
-            card.setAccount(battleManager.getCurrentPlayer().getAccount());
-            battleManager.useItem((Item) card, x1, x2);
-            battleManager.getGameRecord().addAction(battleManager.whoIsCurrentPlayer() + "I" + card.getId() + x1 + x2);
-        }
-        if (battleManager.getCurrentPlayer().getHero().getHeroSpell().getId() == card.getId()) {
-            if (card.getManaCost() > battleManager.getCurrentPlayer().getMana()) {
-                System.err.println("Not enough mana");
-                return false;
-            }
-            System.out.println("Using hero spell " + card.getName());
-            battleManager.playSpell((Spell) card, x1, x2);
-            return true;
-        }
-        if (battleManager.cardInHandByCardId(card.getId()) != null) {
-            if (card.getManaCost() > battleManager.getCurrentPlayer().getMana()) {
-                System.err.println("Not enough mana");
-                return false;
-            }
-            if (card.getType() == CardType.minion) {
-                if (!battleManager.checkCoordinates(x1, x2)) {
-                    Output.invalidInsertionTarget();
-                    System.err.println("Invalid Coordinates");
-                    return false;
-
-                }
-                battleManager.playMinion((Minion) card, x1, x2);
-            }
-            if (card.getType() == CardType.spell) {
-                card.setAccount(battleManager.getCurrentPlayer().getAccount());
-                battleManager.playSpell((Spell) card, x1, x2);
-            }
-
-
-            if (card.getName() == "Eagle") {
-                System.out.println("found eagle");
-                for (Buff buff : ((Deployable) card).getBuffs()) {
-                    System.out.println(buff.getBuffType());
-                }
-            }
-        } else {
-            System.err.println("Minion not in hand");
-            return false;
-        }
-        return true;
-    }
 
     public static void selectCollectibleItem(int cardUniqueId) {
         for (Deployable deployable : battleManager.getCurrentPlayer().getCardsOnBattleField()) {

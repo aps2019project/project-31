@@ -5,6 +5,8 @@ import com.gilecode.yagson.YaGson;
 import com.gilecode.yagson.YaGsonBuilder;
 import constants.GameMode;
 import controller.*;
+import controller.LoginPageController;
+import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
@@ -12,6 +14,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
+import javax.xml.crypto.Data;
+import java.io.*;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -24,6 +28,22 @@ public class Client extends Thread {
     private static int authToken = -1;
     private DataOutputStream os;
     private DataInputStream is;
+
+    public DataOutputStream getOs() {
+        return os;
+    }
+
+    public void setOs(DataOutputStream os) {
+        this.os = os;
+    }
+
+    public DataInputStream getIs() {
+        return is;
+    }
+
+    public void setIs(DataInputStream is) {
+        this.is = is;
+    }
 
     public static int getAuthToken() {
         return authToken;
@@ -63,7 +83,12 @@ public class Client extends Thread {
             System.out.println("getting account...");
             YaGson yaGson = new YaGsonBuilder().create();
 
-            Account account = (Account) receiveObject(is, Account.class);
+            Account account = null;
+            try {
+                account = (Account) receiveObject(is, Account.class);
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
             int auth = Integer.parseInt(is.readUTF());
             setAuthToken(auth);
             HashMap<Integer, Integer> stock = yaGson.fromJson(is.readUTF(), HashMap.class);
@@ -72,7 +97,7 @@ public class Client extends Thread {
         } else return null;
     }
 
-    public static Object receiveObject(DataInputStream is, Class objectClass) throws IOException {
+    public static Object receiveObject(DataInputStream is, Class objectClass) throws IOException, ClassNotFoundException {
         YaGson yaGson = new YaGsonBuilder().create();
         int size = Integer.parseInt(is.readUTF());
         byte[] bytes = new byte[size];
@@ -83,6 +108,7 @@ public class Client extends Thread {
         }
         String objectString = new String(bytes);
         return yaGson.fromJson(objectString, objectClass);
+
 
     }
 
@@ -106,21 +132,19 @@ public class Client extends Thread {
                     break;
                 case Domination:
                     os.writeUTF(authToken + " Domination request from user:" + Account.getMainAccount().getUsername());
+                    System.out.println("sent domination");
                     break;
             }
             new Thread(() -> {
                 try {
                     String serverReply = is.readUTF();
                     if (serverReply.equals(ServerStrings.MULTIPLAYERSUCCESS)) {
-                        BattleManager battle = (BattleManager) receiveObject(this.is, BattleManager.class);
-                        System.out.println("receeeeeeeeeeeeived successfully");
-                        BattleMenu.setBattleManager(battle);
-                        if (battle == null)
-                            System.out.println("wtf isssssssssssssssssssssssssssssssssssssssssssssss");
                         WaitingPageController.getInstance().johnyJohnyYesPapaGoingToBattle.set(true);
                         synchronized (WaitingPageController.getInstance()) {
                             WaitingPageController.getInstance().notifyAll();
+                            receiveMapAndBattleForFirstTime();
                         }
+
                     } else if (serverReply.equals(ServerStrings.CANCELSUCCESSFULLY)) {
                         WaitingPageController.getInstance().johnyJohnyYesPapaGoingToBattle.set(true);
                         System.out.println("we canceled the game honey");
@@ -138,29 +162,30 @@ public class Client extends Thread {
             e.printStackTrace();
         }
     }
-    public void sendEndTurnRequest() throws IOException {
-        os.writeUTF(ServerStrings.SENDENDTURNREQUEST);
+
+    public void sendEndTurnRequest() {
+        try {
+            os.writeUTF(ServerStrings.ENDTURN);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        doWhatServerSays();
+
 
     }
-    public void theThingsWeDoWhenitIsNotOurTime() {  // :'((((((
-        Thread reading = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    GameCompiler gc = MultiPlayerBattlePageController.getInstance().getGameCompiler();
-                    String command = is.readUTF();
-                    while (!command.equals("T")) {
-                        gc.whatIsThePlay(command,gc);
-                    }
-                    MultiPlayerBattlePageController.getInstance().endTurn(BattleMenu.getBattleManager()); /// turn end ro inja ejra kon
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        reading.start();
+
+    public void sendConcedeRequest() {
+        try {
+            os.writeUTF(BattleMenu.getBattleManager().whoIsCurrentPlayer()
+                    + ServerStrings.CONCEDE);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        doWhatServerSays();
+
     }
 
     public String requestCardStock(int id) {
@@ -277,7 +302,126 @@ public class Client extends Thread {
         return false;
     }
 
-    public void sendInsertRequest() {
+    public void sendInsertRequest(int cardId, int x1, int x2) {
+        System.out.println("sending insert request");
+        System.out.println(BattleMenu.getBattleManager().whoIsCurrentPlayer() + "I" + cardId + x1 + x2);
+        try {
+            os.writeUTF(BattleMenu.getBattleManager().whoIsCurrentPlayer() + "I" + cardId + x1 + x2);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        doWhatServerSays();
+
 
     }
+
+    public void receiveMapAndBattle() {
+        receiveMapAndBattleForFirstTime();
+        Platform.runLater(() -> {
+                MultiPlayerBattlePageController.getInstance().refreshTheStatusOfMap(BattleMenu.getBattleManager());
+        });
+    }
+
+    public void receiveMapAndBattleForFirstTime() {
+        System.out.println("receive map and battle");
+
+        try {
+            BattleManager battle = (BattleManager) receiveObject(this.is, BattleManager.class);
+            BattleMenu.setBattleManager(battle);
+            updateMap();
+            wipeThisShit();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        System.out.println("map received successfully");
+    }
+
+
+    public void wipeThisShit() {
+        BattleManager battle = BattleMenu.getBattleManager();
+        for (Deployable card : battle.getPlayer1().cardsOnBattleField) {
+            card.setCell(Map.getInstance().getCell(card.getCell().getX1Coordinate(), card.getCell().getX2Coordinate()));
+            card.getCell().setCardInCell(card);
+        }
+        for (Deployable card : battle.getPlayer2().cardsOnBattleField) {
+            card.setCell(Map.getInstance().getCell(card.getCell().getX1Coordinate(), card.getCell().getX2Coordinate()));
+            card.getCell().setCardInCell(card);
+        }
+        if (battle.getCurrentPlayer() == MultiPlayerBattlePageController.getInstance().getMe())
+            battle.getCurrentPlayer().setSelectedCard(MultiPlayerBattlePageController.getInstance().getMe().getSelectedCard());
+    }
+
+    public void sendMoveRequest(int x1, int x2, int x_1, int x_2) {
+        System.out.println("sending move request");
+        System.out.println(BattleMenu.getBattleManager().whoIsCurrentPlayer() + "M" + x1 + x2 + x_1 + x_2);
+        try {
+            os.flush();
+            os.writeUTF(BattleMenu.getBattleManager().whoIsCurrentPlayer() + "M" + x1 + x2 + x_1 + x_2);
+            os.flush();
+        } catch (IOException e) {
+            System.out.println("qqqqqqqqqqqqqqqqqqqqqqq");
+            e.printStackTrace();
+        }
+
+        doWhatServerSays();
+
+
+    }
+
+    public void sendAttackRequest(int x1, int x2, int x_1, int x_2) {
+        System.out.println("sending attack request");
+        System.out.println(BattleMenu.getBattleManager().whoIsCurrentPlayer() + "A" + x1 + x2 + x_1 + x_2);
+        try {
+            os.writeUTF(BattleMenu.getBattleManager().whoIsCurrentPlayer() + "A" + x1 + x2 + x_1 + x_2);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        doWhatServerSays();
+
+
+    }
+
+    public void doWhatServerSays() {
+        new Thread(() -> {
+            System.out.println("we are at do what server says !");
+            String command = null;
+            try {
+                command = is.readUTF();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            System.out.println("we received this command : " + command);
+            if (command != ServerStrings.NOTALLOWED) {
+                BattleMenu.getBattleManager().doWhatIAmToldTo(command);
+                Platform.runLater(()->MultiPlayerBattlePageController.getInstance().refreshTheStatusOfMap(BattleMenu.getBattleManager()));
+            } else System.out.println("not allowed");
+        }).start();
+    }
+
+    private void updateOneCell(Cell cell) throws IOException, ClassNotFoundException {
+        cell.setX1Coordinate(Integer.parseInt(is.readUTF()));
+        cell.setX2Coordinate(Integer.parseInt(is.readUTF()));
+        cell.setCardInCell((Deployable) receiveObject(is, Deployable.class));
+        cell.setOnFireTurns(Integer.parseInt(is.readUTF()));
+        cell.setOnPoisonTurns(Integer.parseInt(is.readUTF()));
+        cell.setHasFlag(trueOrFalse(is.readUTF()));
+        cell.setItem((Item) receiveObject(is, Item.class));
+    }
+
+    private boolean trueOrFalse(String bool) {
+        return bool.contains("t");
+    }
+
+    private void updateMap() throws IOException, ClassNotFoundException {
+        for (int i = 1; i < Map.MAP_X1_LENGTH; i++) {
+            for (int j = 1; j < Map.MAP_X2_LENGTH; j++) {
+                updateOneCell(Map.getInstance().getCell(i, j));
+            }
+        }
+    }
+
 }

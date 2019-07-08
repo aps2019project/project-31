@@ -203,7 +203,7 @@ public class Player {
     }
 
     public void generateDeckArrangement() {
-        currentDeck.shuffle();
+        Collections.shuffle(currentDeck.getCards());
     }
 
     public void setSelectedCard(Card selectedCard) {
@@ -237,20 +237,21 @@ public class Player {
 
     public boolean selectACard(int cardId) {
         if (cardInHand(cardId) != null) {
-            System.err.println("selected card successfully");
+            System.err.println("selected card in hand successfully");
             selectedCard = cardInHand(cardId);
             return true;
         }
-        if (myDeployable(cardId) != null) {
-            System.err.println("selected card successfully");
-            selectedCard = myDeployable(cardId);
-            return true;
-        }
         if (battle.getCurrentPlayer().getHero().getId() == cardId) {
-            System.err.println("selected card successfully");
+            System.err.println("selected hero successfully");
             selectedCard = battle.getCurrentPlayer().getHero();
             return true;
         }
+        if (myDeployable(cardId) != null) {
+            System.err.println("selected minion successfully");
+            selectedCard = myDeployable(cardId);
+            return true;
+        }
+
         if (getHero().getHeroSpell().getId() == cardId) {
             System.err.println("Selected Hero spell!");
             selectedCard = getHero().heroSpell;
@@ -406,6 +407,11 @@ public class Player {
         if (currentDeck.getCards().get(value).equals(nextCard))
             generateCardInReplace();
         cardInReplace = currentDeck.getCards().get(value);
+    }
+
+
+    public boolean equals(Player player) {
+        return this.account.getUsername().equals(player.account.getUsername());
     }
 }
 

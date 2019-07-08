@@ -1,8 +1,9 @@
 package controller;
 
+import Server.ServerStrings;
 import constants.CardType;
-import constants.FunctionType;
 import constants.GameMode;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -150,26 +151,43 @@ public class MultiPlayerBattlePageController implements Initializable {
     private ArrayList<ImageView> manas = new ArrayList<>();
     private controller.ColumnOfHand[] columnHands = new controller.ColumnOfHand[6];
     private GameRecord gameRecord;
-    private GameCompiler gameCompiler;
+
+    public HBox getHboxInTop() {
+        return hboxInTop;
+    }
 
     public MultiPlayerBattlePageController() {
     }
+    public void theThingsWeDoWheIitIsNotOurTime() {  // :'((((((
+        System.out.println("i'm in the theThingsWeDoWheIitIsNotOurTime");
+        new Thread(() -> {
+            while (!isMyTurn()) {
+                System.out.println("we are at do what server says !");
+                String command = null;
+                try {
+                    command = Client.getClient().getIs().readUTF();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                System.out.println("we received this command : " + command);
+                if (command != ServerStrings.NOTALLOWED) {
+                    BattleMenu.getBattleManager().doWhatIAmToldTo(command);
+                }else System.out.println("not allowed !!!");
+                Platform.runLater(() -> refreshTheStatusOfMap(BattleMenu.getBattleManager()));
+            }
+            System.out.println("the thread in theThingsWeDoWheIitIsNotOurTime has ended just fine :)");
+        }).start();
+
+    }
 
     private void playTheActualGame(BattleManager battle) {
-        initPlayers();
-        makeColumnHands();
-        setPolygonsInMap();
-        initHeroesSpecialPowers();
-        setOnActionForEveryCell();
-        battle.initialTheGame();
-        for (int i = 0; i < HAND_CAPACITY; i++) {
-            handleHandPlace(i, battle);
-        }
-        atStartThings(battle);
-        BattleMenu.getBattleManager().doAllAtTheBeginningOfTurnThings(true);
-        gameCompiler = new GameCompiler(battle);
+        graphicStuffAtBegin();
+        System.out.println("we are going to play the actual game :D");
+        Client.getClient().receiveMapAndBattle();
+
+
         if (!isMyTurn()) {
-            Client.getClient().theThingsWeDoWhenitIsNotOurTime();
+            theThingsWeDoWheIitIsNotOurTime();
         }
 
 
@@ -186,33 +204,29 @@ public class MultiPlayerBattlePageController implements Initializable {
                 selectItem();
         });
         replace.setOnAction(event -> {
-            if (!isMyTurn()) {
+            /*if (!isMyTurn()) {
                 displayMessage("this is not your turn =");
             } else {
                 if (isMyTurn() && battle.getCurrentPlayer().getSelectedCard() != null) {
                     MultiPlayerBattlePageController.getInstance().replaceCardInHand(battle.getCurrentPlayer().getSelectedCard().getId(), battle);
 
                 }
-            }
+            }*/
         });
         endTurn.setOnAction(event -> {
             if (!isMyTurn()) {
                 displayMessage("this is not your turn =");
             } else {
-                try {
-                    Client.getClient().sendEndTurnRequest();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                Client.getClient().sendEndTurnRequest();
             }
 
         });
         concede.setOnAction(event -> {
-            concede.setText("Concede");
-            if (me == battle.getPlayer1())
-                battle.player2Won();
-            else
-                battle.player1Won();
+            if (!isMyTurn()) {
+                displayMessage("this is not your turn =");
+            } else {
+                Client.getClient().sendConcedeRequest();
+            }
 
         });
         graveYard.setOnAction(event -> {
@@ -221,6 +235,29 @@ public class MultiPlayerBattlePageController implements Initializable {
         });
     }
 
+    private void graphicStuffAtBegin() {
+        initPlayers();
+        makeColumnHands();
+        setPolygonsInMap();
+        initHeroesSpecialPowers();
+        setOnActionForEveryCell();
+        nameAndStuff();
+        initHeroes(BattleMenu.getBattleManager());
+        setGameMode(BattleMenu.getBattleManager());
+        refreshTheStatusOfMap(BattleMenu.getBattleManager());
+        for (int i = 0; i < HAND_CAPACITY; i++) {
+            handleHandPlace(i, BattleMenu.getBattleManager());
+        }
+    }
+
+    private void nameAndStuff() {
+        username.setText(me.getAccount().getUsername());
+        opponentUsername.setText(opponent.getAccount().getUsername());
+        generalSpellManaCost.setText("" + me.getHero().getHeroSpell().getManaCost());
+        opponentGeneralSpellManaCost.setText("" + opponent.getHero().getHeroSpell().getManaCost());
+        generalCoolDown.setText("" + me.getHero().getHeroSpell().getManaCost());
+        opponentGeneralCoolDown.setText("" + opponent.getHero().getHeroSpell().getManaCost());
+    }
 
     public void setInGraveYard(boolean inGraveYard) {
         isInGraveYard = inGraveYard;
@@ -232,12 +269,7 @@ public class MultiPlayerBattlePageController implements Initializable {
         } else {
             isInGraveYard = false;
         }
-
         Initializer.setCurrentScene(scene);
-    }
-
-    public GameCompiler getGameCompiler() {
-        return gameCompiler;
     }
 
     private void loadTheScene() {
@@ -323,7 +355,6 @@ public class MultiPlayerBattlePageController implements Initializable {
         else if (card.getType() == CardType.spell)
             removeSpellFromHand(((Spell) card).getFace(), battle);
     }
-
     private void putNextCardInHand(BattleManager battle) {
         for (int i = 0; i < 6; i++) {
             if (columnHands[i].stackPane.getChildren().size() == 1) {
@@ -363,7 +394,7 @@ public class MultiPlayerBattlePageController implements Initializable {
             playTheActualGame(battle);
         else {
             gameRecord = Account.getMainAccount().getSelectedGameRecord();
-            recordTheGame(battle);
+            //    recordTheGame(battle);
         }
     }
 
@@ -402,7 +433,6 @@ public class MultiPlayerBattlePageController implements Initializable {
         }
         System.err.println("you don't have this card in your hand.");
     }
-
     public void addFaceToBattlePage(Minion theMinion, BattleManager battle) {
         DisplayableDeployable face = new DisplayableDeployable(theMinion);
         theMinion.setFace(face);
@@ -435,7 +465,7 @@ public class MultiPlayerBattlePageController implements Initializable {
         MultiPlayerBattlePageController.deleteBattlePage();
     }
 
-    private void recordTheGame(BattleManager battle) {
+   /* private void recordTheGame(BattleManager battle) {
         concede.setText("Exit");
         concede.setOnAction(event -> showThatGameEnded());
         System.out.println(gameRecord.getGame());
@@ -447,7 +477,7 @@ public class MultiPlayerBattlePageController implements Initializable {
 
         });
         showGame.start();
-    }
+    }*/
 
     private void setOnActionForEveryCell() {
         for (int i = 1; i <= Map.MAP_X1_LENGTH; i++) {
@@ -580,21 +610,18 @@ public class MultiPlayerBattlePageController implements Initializable {
     public void initHeroes(BattleManager battleManager) {
         Hero hero1 = battleManager.getPlayer1().getHero();
         Hero hero2 = battleManager.getPlayer2().getHero();
-        hero1.setCell(Map.getInstance().getCell(3, 1));
-        hero2.setCell(Map.getInstance().getCell(3, 9));
-        hero1.getCell().setCardInCell(hero1);
-        hero2.getCell().setCardInCell(hero2);
-        battleManager.getPlayer1().addCardToBattlefield(hero1);
-        battleManager.getPlayer2().addCardToBattlefield(hero2);
         DisplayableDeployable faceHero1 = new DisplayableDeployable(hero1);
         DisplayableDeployable faceHero2 = new DisplayableDeployable(hero2);
         hero1.setFace(faceHero1);
         hero2.setFace(faceHero2);
         mainPane.getChildren().addAll(faceHero1, faceHero2);
+        hero1.setCell(Map.getInstance().getCell(3, 1));
+        hero2.setCell(Map.getInstance().getCell(3, 9));
+        hero1.getCell().setCardInCell(hero1);
+        hero2.getCell().setCardInCell(hero2);
         faceHero1.updateStats();
         faceHero2.updateStats();
 
-        System.out.println(faceHero1.getDeployable().getCell().getPolygon().getTranslateX());
         faceHero1.setOnMouseClicked(event -> {
             setOnMouseDeployable(hero1, battleManager);
             faceHero1.updateStats();
@@ -608,25 +635,29 @@ public class MultiPlayerBattlePageController implements Initializable {
     public void setOnMouseDeployable(Deployable card, BattleManager battleManager) {
         if (battleManager.getCurrentPlayer() == me) {
             if (me.getSelectedCard() != null && me.getSelectedCard().getType() == CardType.spell) {
-                BattleMenu.insert(me.getSelectedCard(), card.getCell().getX1Coordinate(), card.getCell().getX2Coordinate());
+                // BattleMenu.insert(me.getSelectedCard(), card.getCell().getX1Coordinate(), card.getCell().getX2Coordinate());
+                Client.getClient().sendInsertRequest(me.getSelectedCard().getId(), card.getCell().getX1Coordinate(), card.getCell().getX2Coordinate());
             } else if (me.getSelectedCard() != null && me.getSelectedCard().getType() == CardType.item) {
-                BattleMenu.insert(me.getSelectedCard(), card.getCell().getX1Coordinate(), card.getCell().getX2Coordinate());
+                //   BattleMenu.insert(me.getSelectedCard(), card.getCell().getX1Coordinate(), card.getCell().getX2Coordinate());
+                Client.getClient().sendInsertRequest(me.getSelectedCard().getId(), card.getCell().getX1Coordinate(), card.getCell().getX2Coordinate());
             } else if (me.getSelectedCard() != null &&
                     me.getSelectedCard().getType() != CardType.spell &&
                     !card.getAccount().equals(me.getAccount())) {
                 System.err.println(me.getSelectedCard().getName() + " attacked " + card.getName());
-                battleManager.attack((Deployable) me.getSelectedCard(), card);
+                //    battleManager.attack((Deployable) me.getSelectedCard(), card);
+                Client.getClient().sendAttackRequest(((Deployable) me.getSelectedCard()).getCell().getX1Coordinate()
+                        , ((Deployable) me.getSelectedCard()).getCell().getX1Coordinate(), card.getCell().getX1Coordinate(), card.getCell().getX2Coordinate());
                 ((Deployable) me.getSelectedCard()).getFace().attack();
                 card.getFace().getHit();
             } else {
+                System.out.println("going to select a card !");
                 me.selectACard(card.getUniqueId());
             }
         }
     }
 
     private boolean isMyTurn() {
-        return BattleMenu.getBattleManager().getCurrentPlayer().
-                getAccount().getUsername().equals(me.getAccount().getUsername());
+        return BattleMenu.getBattleManager().getCurrentPlayer().equals(me);
     }
 
     public Player getMe() {
@@ -781,35 +812,6 @@ public class MultiPlayerBattlePageController implements Initializable {
         }
     }
 
-    private void atStartThings(BattleManager battle) {
-        username.setText(me.getAccount().getUsername());
-        opponentUsername.setText(opponent.getAccount().getUsername());
-        generalSpellManaCost.setText("" + me.getHero().getHeroSpell().getManaCost());
-        opponentGeneralSpellManaCost.setText("" + opponent.getHero().getHeroSpell().getManaCost());
-        generalCoolDown.setText("" + me.getHero().getHeroSpell().getManaCost());
-        opponentGeneralCoolDown.setText("" + opponent.getHero().getHeroSpell().getManaCost());
-        battle.getPlayer1().generateDeckArrangement();
-        battle.getPlayer2().generateDeckArrangement();
-        battle.setCurrentPlayer(BattleMenu.getBattleManager().getPlayer2());
-        battle.applyItemFunctions(BattleMenu.getBattleManager().getCurrentPlayer().getHero(), FunctionType.GameStart);
-        battle.setCurrentPlayer(BattleMenu.getBattleManager().getPlayer1());
-        battle.applyItemFunctions(BattleMenu.getBattleManager().getCurrentPlayer().getHero(), FunctionType.GameStart);
-        initHeroes(battle);
-        me.initNextcard();
-        opponent.initNextcard();
-        refreshTheStatusOfMap(battle);
-        manas.add(mana1);
-        manas.add(mana2);
-        manas.add(mana3);
-        manas.add(mana4);
-        manas.add(mana5);
-        manas.add(mana6);
-        manas.add(mana7);
-        manas.add(mana8);
-        manas.add(mana9);
-        setGameMode(battle);
-    }
-
     private void setGameMode(BattleManager battle) {
         if (battle.getGameMode() == GameMode.DeathMatch)
             gameMode.setText("DEATH MATCH");
@@ -897,21 +899,25 @@ public class MultiPlayerBattlePageController implements Initializable {
                         return;
                     }
                     if (cell.getCardInCell() == null && (me.getSelectedCard().getType() == CardType.item)) { // spell can't insert on the ground ?'
-                        Client.getClient().sendInsertRequest();
-                        BattleMenu.insert(me.getSelectedCard(), cell.getX1Coordinate(), cell.getX2Coordinate());
+                        Client.getClient().sendInsertRequest(me.getSelectedCard().getId(), cell.getX1Coordinate(), cell.getX2Coordinate());
+                        //  BattleMenu.insert(me.getSelectedCard(), cell.getX1Coordinate(), cell.getX2Coordinate());
                     } else if (cell.getCardInCell() != null) {
                         displayMessage("destination is not empty");
                         System.out.println("card in this cell is : " + cell.getCardInCell().infoToString());
                         return;
                     }
                     if (me.isSelectedCardDeployed()) {
-                        BattleMenu.getBattleManager().move((Deployable) me.getSelectedCard(),
-                                cell.getX1Coordinate(), cell.getX2Coordinate());
                         System.out.println("we called move method dude!");
+                        Client.getClient().sendMoveRequest(((Deployable) me.getSelectedCard()).getCell().getX1Coordinate()
+                                , ((Deployable) me.getSelectedCard()).getCell().getX2Coordinate(), cell.getX1Coordinate(), cell.getX2Coordinate());
+                        //    BattleMenu.getBattleManager().move((Deployable) me.getSelectedCard(), cell.getX1Coordinate(), cell.getX2Coordinate());
+
                     } else if (!me.isSelectedCardDeployed()) {
-                        BattleMenu.insert(me.getSelectedCard(), cell.getX1Coordinate(), cell.getX2Coordinate());
+                        Client.getClient().sendInsertRequest(me.getSelectedCard().getId(), cell.getX1Coordinate(), cell.getX2Coordinate());
+                        //      BattleMenu.insert(me.getSelectedCard(), cell.getX1Coordinate(), cell.getX2Coordinate());
                     } else if (me.getSelectedCard() != null && me.getSelectedCard().getType() == CardType.spell) {
-                        BattleMenu.insert(me.getSelectedCard(), cell.getX1Coordinate(), cell.getX2Coordinate());
+                        Client.getClient().sendInsertRequest(me.getSelectedCard().getId(), cell.getX1Coordinate(), cell.getX2Coordinate());
+                        //      BattleMenu.insert(me.getSelectedCard(), cell.getX1Coordinate(), cell.getX2Coordinate());
                     }
                 }
             });
