@@ -2,11 +2,8 @@ package Server;
 
 import com.gilecode.yagson.YaGson;
 import com.gilecode.yagson.YaGsonBuilder;
-import controller.ChatRoomController;
 import controller.Shop;
 import model.Account;
-import model.Card;
-import model.Initializer;
 
 import java.io.*;
 import java.net.ServerSocket;
