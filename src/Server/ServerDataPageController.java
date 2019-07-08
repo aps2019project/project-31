@@ -18,6 +18,9 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import model.Account;
+import model.Card;
+import model.Client;
+import model.DisplayableCard;
 
 import java.awt.*;
 import java.io.IOException;
@@ -70,18 +73,75 @@ public class ServerDataPageController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         instance = this;
+        ShopController.getInstance().initializeShopItems(Shop.getAllHeroes(), heroesList, 0.6, -10);
+        ShopController.getInstance().initializeShopItems(Shop.getAllMinions(), minionsList, 0.6, -10);
+        ShopController.getInstance().initializeShopItems(Shop.getAllSpells(), spellsList, 0.6, -10);
+        ShopController.getInstance().initializeShopItems(Shop.getAllUsables(), usablesList, 0.6, -10);
         back.setOnAction(event -> ServerPageController.getInstance().setAsScene());
+        requestStock.setOnAction(actionEvent -> {
+            try {
+                String string = Shop.getStock().get(getCardFromTab().getId()).toString();
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setHeaderText(string);
+                alert.show();
+            } catch (Exception e) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setHeaderText("Select a card first!");
+                alert.show();
+            }
+        });
         refreshLeaderBoard();
-        refresh.setOnAction(actionEvent ->
-        {
+        refresh.setOnAction(actionEvent -> {
             refreshLeaderBoard();
         });
+        findButton.setOnAction(event -> search());
+        searchText.setOnAction(event -> search());
+    }
+    private Card getCardFromTab() {
+        return ((DisplayableCard) ((ListView) tabPane.
+                getSelectionModel().getSelectedItem()
+                .getContent()).getSelectionModel().getSelectedItem()).getCard();
+    }
+    private void search() {
+        String input = searchText.getText();
+        Card card = searchCardByName(input);
+        if (card != null) {
+            selectTab(tabPane, card);
+            Tab tab = tabPane.getSelectionModel().getSelectedItem();
+            ListView listView = (ListView) tab.getContent();
+            listView.scrollTo(new DisplayableCard(card, ""));
+        }
+    }
+
+    public Card searchCardByName(String cardName) {
+        for (Card card : Shop.getAllCards()) {
+            if (cardName.equalsIgnoreCase(card.getName()))
+                return card;
+        }
+        return null;
+    }
+
+    public void selectTab(TabPane tabPane, Card card) {
+        switch (card.getType()) {
+            case hero:
+                tabPane.getSelectionModel().select(tabPane.getTabs().get(0));
+                break;
+            case spell:
+                tabPane.getSelectionModel().select(tabPane.getTabs().get(2));
+                break;
+            case minion:
+                tabPane.getSelectionModel().select(tabPane.getTabs().get(1));
+                break;
+            case item:
+                tabPane.getSelectionModel().select(tabPane.getTabs().get(3));
+                break;
+        }
     }
 
     public void refreshLeaderBoard() {
         try {
             currentVBox = getLeaderBoard();
-            currentVBox.setPadding(new Insets(50,0,0,0));
+            currentVBox.setPadding(new Insets(50, 0, 0, 0));
             StackPane stackPane = new StackPane();
             stackPane.getChildren().addAll(label, currentVBox);
             scrollPane.setContent(stackPane);
