@@ -64,24 +64,23 @@ public class WaitingPageController implements Initializable {
         cancel.setOnMouseClicked(mouseEvent -> {
             Client.getClient().sendCancelRequest();
             PlayMenuController.getInstance().setAsScene();
-            playMenuOrBattleMenu();
         });
         deathMatchBtn.setOnMouseClicked(event -> {
             removeModesFromPage();
             Client.getClient().sendPlayRequest(GameMode.DeathMatch);
-            playMenuOrBattleMenu();
+        //    playMenuOrBattleMenu();
 
         });
         flagBtn.setOnMouseClicked(event -> {
             removeModesFromPage();
             Client.getClient().sendPlayRequest(GameMode.Flag);
-            playMenuOrBattleMenu();
+        //    playMenuOrBattleMenu();
 
         });
         dominationBtn.setOnMouseClicked(event -> {
             removeModesFromPage();
             Client.getClient().sendPlayRequest(GameMode.Domination);
-            playMenuOrBattleMenu();
+        //    playMenuOrBattleMenu();
         });
 
 
@@ -92,23 +91,6 @@ public class WaitingPageController implements Initializable {
         mainHBox.getChildren().remove(mode2);
         mainHBox.getChildren().remove(mode3);
         status.setText("waiting ...");
-    }
-
-    private void playMenuOrBattleMenu() {
-        synchronized (WaitingPageController.getInstance()) {
-            try {
-                wait();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            if (johnyJohnyYesPapaGoingToBattle.get()) {
-                System.out.println("battle page it is");
-                MultiPlayerBattlePageController.getInstance().setAsScene();
-            } else {
-                System.out.println("play menu it is");
-                PlayMenuController.getInstance().setAsScene();
-            }
-        }
     }
 
 }
