@@ -24,11 +24,10 @@ public class Server extends Thread {
         return usersInChat;
     }
 
-    public static void main(String[] args) {
+    static void main(String[] args) {
 
         try {
             YaGson yaGson = new YaGsonBuilder().create();
-            Initializer.initialiseData();
             BufferedReader bufferedReader = new BufferedReader(new FileReader(
                     System.getProperty("user.dir") + "/Sources/ServerResources/config.txt"));
             port = Integer.parseInt(bufferedReader.readLine());

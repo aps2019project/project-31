@@ -698,31 +698,34 @@ public class MultiPlayerBattlePageController implements Initializable {
             flag2.setText(opponent.getNumberOfFlags() + "");
         }
     }
-
+    private void healthAndCooldownStuff(){
+        try {
+            health.setText("" + me.getHero().theActualHealth());
+            opponentHealth.setText("" + opponent.getHero().theActualHealth());
+            opponentHand.setText("Hand: " + opponent.handSize() + " / 6");
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("mohem nis :)");
+        }
+        try {
+            updateManaViewers(BattleMenu.getBattleManager());
+            generalCoolDown.setText("" + me.getHero().getHeroSpell().getCoolDownRemaining());
+            opponentGeneralCoolDown.setText("" + opponent.getHero().getHeroSpell().getCoolDownRemaining());
+            deckSize.setText("Deck: " + (me.deckSize() + 1) + "/18");
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("migam ke mohem nis");
+        }
+    }
     public void refreshTheStatusOfMap(BattleManager battleManager) {
+        nameAndStuff();
         if (battleManager.isTheGameFinished())
             return;
         refreshPartly();
         refreshFlagsSituation(battleManager);
         if (!battleManager.isThisRecordedGame()) {
             BattleMenu.getBattleManager().checkTheEndSituation();
-            try {
-                health.setText("" + me.getHero().theActualHealth());
-                opponentHealth.setText("" + opponent.getHero().theActualHealth());
-                opponentHand.setText("Hand: " + opponent.handSize() + " / 6");
-            } catch (Exception e) {
-                e.printStackTrace();
-                System.out.println("mohem nis :)");
-            }
-            try {
-                updateManaViewers(battleManager);
-                generalCoolDown.setText("" + me.getHero().getHeroSpell().getCoolDownRemaining());
-                opponentGeneralCoolDown.setText("" + opponent.getHero().getHeroSpell().getCoolDownRemaining());
-                deckSize.setText("Deck: " + (me.deckSize() + 1) + "/18");
-            } catch (Exception e) {
-                e.printStackTrace();
-                System.out.println("migam ke mohem nis");
-            }
+            healthAndCooldownStuff();
             showItems();
         }
         showFlag();
