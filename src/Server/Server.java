@@ -23,7 +23,6 @@ public class Server extends Thread {
 
         try {
             YaGson yaGson = new YaGsonBuilder().create();
-            Initializer.initialiseData();
             BufferedReader bufferedReader = new BufferedReader(new FileReader(
                     System.getProperty("user.dir") + "/Sources/ServerResources/config.txt"));
             port = Integer.parseInt(bufferedReader.readLine());
