@@ -399,6 +399,7 @@ public class Client extends Thread {
                 BattleMenu.getBattleManager().doWhatIAmToldTo(command);
                 Platform.runLater(()->MultiPlayerBattlePageController.getInstance().refreshTheStatusOfMap(BattleMenu.getBattleManager()));
             } else System.out.println("not allowed");
+            BattleMenu.showGlimpseOfMap();
         }).start();
     }
 

@@ -339,7 +339,7 @@ public class SinglePlayerBattlePageController implements Initializable {
             handleHandPlace(i, battle);
         }
         atStartThings(battle);
-        BattleMenu.getBattleManager().doAllAtTheBeginningOfTurnThings(false);
+        BattleMenu.getBattleManager().doAllAtTheBeginningOfTurnThings();
         updateNextCard();
         refreshFlagsSituation(battle);
         BattleMenu.generateFlags(battle.getGameMode(), battle.getMaxNumberOfFlags());
@@ -462,14 +462,14 @@ public class SinglePlayerBattlePageController implements Initializable {
         if (isMyTurn()) {
             battle.setCurrentPlayer(battle.getOtherPlayer());
         }
-        BattleMenu.getBattleManager().doAllAtTheBeginningOfTurnThings(false);
+        BattleMenu.getBattleManager().doAllAtTheBeginningOfTurnThings();
         updateNextCard();
         if (battle.getCurrentPlayer().isAi()) {
             System.err.println("ai is playing");
             ((Ai) battle.getCurrentPlayer()).play();
             battle.setCurrentPlayer(battle.getOtherPlayer());
             BattleMenu.getBattleManager().doAllThingsInEndingOfTheTurns();
-            BattleMenu.getBattleManager().doAllAtTheBeginningOfTurnThings(false);
+            BattleMenu.getBattleManager().doAllAtTheBeginningOfTurnThings();
             updateNextCard();
         }
         updateManaViewers(battle);

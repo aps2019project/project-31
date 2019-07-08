@@ -409,6 +409,13 @@ public class Player {
         cardInReplace = currentDeck.getCards().get(value);
     }
 
+    public boolean isInHand(Card card) {
+        for (Card hand : this.hand) {
+            if (card == hand)
+                return true;
+        }
+        return false;
+    }
 
     public boolean equals(Player player) {
         return this.account.getUsername().equals(player.account.getUsername());
