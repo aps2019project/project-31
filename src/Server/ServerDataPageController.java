@@ -68,7 +68,7 @@ public class ServerDataPageController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         instance = this;
         back.setOnAction(event -> MainMenuController.getInstance().setAsScene());
-        LeaderBoardController.getInstance().refreshLeaderBoard();
+//        LeaderBoardController.getInstance().refreshLeaderBoard();
         refresh.setOnAction(actionEvent ->
         {
             LeaderBoardController.getInstance().refreshLeaderBoard();

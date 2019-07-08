@@ -149,7 +149,7 @@ public class MultiPlayerBattlePageController implements Initializable {
     private Player opponent;
     private boolean isInGraveYard = false;
     private ArrayList<ImageView> manas = new ArrayList<>();
-    private controller.ColumnOfHand[] columnHands = new controller.ColumnOfHand[6];
+    private ColumnOfHand[] columnHands = new ColumnOfHand[6];
     private GameRecord gameRecord;
 
     public HBox getHboxInTop() {
@@ -241,7 +241,6 @@ public class MultiPlayerBattlePageController implements Initializable {
         initPlayers();
         makeColumnHands();
         setPolygonsInMap();
-        initHeroesSpecialPowers();
         setOnActionForEveryCell();
         nameAndStuff();
         initHeroes(BattleMenu.getBattleManager());
@@ -534,7 +533,6 @@ public class MultiPlayerBattlePageController implements Initializable {
         columnHands[i].getStackPane().getChildren().get(0).setTranslateX(OFFSET_X);
         columnHands[i].getStackPane().getChildren().get(0).setTranslateY(OFFSET_Y);
         ((Spell) card).setFace(face);
-        System.out.println("Showing " + card.getName() + " in column" + i);
         columnHands[i].getStackPane().getChildren().add(face);
         face.setOnMouseClicked(event -> {
             if (!isMyTurn()) {
@@ -612,6 +610,7 @@ public class MultiPlayerBattlePageController implements Initializable {
     }
 
     public void initHeroes(BattleManager battleManager) {
+        System.out.println("init heroes !");
         Hero hero1 = battleManager.getPlayer1().getHero();
         Hero hero2 = battleManager.getPlayer2().getHero();
         DisplayableDeployable faceHero1 = new DisplayableDeployable(hero1);
@@ -619,12 +618,12 @@ public class MultiPlayerBattlePageController implements Initializable {
         hero1.setFace(faceHero1);
         hero2.setFace(faceHero2);
         mainPane.getChildren().addAll(faceHero1, faceHero2);
-      /*  hero1.setCell(Map.getInstance().getCell(3, 1));
+        /*hero1.setCell(Map.getInstance().getCell(3, 1));
         hero2.setCell(Map.getInstance().getCell(3, 9));
         hero1.getCell().setCardInCell(hero1);
-        hero2.getCell().setCardInCell(hero2);*/
+        hero2.getCell().setCardInCell(hero2);
         hero1.setFace(faceHero1);
-        hero2.setFace(faceHero2);
+        hero2.setFace(faceHero2);*/
         faceHero1.updateStats();
         faceHero2.updateStats();
 
@@ -652,7 +651,7 @@ public class MultiPlayerBattlePageController implements Initializable {
                 System.err.println(me.getSelectedCard().getName() + " attacked " + card.getName());
                 //    battleManager.attack((Deployable) me.getSelectedCard(), card);
                 Client.getClient().sendAttackRequest(((Deployable) me.getSelectedCard()).getCell().getX1Coordinate()
-                        , ((Deployable) me.getSelectedCard()).getCell().getX1Coordinate(), card.getCell().getX1Coordinate(), card.getCell().getX2Coordinate());
+                        , ((Deployable) me.getSelectedCard()).getCell().getX2Coordinate(), card.getCell().getX1Coordinate(), card.getCell().getX2Coordinate());
                 ((Deployable) me.getSelectedCard()).getFace().attack();
                 card.getFace().getHit();
             } else {

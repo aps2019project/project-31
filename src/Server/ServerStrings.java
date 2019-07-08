@@ -38,4 +38,5 @@ public class ServerStrings {
     public static final String RECEIVE_MESSAGE = "receive message: (.*): ###(.*)";
     public static final String EXIT_CHATROOM = "exit chatroom";
     public static final String SEND_MESSAGE = "send message: (.*)";
+    public static final String CHERTMESSAGE = "chert message";
 }
