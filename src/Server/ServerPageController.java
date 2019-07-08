@@ -27,7 +27,7 @@ public class ServerPageController implements Initializable {
                 e.printStackTrace();
             }
         }
-        Server.setCurrentScene(scene);
+        ServerInitializer.setCurrentScene(scene);
     }
 
     public static ServerPageController getInstance(){

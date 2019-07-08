@@ -49,7 +49,7 @@ public class ServerDataPageController implements Initializable {
                 e.printStackTrace();
             }
         }
-        Server.setCurrentScene(scene);
+        ServerInitializer.setCurrentScene(scene);
     }
 
     public static ServerDataPageController getInstance(){
