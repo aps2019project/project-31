@@ -10,6 +10,7 @@ import model.Initializer;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -17,7 +18,11 @@ import java.util.regex.Pattern;
 public class Server extends Thread {
     private static ServerSocket server;
     private static int port;
+    private static ArrayList<User> usersInChat = new ArrayList<>();
 
+    public static ArrayList<User> getUsersInChat() {
+        return usersInChat;
+    }
 
     public static void main(String[] args) {
 

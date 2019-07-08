@@ -4,7 +4,9 @@ import com.gilecode.yagson.YaGson;
 import com.gilecode.yagson.YaGsonBuilder;
 import constants.GameMode;
 import controller.BattleMenu;
+import controller.ChatRoomController;
 import controller.Shop;
+import javafx.css.Match;
 import model.*;
 
 import java.io.*;
@@ -58,12 +60,25 @@ public class User extends Thread {
 
                 handleMainDeckSet(command);
 
+                handleEnteringChatroom(command);
+
 
                 if (handleLogout(command)) break;
 
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    private void handleEnteringChatroom(String command) throws IOException {
+        Pattern pattern = Pattern.compile(ServerStrings.ENTERING_CHATROOM);
+        Matcher matcher = pattern.matcher(command);
+        if (matcher.matches()){
+            Server.getUsersInChat().add(this);
+            for (String message: ChatRoomController.getMessages()){
+                os.writeUTF("receive message: " + message);
+            }
         }
     }
 
