@@ -74,7 +74,7 @@ public class LeaderBoardController implements Initializable {
 
     }
 
-    private void refreshLeaderBoard() {
+    public void refreshLeaderBoard() {
         try {
             currentVbox = Client.getClient().requestLeaderBoard();
             currentVbox.setPadding(new Insets(50,0,0,0));

@@ -49,8 +49,7 @@ public class ShopController implements Initializable {
     public ListView<DisplayableCard> usablesList1;
     public TabPane collectionTabPane;
     public Label daricView;
-    @FXML
-    private Button requestStock;
+    public Button requestStock;
 
     public static ShopController getInstance() {
         if (shop == null) {
