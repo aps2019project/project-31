@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import java.net.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Server.ServerDataPageController">
+   <children>
+      <ImageView fitHeight="720.0" fitWidth="1080.0" pickOnBounds="true">
+         <image>
+            <Image url="@assets/codex/chapter19_background@2x.jpg" />
+         </image>
+      </ImageView>
+      <HBox>
+         <children>
+            <VBox>
+               <children>
+                  <Pane>
+                     <children>
+                        <TabPane fx:id="tabPane" prefHeight="452.0" prefWidth="810.0" stylesheets="@style/tabPane.css" tabClosingPolicy="UNAVAILABLE" tabMaxHeight="50.0" tabMaxWidth="70.0" tabMinHeight="50.0" tabMinWidth="70.0">
+                           <tabs>
+                              <Tab fx:id="heroesTab" text="heroes">
+                                 <content>
+                                    <ListView fx:id="heroesList" orientation="HORIZONTAL" prefHeight="360.0" prefWidth="810.0" stylesheets="@style/listView.css" />
+                                 </content>
+                              </Tab>
+                              <Tab fx:id="minionsTab" text="minions">
+                                 <content>
+                                    <ListView fx:id="minionsList" orientation="HORIZONTAL" prefHeight="667.0" prefWidth="1614.0" stylesheets="@style/listView.css" />
+                                 </content>
+                              </Tab>
+                              <Tab fx:id="spellsTab" text="spells">
+                                 <content>
+                                    <ListView fx:id="spellsList" orientation="HORIZONTAL" prefHeight="666.0" prefWidth="1612.0" stylesheets="@style/listView.css" />
+                                 </content>
+                              </Tab>
+                              <Tab fx:id="usablesTab" text="usables">
+                                 <content>
+                                    <ListView fx:id="usablesList" orientation="HORIZONTAL" prefHeight="663.0" prefWidth="1610.0" stylesheets="@style/listView.css" />
+                                 </content>
+                              </Tab>
+                           </tabs>
+                        </TabPane>
+                     </children>
+                  </Pane>
+                  <HBox prefHeight="48.0" prefWidth="808.0">
+                     <children>
+                        <TextField id="searchText" fx:id="searchText" prefHeight="48.0" prefWidth="730.0" promptText="search">
+                           <stylesheets>
+                              <URL value="@style/inputBox.css" />
+                              <URL value="@style/Shop.css" />
+                           </stylesheets>
+                        </TextField>
+                        <Button id="findButton" fx:id="findButton" mnemonicParsing="false" prefHeight="50.0" prefWidth="79.0" stylesheets="@style/Shop.css" text="find" />
+                     </children>
+                  </HBox>
+                  <HBox>
+                     <children>
+                        <Pane>
+                           <children>
+                              <Button id="firstButton" fx:id="requestStock" layoutX="323.0" mnemonicParsing="false" prefHeight="56.0" prefWidth="146.0" stylesheets="@style/buttonOne.css" text="How many?" />
+                           </children>
+                        </Pane>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+            <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" opacity="0.83" prefHeight="720.0" prefWidth="275.0" stylesheets="@style/scrollPane.css" vbarPolicy="ALWAYS">
+               <content>
+                  <Label fx:id="label" alignment="TOP_LEFT" prefHeight="677.0" prefWidth="268.0" stylesheets="@style/LeaderBoard.css" textFill="WHITE">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </Label>
+               </content>
+            </ScrollPane>
+         </children>
+      </HBox>
+   </children>
+</StackPane>
