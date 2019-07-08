@@ -113,9 +113,8 @@ public class Client extends Thread {
     }
 
     public void sendCancelRequest() {
-
         try {
-            os.writeUTF(authToken + " request is canceled");
+            os.writeUTF("request is canceled");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -139,18 +138,17 @@ public class Client extends Thread {
                 try {
                     String serverReply = is.readUTF();
                     if (serverReply.equals(ServerStrings.MULTIPLAYERSUCCESS)) {
-                        WaitingPageController.getInstance().johnyJohnyYesPapaGoingToBattle.set(true);
-                        synchronized (WaitingPageController.getInstance()) {
-                            WaitingPageController.getInstance().notifyAll();
-                            receiveMapAndBattleForFirstTime();
-                        }
+                        receiveMapAndBattleForFirstTime();
+                        Platform.runLater(() -> {
+                            System.out.println("battle page it is");
+                            MultiPlayerBattlePageController.getInstance().setAsScene();
+                        });
 
                     } else if (serverReply.equals(ServerStrings.CANCELSUCCESSFULLY)) {
-                        WaitingPageController.getInstance().johnyJohnyYesPapaGoingToBattle.set(true);
-                        System.out.println("we canceled the game honey");
-                        synchronized (WaitingPageController.getInstance()) {
-                            WaitingPageController.getInstance().notifyAll();
-                        }
+                      Platform.runLater(()->{
+                          System.out.println("play menu it is");
+                          PlayMenuController.getInstance().setAsScene();
+                      });
                     }
                 } catch (IOException e) {
                     e.printStackTrace();

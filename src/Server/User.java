@@ -27,7 +27,7 @@ public class User extends Thread {
     private static User waitingUserMode3;
     protected static BattleManager battle;
     private static BattleServer battleServer;
-
+    private Thread waitingForCancel;
     public static final Object syncObject = new Object();
 
 
@@ -346,6 +346,24 @@ public class User extends Thread {
         }
     }
 
+    private void cancelThread() {
+        waitingForCancel = new Thread(() -> {
+            try {
+                String command = is.readUTF();
+                System.out.println("command is:" + command);
+                if (command.equals(ServerStrings.CANCELPLAYREQUEST)) {
+                    synchronized (syncObject) {
+                        syncObject.notify();
+                    }
+                }
+                os.writeUTF(ServerStrings.CANCELSUCCESSFULLY);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+        waitingForCancel.start();
+    }
+
     private void multiPlayerRequestHandler(String command) throws IOException, InterruptedException {
         Pattern pattern = Pattern.compile(ServerStrings.MULTIPLAYERREQUEST);
         Matcher matcher = pattern.matcher(command);
@@ -359,8 +377,10 @@ public class User extends Thread {
                     if (waitingUserMode3 == null) {
                         waitingUserMode3 = this;
                         synchronized (syncObject) {
+                            cancelThread();
                             syncObject.wait();
-                            System.out.println("the game ended :((((");
+                            waitingUserMode3 = null;
+                            System.out.println("the game ended or canceled:((((");
                         }
                     } else makeBattle(GameMode.Domination, waitingUserMode3, this);
                     break;
@@ -368,8 +388,10 @@ public class User extends Thread {
                     if (waitingUserMode1 == null) {
                         waitingUserMode1 = this;
                         synchronized (syncObject) {
+                            cancelThread();
                             syncObject.wait();
-                            System.out.println("the game ended :((((");
+                            waitingUserMode1 = null;
+                            System.out.println("the game ended or canceled :((((");
                         }
                     } else makeBattle(GameMode.DeathMatch, waitingUserMode1, this);
 
@@ -378,8 +400,10 @@ public class User extends Thread {
                     if (waitingUserMode2 == null) {
                         waitingUserMode2 = this;
                         synchronized (syncObject) {
+                            cancelThread();
                             syncObject.wait();
-                            System.out.println("the game ended :((((");
+                            waitingUserMode2 = null;
+                            System.out.println("the game ended or canceled:((((");
                         }
                     } else makeBattle(GameMode.Flag, waitingUserMode2, this);
                     break;
@@ -389,11 +413,10 @@ public class User extends Thread {
         }
     }
 
-
     private void makeBattle(GameMode gameMode, User user1, User user2) throws IOException, InterruptedException {
         BattleMenu.setBattleManagerForMultiPlayer(user1.account, user2.account, findNumberOfFlags(gameMode),
                 findNumberOfHavingFlags(gameMode), gameMode);
-
+        user1.waitingForCancel.interrupt();
         battle = BattleMenu.getBattleManager();
         battle.initialTheGame();
         System.out.println(this.account.getUsername() + " is here :)");

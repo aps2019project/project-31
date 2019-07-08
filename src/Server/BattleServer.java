@@ -3,6 +3,8 @@ package Server;
 
 import model.BattleManager;
 import model.GameCompiler;
+import model.Hero;
+import model.Map;
 
 import java.io.IOException;
 
@@ -83,12 +85,20 @@ public class BattleServer extends Thread {
     private void gameFinished() {
         System.out.println("the game has finished ( in battle server )");
     }
-
+    private void initHeroes(){
+        Hero hero1 = battleManager.getPlayer1().getHero();
+        Hero hero2 = battleManager.getPlayer2().getHero();
+        hero1.setCell(Map.getInstance().getCell(3, 1));
+        hero2.setCell(Map.getInstance().getCell(3, 9));
+        hero1.getCell().setCardInCell(hero1);
+        hero2.getCell().setCardInCell(hero2);
+    }
     @Override
     public void run() {
         System.out.println("battle server is going to start its job :)");
         synchronized (User.syncObject) {
             System.out.println("we are in the battle :)");
+            initHeroes();
             updateBothUsers();
             while (true) {
                 System.out.println("go to battle while loop");

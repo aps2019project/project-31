@@ -158,6 +158,7 @@ public class MultiPlayerBattlePageController implements Initializable {
 
     public MultiPlayerBattlePageController() {
     }
+
     public void theThingsWeDoWheIitIsNotOurTime() {  // :'((((((
         System.out.println("i'm in the theThingsWeDoWheIitIsNotOurTime");
         new Thread(() -> {
@@ -172,7 +173,7 @@ public class MultiPlayerBattlePageController implements Initializable {
                 System.out.println("we received this command : " + command);
                 if (command != ServerStrings.NOTALLOWED) {
                     BattleMenu.getBattleManager().doWhatIAmToldTo(command);
-                }else System.out.println("not allowed !!!");
+                } else System.out.println("not allowed !!!");
                 Platform.runLater(() -> refreshTheStatusOfMap(BattleMenu.getBattleManager()));
             }
             BattleMenu.showGlimpseOfMap();
@@ -356,6 +357,7 @@ public class MultiPlayerBattlePageController implements Initializable {
         else if (card.getType() == CardType.spell)
             removeSpellFromHand(((Spell) card).getFace(), battle);
     }
+
     private void putNextCardInHand(BattleManager battle) {
         for (int i = 0; i < 6; i++) {
             if (columnHands[i].stackPane.getChildren().size() == 1) {
@@ -434,6 +436,7 @@ public class MultiPlayerBattlePageController implements Initializable {
         }
         System.err.println("you don't have this card in your hand.");
     }
+
     public void addFaceToBattlePage(Minion theMinion, BattleManager battle) {
         DisplayableDeployable face = new DisplayableDeployable(theMinion);
         theMinion.setFace(face);
@@ -616,10 +619,10 @@ public class MultiPlayerBattlePageController implements Initializable {
         hero1.setFace(faceHero1);
         hero2.setFace(faceHero2);
         mainPane.getChildren().addAll(faceHero1, faceHero2);
-        hero1.setCell(Map.getInstance().getCell(3, 1));
+      /*  hero1.setCell(Map.getInstance().getCell(3, 1));
         hero2.setCell(Map.getInstance().getCell(3, 9));
         hero1.getCell().setCardInCell(hero1);
-        hero2.getCell().setCardInCell(hero2);
+        hero2.getCell().setCardInCell(hero2);*/
         hero1.setFace(faceHero1);
         hero2.setFace(faceHero2);
         faceHero1.updateStats();
@@ -675,14 +678,6 @@ public class MultiPlayerBattlePageController implements Initializable {
         return manas;
     }
 
-    public void refreshPartly() {
-        for (Cell[] cells : Map.getInstance().getMap()) {
-            for (Cell cell : cells) {
-                if (cell != null && cell.getCardInCell() != null && cell.getCardInCell().getFace() != null)
-                    cell.getCardInCell().getFace().updateStats();
-            }
-        }
-    }
 
     private void refreshFlagsSituation(BattleManager battle) {
         if (battle.getGameMode() == GameMode.DeathMatch) {
@@ -698,7 +693,8 @@ public class MultiPlayerBattlePageController implements Initializable {
             flag2.setText(opponent.getNumberOfFlags() + "");
         }
     }
-    private void healthAndCooldownStuff(){
+
+    private void healthAndCooldownStuff() {
         try {
             health.setText("" + me.getHero().theActualHealth());
             opponentHealth.setText("" + opponent.getHero().theActualHealth());
@@ -717,11 +713,47 @@ public class MultiPlayerBattlePageController implements Initializable {
             System.out.println("migam ke mohem nis");
         }
     }
+
+    public void refreshPartly() {
+        for (Cell[] cells : Map.getInstance().getMap()) {
+            for (Cell cell : cells) {
+                if (cell != null && cell.getCardInCell() != null) {
+                    System.out.println("the cell has card in cell");
+                    if (cell.getCardInCell().getFace() != null) {
+                        System.out.println("the cell has face !");
+                        cell.getCardInCell().getFace().updateStats();
+                    } else
+                        System.out.println("the cell does not have face!!!!!!!!!!!!! fuuuuuuuuuuuuuuuuuuuuuuuuuuuck");
+                }
+
+
+            }
+        }
+    }
+
+    private void createFaceForDeplyobale() {
+        for (Cell[] cells : Map.getInstance().getMap()) {
+            for (Cell cell : cells) {
+                if (cell != null && cell.getCardInCell() != null && cell.getCardInCell().getFace() == null) {
+                    System.out.println("we created face for cell: " + cell.getX1Coordinate() + cell.getX2Coordinate());
+                    DisplayableDeployable face = new DisplayableDeployable(cell.getCardInCell());
+                    cell.getCardInCell().setFace(face);
+                    face.setOnMouseClicked(event -> {
+                        setOnMouseDeployable(cell.getCardInCell(), BattleMenu.getBattleManager());
+                        face.updateStats();
+                    });
+                }
+            }
+        }
+    }
+
     public void refreshTheStatusOfMap(BattleManager battleManager) {
+        System.out.println("refresh reached!");
+        createFaceForDeplyobale();
+        refreshPartly();
         nameAndStuff();
         if (battleManager.isTheGameFinished())
             return;
-        refreshPartly();
         refreshFlagsSituation(battleManager);
         if (!battleManager.isThisRecordedGame()) {
             BattleMenu.getBattleManager().checkTheEndSituation();

@@ -43,45 +43,39 @@ public class WaitingPageController implements Initializable {
 
 
     public void setAsScene() {
-        if (scene == null) {
-            try {
-                Parent root = FXMLLoader.load(getClass().getResource("/WaitingPage.fxml"));
-                Double screenWidth = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
-                scene = new Scene(root, screenWidth * 2 / 3, screenWidth * 4 / 9);
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/WaitingPage.fxml"));
+            Double screenWidth = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
+            scene = new Scene(root, screenWidth * 2 / 3, screenWidth * 4 / 9);
 
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         Initializer.setCurrentScene(scene);
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
         waitingPage = this;
+
         status.setText("Click One Mode.");
 
         cancel.setOnMouseClicked(mouseEvent -> {
             Client.getClient().sendCancelRequest();
-            PlayMenuController.getInstance().setAsScene();
-            playMenuOrBattleMenu();
         });
         deathMatchBtn.setOnMouseClicked(event -> {
             removeModesFromPage();
             Client.getClient().sendPlayRequest(GameMode.DeathMatch);
-            playMenuOrBattleMenu();
-
         });
         flagBtn.setOnMouseClicked(event -> {
             removeModesFromPage();
             Client.getClient().sendPlayRequest(GameMode.Flag);
-            playMenuOrBattleMenu();
 
         });
         dominationBtn.setOnMouseClicked(event -> {
             removeModesFromPage();
             Client.getClient().sendPlayRequest(GameMode.Domination);
-            playMenuOrBattleMenu();
         });
 
 
@@ -92,23 +86,6 @@ public class WaitingPageController implements Initializable {
         mainHBox.getChildren().remove(mode2);
         mainHBox.getChildren().remove(mode3);
         status.setText("waiting ...");
-    }
-
-    private void playMenuOrBattleMenu() {
-        synchronized (WaitingPageController.getInstance()) {
-            try {
-                wait();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            if (johnyJohnyYesPapaGoingToBattle.get()) {
-                System.out.println("battle page it is");
-                MultiPlayerBattlePageController.getInstance().setAsScene();
-            } else {
-                System.out.println("play menu it is");
-                PlayMenuController.getInstance().setAsScene();
-            }
-        }
     }
 
 }

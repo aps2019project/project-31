@@ -115,8 +115,12 @@ public class BattleManager {
     private void addFaceToGraphic(Minion minion) {
         if (!isMultiPlayer)
             SinglePlayerBattlePageController.getInstance().addFaceToBattlePage(minion, this);
-        else if (MultiPlayerBattlePageController.getInstance().getHboxInTop() != null)
-            Platform.runLater(() -> MultiPlayerBattlePageController.getInstance().addFaceToBattlePage(minion, this));
+        else if (MultiPlayerBattlePageController.getInstance().getHboxInTop() != null) {
+            Platform.runLater(() -> {
+                MultiPlayerBattlePageController.getInstance().addFaceToBattlePage(minion, this);
+                MultiPlayerBattlePageController.getInstance().refreshTheStatusOfMap(BattleMenu.getBattleManager());
+            });
+        }
     }
 
     private void removeFaceInHand() {
@@ -1487,8 +1491,6 @@ public class BattleManager {
         getCurrentPlayer().setHasReplaced(false);
         assignManaToPlayers();
         //   isTimeToPutItem();
-
-
     }
 
     public void putItemOnMap(Item item) {
@@ -1577,6 +1579,8 @@ public class BattleManager {
         doAllThingsInEndingOfTheTurns();
         setCurrentPlayer(getOtherPlayer());
         doAllAtTheBeginningOfTurnThings();
+        if (MultiPlayerBattlePageController.getInstance().getHboxInTop() != null)
+            Platform.runLater(() -> MultiPlayerBattlePageController.getInstance().refreshTheStatusOfMap(this));
     }
 
 
