@@ -54,7 +54,7 @@ public class Server extends Thread {
         }
     }
 
-    public synchronized static void saveAllAccounts(){
+    public synchronized static void saveAllAccounts() {
         Account.saveAllAccounts();
     }
 
@@ -104,7 +104,7 @@ public class Server extends Thread {
 
                     pattern = Pattern.compile(ServerStrings.REQUEST_SIGNUP);
                     matcher = pattern.matcher(command);
-                    if (matcher.matches()){
+                    if (matcher.matches()) {
                         String username = matcher.group(1);
                         String password = matcher.group(2);
                         if (Account.findAccount(username) != null) {

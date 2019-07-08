@@ -249,23 +249,45 @@ public class Client extends Thread {
         return vBox;
     }
 
-    public void enterChatRoom(){
+    public void sendChatMessage(String text) {
+        try {
+            os.writeUTF("send message: " + Account.getMainAccount().getUsername() + ": ###"
+                    + text);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void exitChatroom(){
+        try {
+            os.writeUTF(ServerStrings.EXIT_CHATROOM);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void enterChatRoom() {
         try {
             os.writeUTF(ServerStrings.ENTERING_CHATROOM);
             new Thread(() -> {
-                while (true){
+                while (true) {
                     try {
                         String command = is.readUTF();
 
                         Pattern pattern = Pattern.compile(ServerStrings.RECEIVE_MESSAGE);
                         Matcher matcher = pattern.matcher(command);
-                        if (matcher.matches()){
-                            ChatRoomController.getInstance().addForeignMessage(matcher.group(1));
+                        if (matcher.matches()) {
+                            if (!matcher.group(1).equals(Account.getMainAccount().getUsername())) {
+                                ChatRoomController.getInstance().addForeignMessage(matcher.group(1) + ":\n"
+                                        + matcher.group(2));
+                            }else {
+                                ChatRoomController.getInstance().addNativeMessage(matcher.group(2));
+                            }
                         }
 
                         pattern = Pattern.compile(ServerStrings.EXIT_CHATROOM);
                         matcher = pattern.matcher(command);
-                        if (matcher.matches()){
+                        if (matcher.matches()) {
                             break;
                         }
 
@@ -355,7 +377,7 @@ public class Client extends Thread {
     public void receiveMapAndBattle() {
         receiveMapAndBattleForFirstTime();
         Platform.runLater(() -> {
-                MultiPlayerBattlePageController.getInstance().refreshTheStatusOfMap(BattleMenu.getBattleManager());
+            MultiPlayerBattlePageController.getInstance().refreshTheStatusOfMap(BattleMenu.getBattleManager());
         });
     }
 
@@ -433,7 +455,7 @@ public class Client extends Thread {
             System.out.println("we received this command : " + command);
             if (command != ServerStrings.NOTALLOWED) {
                 BattleMenu.getBattleManager().doWhatIAmToldTo(command);
-                Platform.runLater(()->MultiPlayerBattlePageController.getInstance().refreshTheStatusOfMap(BattleMenu.getBattleManager()));
+                Platform.runLater(() -> MultiPlayerBattlePageController.getInstance().refreshTheStatusOfMap(BattleMenu.getBattleManager()));
             } else System.out.println("not allowed");
             BattleMenu.showGlimpseOfMap();
         }).start();

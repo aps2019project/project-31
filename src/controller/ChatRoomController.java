@@ -9,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import model.ChatMessage;
+import model.Client;
 import model.Initializer;
 
 import java.lang.reflect.Array;
@@ -42,6 +43,7 @@ public class ChatRoomController implements Initializable {
 
     public void setAsScene() {
         try {
+            Client.getClient().enterChatRoom();
             Parent root = FXMLLoader.load(getClass().getResource("/ChatRoom.fxml"));
             Scene scene = new Scene(root);
             Initializer.setCurrentScene(scene);
@@ -51,6 +53,10 @@ public class ChatRoomController implements Initializable {
 
     }
 
+    public void addNativeMessage(String message) {
+        messageBox.getChildren().addAll(new ChatMessage(message, true));
+    }
+
     public void addForeignMessage(String message) {
         messageBox.getChildren().addAll(new ChatMessage(message, false));
     }
@@ -58,5 +64,16 @@ public class ChatRoomController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         chatRoom = this;
+        backButton.setOnAction(actionEvent -> {
+            Client.getClient().exitChatroom();
+        });
+        sendButton.setOnAction(actionEvent -> {
+            Client.getClient().sendChatMessage(textField.getText());
+            textField.clear();
+        });
+        textField.setOnAction(actionEvent -> {
+            Client.getClient().sendChatMessage(textField.getText());
+            textField.clear();
+        });
     }
 }

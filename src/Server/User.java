@@ -62,6 +62,10 @@ public class User extends Thread {
 
                 handleEnteringChatroom(command);
 
+                handleChatMessage(command);
+
+                handleExitChatRoom(command);
+
 
                 if (handleLogout(command)) break;
 
@@ -71,16 +75,48 @@ public class User extends Thread {
         }
     }
 
+    private void handleExitChatRoom(String command) throws IOException {
+        Pattern pattern = Pattern.compile(ServerStrings.EXIT_CHATROOM);
+        Matcher matcher = pattern.matcher(command);
+        if (matcher.matches()){
+            Server.getUsersInChat().remove(this);
+            os.writeUTF(ServerStrings.EXIT_CHATROOM);
+        }
+    }
+
+    private void handleChatMessage(String command) {
+        Pattern pattern = Pattern.compile(ServerStrings.SEND_MESSAGE);
+        Matcher matcher = pattern.matcher(command);
+        if (matcher.matches()) {
+            ChatRoomController.getMessages().add(matcher.group(1));
+            if (ChatRoomController.getMessages().size() > 20) {
+                ChatRoomController.getMessages().remove(0);
+            }
+            for (User user : Server.getUsersInChat()) {
+                user.sendMessage(matcher.group(1));
+            }
+        }
+    }
+
+    public void sendMessage(String message) {
+        try {
+            os.writeUTF("receive message: " + message);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void handleEnteringChatroom(String command) throws IOException {
         Pattern pattern = Pattern.compile(ServerStrings.ENTERING_CHATROOM);
         Matcher matcher = pattern.matcher(command);
-        if (matcher.matches()){
+        if (matcher.matches()) {
             Server.getUsersInChat().add(this);
-            for (String message: ChatRoomController.getMessages()){
+            for (String message : ChatRoomController.getMessages()) {
                 os.writeUTF("receive message: " + message);
             }
         }
     }
+
 
     private void handleMainDeckSet(String command) throws IOException {
         Pattern pattern = Pattern.compile(ServerStrings.SET_AS_MAIN_REQUEST);

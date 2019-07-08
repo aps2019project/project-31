@@ -35,6 +35,7 @@ public class ServerStrings {
     public static final String ENDTURN = "end turn";
     public static final String GAMEENDED = "the game ended";
     public static final String ENTERING_CHATROOM = "entering chatroom";
-    public static final String RECEIVE_MESSAGE = "receive message: (.*)";
+    public static final String RECEIVE_MESSAGE = "receive message: (.*): ###(.*)";
     public static final String EXIT_CHATROOM = "exit chatroom";
+    public static final String SEND_MESSAGE = "send message: (.*)";
 }
