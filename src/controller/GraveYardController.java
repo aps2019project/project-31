@@ -8,7 +8,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.image.ImageView;
-import model.BattleManager;
 import model.DisplayableDeployable;
 import model.Initializer;
 
@@ -38,16 +37,45 @@ public class GraveYardController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         graveYard = this;
-        username.setText(BattlePageController.getInstance().getMe().getAccount().getUsername());
-        opponentUsername.setText(BattlePageController.getInstance().getOpponent().getAccount().getUsername());
+        username.setText(setUsername());
+        opponentUsername.setText(setOppUsername());
         backToBattle.setOnAction(event -> {
 
-            BattlePageController.getInstance().setAsScene();
+            goToBattle();
 
         });
-        player1Profile = BattlePageController.getInstance().player1Profile;
-        player2Profile = BattlePageController.getInstance().player2Profile;
+        player1Profile = setProPic1();
+        player2Profile = setProPic2();
     }
+
+    private String setUsername() {
+        if (BattleMenu.getBattleManager().isMultiPlayer())
+            return MultiPlayerBattlePageController.getInstance().getMe().getAccount().getUsername();
+        else return SinglePlayerBattlePageController.getInstance().getMe().getAccount().getUsername();
+    }
+
+    private String setOppUsername() {
+        if (BattleMenu.getBattleManager().isMultiPlayer())
+            return MultiPlayerBattlePageController.getInstance().getOpponent().getAccount().getUsername();
+        else return SinglePlayerBattlePageController.getInstance().getOpponent().getAccount().getUsername();
+    }
+
+    private void goToBattle() {
+        if (BattleMenu.getBattleManager().isMultiPlayer())
+            MultiPlayerBattlePageController.getInstance().setAsScene();
+        else SinglePlayerBattlePageController.getInstance().setAsScene();
+    }
+    private ImageView setProPic1(){
+        if (BattleMenu.getBattleManager().isMultiPlayer())
+            return MultiPlayerBattlePageController.getInstance().player1Profile;
+        else return SinglePlayerBattlePageController.getInstance().player1Profile;
+    }
+    private ImageView setProPic2(){
+        if (BattleMenu.getBattleManager().isMultiPlayer())
+            return MultiPlayerBattlePageController.getInstance().player2Profile;
+        else return SinglePlayerBattlePageController.getInstance().player2Profile;
+    }
+
 
     public void updateGraveYard() {
         GraveYardController.getInstance().player1List.getItems().clear();

@@ -28,4 +28,11 @@ public class ServerStrings {
     public static final String DELETE_DECK = "remove deck:(.*)";
     public static final String CARD_DELETED = "card removed from deck!";
     public static final String DELETE_CARD_REQUEST = "remove card:(\\d+) from deck:(.*)";
+    public static final String MAIN_DECK_SET = "main deck successfully set";
+    public static final String SET_AS_MAIN_REQUEST = "set (.*) as main";
+    public static final String CONCEDE = "CONCEDE";
+    public static final String NOTALLOWED = "not allowed";
+    public static final String ENDTURN = "end turn";
+    public static final String GAMEENDED = "the game ended";
+
 }

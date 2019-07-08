@@ -75,12 +75,13 @@ public class WaitingPageController implements Initializable {
         flagBtn.setOnMouseClicked(event -> {
             removeModesFromPage();
             Client.getClient().sendPlayRequest(GameMode.Flag);
+            playMenuOrBattleMenu();
 
         });
         dominationBtn.setOnMouseClicked(event -> {
             removeModesFromPage();
             Client.getClient().sendPlayRequest(GameMode.Domination);
-
+            playMenuOrBattleMenu();
         });
 
 
@@ -102,7 +103,7 @@ public class WaitingPageController implements Initializable {
             }
             if (johnyJohnyYesPapaGoingToBattle.get()) {
                 System.out.println("battle page it is");
-                BattlePageController.getInstance().setAsScene();
+                MultiPlayerBattlePageController.getInstance().setAsScene();
             } else {
                 System.out.println("play menu it is");
                 PlayMenuController.getInstance().setAsScene();

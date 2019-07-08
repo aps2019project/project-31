@@ -20,6 +20,7 @@ public class Server extends Thread {
 
 
     public static void main(String[] args) {
+
         try {
             YaGson yaGson = new YaGsonBuilder().create();
             Initializer.initialiseData();

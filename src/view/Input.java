@@ -67,7 +67,7 @@ public class Input {
         pattern = Pattern.compile("insert in \\((\\d),(\\d)\\)\\s*");
         matcher = pattern.matcher(input);
         if (matcher.matches()) {
-            BattleMenu.insert(BattleMenu.getBattleManager().getCurrentPlayer().getSelectedCard(),
+            BattleMenu.getBattleManager().insert(BattleMenu.getBattleManager().getCurrentPlayer().getSelectedCard(),
                     Integer.parseInt(matcher.group(1)), Integer.parseInt(matcher.group(2)));
         }
         BattleMenu.getBattleManager().checkTheEndSituation();
@@ -490,17 +490,17 @@ public class Input {
             if (matcher.group(3).trim().equalsIgnoreCase("domination")) {
                 BattleMenu.setBattleManagerForMultiPlayer(Account.getMainAccount(), theAccount,
                         Integer.parseInt(matcher.group(4)), 100, GameMode.Domination);
-                Initializer.getBattleMenu().runTheGame();
+               // Initializer.getBattleMenu().runTheGame();
             }
             if (matcher.group(3).trim().equalsIgnoreCase("flag")) {
                 BattleMenu.setBattleManagerForMultiPlayer(Account.getMainAccount(), theAccount,
                         100, Integer.parseInt(matcher.group(4)), GameMode.Flag);
-                Initializer.getBattleMenu().runTheGame();
+            //    Initializer.getBattleMenu().runTheGame();
             }
             if (matcher.group(3).trim().equalsIgnoreCase("deathMatch")) {
                 BattleMenu.setBattleManagerForMultiPlayer(Account.getMainAccount(), theAccount,
                         100, 100, GameMode.DeathMatch);
-                Initializer.getBattleMenu().runTheGame();
+              //  Initializer.getBattleMenu().runTheGame();
             }
         }
     }
@@ -557,17 +557,17 @@ public class Input {
         if (input.equalsIgnoreCase("story 1")) {
             BattleMenu.setBattleManagerForSinglePLayer(BattleManagerMode.Story, Account.getMainAccount(), 100,
                     100, GameMode.DeathMatch, 1);
-            Initializer.getBattleMenu().runTheGame();
+        //    Initializer.getBattleMenu().runTheGame();
         }
         if (input.equalsIgnoreCase("story 2")) {
             BattleMenu.setBattleManagerForSinglePLayer(BattleManagerMode.Story, Account.getMainAccount(), 100,
                     100, GameMode.Flag, 2);
-            Initializer.getBattleMenu().runTheGame();
+        //    Initializer.getBattleMenu().runTheGame();
         }
         if (input.equalsIgnoreCase("story 3")) {
             BattleMenu.setBattleManagerForSinglePLayer(BattleManagerMode.Story, Account.getMainAccount(), 100,
                     100, GameMode.Domination, 3);
-            Initializer.getBattleMenu().runTheGame();
+        ///    Initializer.getBattleMenu().runTheGame();
         }
     }
 
@@ -592,17 +592,17 @@ public class Input {
                 if (matcher.group(2).trim().equalsIgnoreCase("deathMatch")) {
                     BattleMenu.setBattleManagerForSinglePLayer(BattleManagerMode.CustomGame, Account.getMainAccount(),
                             100, 100, GameMode.DeathMatch, 1);
-                    Initializer.getBattleMenu().runTheGame();
+               //     Initializer.getBattleMenu().runTheGame();
                 }
                 if (matcher.group(2).trim().equalsIgnoreCase("domination")) {
                     BattleMenu.setBattleManagerForSinglePLayer(BattleManagerMode.CustomGame, Account.getMainAccount(),
                             100, 100, GameMode.Domination, 1);
-                    Initializer.getBattleMenu().runTheGame();
+                //    Initializer.getBattleMenu().runTheGame();
                 }
                 if (matcher.group(2).trim().equalsIgnoreCase("flag")) {
                     BattleMenu.setBattleManagerForSinglePLayer(BattleManagerMode.CustomGame, Account.getMainAccount(),
                             100, Integer.parseInt(matcher.group(3)), GameMode.Flag, 1);
-                    Initializer.getBattleMenu().runTheGame();
+                //    Initializer.getBattleMenu().runTheGame();
                 }
             } catch (Exception e) {
                 System.err.println("custom game exception");

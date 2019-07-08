@@ -184,7 +184,7 @@ public class Deployable extends Card {
                     extraDamageDueToBuff += buff.getEffectOfWeaknessOrPowerOnAttack();
             }
         }
-        return currentAttack + extraDamageDueToBuff - damageTaken;
+        return currentAttack + extraDamageDueToBuff;
     }
 
     public boolean isDisarmed() {
@@ -203,7 +203,7 @@ public class Deployable extends Card {
                     extraHealthDueToBuff += buff.getEffectOfWeaknessOrPowerOnHealth();
             }
         }
-        return currentHealth + extraHealthDueToBuff;
+        return currentHealth + extraHealthDueToBuff - damageTaken;
     }
 
     public int theActualDamageReceived(int theDamage) {
@@ -216,7 +216,7 @@ public class Deployable extends Card {
     }
 
     public void takeDamage(int damage) {
-        damageTaken -= damage;
+        damageTaken += damage;
     }
 
     @Override

@@ -214,7 +214,7 @@ public class CollectionController implements Initializable {
                 displayMessage("select a deck");
                 return;
             }
-            if (!Client.getClient().requestRemoveDeck(Account.getEditingDeck().getDeckName())){
+            if (!Client.getClient().requestRemoveDeck(Account.getEditingDeck().getDeckName())) {
                 displayMessage("Error! Deck not removed!");
                 return;
             }
@@ -254,8 +254,11 @@ public class CollectionController implements Initializable {
                 displayMessage("deck is not valid!!");
                 return;
             }
-            Account.getMainAccount().selectAsMainDeck(Account.getEditingDeck().getDeckName());
-            displayMessage("Main Deck is set \"" + Account.getEditingDeck().getDeckName() + "\"");
+            if (Client.getClient().setAsMainDeck(Account.getEditingDeck())) {
+                Account.getMainAccount().selectAsMainDeck(Account.getEditingDeck().getDeckName());
+                displayMessage("Main Deck is set \"" + Account.getEditingDeck().getDeckName() + "\"");
+            } else
+                displayMessage("Error! Main deck not set!");
         });
         mainMenuButton.setOnAction(event -> MainMenuController.getInstance().setAsScene());
         shopButton.setOnAction(event -> ShopController.getInstance().setAsScene());

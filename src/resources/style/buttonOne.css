@@ -58,6 +58,26 @@
     -fx-cursor: hand;
 }
 
+#sendButton:hover {
+    -fx-background-image: url('../assets/ui/button_icon_right_glow.png');
+    -fx-background-color: rgba(0, 0, 0, 0);
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+    -fx-font-size: 15;
+
+}
+
+#sendButton {
+    -fx-background-color: rgba(0, 0, 0, 0);
+    -fx-background-image: url('../assets/ui/button_icon_right.png');
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+    -fx-background-insets: 0;
+    -fx-font-size: 14;
+    -fx-font-family: "Times New Roman";
+    -fx-text-fill: white;
+}
+
 #backButton {
     -fx-background-color: rgba(0, 0, 0, 0);
     -fx-background-image: url('../assets/ui/button_icon_left.png');

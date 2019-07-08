@@ -33,19 +33,19 @@ public class StoryMenuController implements Initializable {
         story1.setOnMouseClicked(event -> {
               BattleMenu.setBattleManagerForSinglePLayer(BattleManagerMode.Story, Account.getMainAccount(), 100,
                     100, GameMode.DeathMatch, 1);
-            BattlePageController.getInstance().setAsScene();
+            SinglePlayerBattlePageController.getInstance().setAsScene();
 
         });
         story2.setOnMouseClicked(event -> {
             BattleMenu.setBattleManagerForSinglePLayer(BattleManagerMode.Story, Account.getMainAccount(), 100,
                     6, GameMode.Flag, 2);
-            BattlePageController.getInstance().setAsScene();
+            SinglePlayerBattlePageController.getInstance().setAsScene();
 
         });
         story3.setOnMouseClicked(event -> {
                BattleMenu.setBattleManagerForSinglePLayer(BattleManagerMode.Story, Account.getMainAccount(), 11,
                     100, GameMode.Domination, 3);
-            BattlePageController.getInstance().setAsScene();
+            SinglePlayerBattlePageController.getInstance().setAsScene();
 
         });
     }

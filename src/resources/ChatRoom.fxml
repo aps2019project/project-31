@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+
+<StackPane fx:controller="controller.ChatRoomController" xmlns="http://javafx.com/javafx/11.0.1"
+           xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <ImageView fitHeight="719.0" fitWidth="1080.0" pickOnBounds="true">
+            <image>
+                <Image url="@assets/codex/chapter5_background@2x.jpg"/>
+            </image>
+        </ImageView>
+        <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+                    prefHeight="720.0" prefWidth="1080.0">
+            <center>
+                <ScrollPane prefHeight="573.0" prefWidth="915.0" stylesheets="@style/scrollPane.css"
+                            BorderPane.alignment="CENTER">
+                    <content>
+                        <VBox fx:id="messageBox" prefHeight="478.0" prefWidth="875.0"/>
+                    </content>
+                </ScrollPane>
+            </center>
+            <bottom>
+                <HBox alignment="CENTER" prefHeight="57.0" prefWidth="1080.0" BorderPane.alignment="CENTER">
+                    <children>
+                        <TextField fx:id="textField" prefHeight="44.0" prefWidth="804.0"
+                                   stylesheets="@style/inputBox.css"/>
+                        <Button id="sendButton" fx:id="sendButton" mnemonicParsing="false" prefHeight="49.0"
+                                prefWidth="79.0" stylesheets="@style/buttonOne.css" text="Send"/>
+                    </children>
+                </HBox>
+            </bottom>
+            <opaqueInsets>
+                <Insets/>
+            </opaqueInsets>
+            <StackPane.margin>
+                <Insets/>
+            </StackPane.margin>
+            <padding>
+                <Insets bottom="50.0" left="100.0" right="100.0" top="20.0"/>
+            </padding>
+            <top>
+                <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER_RIGHT">
+                    <children>
+                        <Button id="sendButton" fx:id="backButton" mnemonicParsing="false" prefHeight="61.0"
+                                prefWidth="92.0" stylesheets="@style/buttonOne.css" text="Back"/>
+                    </children>
+                </HBox>
+            </top>
+        </BorderPane>
+    </children>
+</StackPane>
