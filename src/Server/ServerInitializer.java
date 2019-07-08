@@ -26,7 +26,7 @@ public class ServerInitializer extends Application {
     public static void main(String[] args) {
         Initializer.initialiseData();
         Server.main(null);
-        launch(args);
-        Input.start();
+//        launch(args);
+//        Input.start();
     }
 }

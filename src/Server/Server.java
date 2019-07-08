@@ -19,7 +19,7 @@ public class Server extends Thread {
     private static int port;
 
 
-    public static void main(String[] args) {
+    static void main(String[] args) {
 
         try {
             YaGson yaGson = new YaGsonBuilder().create();
