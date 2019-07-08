@@ -125,9 +125,11 @@ public class BattleManager {
                     .getInstance().getMe().selectedCard).face);
         else if (MultiPlayerBattlePageController.getInstance().getHboxInTop() != null &&
                 this.currentPlayer == MultiPlayerBattlePageController.getInstance().getMe()
-                && this.currentPlayer.isInHand(MultiPlayerBattlePageController.getInstance().getMe().selectedCard))
+                && this.currentPlayer.isInHand(MultiPlayerBattlePageController.getInstance().getMe().selectedCard)) {
+            System.out.println("remove face from hand called");
             Platform.runLater(() -> MultiPlayerBattlePageController.getInstance().removeMinionFromHand
                     (((Deployable) MultiPlayerBattlePageController.getInstance().getMe().selectedCard).face));
+        }
     }
 
     private void refreshTheWholeMap() {
