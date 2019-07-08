@@ -91,8 +91,13 @@ public class User extends Thread {
             ChatRoomController.getMessages().add(matcher.group(1));
             if (ChatRoomController.getMessages().size() > 20) {
                 ChatRoomController.getMessages().remove(0);
+
             }
             for (User user : Server.getUsersInChat()) {
+                if (user.equals(this)){
+                    System.out.println("skipped!");
+                    continue;
+                }
                 user.sendMessage(matcher.group(1));
             }
         }

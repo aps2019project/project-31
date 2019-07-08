@@ -2,6 +2,7 @@ package Server;
 
 import com.gilecode.yagson.YaGson;
 import com.gilecode.yagson.YaGsonBuilder;
+import controller.ChatRoomController;
 import controller.Shop;
 import model.Account;
 import model.Card;
@@ -24,6 +25,8 @@ public class Server extends Thread {
         return usersInChat;
     }
 
+
+    @Override
     public void run() {
 
         try {
@@ -43,6 +46,7 @@ public class Server extends Thread {
             bufferedWriter.flush();*/
             Shop.setStock(yaGson.fromJson(bufferedReader.readLine(), HashMap.class));
 
+
             server = new ServerSocket(port);
             while (true) {
                 Socket socket = server.accept();
@@ -56,6 +60,7 @@ public class Server extends Thread {
 
     public synchronized static void saveAllAccounts() {
         Account.saveAllAccounts();
+
     }
 
     public static void makeWaitForLoginThread(YaGson yaGson, Socket socket) {

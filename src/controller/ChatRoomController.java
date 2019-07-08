@@ -21,6 +21,10 @@ public class ChatRoomController implements Initializable {
 
     private static ArrayList<String> messages = new ArrayList<>();
 
+    public static void setMessages(ArrayList<String> messages) {
+        ChatRoomController.messages = messages;
+    }
+
     public static ArrayList<String> getMessages() {
         return messages;
     }
@@ -65,13 +69,16 @@ public class ChatRoomController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         chatRoom = this;
         backButton.setOnAction(actionEvent -> {
+            MainMenuController.getInstance().setAsScene();
             Client.getClient().exitChatroom();
         });
         sendButton.setOnAction(actionEvent -> {
+            addNativeMessage(textField.getText());
             Client.getClient().sendChatMessage(textField.getText());
             textField.clear();
         });
         textField.setOnAction(actionEvent -> {
+            addNativeMessage(textField.getText());
             Client.getClient().sendChatMessage(textField.getText());
             textField.clear();
         });

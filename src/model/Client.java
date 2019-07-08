@@ -258,7 +258,7 @@ public class Client extends Thread {
         }
     }
 
-    public void exitChatroom(){
+    public void exitChatroom() {
         try {
             os.writeUTF(ServerStrings.EXIT_CHATROOM);
         } catch (IOException e) {
@@ -278,10 +278,17 @@ public class Client extends Thread {
                         Matcher matcher = pattern.matcher(command);
                         if (matcher.matches()) {
                             if (!matcher.group(1).equals(Account.getMainAccount().getUsername())) {
-                                ChatRoomController.getInstance().addForeignMessage(matcher.group(1) + ":\n"
-                                        + matcher.group(2));
-                            }else {
-                                ChatRoomController.getInstance().addNativeMessage(matcher.group(2));
+                                Matcher finalMatcher = matcher;
+                                Platform.runLater(() -> {
+                                    ChatRoomController.getInstance().addForeignMessage(finalMatcher.group(1) + ":\n"
+                                            + finalMatcher.group(2));
+                                });
+                            } else {
+                                Matcher finalMatcher1 = matcher;
+                                Platform.runLater(() -> {
+                                    ChatRoomController.getInstance().addNativeMessage(finalMatcher1.group(2));
+                                });
+
                             }
                         }
 
