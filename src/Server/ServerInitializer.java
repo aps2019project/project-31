@@ -38,8 +38,8 @@ public class ServerInitializer extends Application {
 
     public static void main(String[] args) {
         Initializer.initialiseData();
+        new Server().start();
         launch(args);
-        Server.main(null);
 //        Input.start();
     }
 }
