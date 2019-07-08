@@ -1,17 +1,22 @@
 package Server;
 
+import controller.LeaderBoardController;
+import controller.MainMenuController;
+import controller.Shop;
+import controller.ShopController;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
-import model.Initializer;
+import javafx.scene.control.*;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import model.Client;
 
 import java.awt.*;
 import java.io.IOException;
@@ -20,8 +25,8 @@ import java.util.ResourceBundle;
 
 public class ServerDataPageController implements Initializable {
     private static ServerDataPageController instance = null;
-
     private static Scene scene;
+
     public TabPane tabPane;
     public Tab heroesTab;
     public ListView heroesList;
@@ -36,15 +41,16 @@ public class ServerDataPageController implements Initializable {
     public Button requestStock;
     public ScrollPane scrollPane;
     public Label label;
+    public Button back;
+    public Button refresh;
 
     public void setAsScene() {
         if (true) {
             try {
-                Parent root = FXMLLoader.load(getClass().getResource("/ServerDataPageController.fxml"));
+                Parent root = FXMLLoader.load(getClass().getResource("/ServerDataPage.fxml"));
                 Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
                 Double screenWidth = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
-                scene = new Scene(root, screenWidth * 2 / 3, screenWidth * 4 / 9);
-
+                scene = new Scene(root, 1080, 720);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -52,14 +58,20 @@ public class ServerDataPageController implements Initializable {
         ServerInitializer.setCurrentScene(scene);
     }
 
-    public static ServerDataPageController getInstance(){
-        if(instance == null)
+    public static ServerDataPageController getInstance() {
+        if (instance == null)
             return instance = new ServerDataPageController();
         return instance;
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+        instance = this;
+        back.setOnAction(event -> MainMenuController.getInstance().setAsScene());
+        LeaderBoardController.getInstance().refreshLeaderBoard();
+        refresh.setOnAction(actionEvent ->
+        {
+            LeaderBoardController.getInstance().refreshLeaderBoard();
+        });
     }
 }

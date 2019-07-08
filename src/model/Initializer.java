@@ -63,7 +63,6 @@ public class Initializer extends Application {
                 "src/resources/assets/music/music_battlemap_duskfall.m4a";*/
 
         setPrimaryStage(primaryStage);
-
         LoginPageController.getInstance().setAsScene();
         primaryStage.show();
     }

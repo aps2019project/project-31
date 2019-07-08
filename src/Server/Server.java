@@ -24,7 +24,7 @@ public class Server extends Thread {
         return usersInChat;
     }
 
-    static void main(String[] args) {
+    public void run() {
 
         try {
             YaGson yaGson = new YaGsonBuilder().create();
