@@ -14,6 +14,7 @@ public class Ai extends Player {
     }
 
     public void considerAllMoves() {
+        BattleManager battle = BattleMenu.getBattleManager();
         Player me = SinglePlayerBattlePageController.getInstance().getMe();
         Player opponent = SinglePlayerBattlePageController.getInstance().getOpponent();
         for (Deployable deployable : getCardsOnBattleField()) {

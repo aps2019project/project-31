@@ -1,6 +1,7 @@
 package model;
 
 import constants.FunctionType;
+import controller.BattleMenu;
 import controller.SinglePlayerBattlePageController;
 import view.Output;
 
@@ -22,7 +23,6 @@ public class Player {
     protected ArrayList<DisplayableDeployable> graveYard;
     protected Card selectedCard;
     protected Card cardInReplace;
-    protected BattleManager battle;
     private boolean isAi;
     protected int[] manaChangerInTurn = new int[200];
     private static int howFuckedUpIAm = 0;
@@ -86,10 +86,6 @@ public class Player {
 
     public void setCurrentDeck(Deck currentDeck) {
         this.currentDeck = currentDeck;
-    }
-
-    public void setBattle(BattleManager battle) {
-        this.battle = battle;
     }
 
     public boolean isAi() {
@@ -236,6 +232,7 @@ public class Player {
     }
 
     public boolean selectACard(int cardId) {
+        BattleManager battle = BattleMenu.getBattleManager();
         if (cardInHand(cardId) != null) {
             System.err.println("selected card in hand successfully");
             selectedCard = cardInHand(cardId);
@@ -257,7 +254,7 @@ public class Player {
             selectedCard = getHero().heroSpell;
             return true;
         }
-        System.err.println("card not selected");
+        System.err.println("card not selected, why the fuck not ?????");
         return false;
     }
 
@@ -331,7 +328,7 @@ public class Player {
                 continue;
             for (int i = 0; i < card.functions.size(); i++) {
                 if (card.functions.get(i).getFunctionType() == FunctionType.Passive) {
-                    battle.compileFunction(card.functions.get(i), card.cell.getX1Coordinate(),
+                    BattleMenu.getBattleManager().compileFunction(card.functions.get(i), card.cell.getX1Coordinate(),
                             card.cell.getX2Coordinate());
                 }
             }

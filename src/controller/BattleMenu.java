@@ -128,8 +128,6 @@ public class BattleMenu extends Menu {
                 battleManager = new BattleManager(player1, player2, numberOfFlags, 100, GameMode.Domination, false,isMulti);
                 break;
         }
-        player1.setBattle(battleManager);
-        player2.setBattle(battleManager);
     }
 
     public static void setBattleManager(BattleManager battleManager) {

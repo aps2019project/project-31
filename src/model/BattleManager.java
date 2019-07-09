@@ -129,9 +129,9 @@ public class BattleManager {
                     .getInstance().getMe().selectedCard).face);
         else if (MultiPlayerBattlePageController.getInstance().getHboxInTop() != null &&
                 this.currentPlayer.equals(MultiPlayerBattlePageController.getInstance().getMe())) {
-            System.out.println("remove face from hand called");
             Platform.runLater(() -> MultiPlayerBattlePageController.getInstance().removeMinionFromHand
                     (((Deployable) MultiPlayerBattlePageController.getInstance().getMe().selectedCard).face));
+            System.out.println("remove face from hand called, selected card is :"+ MultiPlayerBattlePageController.getInstance().getMe().selectedCard.getName());
         }
     }
 
@@ -1576,11 +1576,13 @@ public class BattleManager {
     }
 
     public void endTurn() {
+        System.out.println("current player was : " + currentPlayer.account.getUsername());
         doAllThingsInEndingOfTheTurns();
         setCurrentPlayer(getOtherPlayer());
         doAllAtTheBeginningOfTurnThings();
         if (MultiPlayerBattlePageController.getInstance().getHboxInTop() != null)
             Platform.runLater(() -> MultiPlayerBattlePageController.getInstance().refreshTheStatusOfMap(this));
+        System.out.println("now the current player is : "+ currentPlayer.account.getUsername());
     }
 
 

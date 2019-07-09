@@ -182,6 +182,16 @@ public class MultiPlayerBattlePageController implements Initializable {
 
     }
 
+    private void showMinions() {
+        System.out.println("my minions are :");
+        for (Deployable card : me.getCardsOnBattleField()) {
+            System.out.println(card.shortVersionString());
+        }
+        System.out.println("opponent minions are :");
+        for (Deployable card : opponent.getCardsOnBattleField())
+            System.out.println(card.shortVersionString());
+    }
+
     private void playTheActualGame(BattleManager battle) {
         graphicStuffAtBegin();
         System.out.println("we are going to play the actual game :D");
@@ -303,17 +313,12 @@ public class MultiPlayerBattlePageController implements Initializable {
     }
 
     public void initPlayers() {
-        if (BattleMenu.getBattleManager() == null) {
-            System.out.println("battle manager in init is null");
-        }
-        if (BattleMenu.getBattleManager().getPlayer1() == null)
-            System.out.println("battle manager player 1 is null");
-        if (BattleMenu.getBattleManager().getPlayer1().getAccount() == null)
-            System.out.println("battle manager player 1 . get account is null");
         if (BattleMenu.getBattleManager().getPlayer1().getAccount().getUsername().equals(Account.getMainAccount().getUsername())) {
+            System.out.println("im player 1");
             me = BattleMenu.getBattleManager().getPlayer1();
             opponent = BattleMenu.getBattleManager().getPlayer2();
         } else {
+            System.out.println("im player 2");
             me = BattleMenu.getBattleManager().getPlayer2();
             opponent = BattleMenu.getBattleManager().getPlayer1();
         }
@@ -451,7 +456,7 @@ public class MultiPlayerBattlePageController implements Initializable {
             if (!isMyTurn()) {
                 displayMessage("this is not your turn =");
             } else {
-                MultiPlayerBattlePageController.getInstance().setOnMouseDeployable(theMinion, battle);
+                MultiPlayerBattlePageController.getInstance().setOnMouseDeployable(theMinion);
                 face.updateStats();
             }
         });
@@ -491,6 +496,7 @@ public class MultiPlayerBattlePageController implements Initializable {
             }
         }
     }
+/*
 
     public void endTurn(BattleManager battle) throws InterruptedException {
         System.out.println("called endTurn in Multi player");
@@ -504,6 +510,7 @@ public class MultiPlayerBattlePageController implements Initializable {
         BattleMenu.getBattleManager().doAllAtTheBeginningOfTurnThings();
         updateManaViewers(battle);
     }
+*/
 
     private void initHeroesSpecialPowers() {
         specialSpell.setImage(new javafx.scene.image.Image(getClass().getResource("/gifs/Bloodbound/warbird.gif").toExternalForm()));
@@ -575,20 +582,21 @@ public class MultiPlayerBattlePageController implements Initializable {
         DisplayableDeployable face = new DisplayableDeployable(deployable);
         deployable.setFace(face);
         columnHands[index].getStackPane().getChildren().add(face);
-        //
         face.setTranslateY(-10);
         face.setOnMouseClicked(event -> {
             if (!isMyTurn()) {
                 displayMessage("this is not your turn =");
             } else {
+                System.out.println(" me is :" + me.getAccount().getUsername() + " the current player isssss : " + BattleMenu.getBattleManager().getCurrentPlayer().getAccount().getUsername());
                 System.out.println("clicked! on " + deployable.getName());
-                if (battle.getCurrentPlayer() == me) {
-                    System.out.println(face.getDeployable().getId());
-                    me.selectACard(face.getDeployable().getId());
+           /*     if (battle.getCurrentPlayer().equals(me)) {
+
                 } else {
                     displayMessage("not my turn");
                     System.out.println("not my turn");
-                }
+                }*/
+                System.out.println(face.getDeployable().getId());
+                me.selectACard(face.getDeployable().getId());
             }
         });
         //
@@ -618,44 +626,52 @@ public class MultiPlayerBattlePageController implements Initializable {
         hero1.setFace(faceHero1);
         hero2.setFace(faceHero2);
         mainPane.getChildren().addAll(faceHero1, faceHero2);
-        /*hero1.setCell(Map.getInstance().getCell(3, 1));
+        hero1.setCell(Map.getInstance().getCell(3, 1));
         hero2.setCell(Map.getInstance().getCell(3, 9));
         hero1.getCell().setCardInCell(hero1);
         hero2.getCell().setCardInCell(hero2);
         hero1.setFace(faceHero1);
-        hero2.setFace(faceHero2);*/
+        hero2.setFace(faceHero2);
         faceHero1.updateStats();
         faceHero2.updateStats();
 
         faceHero1.setOnMouseClicked(event -> {
-            setOnMouseDeployable(hero1, battleManager);
+            setOnMouseDeployable(hero1);
             faceHero1.updateStats();
         });
         faceHero2.setOnMouseClicked(event -> {
-            setOnMouseDeployable(hero2, battleManager);
+            setOnMouseDeployable(hero2);
             faceHero2.updateStats();
         });
     }
 
-    public void setOnMouseDeployable(Deployable card, BattleManager battleManager) {
-        if (battleManager.getCurrentPlayer() == me) {
+    public void setOnMouseDeployable(Deployable card ) {
+        BattleManager battleManager = BattleMenu.getBattleManager();
+        System.out.println(" me is :" + me.getAccount().getUsername() + " the current player isssss : " + battleManager.getCurrentPlayer().getAccount().getUsername());
+        if (battleManager.getCurrentPlayer().equals(me)) {
             if (me.getSelectedCard() != null && me.getSelectedCard().getType() == CardType.spell) {
-                // BattleMenu.insert(me.getSelectedCard(), card.getCell().getX1Coordinate(), card.getCell().getX2Coordinate());
                 Client.getClient().sendInsertRequest(me.getSelectedCard().getId(), card.getCell().getX1Coordinate(), card.getCell().getX2Coordinate());
             } else if (me.getSelectedCard() != null && me.getSelectedCard().getType() == CardType.item) {
-                //   BattleMenu.insert(me.getSelectedCard(), card.getCell().getX1Coordinate(), card.getCell().getX2Coordinate());
                 Client.getClient().sendInsertRequest(me.getSelectedCard().getId(), card.getCell().getX1Coordinate(), card.getCell().getX2Coordinate());
             } else if (me.getSelectedCard() != null &&
                     me.getSelectedCard().getType() != CardType.spell &&
-                    !card.getAccount().equals(me.getAccount())) {
+                    !card.getAccount().getUsername().equals(me.getAccount().getUsername())) {
                 System.err.println(me.getSelectedCard().getName() + " attacked " + card.getName());
-                //    battleManager.attack((Deployable) me.getSelectedCard(), card);
+                if (((Deployable) me.getSelectedCard()).getCell() == null)
+                    System.out.println("selected card cell is null");
+                else if (card.getCell() == null)
+                    System.out.println("clicked card cell is null");
+                else
+                    System.out.println("wtf is null then mother fucker ?");
+
+
                 Client.getClient().sendAttackRequest(((Deployable) me.getSelectedCard()).getCell().getX1Coordinate()
                         , ((Deployable) me.getSelectedCard()).getCell().getX2Coordinate(), card.getCell().getX1Coordinate(), card.getCell().getX2Coordinate());
                 ((Deployable) me.getSelectedCard()).getFace().attack();
                 card.getFace().getHit();
             } else {
                 System.out.println("going to select a card !");
+                System.out.println(card.getUniqueId());
                 me.selectACard(card.getUniqueId());
             }
         }
@@ -717,9 +733,9 @@ public class MultiPlayerBattlePageController implements Initializable {
         for (Cell[] cells : Map.getInstance().getMap()) {
             for (Cell cell : cells) {
                 if (cell != null && cell.getCardInCell() != null) {
-                    System.out.println("the cell has card in cell");
+//                    System.out.println("the cell has card in cell");
                     if (cell.getCardInCell().getFace() != null) {
-                        System.out.println("the cell has face !");
+//                        System.out.println("the cell has face !");
                         cell.getCardInCell().getFace().updateStats();
                     } else
                         System.out.println("the cell does not have face!!!!!!!!!!!!! fuuuuuuuuuuuuuuuuuuuuuuuuuuuck");
@@ -733,12 +749,16 @@ public class MultiPlayerBattlePageController implements Initializable {
     private void createFaceForDeplyobale() {
         for (Cell[] cells : Map.getInstance().getMap()) {
             for (Cell cell : cells) {
+                if (cell != null && cell.getCardInCell() != null) {
+                    System.out.println("card cell nadasht :////////");
+                    cell.getCardInCell().setCell(cell);
+                }
                 if (cell != null && cell.getCardInCell() != null && cell.getCardInCell().getFace() == null) {
                     System.out.println("we created face for cell: " + cell.getX1Coordinate() + cell.getX2Coordinate());
                     DisplayableDeployable face = new DisplayableDeployable(cell.getCardInCell());
                     cell.getCardInCell().setFace(face);
                     face.setOnMouseClicked(event -> {
-                        setOnMouseDeployable(cell.getCardInCell(), BattleMenu.getBattleManager());
+                        setOnMouseDeployable(cell.getCardInCell());
                         face.updateStats();
                     });
                 }
@@ -748,6 +768,7 @@ public class MultiPlayerBattlePageController implements Initializable {
 
     public void refreshTheStatusOfMap(BattleManager battleManager) {
         System.out.println("refresh reached!");
+        initPlayers();
         createFaceForDeplyobale();
         refreshPartly();
         nameAndStuff();
@@ -760,7 +781,7 @@ public class MultiPlayerBattlePageController implements Initializable {
             showItems();
         }
         showFlag();
-
+        showMinions();
     }
 
     public void showFlag() {
