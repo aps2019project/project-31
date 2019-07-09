@@ -362,7 +362,7 @@ public class MultiPlayerBattlePageController implements Initializable {
             removeSpellFromHand(((Spell) card).getFace(), battle);
     }
 
-    private void putNextCardInHand(BattleManager battle) {
+    public void putNextCardInHand(BattleManager battle) {
         for (int i = 0; i < 6; i++) {
             if (columnHands[i].stackPane.getChildren().size() == 1) {
                 if (nextCardField.getChildren().size() >= 2) {
@@ -597,6 +597,8 @@ public class MultiPlayerBattlePageController implements Initializable {
                 }*/
                 System.out.println(face.getDeployable().getId());
                 me.selectACard(face.getDeployable().getId());
+
+                ((Deployable) (me.getSelectedCard())).setFace(face);
             }
         });
         //
