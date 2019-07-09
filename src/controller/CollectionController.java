@@ -61,7 +61,7 @@ public class CollectionController implements Initializable {
                 Parent root = FXMLLoader.load(getClass().getResource("/collection.fxml"));
 //                Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
                 Double screenWidth = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
-                scene = new Scene(root, screenWidth * 2 / 3, screenWidth * 4 / 9);
+                scene = new Scene(root, 1080, 720);
 
             } catch (IOException e) {
                 e.printStackTrace();
