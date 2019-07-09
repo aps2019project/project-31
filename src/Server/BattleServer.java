@@ -62,7 +62,6 @@ public class BattleServer extends Thread {
             } else {
                 currentPlayer().os.writeUTF(ServerStrings.NOTALLOWED);
             }
-            //    battleServer.updateBothUsers();
             System.out.println("get the next command from current player");
             command = currentPlayer().is.readUTF();
             System.out.println("the command is : " + command);
@@ -76,7 +75,6 @@ public class BattleServer extends Thread {
         user1.os.writeUTF(ServerStrings.ENDTURN);
         user2.os.writeUTF(ServerStrings.ENDTURN);
         System.out.println("the end turn has been received");
-        //   battleServer.updateBothUsers();
         battleManager.endTurn();
         return true;
     }

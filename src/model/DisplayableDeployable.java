@@ -32,6 +32,10 @@ public class DisplayableDeployable extends StackPane {
     double SCALE = 1.2;
     VBox infoBox;
 
+    public void setDeployable(Deployable deployable) {
+        this.deployable = deployable;
+    }
+
     public DisplayableDeployable(Deployable deployable) {
         System.out.println("displayable deployable constructor called for this deployable :" + deployable.shortestVersionString());
         this.setAlignment(Pos.CENTER);
@@ -157,6 +161,10 @@ public class DisplayableDeployable extends StackPane {
     }
 
     public void moveToCurrentCell() {
+        if(deployable==null)
+            System.out.println("deployable null in move to current cell");
+        else if(deployable.getCell()==null)
+            System.out.println("depliyable in move to current cell doesn't have a cell");
         double amountX = (deployable.getCell().calculateCenter()[0] - getTranslateX()) / 15;
         double amountY = (deployable.getCell().calculateCenter()[1] - getTranslateY()) / 15;
         if (deployable.getName().equals("Kaveh") || deployable.getId() == 209) {

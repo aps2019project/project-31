@@ -117,7 +117,7 @@ public class BattleManager {
             SinglePlayerBattlePageController.getInstance().addFaceToBattlePage(minion, this);
         else if (MultiPlayerBattlePageController.getInstance().getHboxInTop() != null) {
             Platform.runLater(() -> {
-                MultiPlayerBattlePageController.getInstance().addFaceToBattlePage(minion, this);
+                MultiPlayerBattlePageController.getInstance().addFaceToBattlePage(minion);
 
             });
         }
