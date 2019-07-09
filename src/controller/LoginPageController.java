@@ -91,6 +91,7 @@ public class LoginPageController implements Initializable {
                     System.getProperty("user.dir") + "/Sources/ServerResources/config.txt"));
             int port = Integer.parseInt(bufferedReader.readLine());
             String host = bufferedReader.readLine();
+            System.out.println(host);
             Client client = new Client(host, port);
             Client.setClient(client);
         } catch (Exception e) {

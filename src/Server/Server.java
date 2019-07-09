@@ -45,7 +45,8 @@ public class Server extends Thread {
 
 
             server = new ServerSocket(port);
-            System.out.println(server.getInetAddress().getHostName());
+            System.out.println(server.getInetAddress().getLocalHost().getHostAddress());
+
             while (true) {
                 Socket socket = server.accept();
                 System.out.println("Client " + socket.getLocalSocketAddress() + "connected");
