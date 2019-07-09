@@ -750,7 +750,7 @@ public class MultiPlayerBattlePageController implements Initializable {
 
         refreshFlagsSituation(battleManager);
         if (!battleManager.isThisRecordedGame()) {
-            BattleMenu.getBattleManager().checkTheEndSituation();
+//            BattleMenu.getBattleManager().checkTheEndSituation();
             healthAndCooldownStuff();
             showItems();
         }

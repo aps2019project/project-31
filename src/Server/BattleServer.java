@@ -62,6 +62,12 @@ public class BattleServer extends Thread {
             } else {
                 currentPlayer().os.writeUTF(ServerStrings.NOTALLOWED);
             }
+            if (battleManager.checkTheEndSituation()) {
+                System.out.println("we are sending the end command");
+                user1.os.writeUTF(battleManager.getGameRecord().getGame().charAt(battleManager.getGameRecord().getGame().length()-1) + ServerStrings.GAMEENDED);
+                user2.os.writeUTF(battleManager.getGameRecord().getGame().charAt(battleManager.getGameRecord().getGame().length()-1) + ServerStrings.GAMEENDED);
+                return false;
+            }
             System.out.println("get the next command from current player");
             command = currentPlayer().is.readUTF();
             System.out.println("the command is : " + command);
@@ -70,6 +76,7 @@ public class BattleServer extends Thread {
             System.out.println("the concede has been received");
             user1.os.writeUTF(command.charAt(0) + ServerStrings.GAMEENDED);
             user2.os.writeUTF(command.charAt(0) + ServerStrings.GAMEENDED);
+            User.syncObject.notifyAll();
             return false;
         }
         user1.os.writeUTF(ServerStrings.ENDTURN);
@@ -83,7 +90,8 @@ public class BattleServer extends Thread {
     private void gameFinished() {
         System.out.println("the game has finished ( in battle server )");
     }
-    private void initHeroes(){
+
+    private void initHeroes() {
         Hero hero1 = battleManager.getPlayer1().getHero();
         Hero hero2 = battleManager.getPlayer2().getHero();
         hero1.setCell(Map.getInstance().getCell(3, 1));
@@ -91,6 +99,7 @@ public class BattleServer extends Thread {
         hero1.getCell().setCardInCell(hero1);
         hero2.getCell().setCardInCell(hero2);
     }
+
     @Override
     public void run() {
         System.out.println("battle server is going to start its job :)");
@@ -101,14 +110,10 @@ public class BattleServer extends Thread {
             while (true) {
                 System.out.println("go to battle while loop");
                 try {
-
-
                     if (!getCommandFromCurrentPlayer()) {
                         gameFinished();
                         return;
                     }
-
-
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
