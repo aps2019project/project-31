@@ -117,7 +117,7 @@ public class BattleManager {
             SinglePlayerBattlePageController.getInstance().addFaceToBattlePage(minion, this);
         else if (MultiPlayerBattlePageController.getInstance().getHboxInTop() != null) {
             Platform.runLater(() -> {
-                MultiPlayerBattlePageController.getInstance().addFaceToBattlePage(minion, this);
+                MultiPlayerBattlePageController.getInstance().addFaceToBattlePage(minion);
 
             });
         }
@@ -1052,8 +1052,6 @@ public class BattleManager {
             doTheActualAttack_noTarof(card, enemy);
             refreshTheWholeMap();
             return true;
-            /*enemy.getFace().attack();
-            card.getFace().getHit();*/
         } else {
             System.out.println("loook at the next line! why not attack ??");
             if (card.isAttacked)
@@ -1239,7 +1237,11 @@ public class BattleManager {
         player1.getAccount().addMatchHistories(matchHistory1);
         MatchHistory matchHistory2 = new MatchHistory(player1, player2, "LOSE", gameRecord, gameMode);
         player2.getAccount().addMatchHistories(matchHistory2);
-
+        if (isMultiPlayer) {
+            System.err.println("the player 1 have won a good award, how generous i am :)");
+            System.err.println("khahare arus 5000 seke be barande dade");
+            player1.account.addDaric(10000);
+        }
         player1.getAccount().incrementWins();
         player2.getAccount().incrementLosses();
         gameEnded(player1);
@@ -1273,7 +1275,11 @@ public class BattleManager {
         player1.getAccount().addMatchHistories(matchHistory1);
         MatchHistory matchHistory2 = new MatchHistory(player1, player2, "WIN", gameRecord, gameMode);
         player2.getAccount().addMatchHistories(matchHistory2);
-
+        if (isMultiPlayer) {
+            System.err.println("the player 2 have won a good award, how generous i am :)");
+            System.err.println("khahare arus 5000 seke be barande dade");
+            player1.account.addDaric(10000);
+        }
         player1.getAccount().incrementLosses();
         player2.getAccount().incrementWins();
         gameEnded(player2);
@@ -1297,37 +1303,57 @@ public class BattleManager {
             return player1;
     }
 
-    public void checkTheEndSituation() {
-        isFinishedDueToHeroDying();
+    public boolean checkTheEndSituation() {
+        if (isFinishedDueToHeroDying())
+            return true;
         if (gameMode == GameMode.Flag) {
-            isFinishedDueToHavingTheFlag();
+            if (isFinishedDueToHavingTheFlag())
+                return true;
         }
         if (gameMode == GameMode.Domination) {
-            isFinishedDueToHavingMostOfFlags();
+            return isFinishedDueToHavingMostOfFlags();
         }
+        return false;
     }
 
-    public void isFinishedDueToHavingTheFlag() {
-        if (player1.getNumberOfTurnsHavingFlag() >= maxTurnsOfHavingFlag)
+    public boolean isFinishedDueToHavingTheFlag() {
+        if (player1.getNumberOfTurnsHavingFlag() >= maxTurnsOfHavingFlag) {
             player1Won();
-        if (player2.getNumberOfTurnsHavingFlag() >= maxTurnsOfHavingFlag)
+            return true;
+        }
+        if (player2.getNumberOfTurnsHavingFlag() >= maxTurnsOfHavingFlag) {
             player2Won();
+            return true;
+        }
+        return false;
     }
 
-    public void isFinishedDueToHeroDying() {
-        if (player1.isHeroDead() && !player2.isHeroDead())
+    public boolean isFinishedDueToHeroDying() {
+        if (player1.isHeroDead() && !player2.isHeroDead()) {
             player2Won();
-        if (player2.isHeroDead() && !player1.isHeroDead())
+            return true;
+        }
+        if (player2.isHeroDead() && !player1.isHeroDead()) {
             player1Won();
-        if (player1.isHeroDead() && player2.isHeroDead())
+            return true;
+        }
+        if (player1.isHeroDead() && player2.isHeroDead()) {
             draw();
+            return true;
+        }
+        return false;
     }
 
-    public void isFinishedDueToHavingMostOfFlags() {
-        if (2 * player1.getNumberOfFlags() > maxNumberOfFlags)
+    public boolean isFinishedDueToHavingMostOfFlags() {
+        if (2 * player1.getNumberOfFlags() > maxNumberOfFlags) {
             player1Won();
-        if (2 * player2.getNumberOfFlags() > maxNumberOfFlags)
+            return true;
+        }
+        if (2 * player2.getNumberOfFlags() > maxNumberOfFlags) {
             player2Won();
+            return true;
+        }
+        return false;
 
     }
 

@@ -83,7 +83,7 @@ public class GameRecord {
             System.out.println("the actual me is : "+Account.getMainAccount().getUsername()+" and the battle manager me is : "+MultiPlayerBattlePageController.getInstance().getMe().account.getUsername());
             System.out.println("the current player is : " + battleManager.currentPlayer.account.getUsername());*/
             if (!MultiPlayerBattlePageController.getInstance().getMe().equals(battleManager.currentPlayer)) {
-                /*System.out.println("going to theThingsWeDoWheIitIsNotOurTime");*/
+                System.out.println("going to theThingsWeDoWheIitIsNotOurTime");
                 MultiPlayerBattlePageController.getInstance().theThingsWeDoWheIitIsNotOurTime();
             } else {
                 System.out.println("not going to theThingsWeDoWheIitIsNotOurTime");
@@ -92,9 +92,9 @@ public class GameRecord {
         if (action.contains(ServerStrings.GAMEENDED)) {
             System.out.println("the game ended in client side, i dont know what to do !");
             if (action.charAt(0) == '1') {
-                battleManager.player1Won();
-            } else {
                 battleManager.player2Won();
+            } else {
+                battleManager.player1Won();
             }
         }
         if (action.startsWith("E")) {

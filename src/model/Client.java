@@ -29,6 +29,7 @@ public class Client extends Thread {
     private static int authToken = -1;
     private DataOutputStream os;
     private DataInputStream is;
+    public static Object receiveMap = new Object();
 
     public DataOutputStream getOs() {
         return os;
