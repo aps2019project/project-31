@@ -6,6 +6,7 @@ import controller.Shop;
 import model.Account;
 
 import java.io.*;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -45,7 +46,7 @@ public class Server extends Thread {
 
 
             server = new ServerSocket(port);
-            System.out.println(server.getInetAddress().getLocalHost().getHostAddress());
+            System.out.println(InetAddress.getLocalHost().getHostAddress());
 
             while (true) {
                 Socket socket = server.accept();

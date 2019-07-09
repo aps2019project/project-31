@@ -70,13 +70,17 @@ public class ServerDataPageController implements Initializable {
         return instance;
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        instance = this;
+    private void shopInitializer() {
         ShopController.getInstance().initializeShopItems(Shop.getAllHeroes(), heroesList, 0.6, -10);
         ShopController.getInstance().initializeShopItems(Shop.getAllMinions(), minionsList, 0.6, -10);
         ShopController.getInstance().initializeShopItems(Shop.getAllSpells(), spellsList, 0.6, -10);
         ShopController.getInstance().initializeShopItems(Shop.getAllUsables(), usablesList, 0.6, -10);
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        instance = this;
+        shopInitializer();
         back.setOnAction(event -> ServerPageController.getInstance().setAsScene());
         requestStock.setOnAction(actionEvent -> {
             try {
@@ -93,15 +97,18 @@ public class ServerDataPageController implements Initializable {
         refreshLeaderBoard();
         refresh.setOnAction(actionEvent -> {
             refreshLeaderBoard();
+            shopInitializer();
         });
         findButton.setOnAction(event -> search());
         searchText.setOnAction(event -> search());
     }
+
     private Card getCardFromTab() {
         return ((DisplayableCard) ((ListView) tabPane.
                 getSelectionModel().getSelectedItem()
                 .getContent()).getSelectionModel().getSelectedItem()).getCard();
     }
+
     private void search() {
         String input = searchText.getText();
         Card card = searchCardByName(input);

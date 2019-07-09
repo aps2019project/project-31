@@ -39,4 +39,5 @@ public class ServerStrings {
     public static final String EXIT_CHATROOM = "exit chatroom";
     public static final String SEND_MESSAGE = "send message: (.*)";
     public static final String CHERTMESSAGE = "chert message";
+    public static final String SENDING_NEW_CARD = "sending new custom card";
 }

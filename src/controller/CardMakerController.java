@@ -8,6 +8,7 @@ import constants.FunctionType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -121,7 +122,7 @@ public class CardMakerController implements Initializable {
                     String path = System.getProperty("user.dir") + "/Sources/Cards/Minions.txt";
                     try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(path, true))) {
                         bufferedWriter.write(yaGson.toJson(currentCard) + "\n");
-
+                        Shop.getAllMinions().add(((Minion) currentCard));
                     } catch (IOException e) {
                         System.err.println("Exception!:" + e);
 
@@ -131,12 +132,14 @@ public class CardMakerController implements Initializable {
                     String path1 = System.getProperty("user.dir") + "/Sources/Cards/Spells.txt";
                     try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(path1, true))) {
                         bufferedWriter.write(yaGson.toJson(currentCard) + "\n");
-
+                        Shop.getAllSpells().add(((Spell) currentCard));
                     } catch (IOException e) {
                         System.err.println("Exception!:" + e);
                     }
                     break;
             }
+            Shop.getAllCards().add(currentCard);
+            Client.getClient().addCustomCard(currentCard);
             currentCard = null;
             displayVBox.getChildren().removeAll(displayableCard);
 

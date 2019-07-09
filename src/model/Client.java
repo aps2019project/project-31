@@ -76,6 +76,20 @@ public class Client extends Thread {
         os = new DataOutputStream(socket.getOutputStream());
     }
 
+    public void addCustomCard(Card card) {
+        try {
+            os.writeUTF(ServerStrings.SENDING_NEW_CARD);
+            YaGson yaGson = new YaGsonBuilder().create();
+            os.writeUTF(yaGson.toJson(card));
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
     public Account attemptLogin(String username, String password) throws IOException {
         os.writeUTF("login username:" + username +
                 " password:" + password);

@@ -65,6 +65,8 @@ public class User extends Thread {
 
                 handleExitChatRoom(command);
 
+                handleNewCard(command);
+
 
                 if (handleLogout(command)) break;
 
@@ -74,10 +76,27 @@ public class User extends Thread {
         }
     }
 
+    private void handleNewCard(String command) throws IOException {
+        Pattern pattern = Pattern.compile(ServerStrings.SENDING_NEW_CARD);
+        Matcher matcher = pattern.matcher(command);
+        if (matcher.matches()) {
+            Card newCard = new YaGsonBuilder().create().fromJson(is.readUTF(), Card.class);
+            switch (newCard.getType()) {
+                case spell:
+                    Shop.getAllSpells().add(((Spell) newCard));
+                    break;
+                case minion:
+                    Shop.getAllMinions().add(((Minion) newCard));
+            }
+            Shop.getAllCards().add(newCard);
+            Shop.getStock().put(newCard.getId(), 5);
+        }
+    }
+
     private void handleExitChatRoom(String command) throws IOException {
         Pattern pattern = Pattern.compile(ServerStrings.EXIT_CHATROOM);
         Matcher matcher = pattern.matcher(command);
-        if (matcher.matches()){
+        if (matcher.matches()) {
             Server.getUsersInChat().remove(this);
             os.writeUTF(ServerStrings.EXIT_CHATROOM);
         }
@@ -93,7 +112,7 @@ public class User extends Thread {
 
             }
             for (User user : Server.getUsersInChat()) {
-                if (user.equals(this)){
+                if (user.equals(this)) {
                     System.out.println("skipped!");
                     continue;
                 }
@@ -252,7 +271,7 @@ public class User extends Thread {
                         Account.getAllAccounts().get(i).toString();
                 os.writeUTF(ret);
                 for (User user : users) {
-                        if (user.socket.isConnected()
+                    if (user.socket.isConnected()
                             && user.account.equals(Account.getAllAccounts().get(i))) {
                         os.writeUTF("Online");
                         continue accounts;
