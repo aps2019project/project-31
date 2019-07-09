@@ -118,7 +118,7 @@ public class BattleManager {
         else if (MultiPlayerBattlePageController.getInstance().getHboxInTop() != null) {
             Platform.runLater(() -> {
                 MultiPlayerBattlePageController.getInstance().addFaceToBattlePage(minion, this);
-                MultiPlayerBattlePageController.getInstance().refreshTheStatusOfMap(BattleMenu.getBattleManager());
+
             });
         }
     }
@@ -129,9 +129,12 @@ public class BattleManager {
                     .getInstance().getMe().selectedCard).face);
         else if (MultiPlayerBattlePageController.getInstance().getHboxInTop() != null &&
                 this.currentPlayer.equals(MultiPlayerBattlePageController.getInstance().getMe())) {
-            System.out.println("remove face from hand called");
+            if (((Deployable) MultiPlayerBattlePageController.getInstance().getMe().selectedCard).face == null) {
+                System.out.println("it doesn't have a face i guess");
+            }
             Platform.runLater(() -> MultiPlayerBattlePageController.getInstance().removeMinionFromHand
                     (((Deployable) MultiPlayerBattlePageController.getInstance().getMe().selectedCard).face));
+            System.out.println("remove face from hand called, selected card is :" + MultiPlayerBattlePageController.getInstance().getMe().selectedCard.getName());
         }
     }
 
@@ -861,7 +864,8 @@ public class BattleManager {
         currentPlayer.decreaseMana(theMinion.manaCost);
         if (!currentPlayer.isAi() && !isThisRecordedGame)
             removeFaceInHand();
-        currentPlayer.selectedCard = null;
+        if (!isMultiPlayer)
+            currentPlayer.selectedCard = null;
         removeItemIfThereIsSomething(theMinion);
         removeFlagIfThereIsSomething(theMinion, x1, x2);
 
@@ -1576,11 +1580,18 @@ public class BattleManager {
     }
 
     public void endTurn() {
+        System.out.println("current player was : " + currentPlayer.account.getUsername());
         doAllThingsInEndingOfTheTurns();
         setCurrentPlayer(getOtherPlayer());
         doAllAtTheBeginningOfTurnThings();
         if (MultiPlayerBattlePageController.getInstance().getHboxInTop() != null)
-            Platform.runLater(() -> MultiPlayerBattlePageController.getInstance().refreshTheStatusOfMap(this));
+            Platform.runLater(() -> {
+                System.out.println("we the gay people wants our card to be update");
+                MultiPlayerBattlePageController.getInstance().putNextCardInHand(this);
+                MultiPlayerBattlePageController.getInstance().updateNextCard();
+                MultiPlayerBattlePageController.getInstance().refreshTheStatusOfMap(this);
+            });
+        System.out.println("now the current player is : " + currentPlayer.account.getUsername());
     }
 
 

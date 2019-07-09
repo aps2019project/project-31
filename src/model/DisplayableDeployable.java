@@ -33,6 +33,7 @@ public class DisplayableDeployable extends StackPane {
     VBox infoBox;
 
     public DisplayableDeployable(Deployable deployable) {
+        System.out.println("displayable deployable constructor called for this deployable :" + deployable.shortestVersionString());
         this.setAlignment(Pos.CENTER);
 
         String imagePath;

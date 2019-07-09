@@ -59,16 +59,14 @@ public class ShopController implements Initializable {
     }
 
     public void setAsScene() {
-        if (true) {
-            try {
-                Parent root = FXMLLoader.load(getClass().getResource("/Shop.fxml"));
-                Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-                Double screenWidth = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
-                scene = new Scene(root, screenWidth * 2 / 3, screenWidth * 4 / 9);
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/Shop.fxml"));
+            Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+            Double screenWidth = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
+            scene = new Scene(root, 1080, 720);
 
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         Initializer.setCurrentScene(scene);
     }
