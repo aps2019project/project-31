@@ -193,10 +193,9 @@ public class MultiPlayerBattlePageController implements Initializable {
     }
 
     private void playTheActualGame(BattleManager battle) {
+        Client.getClient().receiveMapAndBattle();
         graphicStuffAtBegin();
         System.out.println("we are going to play the actual game :D");
-        Client.getClient().receiveMapAndBattle();
-
 
         if (!isMyTurn()) {
             theThingsWeDoWheIitIsNotOurTime();
@@ -219,10 +218,11 @@ public class MultiPlayerBattlePageController implements Initializable {
             if (!isMyTurn()) {
                 displayMessage("this is not your turn =");
             } else {
-                if (isMyTurn() && battle.getCurrentPlayer().getSelectedCard() != null) {
-                    MultiPlayerBattlePageController.getInstance().replaceCardInHand(battle.getCurrentPlayer().getSelectedCard().getId(), battle);
-
-                }
+                System.out.println("we are in replace");
+                if (me.getSelectedCard() !=null){
+                    System.out.println("selected card is right :)))");
+                    MultiPlayerBattlePageController.getInstance().replaceCardInHand(me.getSelectedCard().getId(), battle);
+                }else System.out.println("selected card is null");
             }
         });
         endTurn.setOnAction(event -> {
@@ -424,6 +424,7 @@ public class MultiPlayerBattlePageController implements Initializable {
     }
 
     public void replaceCardInHand(int cardId, BattleManager battleManager) {
+        System.out.println("we are in replace");
         for (Card card : MultiPlayerBattlePageController.getInstance().me.getHand()) {
             if (card != null && card.getId() == cardId) {
                 Player me = MultiPlayerBattlePageController.getInstance().me;
@@ -448,7 +449,7 @@ public class MultiPlayerBattlePageController implements Initializable {
         System.err.println("you don't have this card in your hand.");
     }
 
-    public void addFaceToBattlePage(Minion theMinion ) {
+    public void addFaceToBattlePage(Minion theMinion) {
         DisplayableDeployable face = new DisplayableDeployable(theMinion);
         theMinion.setFace(face);
         face.updateStats();
@@ -489,6 +490,7 @@ public class MultiPlayerBattlePageController implements Initializable {
             }
         }
     }
+
     private void initHeroesSpecialPowers() {
         specialSpell.setImage(new javafx.scene.image.Image(getClass().getResource("/gifs/Bloodbound/warbird.gif").toExternalForm()));
         specialSpell.setScaleX(0.5);
@@ -597,29 +599,23 @@ public class MultiPlayerBattlePageController implements Initializable {
 
     public void initHeroes(BattleManager battleManager) {
         System.out.println("init heroes !");
-        Hero hero1 = battleManager.getPlayer1().getHero();
-        Hero hero2 = battleManager.getPlayer2().getHero();
-        DisplayableDeployable faceHero1 = new DisplayableDeployable(hero1);
-        DisplayableDeployable faceHero2 = new DisplayableDeployable(hero2);
-        hero1.setFace(faceHero1);
-        hero2.setFace(faceHero2);
-        mainPane.getChildren().addAll(faceHero1, faceHero2);
-        hero1.setCell(Map.getInstance().getCell(3, 1));
-        hero2.setCell(Map.getInstance().getCell(3, 9));
-        hero1.getCell().setCardInCell(hero1);
-        hero2.getCell().setCardInCell(hero2);
-        hero1.setFace(faceHero1);
-        hero2.setFace(faceHero2);
-        faceHero1.updateStats();
-        faceHero2.updateStats();
+        battleManager.getPlayer1().getHero().setFace(new DisplayableDeployable(battleManager.getPlayer1().getHero()));
+        battleManager.getPlayer2().getHero().setFace(new DisplayableDeployable(battleManager.getPlayer2().getHero()));
+        mainPane.getChildren().addAll( battleManager.getPlayer1().getHero().getFace(),  battleManager.getPlayer2().getHero().getFace());
+        battleManager.getPlayer1().getHero().setCell(Map.getInstance().getCell(3, 1));
+        battleManager.getPlayer2().getHero().setCell(Map.getInstance().getCell(3, 9));
+        battleManager.getPlayer1().getHero().getCell().setCardInCell( battleManager.getPlayer1().getHero());
+        battleManager.getPlayer2().getHero().getCell().setCardInCell( battleManager.getPlayer2().getHero());
+        battleManager.getPlayer1().getHero().getFace().updateStats();
+        battleManager.getPlayer2().getHero().getFace().updateStats();
 
-        faceHero1.setOnMouseClicked(event -> {
-            setOnMouseDeployable(hero1);
-            faceHero1.updateStats();
+        battleManager.getPlayer1().getHero().getFace().setOnMouseClicked(event -> {
+            setOnMouseDeployable( battleManager.getPlayer1().getHero());
+            battleManager.getPlayer1().getHero().getFace().updateStats();
         });
-        faceHero2.setOnMouseClicked(event -> {
-            setOnMouseDeployable(hero2);
-            faceHero2.updateStats();
+        battleManager.getPlayer2().getHero().getFace().setOnMouseClicked(event -> {
+            setOnMouseDeployable( battleManager.getPlayer2().getHero());
+            battleManager.getPlayer2().getHero().getFace().updateStats();
         });
     }
 
